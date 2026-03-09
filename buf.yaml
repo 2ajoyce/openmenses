@@ -1,0 +1,17 @@
+# buf.yaml — Buf configuration for opencycle proto files
+# See: https://buf.build/docs/configuration/v2/buf-yaml
+
+version: v2
+
+modules:
+  - path: proto
+
+lint:
+  use:
+    - DEFAULT
+  # Enforce package version suffixes (e.g., opencycle.v1)
+  except: []
+
+breaking:
+  use:
+    - FILE

@@ -1,0 +1,22 @@
+name: Proto Breaking Change Check
+
+on:
+  pull_request:
+
+jobs:
+  proto-breaking:
+    name: Proto Breaking Changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: bufbuild/buf-action@v1
+        with:
+          setup_only: true
+
+      - name: Check for breaking proto changes
+        # Compares the current branch against the target branch (usually main).
+        # buf-action sets GITHUB_BASE_REF automatically; we use it here.
+        run: buf breaking --against ".git#branch=${{ github.base_ref || 'main' }}"
