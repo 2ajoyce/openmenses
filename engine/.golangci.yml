@@ -8,17 +8,17 @@ run:
 
 linters:
   enable:
-    - errcheck       # Check for unchecked errors
-    - gosimple       # Simplification suggestions
-    - govet          # Go vet checks
-    - ineffassign    # Detect ineffectual assignments
-    - staticcheck    # Static analysis
-    - unused         # Detect unused code
-    - gofmt          # Enforce gofmt formatting
-    - goimports      # Enforce import ordering
-    - misspell       # Catch common misspellings
-    - godot          # Require comments to end with a period
-    - nilerr         # Find incorrect nil error returns
+    - errcheck # Check for unchecked errors
+    - gosimple # Simplification suggestions
+    - govet # Go vet checks
+    - ineffassign # Detect ineffectual assignments
+    - staticcheck # Static analysis
+    - unused # Detect unused code
+    - gofmt # Enforce gofmt formatting
+    - goimports # Enforce import ordering
+    - misspell # Catch common misspellings
+    - godot # Require comments to end with a period
+    - nilerr # Find incorrect nil error returns
 
 linters-settings:
   gofmt:
@@ -29,7 +29,7 @@ linters-settings:
 issues:
   # Don't report issues in generated code
   exclude-rules:
-    - path: "../../gen/"
+    - path: "../gen/"
       linters:
         - all
   max-issues-per-linter: 0
