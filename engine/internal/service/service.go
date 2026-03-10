@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"sort"
 
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -16,6 +15,7 @@ import (
 
 	"github.com/2ajoyce/opencycle/engine/internal/rules"
 	"github.com/2ajoyce/opencycle/engine/internal/storage"
+	"github.com/2ajoyce/opencycle/engine/internal/timeline"
 	"github.com/2ajoyce/opencycle/engine/internal/validation"
 	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
 	"github.com/2ajoyce/opencycle/gen/go/opencycle/v1/opencyclev1connect"
@@ -136,15 +136,6 @@ func marshalAll[T proto.Message](items []T) ([]json.RawMessage, error) {
 		out = append(out, b)
 	}
 	return out, nil
-}
-
-// dateKey extracts a YYYY-MM-DD prefix from a timestamp or date string for
-// use as a lexicographic sort key.
-func dateKey(s string) string {
-	if len(s) >= 10 {
-		return s[:10]
-	}
-	return s
 }
 
 // ─── RPC: user profile ────────────────────────────────────────────────────────
@@ -296,15 +287,10 @@ func (s *CycleTrackerService) CreateMedicationEvent(
 
 // ─── RPC: timeline ────────────────────────────────────────────────────────────
 
-// timelineEntry is an intermediate type used when assembling the timeline.
-type timelineEntry struct {
-	key    string // YYYY-MM-DD prefix used for chronological sorting
-	record *v1.TimelineRecord
-}
-
 // ListTimeline queries all record types within the requested date range, merges
 // them into a single chronological (most-recent-first) list, and applies
-// offset-based pagination.
+// offset-based pagination. The core assembly logic lives in the timeline
+// package and is invoked here.
 func (s *CycleTrackerService) ListTimeline(
 	ctx context.Context,
 	req *connect.Request[v1.ListTimelineRequest],
@@ -320,156 +306,10 @@ func (s *CycleTrackerService) ListTimeline(
 		}
 	}
 
-	var entries []timelineEntry
-	bigPage := storage.PageRequest{PageSize: 500}
-
-	add := func(key string, rec *v1.TimelineRecord) {
-		entries = append(entries, timelineEntry{key: dateKey(key), record: rec})
-	}
-
-	// Bleeding observations
-	if err := paginate(ctx, func(token string) (string, error) {
-		bigPage.PageToken = token
-		pg, err := s.store.BleedingObservations().ListByUserAndDateRange(ctx, userID, start, end, bigPage)
-		if err != nil {
-			return "", err
-		}
-		for _, o := range pg.Items {
-			add(o.GetTimestamp().GetValue(), &v1.TimelineRecord{
-				Record: &v1.TimelineRecord_BleedingObservation{BleedingObservation: o},
-			})
-		}
-		return pg.NextPageToken, nil
-	}); err != nil {
+	records, nextToken, err := timeline.BuildTimeline(ctx, s.store, userID, start, end, pageReq(req.Msg.GetPagination()))
+	if err != nil {
 		return nil, toConnectErr(err)
 	}
-
-	// Symptom observations
-	if err := paginate(ctx, func(token string) (string, error) {
-		bigPage.PageToken = token
-		pg, err := s.store.SymptomObservations().ListByUserAndDateRange(ctx, userID, start, end, bigPage)
-		if err != nil {
-			return "", err
-		}
-		for _, o := range pg.Items {
-			add(o.GetTimestamp().GetValue(), &v1.TimelineRecord{
-				Record: &v1.TimelineRecord_SymptomObservation{SymptomObservation: o},
-			})
-		}
-		return pg.NextPageToken, nil
-	}); err != nil {
-		return nil, toConnectErr(err)
-	}
-
-	// Mood observations
-	if err := paginate(ctx, func(token string) (string, error) {
-		bigPage.PageToken = token
-		pg, err := s.store.MoodObservations().ListByUserAndDateRange(ctx, userID, start, end, bigPage)
-		if err != nil {
-			return "", err
-		}
-		for _, o := range pg.Items {
-			add(o.GetTimestamp().GetValue(), &v1.TimelineRecord{
-				Record: &v1.TimelineRecord_MoodObservation{MoodObservation: o},
-			})
-		}
-		return pg.NextPageToken, nil
-	}); err != nil {
-		return nil, toConnectErr(err)
-	}
-
-	// Medication events
-	if err := paginate(ctx, func(token string) (string, error) {
-		bigPage.PageToken = token
-		pg, err := s.store.MedicationEvents().ListByUserAndDateRange(ctx, userID, start, end, bigPage)
-		if err != nil {
-			return "", err
-		}
-		for _, o := range pg.Items {
-			add(o.GetTimestamp().GetValue(), &v1.TimelineRecord{
-				Record: &v1.TimelineRecord_MedicationEvent{MedicationEvent: o},
-			})
-		}
-		return pg.NextPageToken, nil
-	}); err != nil {
-		return nil, toConnectErr(err)
-	}
-
-	// Cycles
-	if err := paginate(ctx, func(token string) (string, error) {
-		bigPage.PageToken = token
-		pg, err := s.store.Cycles().ListByUserAndDateRange(ctx, userID, start, end, bigPage)
-		if err != nil {
-			return "", err
-		}
-		for _, c := range pg.Items {
-			add(c.GetStartDate().GetValue(), &v1.TimelineRecord{
-				Record: &v1.TimelineRecord_Cycle{Cycle: c},
-			})
-		}
-		return pg.NextPageToken, nil
-	}); err != nil {
-		return nil, toConnectErr(err)
-	}
-
-	// Phase estimates
-	if err := paginate(ctx, func(token string) (string, error) {
-		bigPage.PageToken = token
-		pg, err := s.store.PhaseEstimates().ListByUserAndDateRange(ctx, userID, start, end, bigPage)
-		if err != nil {
-			return "", err
-		}
-		for _, pe := range pg.Items {
-			add(pe.GetDate().GetValue(), &v1.TimelineRecord{
-				Record: &v1.TimelineRecord_PhaseEstimate{PhaseEstimate: pe},
-			})
-		}
-		return pg.NextPageToken, nil
-	}); err != nil {
-		return nil, toConnectErr(err)
-	}
-
-	// Sort most-recent first (descending by date key).
-	sort.SliceStable(entries, func(i, j int) bool {
-		return entries[i].key > entries[j].key
-	})
-
-	// Apply offset-based pagination.
-	p := pageReq(req.Msg.GetPagination())
-	offset := 0
-	if p.PageToken != "" {
-		if _, err := fmt.Sscanf(p.PageToken, "%d", &offset); err != nil {
-			offset = 0
-		}
-	}
-	pageSize := int(p.PageSize)
-	if pageSize <= 0 {
-		pageSize = 50
-	}
-	if pageSize > 500 {
-		pageSize = 500
-	}
-
-	if offset >= len(entries) {
-		return connect.NewResponse(&v1.ListTimelineResponse{
-			Pagination: &v1.PaginationResponse{},
-		}), nil
-	}
-
-	endIdx := offset + pageSize
-	var nextToken string
-	if endIdx < len(entries) {
-		nextToken = fmt.Sprintf("%d", endIdx)
-	}
-	if endIdx > len(entries) {
-		endIdx = len(entries)
-	}
-
-	records := make([]*v1.TimelineRecord, 0, endIdx-offset)
-	for _, e := range entries[offset:endIdx] {
-		records = append(records, e.record)
-	}
-
 	return connect.NewResponse(&v1.ListTimelineResponse{
 		Records:    records,
 		Pagination: &v1.PaginationResponse{NextPageToken: nextToken},
