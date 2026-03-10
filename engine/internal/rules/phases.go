@@ -5,7 +5,7 @@ import (
 
 	"github.com/oklog/ulid/v2"
 
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
 // defaultCycleLen is assumed when no historical average is available.

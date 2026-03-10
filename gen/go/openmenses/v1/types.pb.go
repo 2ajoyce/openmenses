@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: opencycle/v1/types.proto
+// source: openmenses/v1/types.proto
 
-package opencyclev1
+package openmensesv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
@@ -76,11 +76,11 @@ func (x TimelineRecordType) String() string {
 }
 
 func (TimelineRecordType) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_types_proto_enumTypes[0].Descriptor()
+	return file_openmenses_v1_types_proto_enumTypes[0].Descriptor()
 }
 
 func (TimelineRecordType) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_types_proto_enumTypes[0]
+	return &file_openmenses_v1_types_proto_enumTypes[0]
 }
 
 func (x TimelineRecordType) Number() protoreflect.EnumNumber {
@@ -89,7 +89,7 @@ func (x TimelineRecordType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TimelineRecordType.Descriptor instead.
 func (TimelineRecordType) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_types_proto_rawDescGZIP(), []int{0}
+	return file_openmenses_v1_types_proto_rawDescGZIP(), []int{0}
 }
 
 type LocalDate struct {
@@ -101,7 +101,7 @@ type LocalDate struct {
 
 func (x *LocalDate) Reset() {
 	*x = LocalDate{}
-	mi := &file_opencycle_v1_types_proto_msgTypes[0]
+	mi := &file_openmenses_v1_types_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -113,7 +113,7 @@ func (x *LocalDate) String() string {
 func (*LocalDate) ProtoMessage() {}
 
 func (x *LocalDate) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_types_proto_msgTypes[0]
+	mi := &file_openmenses_v1_types_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -126,7 +126,7 @@ func (x *LocalDate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LocalDate.ProtoReflect.Descriptor instead.
 func (*LocalDate) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_types_proto_rawDescGZIP(), []int{0}
+	return file_openmenses_v1_types_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *LocalDate) GetValue() string {
@@ -145,7 +145,7 @@ type DateTime struct {
 
 func (x *DateTime) Reset() {
 	*x = DateTime{}
-	mi := &file_opencycle_v1_types_proto_msgTypes[1]
+	mi := &file_openmenses_v1_types_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -157,7 +157,7 @@ func (x *DateTime) String() string {
 func (*DateTime) ProtoMessage() {}
 
 func (x *DateTime) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_types_proto_msgTypes[1]
+	mi := &file_openmenses_v1_types_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -170,7 +170,7 @@ func (x *DateTime) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateTime.ProtoReflect.Descriptor instead.
 func (*DateTime) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_types_proto_rawDescGZIP(), []int{1}
+	return file_openmenses_v1_types_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *DateTime) GetValue() string {
@@ -189,7 +189,7 @@ type RecordRef struct {
 
 func (x *RecordRef) Reset() {
 	*x = RecordRef{}
-	mi := &file_opencycle_v1_types_proto_msgTypes[2]
+	mi := &file_openmenses_v1_types_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -201,7 +201,7 @@ func (x *RecordRef) String() string {
 func (*RecordRef) ProtoMessage() {}
 
 func (x *RecordRef) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_types_proto_msgTypes[2]
+	mi := &file_openmenses_v1_types_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -214,7 +214,7 @@ func (x *RecordRef) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecordRef.ProtoReflect.Descriptor instead.
 func (*RecordRef) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_types_proto_rawDescGZIP(), []int{2}
+	return file_openmenses_v1_types_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *RecordRef) GetId() string {
@@ -234,7 +234,7 @@ type DateRange struct {
 
 func (x *DateRange) Reset() {
 	*x = DateRange{}
-	mi := &file_opencycle_v1_types_proto_msgTypes[3]
+	mi := &file_openmenses_v1_types_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -246,7 +246,7 @@ func (x *DateRange) String() string {
 func (*DateRange) ProtoMessage() {}
 
 func (x *DateRange) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_types_proto_msgTypes[3]
+	mi := &file_openmenses_v1_types_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -259,7 +259,7 @@ func (x *DateRange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateRange.ProtoReflect.Descriptor instead.
 func (*DateRange) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_types_proto_rawDescGZIP(), []int{3}
+	return file_openmenses_v1_types_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *DateRange) GetStart() *LocalDate {
@@ -286,7 +286,7 @@ type DateTimeRange struct {
 
 func (x *DateTimeRange) Reset() {
 	*x = DateTimeRange{}
-	mi := &file_opencycle_v1_types_proto_msgTypes[4]
+	mi := &file_openmenses_v1_types_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -298,7 +298,7 @@ func (x *DateTimeRange) String() string {
 func (*DateTimeRange) ProtoMessage() {}
 
 func (x *DateTimeRange) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_types_proto_msgTypes[4]
+	mi := &file_openmenses_v1_types_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -311,7 +311,7 @@ func (x *DateTimeRange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateTimeRange.ProtoReflect.Descriptor instead.
 func (*DateTimeRange) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_types_proto_rawDescGZIP(), []int{4}
+	return file_openmenses_v1_types_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *DateTimeRange) GetStart() *DateTime {
@@ -338,7 +338,7 @@ type PaginationRequest struct {
 
 func (x *PaginationRequest) Reset() {
 	*x = PaginationRequest{}
-	mi := &file_opencycle_v1_types_proto_msgTypes[5]
+	mi := &file_openmenses_v1_types_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -350,7 +350,7 @@ func (x *PaginationRequest) String() string {
 func (*PaginationRequest) ProtoMessage() {}
 
 func (x *PaginationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_types_proto_msgTypes[5]
+	mi := &file_openmenses_v1_types_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -363,7 +363,7 @@ func (x *PaginationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PaginationRequest.ProtoReflect.Descriptor instead.
 func (*PaginationRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_types_proto_rawDescGZIP(), []int{5}
+	return file_openmenses_v1_types_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *PaginationRequest) GetPageSize() uint32 {
@@ -389,7 +389,7 @@ type PaginationResponse struct {
 
 func (x *PaginationResponse) Reset() {
 	*x = PaginationResponse{}
-	mi := &file_opencycle_v1_types_proto_msgTypes[6]
+	mi := &file_openmenses_v1_types_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -401,7 +401,7 @@ func (x *PaginationResponse) String() string {
 func (*PaginationResponse) ProtoMessage() {}
 
 func (x *PaginationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_types_proto_msgTypes[6]
+	mi := &file_openmenses_v1_types_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -414,7 +414,7 @@ func (x *PaginationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PaginationResponse.ProtoReflect.Descriptor instead.
 func (*PaginationResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_types_proto_rawDescGZIP(), []int{6}
+	return file_openmenses_v1_types_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *PaginationResponse) GetNextPageToken() string {
@@ -424,11 +424,11 @@ func (x *PaginationResponse) GetNextPageToken() string {
 	return ""
 }
 
-var File_opencycle_v1_types_proto protoreflect.FileDescriptor
+var File_openmenses_v1_types_proto protoreflect.FileDescriptor
 
-const file_opencycle_v1_types_proto_rawDesc = "" +
+const file_openmenses_v1_types_proto_rawDesc = "" +
 	"\n" +
-	"\x18opencycle/v1/types.proto\x12\fopencycle.v1\x1a\x1bbuf/validate/validate.proto\"I\n" +
+	"\x19openmenses/v1/types.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\"I\n" +
 	"\tLocalDate\x12<\n" +
 	"\x05value\x18\x01 \x01(\tB&\xbaH#r!2\x1c^[0-9]{4}-[0-9]{2}-[0-9]{2}$\x98\x01\n" +
 	"R\x05value\"+\n" +
@@ -436,13 +436,13 @@ const file_opencycle_v1_types_proto_rawDesc = "" +
 	"\x05value\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x14\x18@R\x05value\"'\n" +
 	"\tRecordRef\x12\x1a\n" +
 	"\x02id\x18\x01 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x02id\"e\n" +
-	"\tDateRange\x12-\n" +
-	"\x05start\x18\x01 \x01(\v2\x17.opencycle.v1.LocalDateR\x05start\x12)\n" +
-	"\x03end\x18\x02 \x01(\v2\x17.opencycle.v1.LocalDateR\x03end\"g\n" +
-	"\rDateTimeRange\x12,\n" +
-	"\x05start\x18\x01 \x01(\v2\x16.opencycle.v1.DateTimeR\x05start\x12(\n" +
-	"\x03end\x18\x02 \x01(\v2\x16.opencycle.v1.DateTimeR\x03end\"c\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x02id\"g\n" +
+	"\tDateRange\x12.\n" +
+	"\x05start\x18\x01 \x01(\v2\x18.openmenses.v1.LocalDateR\x05start\x12*\n" +
+	"\x03end\x18\x02 \x01(\v2\x18.openmenses.v1.LocalDateR\x03end\"i\n" +
+	"\rDateTimeRange\x12-\n" +
+	"\x05start\x18\x01 \x01(\v2\x17.openmenses.v1.DateTimeR\x05start\x12)\n" +
+	"\x03end\x18\x02 \x01(\v2\x17.openmenses.v1.DateTimeR\x03end\"c\n" +
 	"\x11PaginationRequest\x12%\n" +
 	"\tpage_size\x18\x01 \x01(\rB\b\xbaH\x05*\x03\x18\xf4\x03R\bpageSize\x12'\n" +
 	"\n" +
@@ -459,37 +459,37 @@ const file_opencycle_v1_types_proto_rawDesc = "" +
 	"\x1aTIMELINE_RECORD_TYPE_CYCLE\x10\x06\x12'\n" +
 	"#TIMELINE_RECORD_TYPE_PHASE_ESTIMATE\x10\a\x12#\n" +
 	"\x1fTIMELINE_RECORD_TYPE_PREDICTION\x10\b\x12 \n" +
-	"\x1cTIMELINE_RECORD_TYPE_INSIGHT\x10\tB>Z<github.com/2ajoyce/opencycle/gen/go/opencycle/v1;opencyclev1b\x06proto3"
+	"\x1cTIMELINE_RECORD_TYPE_INSIGHT\x10\tBAZ?github.com/2ajoyce/openmenses/gen/go/openmenses/v1;openmensesv1b\x06proto3"
 
 var (
-	file_opencycle_v1_types_proto_rawDescOnce sync.Once
-	file_opencycle_v1_types_proto_rawDescData []byte
+	file_openmenses_v1_types_proto_rawDescOnce sync.Once
+	file_openmenses_v1_types_proto_rawDescData []byte
 )
 
-func file_opencycle_v1_types_proto_rawDescGZIP() []byte {
-	file_opencycle_v1_types_proto_rawDescOnce.Do(func() {
-		file_opencycle_v1_types_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_opencycle_v1_types_proto_rawDesc), len(file_opencycle_v1_types_proto_rawDesc)))
+func file_openmenses_v1_types_proto_rawDescGZIP() []byte {
+	file_openmenses_v1_types_proto_rawDescOnce.Do(func() {
+		file_openmenses_v1_types_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_openmenses_v1_types_proto_rawDesc), len(file_openmenses_v1_types_proto_rawDesc)))
 	})
-	return file_opencycle_v1_types_proto_rawDescData
+	return file_openmenses_v1_types_proto_rawDescData
 }
 
-var file_opencycle_v1_types_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_opencycle_v1_types_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
-var file_opencycle_v1_types_proto_goTypes = []any{
-	(TimelineRecordType)(0),    // 0: opencycle.v1.TimelineRecordType
-	(*LocalDate)(nil),          // 1: opencycle.v1.LocalDate
-	(*DateTime)(nil),           // 2: opencycle.v1.DateTime
-	(*RecordRef)(nil),          // 3: opencycle.v1.RecordRef
-	(*DateRange)(nil),          // 4: opencycle.v1.DateRange
-	(*DateTimeRange)(nil),      // 5: opencycle.v1.DateTimeRange
-	(*PaginationRequest)(nil),  // 6: opencycle.v1.PaginationRequest
-	(*PaginationResponse)(nil), // 7: opencycle.v1.PaginationResponse
+var file_openmenses_v1_types_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_openmenses_v1_types_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_openmenses_v1_types_proto_goTypes = []any{
+	(TimelineRecordType)(0),    // 0: openmenses.v1.TimelineRecordType
+	(*LocalDate)(nil),          // 1: openmenses.v1.LocalDate
+	(*DateTime)(nil),           // 2: openmenses.v1.DateTime
+	(*RecordRef)(nil),          // 3: openmenses.v1.RecordRef
+	(*DateRange)(nil),          // 4: openmenses.v1.DateRange
+	(*DateTimeRange)(nil),      // 5: openmenses.v1.DateTimeRange
+	(*PaginationRequest)(nil),  // 6: openmenses.v1.PaginationRequest
+	(*PaginationResponse)(nil), // 7: openmenses.v1.PaginationResponse
 }
-var file_opencycle_v1_types_proto_depIdxs = []int32{
-	1, // 0: opencycle.v1.DateRange.start:type_name -> opencycle.v1.LocalDate
-	1, // 1: opencycle.v1.DateRange.end:type_name -> opencycle.v1.LocalDate
-	2, // 2: opencycle.v1.DateTimeRange.start:type_name -> opencycle.v1.DateTime
-	2, // 3: opencycle.v1.DateTimeRange.end:type_name -> opencycle.v1.DateTime
+var file_openmenses_v1_types_proto_depIdxs = []int32{
+	1, // 0: openmenses.v1.DateRange.start:type_name -> openmenses.v1.LocalDate
+	1, // 1: openmenses.v1.DateRange.end:type_name -> openmenses.v1.LocalDate
+	2, // 2: openmenses.v1.DateTimeRange.start:type_name -> openmenses.v1.DateTime
+	2, // 3: openmenses.v1.DateTimeRange.end:type_name -> openmenses.v1.DateTime
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
@@ -497,27 +497,27 @@ var file_opencycle_v1_types_proto_depIdxs = []int32{
 	0, // [0:4] is the sub-list for field type_name
 }
 
-func init() { file_opencycle_v1_types_proto_init() }
-func file_opencycle_v1_types_proto_init() {
-	if File_opencycle_v1_types_proto != nil {
+func init() { file_openmenses_v1_types_proto_init() }
+func file_openmenses_v1_types_proto_init() {
+	if File_openmenses_v1_types_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_opencycle_v1_types_proto_rawDesc), len(file_opencycle_v1_types_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_openmenses_v1_types_proto_rawDesc), len(file_openmenses_v1_types_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_opencycle_v1_types_proto_goTypes,
-		DependencyIndexes: file_opencycle_v1_types_proto_depIdxs,
-		EnumInfos:         file_opencycle_v1_types_proto_enumTypes,
-		MessageInfos:      file_opencycle_v1_types_proto_msgTypes,
+		GoTypes:           file_openmenses_v1_types_proto_goTypes,
+		DependencyIndexes: file_openmenses_v1_types_proto_depIdxs,
+		EnumInfos:         file_openmenses_v1_types_proto_enumTypes,
+		MessageInfos:      file_openmenses_v1_types_proto_msgTypes,
 	}.Build()
-	File_opencycle_v1_types_proto = out.File
-	file_opencycle_v1_types_proto_goTypes = nil
-	file_opencycle_v1_types_proto_depIdxs = nil
+	File_openmenses_v1_types_proto = out.File
+	file_openmenses_v1_types_proto_goTypes = nil
+	file_openmenses_v1_types_proto_depIdxs = nil
 }

@@ -1,5 +1,5 @@
 // Package validation provides schema-level and domain-level validation for all
-// opencycle proto messages. Schema validation delegates to protovalidate, which
+// openmenses proto messages. Schema validation delegates to protovalidate, which
 // enforces the constraints declared in the .proto files as buf.validate
 // annotations. Domain validation enforces cross-field, cross-record, temporal,
 // and referential-integrity rules that cannot be expressed in the schema.
@@ -15,8 +15,8 @@ import (
 	"buf.build/go/protovalidate"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/2ajoyce/opencycle/engine/internal/storage"
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
+	"github.com/2ajoyce/openmenses/engine/internal/storage"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
 // FieldViolation describes a single constraint violation on a named field.

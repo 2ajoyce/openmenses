@@ -4,8 +4,8 @@ import (
 	"math"
 	"testing"
 
-	"github.com/2ajoyce/opencycle/engine/internal/rules"
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
+	"github.com/2ajoyce/openmenses/engine/internal/rules"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
 // makeCycle creates a Cycle with YYYY-MM-DD start and end dates.

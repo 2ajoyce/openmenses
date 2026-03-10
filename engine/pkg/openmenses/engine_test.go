@@ -1,4 +1,4 @@
-package opencycle_test
+package openmenses_test
 
 import (
 	"context"
@@ -8,18 +8,18 @@ import (
 
 	"connectrpc.com/connect"
 
-	"github.com/2ajoyce/opencycle/engine/pkg/opencycle"
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
-	"github.com/2ajoyce/opencycle/gen/go/opencycle/v1/opencyclev1connect"
+	"github.com/2ajoyce/openmenses/engine/pkg/openmenses"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
+	"github.com/2ajoyce/openmenses/gen/go/openmenses/v1/openmensesv1connect"
 )
 
 // newTestEngine creates an in-memory engine and a test HTTP server that serves
 // its Connect-RPC handler.  The returned client is pre-configured to talk to the server.
-func newTestEngine(t *testing.T) (*opencycle.Engine, opencyclev1connect.CycleTrackerServiceClient) {
+func newTestEngine(t *testing.T) (*openmenses.Engine, openmensesv1connect.CycleTrackerServiceClient) {
 	t.Helper()
 	ctx := context.Background()
 
-	eng, err := opencycle.NewEngine(ctx, opencycle.WithInMemory())
+	eng, err := openmenses.NewEngine(ctx, openmenses.WithInMemory())
 	if err != nil {
 		t.Fatalf("NewEngine: %v", err)
 	}
@@ -32,7 +32,7 @@ func newTestEngine(t *testing.T) (*opencycle.Engine, opencyclev1connect.CycleTra
 	srv := httptest.NewServer(mux)
 	t.Cleanup(srv.Close)
 
-	client := opencyclev1connect.NewCycleTrackerServiceClient(
+	client := openmensesv1connect.NewCycleTrackerServiceClient(
 		srv.Client(),
 		srv.URL,
 	)
@@ -119,7 +119,7 @@ func TestIntegration_CreateProfileLogObservationListTimeline(t *testing.T) {
 // functional handler (non-nil path and handler).
 func TestIntegration_InMemoryEngineHandler(t *testing.T) {
 	ctx := context.Background()
-	eng, err := opencycle.NewEngine(ctx, opencycle.WithInMemory())
+	eng, err := openmenses.NewEngine(ctx, openmenses.WithInMemory())
 	if err != nil {
 		t.Fatalf("NewEngine: %v", err)
 	}
@@ -140,7 +140,7 @@ func TestIntegration_SQLiteEngine(t *testing.T) {
 	ctx := context.Background()
 
 	// Use ":memory:" so no file is written during tests.
-	eng, err := opencycle.NewEngine(ctx, opencycle.WithSQLite(":memory:"))
+	eng, err := openmenses.NewEngine(ctx, openmenses.WithSQLite(":memory:"))
 	if err != nil {
 		t.Fatalf("NewEngine (sqlite): %v", err)
 	}
@@ -153,7 +153,7 @@ func TestIntegration_SQLiteEngine(t *testing.T) {
 	srv := httptest.NewServer(mux)
 	defer srv.Close()
 
-	client := opencyclev1connect.NewCycleTrackerServiceClient(srv.Client(), srv.URL)
+	client := openmensesv1connect.NewCycleTrackerServiceClient(srv.Client(), srv.URL)
 
 	const userID = "user-sqlite-test"
 	resp, err := client.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{

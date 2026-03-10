@@ -5,7 +5,7 @@ import (
 	"sort"
 	"time"
 
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
 // CycleStats holds statistical measures over a set of completed cycles.

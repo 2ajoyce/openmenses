@@ -1,12 +1,12 @@
 // Package storage defines the Repository interface and standard error types
-// for all opencycle persistence backends.
+// for all openmenses persistence backends.
 package storage
 
 import (
 	"context"
 	"errors"
 
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
 // Standard sentinel errors returned by all backends.

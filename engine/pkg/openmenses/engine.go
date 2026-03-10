@@ -1,18 +1,18 @@
-// Package opencycle exposes the public API surface for the opencycle engine.
+// Package openmenses exposes the public API surface for the openmenses engine.
 // External consumers (mobile wrappers, dev CLI, integration tests) interact
 // with the engine through the [Engine] type rather than the internal packages.
-package opencycle
+package openmenses
 
 import (
 	"context"
 	"fmt"
 	"net/http"
 
-	"github.com/2ajoyce/opencycle/engine/internal/service"
-	"github.com/2ajoyce/opencycle/engine/internal/storage"
-	"github.com/2ajoyce/opencycle/engine/internal/storage/memory"
-	"github.com/2ajoyce/opencycle/engine/internal/storage/sqlite"
-	"github.com/2ajoyce/opencycle/gen/go/opencycle/v1/opencyclev1connect"
+	"github.com/2ajoyce/openmenses/engine/internal/service"
+	"github.com/2ajoyce/openmenses/engine/internal/storage"
+	"github.com/2ajoyce/openmenses/engine/internal/storage/memory"
+	"github.com/2ajoyce/openmenses/engine/internal/storage/sqlite"
+	"github.com/2ajoyce/openmenses/gen/go/openmenses/v1/openmensesv1connect"
 )
 
 // Engine is the top-level object that wires together storage, validation, and
@@ -67,7 +67,7 @@ func NewEngine(ctx context.Context, opts ...Option) (*Engine, error) {
 	if cfg.sqlitePath != "" {
 		s, err := sqlite.Open(ctx, cfg.sqlitePath)
 		if err != nil {
-			return nil, fmt.Errorf("opencycle: open sqlite: %w", err)
+			return nil, fmt.Errorf("openmenses: open sqlite: %w", err)
 		}
 		store = s
 		closeFn = s.Close
@@ -81,7 +81,7 @@ func NewEngine(ctx context.Context, opts ...Option) (*Engine, error) {
 		if closeFn != nil {
 			closeFn() //nolint:errcheck
 		}
-		return nil, fmt.Errorf("opencycle: init service: %w", err)
+		return nil, fmt.Errorf("openmenses: init service: %w", err)
 	}
 
 	return &Engine{store: store, svc: svc, closeFn: closeFn}, nil
@@ -93,7 +93,7 @@ func NewEngine(ctx context.Context, opts ...Option) (*Engine, error) {
 //	path, handler := engine.Handler()
 //	mux.Handle(path, handler)
 func (e *Engine) Handler() (string, http.Handler) {
-	return opencyclev1connect.NewCycleTrackerServiceHandler(e.svc)
+	return openmensesv1connect.NewCycleTrackerServiceHandler(e.svc)
 }
 
 // Close releases any resources held by the engine (e.g., SQLite file handles).

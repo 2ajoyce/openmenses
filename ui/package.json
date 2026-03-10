@@ -1,8 +1,8 @@
 {
-  "name": "opencycle-ui",
+  "name": "openmenses-ui",
   "version": "0.1.0",
   "private": true,
-  "description": "TypeScript UI layer for opencycle — presentation only, no domain logic.",
+  "description": "TypeScript UI layer for openmenses — presentation only, no domain logic.",
   "scripts": {
     "lint": "eslint src --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",

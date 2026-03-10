@@ -3,8 +3,8 @@ package rules_test
 import (
 	"testing"
 
-	"github.com/2ajoyce/opencycle/engine/internal/rules"
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
+	"github.com/2ajoyce/openmenses/engine/internal/rules"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
 // regularProfile returns a profile with an ovulatory, regular cycle model.

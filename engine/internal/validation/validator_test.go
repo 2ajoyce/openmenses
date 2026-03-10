@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/2ajoyce/opencycle/engine/internal/storage"
-	"github.com/2ajoyce/opencycle/engine/internal/storage/memory"
-	"github.com/2ajoyce/opencycle/engine/internal/validation"
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
+	"github.com/2ajoyce/openmenses/engine/internal/storage"
+	"github.com/2ajoyce/openmenses/engine/internal/storage/memory"
+	"github.com/2ajoyce/openmenses/engine/internal/validation"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
 var ctx = context.Background()

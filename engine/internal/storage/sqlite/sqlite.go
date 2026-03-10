@@ -12,9 +12,9 @@ import (
 	"google.golang.org/protobuf/proto"
 	_ "modernc.org/sqlite"
 
-	"github.com/2ajoyce/opencycle/engine/internal/storage"
-	"github.com/2ajoyce/opencycle/engine/internal/storage/migrations"
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
+	"github.com/2ajoyce/openmenses/engine/internal/storage"
+	"github.com/2ajoyce/openmenses/engine/internal/storage/migrations"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
 const defaultPageSize = 50

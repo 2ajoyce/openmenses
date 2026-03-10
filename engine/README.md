@@ -1,6 +1,6 @@
 # engine — Go Domain Engine
 
-This directory contains the **Go domain engine** for opencycle.
+This directory contains the **Go domain engine** for openmenses.
 
 ## What lives here
 
@@ -14,7 +14,7 @@ This directory contains the **Go domain engine** for opencycle.
 | `internal/predictions/` | Cycle prediction algorithms |
 | `internal/insights/` | Derived insights and summaries |
 | `internal/timeline/` | Timeline construction and queries |
-| `pkg/opencycle/` | Public API surface exposed to consumers (mobile wrappers, tests) |
+| `pkg/openmenses/` | Public API surface exposed to consumers (mobile wrappers, tests) |
 | `tests/` | Integration and cross-package tests |
 
 ## Architecture rules

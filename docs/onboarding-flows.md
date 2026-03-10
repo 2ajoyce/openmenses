@@ -1,4 +1,4 @@
-# Onboarding Flows — opencycle
+# Onboarding Flows — openmenses
 
 This document describes the intended onboarding experience for new users.
 

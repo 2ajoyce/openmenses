@@ -3,7 +3,7 @@ package memory
 import (
 	"sort"
 
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
 func sortByTimestamp(items []*v1.BleedingObservation) {

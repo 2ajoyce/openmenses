@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: opencycle/v1/service.proto
+// source: openmenses/v1/service.proto
 
-package opencyclev1
+package openmensesv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
@@ -31,7 +31,7 @@ type GetUserProfileRequest struct {
 
 func (x *GetUserProfileRequest) Reset() {
 	*x = GetUserProfileRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[0]
+	mi := &file_openmenses_v1_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +43,7 @@ func (x *GetUserProfileRequest) String() string {
 func (*GetUserProfileRequest) ProtoMessage() {}
 
 func (x *GetUserProfileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[0]
+	mi := &file_openmenses_v1_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +56,7 @@ func (x *GetUserProfileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserProfileRequest.ProtoReflect.Descriptor instead.
 func (*GetUserProfileRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{0}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *GetUserProfileRequest) GetUserId() string {
@@ -75,7 +75,7 @@ type GetUserProfileResponse struct {
 
 func (x *GetUserProfileResponse) Reset() {
 	*x = GetUserProfileResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[1]
+	mi := &file_openmenses_v1_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -87,7 +87,7 @@ func (x *GetUserProfileResponse) String() string {
 func (*GetUserProfileResponse) ProtoMessage() {}
 
 func (x *GetUserProfileResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[1]
+	mi := &file_openmenses_v1_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -100,7 +100,7 @@ func (x *GetUserProfileResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserProfileResponse.ProtoReflect.Descriptor instead.
 func (*GetUserProfileResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{1}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetUserProfileResponse) GetProfile() *UserProfile {
@@ -119,7 +119,7 @@ type UpsertUserProfileRequest struct {
 
 func (x *UpsertUserProfileRequest) Reset() {
 	*x = UpsertUserProfileRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[2]
+	mi := &file_openmenses_v1_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -131,7 +131,7 @@ func (x *UpsertUserProfileRequest) String() string {
 func (*UpsertUserProfileRequest) ProtoMessage() {}
 
 func (x *UpsertUserProfileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[2]
+	mi := &file_openmenses_v1_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -144,7 +144,7 @@ func (x *UpsertUserProfileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpsertUserProfileRequest.ProtoReflect.Descriptor instead.
 func (*UpsertUserProfileRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{2}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UpsertUserProfileRequest) GetProfile() *UserProfile {
@@ -163,7 +163,7 @@ type UpsertUserProfileResponse struct {
 
 func (x *UpsertUserProfileResponse) Reset() {
 	*x = UpsertUserProfileResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[3]
+	mi := &file_openmenses_v1_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -175,7 +175,7 @@ func (x *UpsertUserProfileResponse) String() string {
 func (*UpsertUserProfileResponse) ProtoMessage() {}
 
 func (x *UpsertUserProfileResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[3]
+	mi := &file_openmenses_v1_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -188,7 +188,7 @@ func (x *UpsertUserProfileResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpsertUserProfileResponse.ProtoReflect.Descriptor instead.
 func (*UpsertUserProfileResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{3}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UpsertUserProfileResponse) GetProfile() *UserProfile {
@@ -207,7 +207,7 @@ type CreateBleedingObservationRequest struct {
 
 func (x *CreateBleedingObservationRequest) Reset() {
 	*x = CreateBleedingObservationRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[4]
+	mi := &file_openmenses_v1_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -219,7 +219,7 @@ func (x *CreateBleedingObservationRequest) String() string {
 func (*CreateBleedingObservationRequest) ProtoMessage() {}
 
 func (x *CreateBleedingObservationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[4]
+	mi := &file_openmenses_v1_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -232,7 +232,7 @@ func (x *CreateBleedingObservationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateBleedingObservationRequest.ProtoReflect.Descriptor instead.
 func (*CreateBleedingObservationRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{4}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CreateBleedingObservationRequest) GetObservation() *BleedingObservation {
@@ -251,7 +251,7 @@ type CreateBleedingObservationResponse struct {
 
 func (x *CreateBleedingObservationResponse) Reset() {
 	*x = CreateBleedingObservationResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[5]
+	mi := &file_openmenses_v1_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -263,7 +263,7 @@ func (x *CreateBleedingObservationResponse) String() string {
 func (*CreateBleedingObservationResponse) ProtoMessage() {}
 
 func (x *CreateBleedingObservationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[5]
+	mi := &file_openmenses_v1_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -276,7 +276,7 @@ func (x *CreateBleedingObservationResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use CreateBleedingObservationResponse.ProtoReflect.Descriptor instead.
 func (*CreateBleedingObservationResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{5}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CreateBleedingObservationResponse) GetObservation() *BleedingObservation {
@@ -295,7 +295,7 @@ type CreateSymptomObservationRequest struct {
 
 func (x *CreateSymptomObservationRequest) Reset() {
 	*x = CreateSymptomObservationRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[6]
+	mi := &file_openmenses_v1_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -307,7 +307,7 @@ func (x *CreateSymptomObservationRequest) String() string {
 func (*CreateSymptomObservationRequest) ProtoMessage() {}
 
 func (x *CreateSymptomObservationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[6]
+	mi := &file_openmenses_v1_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -320,7 +320,7 @@ func (x *CreateSymptomObservationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSymptomObservationRequest.ProtoReflect.Descriptor instead.
 func (*CreateSymptomObservationRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{6}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateSymptomObservationRequest) GetObservation() *SymptomObservation {
@@ -339,7 +339,7 @@ type CreateSymptomObservationResponse struct {
 
 func (x *CreateSymptomObservationResponse) Reset() {
 	*x = CreateSymptomObservationResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[7]
+	mi := &file_openmenses_v1_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -351,7 +351,7 @@ func (x *CreateSymptomObservationResponse) String() string {
 func (*CreateSymptomObservationResponse) ProtoMessage() {}
 
 func (x *CreateSymptomObservationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[7]
+	mi := &file_openmenses_v1_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -364,7 +364,7 @@ func (x *CreateSymptomObservationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSymptomObservationResponse.ProtoReflect.Descriptor instead.
 func (*CreateSymptomObservationResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{7}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CreateSymptomObservationResponse) GetObservation() *SymptomObservation {
@@ -383,7 +383,7 @@ type CreateMoodObservationRequest struct {
 
 func (x *CreateMoodObservationRequest) Reset() {
 	*x = CreateMoodObservationRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[8]
+	mi := &file_openmenses_v1_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -395,7 +395,7 @@ func (x *CreateMoodObservationRequest) String() string {
 func (*CreateMoodObservationRequest) ProtoMessage() {}
 
 func (x *CreateMoodObservationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[8]
+	mi := &file_openmenses_v1_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -408,7 +408,7 @@ func (x *CreateMoodObservationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMoodObservationRequest.ProtoReflect.Descriptor instead.
 func (*CreateMoodObservationRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{8}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *CreateMoodObservationRequest) GetObservation() *MoodObservation {
@@ -427,7 +427,7 @@ type CreateMoodObservationResponse struct {
 
 func (x *CreateMoodObservationResponse) Reset() {
 	*x = CreateMoodObservationResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[9]
+	mi := &file_openmenses_v1_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -439,7 +439,7 @@ func (x *CreateMoodObservationResponse) String() string {
 func (*CreateMoodObservationResponse) ProtoMessage() {}
 
 func (x *CreateMoodObservationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[9]
+	mi := &file_openmenses_v1_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -452,7 +452,7 @@ func (x *CreateMoodObservationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMoodObservationResponse.ProtoReflect.Descriptor instead.
 func (*CreateMoodObservationResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{9}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CreateMoodObservationResponse) GetObservation() *MoodObservation {
@@ -471,7 +471,7 @@ type CreateMedicationRequest struct {
 
 func (x *CreateMedicationRequest) Reset() {
 	*x = CreateMedicationRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[10]
+	mi := &file_openmenses_v1_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -483,7 +483,7 @@ func (x *CreateMedicationRequest) String() string {
 func (*CreateMedicationRequest) ProtoMessage() {}
 
 func (x *CreateMedicationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[10]
+	mi := &file_openmenses_v1_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -496,7 +496,7 @@ func (x *CreateMedicationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMedicationRequest.ProtoReflect.Descriptor instead.
 func (*CreateMedicationRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{10}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CreateMedicationRequest) GetMedication() *Medication {
@@ -515,7 +515,7 @@ type CreateMedicationResponse struct {
 
 func (x *CreateMedicationResponse) Reset() {
 	*x = CreateMedicationResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[11]
+	mi := &file_openmenses_v1_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -527,7 +527,7 @@ func (x *CreateMedicationResponse) String() string {
 func (*CreateMedicationResponse) ProtoMessage() {}
 
 func (x *CreateMedicationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[11]
+	mi := &file_openmenses_v1_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -540,7 +540,7 @@ func (x *CreateMedicationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMedicationResponse.ProtoReflect.Descriptor instead.
 func (*CreateMedicationResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{11}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CreateMedicationResponse) GetMedication() *Medication {
@@ -559,7 +559,7 @@ type CreateMedicationEventRequest struct {
 
 func (x *CreateMedicationEventRequest) Reset() {
 	*x = CreateMedicationEventRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[12]
+	mi := &file_openmenses_v1_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -571,7 +571,7 @@ func (x *CreateMedicationEventRequest) String() string {
 func (*CreateMedicationEventRequest) ProtoMessage() {}
 
 func (x *CreateMedicationEventRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[12]
+	mi := &file_openmenses_v1_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -584,7 +584,7 @@ func (x *CreateMedicationEventRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMedicationEventRequest.ProtoReflect.Descriptor instead.
 func (*CreateMedicationEventRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{12}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CreateMedicationEventRequest) GetEvent() *MedicationEvent {
@@ -603,7 +603,7 @@ type CreateMedicationEventResponse struct {
 
 func (x *CreateMedicationEventResponse) Reset() {
 	*x = CreateMedicationEventResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[13]
+	mi := &file_openmenses_v1_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -615,7 +615,7 @@ func (x *CreateMedicationEventResponse) String() string {
 func (*CreateMedicationEventResponse) ProtoMessage() {}
 
 func (x *CreateMedicationEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[13]
+	mi := &file_openmenses_v1_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -628,7 +628,7 @@ func (x *CreateMedicationEventResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMedicationEventResponse.ProtoReflect.Descriptor instead.
 func (*CreateMedicationEventResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{13}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *CreateMedicationEventResponse) GetEvent() *MedicationEvent {
@@ -649,7 +649,7 @@ type ListTimelineRequest struct {
 
 func (x *ListTimelineRequest) Reset() {
 	*x = ListTimelineRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[14]
+	mi := &file_openmenses_v1_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -661,7 +661,7 @@ func (x *ListTimelineRequest) String() string {
 func (*ListTimelineRequest) ProtoMessage() {}
 
 func (x *ListTimelineRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[14]
+	mi := &file_openmenses_v1_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -674,7 +674,7 @@ func (x *ListTimelineRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTimelineRequest.ProtoReflect.Descriptor instead.
 func (*ListTimelineRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{14}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListTimelineRequest) GetUserId() string {
@@ -718,7 +718,7 @@ type TimelineRecord struct {
 
 func (x *TimelineRecord) Reset() {
 	*x = TimelineRecord{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[15]
+	mi := &file_openmenses_v1_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -730,7 +730,7 @@ func (x *TimelineRecord) String() string {
 func (*TimelineRecord) ProtoMessage() {}
 
 func (x *TimelineRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[15]
+	mi := &file_openmenses_v1_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -743,7 +743,7 @@ func (x *TimelineRecord) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TimelineRecord.ProtoReflect.Descriptor instead.
 func (*TimelineRecord) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{15}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *TimelineRecord) GetRecord() isTimelineRecord_Record {
@@ -902,7 +902,7 @@ type ListTimelineResponse struct {
 
 func (x *ListTimelineResponse) Reset() {
 	*x = ListTimelineResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[16]
+	mi := &file_openmenses_v1_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -914,7 +914,7 @@ func (x *ListTimelineResponse) String() string {
 func (*ListTimelineResponse) ProtoMessage() {}
 
 func (x *ListTimelineResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[16]
+	mi := &file_openmenses_v1_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -927,7 +927,7 @@ func (x *ListTimelineResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTimelineResponse.ProtoReflect.Descriptor instead.
 func (*ListTimelineResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{16}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *ListTimelineResponse) GetRecords() []*TimelineRecord {
@@ -953,7 +953,7 @@ type ListCyclesRequest struct {
 
 func (x *ListCyclesRequest) Reset() {
 	*x = ListCyclesRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[17]
+	mi := &file_openmenses_v1_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -965,7 +965,7 @@ func (x *ListCyclesRequest) String() string {
 func (*ListCyclesRequest) ProtoMessage() {}
 
 func (x *ListCyclesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[17]
+	mi := &file_openmenses_v1_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -978,7 +978,7 @@ func (x *ListCyclesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCyclesRequest.ProtoReflect.Descriptor instead.
 func (*ListCyclesRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{17}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ListCyclesRequest) GetUserId() string {
@@ -997,7 +997,7 @@ type ListCyclesResponse struct {
 
 func (x *ListCyclesResponse) Reset() {
 	*x = ListCyclesResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[18]
+	mi := &file_openmenses_v1_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1009,7 +1009,7 @@ func (x *ListCyclesResponse) String() string {
 func (*ListCyclesResponse) ProtoMessage() {}
 
 func (x *ListCyclesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[18]
+	mi := &file_openmenses_v1_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1022,7 +1022,7 @@ func (x *ListCyclesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCyclesResponse.ProtoReflect.Descriptor instead.
 func (*ListCyclesResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{18}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ListCyclesResponse) GetCycles() []*Cycle {
@@ -1041,7 +1041,7 @@ type ListPredictionsRequest struct {
 
 func (x *ListPredictionsRequest) Reset() {
 	*x = ListPredictionsRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[19]
+	mi := &file_openmenses_v1_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1053,7 +1053,7 @@ func (x *ListPredictionsRequest) String() string {
 func (*ListPredictionsRequest) ProtoMessage() {}
 
 func (x *ListPredictionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[19]
+	mi := &file_openmenses_v1_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1066,7 +1066,7 @@ func (x *ListPredictionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPredictionsRequest.ProtoReflect.Descriptor instead.
 func (*ListPredictionsRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{19}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ListPredictionsRequest) GetUserId() string {
@@ -1085,7 +1085,7 @@ type ListPredictionsResponse struct {
 
 func (x *ListPredictionsResponse) Reset() {
 	*x = ListPredictionsResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[20]
+	mi := &file_openmenses_v1_service_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1097,7 +1097,7 @@ func (x *ListPredictionsResponse) String() string {
 func (*ListPredictionsResponse) ProtoMessage() {}
 
 func (x *ListPredictionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[20]
+	mi := &file_openmenses_v1_service_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1110,7 +1110,7 @@ func (x *ListPredictionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPredictionsResponse.ProtoReflect.Descriptor instead.
 func (*ListPredictionsResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{20}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ListPredictionsResponse) GetPredictions() []*Prediction {
@@ -1129,7 +1129,7 @@ type ListInsightsRequest struct {
 
 func (x *ListInsightsRequest) Reset() {
 	*x = ListInsightsRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[21]
+	mi := &file_openmenses_v1_service_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1141,7 +1141,7 @@ func (x *ListInsightsRequest) String() string {
 func (*ListInsightsRequest) ProtoMessage() {}
 
 func (x *ListInsightsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[21]
+	mi := &file_openmenses_v1_service_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1154,7 +1154,7 @@ func (x *ListInsightsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInsightsRequest.ProtoReflect.Descriptor instead.
 func (*ListInsightsRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{21}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ListInsightsRequest) GetUserId() string {
@@ -1173,7 +1173,7 @@ type ListInsightsResponse struct {
 
 func (x *ListInsightsResponse) Reset() {
 	*x = ListInsightsResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[22]
+	mi := &file_openmenses_v1_service_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1185,7 +1185,7 @@ func (x *ListInsightsResponse) String() string {
 func (*ListInsightsResponse) ProtoMessage() {}
 
 func (x *ListInsightsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[22]
+	mi := &file_openmenses_v1_service_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1198,7 +1198,7 @@ func (x *ListInsightsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInsightsResponse.ProtoReflect.Descriptor instead.
 func (*ListInsightsResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{22}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ListInsightsResponse) GetInsights() []*Insight {
@@ -1217,7 +1217,7 @@ type ExportDataRequest struct {
 
 func (x *ExportDataRequest) Reset() {
 	*x = ExportDataRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[23]
+	mi := &file_openmenses_v1_service_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1229,7 +1229,7 @@ func (x *ExportDataRequest) String() string {
 func (*ExportDataRequest) ProtoMessage() {}
 
 func (x *ExportDataRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[23]
+	mi := &file_openmenses_v1_service_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1242,7 +1242,7 @@ func (x *ExportDataRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportDataRequest.ProtoReflect.Descriptor instead.
 func (*ExportDataRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{23}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ExportDataRequest) GetUserId() string {
@@ -1261,7 +1261,7 @@ type ExportDataResponse struct {
 
 func (x *ExportDataResponse) Reset() {
 	*x = ExportDataResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[24]
+	mi := &file_openmenses_v1_service_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1273,7 +1273,7 @@ func (x *ExportDataResponse) String() string {
 func (*ExportDataResponse) ProtoMessage() {}
 
 func (x *ExportDataResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[24]
+	mi := &file_openmenses_v1_service_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1286,7 +1286,7 @@ func (x *ExportDataResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportDataResponse.ProtoReflect.Descriptor instead.
 func (*ExportDataResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{24}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *ExportDataResponse) GetData() []byte {
@@ -1305,7 +1305,7 @@ type ImportDataRequest struct {
 
 func (x *ImportDataRequest) Reset() {
 	*x = ImportDataRequest{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[25]
+	mi := &file_openmenses_v1_service_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1317,7 +1317,7 @@ func (x *ImportDataRequest) String() string {
 func (*ImportDataRequest) ProtoMessage() {}
 
 func (x *ImportDataRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[25]
+	mi := &file_openmenses_v1_service_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1330,7 +1330,7 @@ func (x *ImportDataRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportDataRequest.ProtoReflect.Descriptor instead.
 func (*ImportDataRequest) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{25}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *ImportDataRequest) GetData() []byte {
@@ -1349,7 +1349,7 @@ type ImportDataResponse struct {
 
 func (x *ImportDataResponse) Reset() {
 	*x = ImportDataResponse{}
-	mi := &file_opencycle_v1_service_proto_msgTypes[26]
+	mi := &file_openmenses_v1_service_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1361,7 +1361,7 @@ func (x *ImportDataResponse) String() string {
 func (*ImportDataResponse) ProtoMessage() {}
 
 func (x *ImportDataResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_service_proto_msgTypes[26]
+	mi := &file_openmenses_v1_service_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1374,7 +1374,7 @@ func (x *ImportDataResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportDataResponse.ProtoReflect.Descriptor instead.
 func (*ImportDataResponse) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_service_proto_rawDescGZIP(), []int{26}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ImportDataResponse) GetRecordsImported() uint32 {
@@ -1384,81 +1384,81 @@ func (x *ImportDataResponse) GetRecordsImported() uint32 {
 	return 0
 }
 
-var File_opencycle_v1_service_proto protoreflect.FileDescriptor
+var File_openmenses_v1_service_proto protoreflect.FileDescriptor
 
-const file_opencycle_v1_service_proto_rawDesc = "" +
+const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1aopencycle/v1/service.proto\x12\fopencycle.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18opencycle/v1/model.proto\x1a\x18opencycle/v1/types.proto\"9\n" +
+	"\x1bopenmenses/v1/service.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19openmenses/v1/model.proto\x1a\x19openmenses/v1/types.proto\"9\n" +
 	"\x15GetUserProfileRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"M\n" +
-	"\x16GetUserProfileResponse\x123\n" +
-	"\aprofile\x18\x01 \x01(\v2\x19.opencycle.v1.UserProfileR\aprofile\"O\n" +
-	"\x18UpsertUserProfileRequest\x123\n" +
-	"\aprofile\x18\x01 \x01(\v2\x19.opencycle.v1.UserProfileR\aprofile\"P\n" +
-	"\x19UpsertUserProfileResponse\x123\n" +
-	"\aprofile\x18\x01 \x01(\v2\x19.opencycle.v1.UserProfileR\aprofile\"g\n" +
-	" CreateBleedingObservationRequest\x12C\n" +
-	"\vobservation\x18\x01 \x01(\v2!.opencycle.v1.BleedingObservationR\vobservation\"h\n" +
-	"!CreateBleedingObservationResponse\x12C\n" +
-	"\vobservation\x18\x01 \x01(\v2!.opencycle.v1.BleedingObservationR\vobservation\"e\n" +
-	"\x1fCreateSymptomObservationRequest\x12B\n" +
-	"\vobservation\x18\x01 \x01(\v2 .opencycle.v1.SymptomObservationR\vobservation\"f\n" +
-	" CreateSymptomObservationResponse\x12B\n" +
-	"\vobservation\x18\x01 \x01(\v2 .opencycle.v1.SymptomObservationR\vobservation\"_\n" +
-	"\x1cCreateMoodObservationRequest\x12?\n" +
-	"\vobservation\x18\x01 \x01(\v2\x1d.opencycle.v1.MoodObservationR\vobservation\"`\n" +
-	"\x1dCreateMoodObservationResponse\x12?\n" +
-	"\vobservation\x18\x01 \x01(\v2\x1d.opencycle.v1.MoodObservationR\vobservation\"S\n" +
-	"\x17CreateMedicationRequest\x128\n" +
+	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"N\n" +
+	"\x16GetUserProfileResponse\x124\n" +
+	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\"P\n" +
+	"\x18UpsertUserProfileRequest\x124\n" +
+	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\"Q\n" +
+	"\x19UpsertUserProfileResponse\x124\n" +
+	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\"h\n" +
+	" CreateBleedingObservationRequest\x12D\n" +
+	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"i\n" +
+	"!CreateBleedingObservationResponse\x12D\n" +
+	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"f\n" +
+	"\x1fCreateSymptomObservationRequest\x12C\n" +
+	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\"g\n" +
+	" CreateSymptomObservationResponse\x12C\n" +
+	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\"`\n" +
+	"\x1cCreateMoodObservationRequest\x12@\n" +
+	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\"a\n" +
+	"\x1dCreateMoodObservationResponse\x12@\n" +
+	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\"T\n" +
+	"\x17CreateMedicationRequest\x129\n" +
 	"\n" +
-	"medication\x18\x01 \x01(\v2\x18.opencycle.v1.MedicationR\n" +
+	"medication\x18\x01 \x01(\v2\x19.openmenses.v1.MedicationR\n" +
+	"medication\"U\n" +
+	"\x18CreateMedicationResponse\x129\n" +
+	"\n" +
+	"medication\x18\x01 \x01(\v2\x19.openmenses.v1.MedicationR\n" +
 	"medication\"T\n" +
-	"\x18CreateMedicationResponse\x128\n" +
-	"\n" +
-	"medication\x18\x01 \x01(\v2\x18.opencycle.v1.MedicationR\n" +
-	"medication\"S\n" +
-	"\x1cCreateMedicationEventRequest\x123\n" +
-	"\x05event\x18\x01 \x01(\v2\x1d.opencycle.v1.MedicationEventR\x05event\"T\n" +
-	"\x1dCreateMedicationEventResponse\x123\n" +
-	"\x05event\x18\x01 \x01(\v2\x1d.opencycle.v1.MedicationEventR\x05event\"\xa7\x01\n" +
+	"\x1cCreateMedicationEventRequest\x124\n" +
+	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\"U\n" +
+	"\x1dCreateMedicationEventResponse\x124\n" +
+	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\"\xa9\x01\n" +
 	"\x13ListTimelineRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12-\n" +
-	"\x05range\x18\x02 \x01(\v2\x17.opencycle.v1.DateRangeR\x05range\x12?\n" +
+	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12.\n" +
+	"\x05range\x18\x02 \x01(\v2\x18.openmenses.v1.DateRangeR\x05range\x12@\n" +
 	"\n" +
-	"pagination\x18\x03 \x01(\v2\x1f.opencycle.v1.PaginationRequestR\n" +
-	"pagination\"\xfd\x04\n" +
-	"\x0eTimelineRecord\x12V\n" +
-	"\x14bleeding_observation\x18\x01 \x01(\v2!.opencycle.v1.BleedingObservationH\x00R\x13bleedingObservation\x12S\n" +
-	"\x13symptom_observation\x18\x02 \x01(\v2 .opencycle.v1.SymptomObservationH\x00R\x12symptomObservation\x12J\n" +
-	"\x10mood_observation\x18\x03 \x01(\v2\x1d.opencycle.v1.MoodObservationH\x00R\x0fmoodObservation\x12:\n" +
+	"pagination\x18\x03 \x01(\v2 .openmenses.v1.PaginationRequestR\n" +
+	"pagination\"\x86\x05\n" +
+	"\x0eTimelineRecord\x12W\n" +
+	"\x14bleeding_observation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationH\x00R\x13bleedingObservation\x12T\n" +
+	"\x13symptom_observation\x18\x02 \x01(\v2!.openmenses.v1.SymptomObservationH\x00R\x12symptomObservation\x12K\n" +
+	"\x10mood_observation\x18\x03 \x01(\v2\x1e.openmenses.v1.MoodObservationH\x00R\x0fmoodObservation\x12;\n" +
 	"\n" +
-	"medication\x18\x04 \x01(\v2\x18.opencycle.v1.MedicationH\x00R\n" +
-	"medication\x12J\n" +
-	"\x10medication_event\x18\x05 \x01(\v2\x1d.opencycle.v1.MedicationEventH\x00R\x0fmedicationEvent\x12+\n" +
-	"\x05cycle\x18\x06 \x01(\v2\x13.opencycle.v1.CycleH\x00R\x05cycle\x12D\n" +
-	"\x0ephase_estimate\x18\a \x01(\v2\x1b.opencycle.v1.PhaseEstimateH\x00R\rphaseEstimate\x12:\n" +
+	"medication\x18\x04 \x01(\v2\x19.openmenses.v1.MedicationH\x00R\n" +
+	"medication\x12K\n" +
+	"\x10medication_event\x18\x05 \x01(\v2\x1e.openmenses.v1.MedicationEventH\x00R\x0fmedicationEvent\x12,\n" +
+	"\x05cycle\x18\x06 \x01(\v2\x14.openmenses.v1.CycleH\x00R\x05cycle\x12E\n" +
+	"\x0ephase_estimate\x18\a \x01(\v2\x1c.openmenses.v1.PhaseEstimateH\x00R\rphaseEstimate\x12;\n" +
 	"\n" +
-	"prediction\x18\b \x01(\v2\x18.opencycle.v1.PredictionH\x00R\n" +
-	"prediction\x121\n" +
-	"\ainsight\x18\t \x01(\v2\x15.opencycle.v1.InsightH\x00R\ainsightB\b\n" +
-	"\x06record\"\x90\x01\n" +
-	"\x14ListTimelineResponse\x126\n" +
-	"\arecords\x18\x01 \x03(\v2\x1c.opencycle.v1.TimelineRecordR\arecords\x12@\n" +
+	"prediction\x18\b \x01(\v2\x19.openmenses.v1.PredictionH\x00R\n" +
+	"prediction\x122\n" +
+	"\ainsight\x18\t \x01(\v2\x16.openmenses.v1.InsightH\x00R\ainsightB\b\n" +
+	"\x06record\"\x92\x01\n" +
+	"\x14ListTimelineResponse\x127\n" +
+	"\arecords\x18\x01 \x03(\v2\x1d.openmenses.v1.TimelineRecordR\arecords\x12A\n" +
 	"\n" +
-	"pagination\x18\x02 \x01(\v2 .opencycle.v1.PaginationResponseR\n" +
+	"pagination\x18\x02 \x01(\v2!.openmenses.v1.PaginationResponseR\n" +
 	"pagination\"5\n" +
 	"\x11ListCyclesRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"A\n" +
-	"\x12ListCyclesResponse\x12+\n" +
-	"\x06cycles\x18\x01 \x03(\v2\x13.opencycle.v1.CycleR\x06cycles\":\n" +
+	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"B\n" +
+	"\x12ListCyclesResponse\x12,\n" +
+	"\x06cycles\x18\x01 \x03(\v2\x14.openmenses.v1.CycleR\x06cycles\":\n" +
 	"\x16ListPredictionsRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"U\n" +
-	"\x17ListPredictionsResponse\x12:\n" +
-	"\vpredictions\x18\x01 \x03(\v2\x18.opencycle.v1.PredictionR\vpredictions\"7\n" +
+	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"V\n" +
+	"\x17ListPredictionsResponse\x12;\n" +
+	"\vpredictions\x18\x01 \x03(\v2\x19.openmenses.v1.PredictionR\vpredictions\"7\n" +
 	"\x13ListInsightsRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"I\n" +
-	"\x14ListInsightsResponse\x121\n" +
-	"\binsights\x18\x01 \x03(\v2\x15.opencycle.v1.InsightR\binsights\"5\n" +
+	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"J\n" +
+	"\x14ListInsightsResponse\x122\n" +
+	"\binsights\x18\x01 \x03(\v2\x16.openmenses.v1.InsightR\binsights\"5\n" +
 	"\x11ExportDataRequest\x12 \n" +
 	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"(\n" +
 	"\x12ExportDataResponse\x12\x12\n" +
@@ -1466,137 +1466,137 @@ const file_opencycle_v1_service_proto_rawDesc = "" +
 	"\x11ImportDataRequest\x12\x12\n" +
 	"\x04data\x18\x01 \x01(\fR\x04data\"?\n" +
 	"\x12ImportDataResponse\x12)\n" +
-	"\x10records_imported\x18\x01 \x01(\rR\x0frecordsImported2\x99\n" +
+	"\x10records_imported\x18\x01 \x01(\rR\x0frecordsImported2\xb3\n" +
 	"\n" +
-	"\x13CycleTrackerService\x12[\n" +
-	"\x0eGetUserProfile\x12#.opencycle.v1.GetUserProfileRequest\x1a$.opencycle.v1.GetUserProfileResponse\x12d\n" +
-	"\x11UpsertUserProfile\x12&.opencycle.v1.UpsertUserProfileRequest\x1a'.opencycle.v1.UpsertUserProfileResponse\x12|\n" +
-	"\x19CreateBleedingObservation\x12..opencycle.v1.CreateBleedingObservationRequest\x1a/.opencycle.v1.CreateBleedingObservationResponse\x12y\n" +
-	"\x18CreateSymptomObservation\x12-.opencycle.v1.CreateSymptomObservationRequest\x1a..opencycle.v1.CreateSymptomObservationResponse\x12p\n" +
-	"\x15CreateMoodObservation\x12*.opencycle.v1.CreateMoodObservationRequest\x1a+.opencycle.v1.CreateMoodObservationResponse\x12a\n" +
-	"\x10CreateMedication\x12%.opencycle.v1.CreateMedicationRequest\x1a&.opencycle.v1.CreateMedicationResponse\x12p\n" +
-	"\x15CreateMedicationEvent\x12*.opencycle.v1.CreateMedicationEventRequest\x1a+.opencycle.v1.CreateMedicationEventResponse\x12U\n" +
-	"\fListTimeline\x12!.opencycle.v1.ListTimelineRequest\x1a\".opencycle.v1.ListTimelineResponse\x12O\n" +
+	"\x13CycleTrackerService\x12]\n" +
+	"\x0eGetUserProfile\x12$.openmenses.v1.GetUserProfileRequest\x1a%.openmenses.v1.GetUserProfileResponse\x12f\n" +
+	"\x11UpsertUserProfile\x12'.openmenses.v1.UpsertUserProfileRequest\x1a(.openmenses.v1.UpsertUserProfileResponse\x12~\n" +
+	"\x19CreateBleedingObservation\x12/.openmenses.v1.CreateBleedingObservationRequest\x1a0.openmenses.v1.CreateBleedingObservationResponse\x12{\n" +
+	"\x18CreateSymptomObservation\x12..openmenses.v1.CreateSymptomObservationRequest\x1a/.openmenses.v1.CreateSymptomObservationResponse\x12r\n" +
+	"\x15CreateMoodObservation\x12+.openmenses.v1.CreateMoodObservationRequest\x1a,.openmenses.v1.CreateMoodObservationResponse\x12c\n" +
+	"\x10CreateMedication\x12&.openmenses.v1.CreateMedicationRequest\x1a'.openmenses.v1.CreateMedicationResponse\x12r\n" +
+	"\x15CreateMedicationEvent\x12+.openmenses.v1.CreateMedicationEventRequest\x1a,.openmenses.v1.CreateMedicationEventResponse\x12W\n" +
+	"\fListTimeline\x12\".openmenses.v1.ListTimelineRequest\x1a#.openmenses.v1.ListTimelineResponse\x12Q\n" +
 	"\n" +
-	"ListCycles\x12\x1f.opencycle.v1.ListCyclesRequest\x1a .opencycle.v1.ListCyclesResponse\x12^\n" +
-	"\x0fListPredictions\x12$.opencycle.v1.ListPredictionsRequest\x1a%.opencycle.v1.ListPredictionsResponse\x12U\n" +
-	"\fListInsights\x12!.opencycle.v1.ListInsightsRequest\x1a\".opencycle.v1.ListInsightsResponse\x12O\n" +
+	"ListCycles\x12 .openmenses.v1.ListCyclesRequest\x1a!.openmenses.v1.ListCyclesResponse\x12`\n" +
+	"\x0fListPredictions\x12%.openmenses.v1.ListPredictionsRequest\x1a&.openmenses.v1.ListPredictionsResponse\x12W\n" +
+	"\fListInsights\x12\".openmenses.v1.ListInsightsRequest\x1a#.openmenses.v1.ListInsightsResponse\x12Q\n" +
 	"\n" +
-	"ExportData\x12\x1f.opencycle.v1.ExportDataRequest\x1a .opencycle.v1.ExportDataResponse\x12O\n" +
+	"ExportData\x12 .openmenses.v1.ExportDataRequest\x1a!.openmenses.v1.ExportDataResponse\x12Q\n" +
 	"\n" +
-	"ImportData\x12\x1f.opencycle.v1.ImportDataRequest\x1a .opencycle.v1.ImportDataResponseB>Z<github.com/2ajoyce/opencycle/gen/go/opencycle/v1;opencyclev1b\x06proto3"
+	"ImportData\x12 .openmenses.v1.ImportDataRequest\x1a!.openmenses.v1.ImportDataResponseBAZ?github.com/2ajoyce/openmenses/gen/go/openmenses/v1;openmensesv1b\x06proto3"
 
 var (
-	file_opencycle_v1_service_proto_rawDescOnce sync.Once
-	file_opencycle_v1_service_proto_rawDescData []byte
+	file_openmenses_v1_service_proto_rawDescOnce sync.Once
+	file_openmenses_v1_service_proto_rawDescData []byte
 )
 
-func file_opencycle_v1_service_proto_rawDescGZIP() []byte {
-	file_opencycle_v1_service_proto_rawDescOnce.Do(func() {
-		file_opencycle_v1_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_opencycle_v1_service_proto_rawDesc), len(file_opencycle_v1_service_proto_rawDesc)))
+func file_openmenses_v1_service_proto_rawDescGZIP() []byte {
+	file_openmenses_v1_service_proto_rawDescOnce.Do(func() {
+		file_openmenses_v1_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_openmenses_v1_service_proto_rawDesc), len(file_openmenses_v1_service_proto_rawDesc)))
 	})
-	return file_opencycle_v1_service_proto_rawDescData
+	return file_openmenses_v1_service_proto_rawDescData
 }
 
-var file_opencycle_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
-var file_opencycle_v1_service_proto_goTypes = []any{
-	(*GetUserProfileRequest)(nil),             // 0: opencycle.v1.GetUserProfileRequest
-	(*GetUserProfileResponse)(nil),            // 1: opencycle.v1.GetUserProfileResponse
-	(*UpsertUserProfileRequest)(nil),          // 2: opencycle.v1.UpsertUserProfileRequest
-	(*UpsertUserProfileResponse)(nil),         // 3: opencycle.v1.UpsertUserProfileResponse
-	(*CreateBleedingObservationRequest)(nil),  // 4: opencycle.v1.CreateBleedingObservationRequest
-	(*CreateBleedingObservationResponse)(nil), // 5: opencycle.v1.CreateBleedingObservationResponse
-	(*CreateSymptomObservationRequest)(nil),   // 6: opencycle.v1.CreateSymptomObservationRequest
-	(*CreateSymptomObservationResponse)(nil),  // 7: opencycle.v1.CreateSymptomObservationResponse
-	(*CreateMoodObservationRequest)(nil),      // 8: opencycle.v1.CreateMoodObservationRequest
-	(*CreateMoodObservationResponse)(nil),     // 9: opencycle.v1.CreateMoodObservationResponse
-	(*CreateMedicationRequest)(nil),           // 10: opencycle.v1.CreateMedicationRequest
-	(*CreateMedicationResponse)(nil),          // 11: opencycle.v1.CreateMedicationResponse
-	(*CreateMedicationEventRequest)(nil),      // 12: opencycle.v1.CreateMedicationEventRequest
-	(*CreateMedicationEventResponse)(nil),     // 13: opencycle.v1.CreateMedicationEventResponse
-	(*ListTimelineRequest)(nil),               // 14: opencycle.v1.ListTimelineRequest
-	(*TimelineRecord)(nil),                    // 15: opencycle.v1.TimelineRecord
-	(*ListTimelineResponse)(nil),              // 16: opencycle.v1.ListTimelineResponse
-	(*ListCyclesRequest)(nil),                 // 17: opencycle.v1.ListCyclesRequest
-	(*ListCyclesResponse)(nil),                // 18: opencycle.v1.ListCyclesResponse
-	(*ListPredictionsRequest)(nil),            // 19: opencycle.v1.ListPredictionsRequest
-	(*ListPredictionsResponse)(nil),           // 20: opencycle.v1.ListPredictionsResponse
-	(*ListInsightsRequest)(nil),               // 21: opencycle.v1.ListInsightsRequest
-	(*ListInsightsResponse)(nil),              // 22: opencycle.v1.ListInsightsResponse
-	(*ExportDataRequest)(nil),                 // 23: opencycle.v1.ExportDataRequest
-	(*ExportDataResponse)(nil),                // 24: opencycle.v1.ExportDataResponse
-	(*ImportDataRequest)(nil),                 // 25: opencycle.v1.ImportDataRequest
-	(*ImportDataResponse)(nil),                // 26: opencycle.v1.ImportDataResponse
-	(*UserProfile)(nil),                       // 27: opencycle.v1.UserProfile
-	(*BleedingObservation)(nil),               // 28: opencycle.v1.BleedingObservation
-	(*SymptomObservation)(nil),                // 29: opencycle.v1.SymptomObservation
-	(*MoodObservation)(nil),                   // 30: opencycle.v1.MoodObservation
-	(*Medication)(nil),                        // 31: opencycle.v1.Medication
-	(*MedicationEvent)(nil),                   // 32: opencycle.v1.MedicationEvent
-	(*DateRange)(nil),                         // 33: opencycle.v1.DateRange
-	(*PaginationRequest)(nil),                 // 34: opencycle.v1.PaginationRequest
-	(*Cycle)(nil),                             // 35: opencycle.v1.Cycle
-	(*PhaseEstimate)(nil),                     // 36: opencycle.v1.PhaseEstimate
-	(*Prediction)(nil),                        // 37: opencycle.v1.Prediction
-	(*Insight)(nil),                           // 38: opencycle.v1.Insight
-	(*PaginationResponse)(nil),                // 39: opencycle.v1.PaginationResponse
+var file_openmenses_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_openmenses_v1_service_proto_goTypes = []any{
+	(*GetUserProfileRequest)(nil),             // 0: openmenses.v1.GetUserProfileRequest
+	(*GetUserProfileResponse)(nil),            // 1: openmenses.v1.GetUserProfileResponse
+	(*UpsertUserProfileRequest)(nil),          // 2: openmenses.v1.UpsertUserProfileRequest
+	(*UpsertUserProfileResponse)(nil),         // 3: openmenses.v1.UpsertUserProfileResponse
+	(*CreateBleedingObservationRequest)(nil),  // 4: openmenses.v1.CreateBleedingObservationRequest
+	(*CreateBleedingObservationResponse)(nil), // 5: openmenses.v1.CreateBleedingObservationResponse
+	(*CreateSymptomObservationRequest)(nil),   // 6: openmenses.v1.CreateSymptomObservationRequest
+	(*CreateSymptomObservationResponse)(nil),  // 7: openmenses.v1.CreateSymptomObservationResponse
+	(*CreateMoodObservationRequest)(nil),      // 8: openmenses.v1.CreateMoodObservationRequest
+	(*CreateMoodObservationResponse)(nil),     // 9: openmenses.v1.CreateMoodObservationResponse
+	(*CreateMedicationRequest)(nil),           // 10: openmenses.v1.CreateMedicationRequest
+	(*CreateMedicationResponse)(nil),          // 11: openmenses.v1.CreateMedicationResponse
+	(*CreateMedicationEventRequest)(nil),      // 12: openmenses.v1.CreateMedicationEventRequest
+	(*CreateMedicationEventResponse)(nil),     // 13: openmenses.v1.CreateMedicationEventResponse
+	(*ListTimelineRequest)(nil),               // 14: openmenses.v1.ListTimelineRequest
+	(*TimelineRecord)(nil),                    // 15: openmenses.v1.TimelineRecord
+	(*ListTimelineResponse)(nil),              // 16: openmenses.v1.ListTimelineResponse
+	(*ListCyclesRequest)(nil),                 // 17: openmenses.v1.ListCyclesRequest
+	(*ListCyclesResponse)(nil),                // 18: openmenses.v1.ListCyclesResponse
+	(*ListPredictionsRequest)(nil),            // 19: openmenses.v1.ListPredictionsRequest
+	(*ListPredictionsResponse)(nil),           // 20: openmenses.v1.ListPredictionsResponse
+	(*ListInsightsRequest)(nil),               // 21: openmenses.v1.ListInsightsRequest
+	(*ListInsightsResponse)(nil),              // 22: openmenses.v1.ListInsightsResponse
+	(*ExportDataRequest)(nil),                 // 23: openmenses.v1.ExportDataRequest
+	(*ExportDataResponse)(nil),                // 24: openmenses.v1.ExportDataResponse
+	(*ImportDataRequest)(nil),                 // 25: openmenses.v1.ImportDataRequest
+	(*ImportDataResponse)(nil),                // 26: openmenses.v1.ImportDataResponse
+	(*UserProfile)(nil),                       // 27: openmenses.v1.UserProfile
+	(*BleedingObservation)(nil),               // 28: openmenses.v1.BleedingObservation
+	(*SymptomObservation)(nil),                // 29: openmenses.v1.SymptomObservation
+	(*MoodObservation)(nil),                   // 30: openmenses.v1.MoodObservation
+	(*Medication)(nil),                        // 31: openmenses.v1.Medication
+	(*MedicationEvent)(nil),                   // 32: openmenses.v1.MedicationEvent
+	(*DateRange)(nil),                         // 33: openmenses.v1.DateRange
+	(*PaginationRequest)(nil),                 // 34: openmenses.v1.PaginationRequest
+	(*Cycle)(nil),                             // 35: openmenses.v1.Cycle
+	(*PhaseEstimate)(nil),                     // 36: openmenses.v1.PhaseEstimate
+	(*Prediction)(nil),                        // 37: openmenses.v1.Prediction
+	(*Insight)(nil),                           // 38: openmenses.v1.Insight
+	(*PaginationResponse)(nil),                // 39: openmenses.v1.PaginationResponse
 }
-var file_opencycle_v1_service_proto_depIdxs = []int32{
-	27, // 0: opencycle.v1.GetUserProfileResponse.profile:type_name -> opencycle.v1.UserProfile
-	27, // 1: opencycle.v1.UpsertUserProfileRequest.profile:type_name -> opencycle.v1.UserProfile
-	27, // 2: opencycle.v1.UpsertUserProfileResponse.profile:type_name -> opencycle.v1.UserProfile
-	28, // 3: opencycle.v1.CreateBleedingObservationRequest.observation:type_name -> opencycle.v1.BleedingObservation
-	28, // 4: opencycle.v1.CreateBleedingObservationResponse.observation:type_name -> opencycle.v1.BleedingObservation
-	29, // 5: opencycle.v1.CreateSymptomObservationRequest.observation:type_name -> opencycle.v1.SymptomObservation
-	29, // 6: opencycle.v1.CreateSymptomObservationResponse.observation:type_name -> opencycle.v1.SymptomObservation
-	30, // 7: opencycle.v1.CreateMoodObservationRequest.observation:type_name -> opencycle.v1.MoodObservation
-	30, // 8: opencycle.v1.CreateMoodObservationResponse.observation:type_name -> opencycle.v1.MoodObservation
-	31, // 9: opencycle.v1.CreateMedicationRequest.medication:type_name -> opencycle.v1.Medication
-	31, // 10: opencycle.v1.CreateMedicationResponse.medication:type_name -> opencycle.v1.Medication
-	32, // 11: opencycle.v1.CreateMedicationEventRequest.event:type_name -> opencycle.v1.MedicationEvent
-	32, // 12: opencycle.v1.CreateMedicationEventResponse.event:type_name -> opencycle.v1.MedicationEvent
-	33, // 13: opencycle.v1.ListTimelineRequest.range:type_name -> opencycle.v1.DateRange
-	34, // 14: opencycle.v1.ListTimelineRequest.pagination:type_name -> opencycle.v1.PaginationRequest
-	28, // 15: opencycle.v1.TimelineRecord.bleeding_observation:type_name -> opencycle.v1.BleedingObservation
-	29, // 16: opencycle.v1.TimelineRecord.symptom_observation:type_name -> opencycle.v1.SymptomObservation
-	30, // 17: opencycle.v1.TimelineRecord.mood_observation:type_name -> opencycle.v1.MoodObservation
-	31, // 18: opencycle.v1.TimelineRecord.medication:type_name -> opencycle.v1.Medication
-	32, // 19: opencycle.v1.TimelineRecord.medication_event:type_name -> opencycle.v1.MedicationEvent
-	35, // 20: opencycle.v1.TimelineRecord.cycle:type_name -> opencycle.v1.Cycle
-	36, // 21: opencycle.v1.TimelineRecord.phase_estimate:type_name -> opencycle.v1.PhaseEstimate
-	37, // 22: opencycle.v1.TimelineRecord.prediction:type_name -> opencycle.v1.Prediction
-	38, // 23: opencycle.v1.TimelineRecord.insight:type_name -> opencycle.v1.Insight
-	15, // 24: opencycle.v1.ListTimelineResponse.records:type_name -> opencycle.v1.TimelineRecord
-	39, // 25: opencycle.v1.ListTimelineResponse.pagination:type_name -> opencycle.v1.PaginationResponse
-	35, // 26: opencycle.v1.ListCyclesResponse.cycles:type_name -> opencycle.v1.Cycle
-	37, // 27: opencycle.v1.ListPredictionsResponse.predictions:type_name -> opencycle.v1.Prediction
-	38, // 28: opencycle.v1.ListInsightsResponse.insights:type_name -> opencycle.v1.Insight
-	0,  // 29: opencycle.v1.CycleTrackerService.GetUserProfile:input_type -> opencycle.v1.GetUserProfileRequest
-	2,  // 30: opencycle.v1.CycleTrackerService.UpsertUserProfile:input_type -> opencycle.v1.UpsertUserProfileRequest
-	4,  // 31: opencycle.v1.CycleTrackerService.CreateBleedingObservation:input_type -> opencycle.v1.CreateBleedingObservationRequest
-	6,  // 32: opencycle.v1.CycleTrackerService.CreateSymptomObservation:input_type -> opencycle.v1.CreateSymptomObservationRequest
-	8,  // 33: opencycle.v1.CycleTrackerService.CreateMoodObservation:input_type -> opencycle.v1.CreateMoodObservationRequest
-	10, // 34: opencycle.v1.CycleTrackerService.CreateMedication:input_type -> opencycle.v1.CreateMedicationRequest
-	12, // 35: opencycle.v1.CycleTrackerService.CreateMedicationEvent:input_type -> opencycle.v1.CreateMedicationEventRequest
-	14, // 36: opencycle.v1.CycleTrackerService.ListTimeline:input_type -> opencycle.v1.ListTimelineRequest
-	17, // 37: opencycle.v1.CycleTrackerService.ListCycles:input_type -> opencycle.v1.ListCyclesRequest
-	19, // 38: opencycle.v1.CycleTrackerService.ListPredictions:input_type -> opencycle.v1.ListPredictionsRequest
-	21, // 39: opencycle.v1.CycleTrackerService.ListInsights:input_type -> opencycle.v1.ListInsightsRequest
-	23, // 40: opencycle.v1.CycleTrackerService.ExportData:input_type -> opencycle.v1.ExportDataRequest
-	25, // 41: opencycle.v1.CycleTrackerService.ImportData:input_type -> opencycle.v1.ImportDataRequest
-	1,  // 42: opencycle.v1.CycleTrackerService.GetUserProfile:output_type -> opencycle.v1.GetUserProfileResponse
-	3,  // 43: opencycle.v1.CycleTrackerService.UpsertUserProfile:output_type -> opencycle.v1.UpsertUserProfileResponse
-	5,  // 44: opencycle.v1.CycleTrackerService.CreateBleedingObservation:output_type -> opencycle.v1.CreateBleedingObservationResponse
-	7,  // 45: opencycle.v1.CycleTrackerService.CreateSymptomObservation:output_type -> opencycle.v1.CreateSymptomObservationResponse
-	9,  // 46: opencycle.v1.CycleTrackerService.CreateMoodObservation:output_type -> opencycle.v1.CreateMoodObservationResponse
-	11, // 47: opencycle.v1.CycleTrackerService.CreateMedication:output_type -> opencycle.v1.CreateMedicationResponse
-	13, // 48: opencycle.v1.CycleTrackerService.CreateMedicationEvent:output_type -> opencycle.v1.CreateMedicationEventResponse
-	16, // 49: opencycle.v1.CycleTrackerService.ListTimeline:output_type -> opencycle.v1.ListTimelineResponse
-	18, // 50: opencycle.v1.CycleTrackerService.ListCycles:output_type -> opencycle.v1.ListCyclesResponse
-	20, // 51: opencycle.v1.CycleTrackerService.ListPredictions:output_type -> opencycle.v1.ListPredictionsResponse
-	22, // 52: opencycle.v1.CycleTrackerService.ListInsights:output_type -> opencycle.v1.ListInsightsResponse
-	24, // 53: opencycle.v1.CycleTrackerService.ExportData:output_type -> opencycle.v1.ExportDataResponse
-	26, // 54: opencycle.v1.CycleTrackerService.ImportData:output_type -> opencycle.v1.ImportDataResponse
+var file_openmenses_v1_service_proto_depIdxs = []int32{
+	27, // 0: openmenses.v1.GetUserProfileResponse.profile:type_name -> openmenses.v1.UserProfile
+	27, // 1: openmenses.v1.UpsertUserProfileRequest.profile:type_name -> openmenses.v1.UserProfile
+	27, // 2: openmenses.v1.UpsertUserProfileResponse.profile:type_name -> openmenses.v1.UserProfile
+	28, // 3: openmenses.v1.CreateBleedingObservationRequest.observation:type_name -> openmenses.v1.BleedingObservation
+	28, // 4: openmenses.v1.CreateBleedingObservationResponse.observation:type_name -> openmenses.v1.BleedingObservation
+	29, // 5: openmenses.v1.CreateSymptomObservationRequest.observation:type_name -> openmenses.v1.SymptomObservation
+	29, // 6: openmenses.v1.CreateSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
+	30, // 7: openmenses.v1.CreateMoodObservationRequest.observation:type_name -> openmenses.v1.MoodObservation
+	30, // 8: openmenses.v1.CreateMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
+	31, // 9: openmenses.v1.CreateMedicationRequest.medication:type_name -> openmenses.v1.Medication
+	31, // 10: openmenses.v1.CreateMedicationResponse.medication:type_name -> openmenses.v1.Medication
+	32, // 11: openmenses.v1.CreateMedicationEventRequest.event:type_name -> openmenses.v1.MedicationEvent
+	32, // 12: openmenses.v1.CreateMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
+	33, // 13: openmenses.v1.ListTimelineRequest.range:type_name -> openmenses.v1.DateRange
+	34, // 14: openmenses.v1.ListTimelineRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	28, // 15: openmenses.v1.TimelineRecord.bleeding_observation:type_name -> openmenses.v1.BleedingObservation
+	29, // 16: openmenses.v1.TimelineRecord.symptom_observation:type_name -> openmenses.v1.SymptomObservation
+	30, // 17: openmenses.v1.TimelineRecord.mood_observation:type_name -> openmenses.v1.MoodObservation
+	31, // 18: openmenses.v1.TimelineRecord.medication:type_name -> openmenses.v1.Medication
+	32, // 19: openmenses.v1.TimelineRecord.medication_event:type_name -> openmenses.v1.MedicationEvent
+	35, // 20: openmenses.v1.TimelineRecord.cycle:type_name -> openmenses.v1.Cycle
+	36, // 21: openmenses.v1.TimelineRecord.phase_estimate:type_name -> openmenses.v1.PhaseEstimate
+	37, // 22: openmenses.v1.TimelineRecord.prediction:type_name -> openmenses.v1.Prediction
+	38, // 23: openmenses.v1.TimelineRecord.insight:type_name -> openmenses.v1.Insight
+	15, // 24: openmenses.v1.ListTimelineResponse.records:type_name -> openmenses.v1.TimelineRecord
+	39, // 25: openmenses.v1.ListTimelineResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	35, // 26: openmenses.v1.ListCyclesResponse.cycles:type_name -> openmenses.v1.Cycle
+	37, // 27: openmenses.v1.ListPredictionsResponse.predictions:type_name -> openmenses.v1.Prediction
+	38, // 28: openmenses.v1.ListInsightsResponse.insights:type_name -> openmenses.v1.Insight
+	0,  // 29: openmenses.v1.CycleTrackerService.GetUserProfile:input_type -> openmenses.v1.GetUserProfileRequest
+	2,  // 30: openmenses.v1.CycleTrackerService.UpsertUserProfile:input_type -> openmenses.v1.UpsertUserProfileRequest
+	4,  // 31: openmenses.v1.CycleTrackerService.CreateBleedingObservation:input_type -> openmenses.v1.CreateBleedingObservationRequest
+	6,  // 32: openmenses.v1.CycleTrackerService.CreateSymptomObservation:input_type -> openmenses.v1.CreateSymptomObservationRequest
+	8,  // 33: openmenses.v1.CycleTrackerService.CreateMoodObservation:input_type -> openmenses.v1.CreateMoodObservationRequest
+	10, // 34: openmenses.v1.CycleTrackerService.CreateMedication:input_type -> openmenses.v1.CreateMedicationRequest
+	12, // 35: openmenses.v1.CycleTrackerService.CreateMedicationEvent:input_type -> openmenses.v1.CreateMedicationEventRequest
+	14, // 36: openmenses.v1.CycleTrackerService.ListTimeline:input_type -> openmenses.v1.ListTimelineRequest
+	17, // 37: openmenses.v1.CycleTrackerService.ListCycles:input_type -> openmenses.v1.ListCyclesRequest
+	19, // 38: openmenses.v1.CycleTrackerService.ListPredictions:input_type -> openmenses.v1.ListPredictionsRequest
+	21, // 39: openmenses.v1.CycleTrackerService.ListInsights:input_type -> openmenses.v1.ListInsightsRequest
+	23, // 40: openmenses.v1.CycleTrackerService.ExportData:input_type -> openmenses.v1.ExportDataRequest
+	25, // 41: openmenses.v1.CycleTrackerService.ImportData:input_type -> openmenses.v1.ImportDataRequest
+	1,  // 42: openmenses.v1.CycleTrackerService.GetUserProfile:output_type -> openmenses.v1.GetUserProfileResponse
+	3,  // 43: openmenses.v1.CycleTrackerService.UpsertUserProfile:output_type -> openmenses.v1.UpsertUserProfileResponse
+	5,  // 44: openmenses.v1.CycleTrackerService.CreateBleedingObservation:output_type -> openmenses.v1.CreateBleedingObservationResponse
+	7,  // 45: openmenses.v1.CycleTrackerService.CreateSymptomObservation:output_type -> openmenses.v1.CreateSymptomObservationResponse
+	9,  // 46: openmenses.v1.CycleTrackerService.CreateMoodObservation:output_type -> openmenses.v1.CreateMoodObservationResponse
+	11, // 47: openmenses.v1.CycleTrackerService.CreateMedication:output_type -> openmenses.v1.CreateMedicationResponse
+	13, // 48: openmenses.v1.CycleTrackerService.CreateMedicationEvent:output_type -> openmenses.v1.CreateMedicationEventResponse
+	16, // 49: openmenses.v1.CycleTrackerService.ListTimeline:output_type -> openmenses.v1.ListTimelineResponse
+	18, // 50: openmenses.v1.CycleTrackerService.ListCycles:output_type -> openmenses.v1.ListCyclesResponse
+	20, // 51: openmenses.v1.CycleTrackerService.ListPredictions:output_type -> openmenses.v1.ListPredictionsResponse
+	22, // 52: openmenses.v1.CycleTrackerService.ListInsights:output_type -> openmenses.v1.ListInsightsResponse
+	24, // 53: openmenses.v1.CycleTrackerService.ExportData:output_type -> openmenses.v1.ExportDataResponse
+	26, // 54: openmenses.v1.CycleTrackerService.ImportData:output_type -> openmenses.v1.ImportDataResponse
 	42, // [42:55] is the sub-list for method output_type
 	29, // [29:42] is the sub-list for method input_type
 	29, // [29:29] is the sub-list for extension type_name
@@ -1604,14 +1604,14 @@ var file_opencycle_v1_service_proto_depIdxs = []int32{
 	0,  // [0:29] is the sub-list for field type_name
 }
 
-func init() { file_opencycle_v1_service_proto_init() }
-func file_opencycle_v1_service_proto_init() {
-	if File_opencycle_v1_service_proto != nil {
+func init() { file_openmenses_v1_service_proto_init() }
+func file_openmenses_v1_service_proto_init() {
+	if File_openmenses_v1_service_proto != nil {
 		return
 	}
-	file_opencycle_v1_model_proto_init()
-	file_opencycle_v1_types_proto_init()
-	file_opencycle_v1_service_proto_msgTypes[15].OneofWrappers = []any{
+	file_openmenses_v1_model_proto_init()
+	file_openmenses_v1_types_proto_init()
+	file_openmenses_v1_service_proto_msgTypes[15].OneofWrappers = []any{
 		(*TimelineRecord_BleedingObservation)(nil),
 		(*TimelineRecord_SymptomObservation)(nil),
 		(*TimelineRecord_MoodObservation)(nil),
@@ -1626,17 +1626,17 @@ func file_opencycle_v1_service_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_opencycle_v1_service_proto_rawDesc), len(file_opencycle_v1_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_openmenses_v1_service_proto_rawDesc), len(file_openmenses_v1_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_opencycle_v1_service_proto_goTypes,
-		DependencyIndexes: file_opencycle_v1_service_proto_depIdxs,
-		MessageInfos:      file_opencycle_v1_service_proto_msgTypes,
+		GoTypes:           file_openmenses_v1_service_proto_goTypes,
+		DependencyIndexes: file_openmenses_v1_service_proto_depIdxs,
+		MessageInfos:      file_openmenses_v1_service_proto_msgTypes,
 	}.Build()
-	File_opencycle_v1_service_proto = out.File
-	file_opencycle_v1_service_proto_goTypes = nil
-	file_opencycle_v1_service_proto_depIdxs = nil
+	File_openmenses_v1_service_proto = out.File
+	file_openmenses_v1_service_proto_goTypes = nil
+	file_openmenses_v1_service_proto_depIdxs = nil
 }

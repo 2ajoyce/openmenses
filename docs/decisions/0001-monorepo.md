@@ -5,7 +5,7 @@
 
 ## Context
 
-opencycle has several distinct components: a proto contract, a Go domain engine, a TypeScript UI, and native mobile wrappers. These components share interfaces and generated code, and need to evolve together.
+openmenses has several distinct components: a proto contract, a Go domain engine, a TypeScript UI, and native mobile wrappers. These components share interfaces and generated code, and need to evolve together.
 
 ## Decision
 

@@ -1,4 +1,4 @@
-# opencycle
+# openmenses
 
 An **offline-first**, **privacy-first** cycle tracking application.
 
@@ -8,7 +8,7 @@ All data stays on your device. There is no central server, no telemetry, and no 
 
 ## Architecture
 
-opencycle is structured as a monorepo with the following major layers:
+openmenses is structured as a monorepo with the following major layers:
 
 ### Proto contract (`proto/`)
 Protobuf definitions are the **canonical contract** and single source of truth for all data models and service interfaces. Generated code lives in `gen/` and must never be edited by hand.
@@ -26,7 +26,7 @@ Thin wrappers for iOS and Android that host the Go engine and surface the TypeSc
 
 ## Proto files
 
-Proto schema files will be added in a subsequent step. The `proto/opencycle/v1/` directory is reserved for them.
+Proto schema files will be added in a subsequent step. The `proto/openmenses/v1/` directory is reserved for them.
 
 ---
 

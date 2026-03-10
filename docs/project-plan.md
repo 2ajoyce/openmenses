@@ -1,4 +1,4 @@
-# Project Plan — opencycle
+# Project Plan — openmenses
 
 ## Goal
 
@@ -8,7 +8,7 @@ Build an offline-first, privacy-first cycle tracking application that works enti
 
 ### Phase 1 — Foundation (current)
 - [x] Initialize monorepo structure
-- [ ] Define Protobuf schema (`proto/opencycle/v1/`)
+- [ ] Define Protobuf schema (`proto/openmenses/v1/`)
 - [ ] Scaffold Go engine with storage layer
 - [ ] Scaffold TypeScript UI shell
 

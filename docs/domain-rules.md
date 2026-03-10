@@ -1,6 +1,6 @@
-# Domain Rules — opencycle
+# Domain Rules — openmenses
 
-This document is the authoritative specification of domain rules for the opencycle engine.
+This document is the authoritative specification of domain rules for the openmenses engine.
 All rules here **must** be implemented in the Go engine (`engine/`). The UI must not re-implement them.
 
 > **Note:** This is a living document. Update it before changing engine behaviour.
