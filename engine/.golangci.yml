@@ -1,0 +1,36 @@
+# .golangci.yml — golangci-lint configuration for the opencycle engine
+# See: https://golangci-lint.run/usage/configuration/
+
+run:
+  timeout: 5m
+  # Run from the engine/ directory
+  modules-download-mode: readonly
+
+linters:
+  enable:
+    - errcheck       # Check for unchecked errors
+    - gosimple       # Simplification suggestions
+    - govet          # Go vet checks
+    - ineffassign    # Detect ineffectual assignments
+    - staticcheck    # Static analysis
+    - unused         # Detect unused code
+    - gofmt          # Enforce gofmt formatting
+    - goimports      # Enforce import ordering
+    - misspell       # Catch common misspellings
+    - godot          # Require comments to end with a period
+    - nilerr         # Find incorrect nil error returns
+
+linters-settings:
+  gofmt:
+    simplify: true
+  goimports:
+    local-prefixes: github.com/2ajoyce/opencycle
+
+issues:
+  # Don't report issues in generated code
+  exclude-rules:
+    - path: "../../gen/"
+      linters:
+        - all
+  max-issues-per-linter: 0
+  max-same-issues: 0

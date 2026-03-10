@@ -1,0 +1,43 @@
+# buf.gen.yaml — Code generation configuration for opencycle
+# See: https://buf.build/docs/configuration/v2/buf-gen-yaml
+#
+# This file controls how protobuf definitions are compiled into Go and
+# TypeScript source files. Generated output lands in gen/ and must never
+# be edited by hand.
+#
+# Plugin versions may need adjustment as the ecosystem evolves.
+
+version: v2
+
+inputs:
+  - module: .
+
+plugins:
+  # --- Go: protobuf messages ---
+  # https://pkg.go.dev/google.golang.org/protobuf
+  - remote: buf.build/protocolbuffers/go
+    out: gen/go
+    opt:
+      - paths=source_relative
+
+  # --- Go: connect-go RPC (preferred over grpc-go for mobile/local use) ---
+  # Replace or remove if a different RPC approach is chosen.
+  # https://connectrpc.com/docs/go/getting-started
+  - remote: buf.build/connectrpc/go
+    out: gen/go
+    opt:
+      - paths=source_relative
+
+  # --- TypeScript: protobuf messages (protobuf-es) ---
+  # https://github.com/bufbuild/protobuf-es
+  - remote: buf.build/bufbuild/es
+    out: gen/ts
+    opt:
+      - target=ts
+
+  # --- TypeScript: connect-es RPC client ---
+  # https://connectrpc.com/docs/web/getting-started
+  - remote: buf.build/connectrpc/es
+    out: gen/ts
+    opt:
+      - target=ts

@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Proto: lint and verify generated code is up-to-date
+  # ---------------------------------------------------------------------------
+  proto:
+    name: Proto
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: bufbuild/buf-action@v1
+        with:
+          setup_only: true
+
+      - name: Lint proto files
+        run: make proto-lint
+
+      - name: Generate code from proto
+        run: make proto-generate
+
+      - name: Verify generated files are committed
+        run: |
+          git diff --exit-code gen/ \
+            || (echo "ERROR: Generated files are out of date. Run 'make proto-generate' and commit the result." && exit 1)
+
+  # ---------------------------------------------------------------------------
+  # Engine: lint and test the Go domain engine
+  # ---------------------------------------------------------------------------
+  engine:
+    name: Engine (Go)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: engine/go.mod
+          cache-dependency-path: engine/go.sum
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          working-directory: engine
+
+      - name: Run engine tests
+        run: cd engine && go test ./...
+
+  # ---------------------------------------------------------------------------
+  # UI: lint, typecheck, and test the TypeScript UI
+  # ---------------------------------------------------------------------------
+  ui:
+    name: UI (TypeScript)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: ui/package-lock.json
+
+      - name: Install dependencies
+        run: cd ui && npm ci
+
+      - name: Lint
+        run: cd ui && npm run lint
+
+      - name: Typecheck
+        run: cd ui && npm run typecheck
+
+      - name: Test
+        run: cd ui && npm run test

@@ -1,0 +1,77 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Proto: Lint",
+      "type": "shell",
+      "command": "make proto-lint",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Proto: Generate",
+      "type": "shell",
+      "command": "make proto-generate",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Engine: Lint",
+      "type": "shell",
+      "command": "make engine-lint",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "Engine: Test",
+      "type": "shell",
+      "command": "make engine-test",
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "UI: Lint",
+      "type": "shell",
+      "command": "make ui-lint",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "UI: Test",
+      "type": "shell",
+      "command": "make ui-test",
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Repo: Lint",
+      "type": "shell",
+      "command": "make lint",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Repo: Test",
+      "type": "shell",
+      "command": "make test",
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Repo: CI",
+      "type": "shell",
+      "command": "make ci",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    }
+  ]
+}
