@@ -9,8 +9,7 @@ option go_package = "github.com/2ajoyce/opencycle/gen/go/opencycle/v1;opencyclev
 message LocalDate {
   string value = 1 [(buf.validate.field).string = {
     pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
-    min_len: 10
-    max_len: 10
+    len: 10
   }];
 }
 
