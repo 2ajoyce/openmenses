@@ -1,4 +1,4 @@
-module github.com/2ajoyce/opencycle
+module github.com/2ajoyce/openmenses
 
 go 1.24.0
 

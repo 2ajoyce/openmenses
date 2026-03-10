@@ -11,8 +11,8 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	"github.com/2ajoyce/opencycle/engine/internal/storage"
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
+	"github.com/2ajoyce/openmenses/engine/internal/storage"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
 const defaultPageSize = 50

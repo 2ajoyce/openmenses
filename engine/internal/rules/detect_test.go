@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/2ajoyce/opencycle/engine/internal/rules"
-	"github.com/2ajoyce/opencycle/engine/internal/storage/memory"
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
+	"github.com/2ajoyce/openmenses/engine/internal/rules"
+	"github.com/2ajoyce/openmenses/engine/internal/storage/memory"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
 var ctx = context.Background()

@@ -1,4 +1,4 @@
-// Package rules implements the core domain logic for opencycle: cycle
+// Package rules implements the core domain logic for openmenses: cycle
 // detection, cycle statistics, and phase estimation.
 package rules
 
@@ -9,8 +9,8 @@ import (
 
 	"github.com/oklog/ulid/v2"
 
-	"github.com/2ajoyce/opencycle/engine/internal/storage"
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
+	"github.com/2ajoyce/openmenses/engine/internal/storage"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
 // minNonBleedingGap is the number of consecutive non-bleeding days required

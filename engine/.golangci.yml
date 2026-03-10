@@ -1,4 +1,4 @@
-# .golangci.yml — golangci-lint configuration for the opencycle engine
+# .golangci.yml — golangci-lint configuration for the openmenses engine
 # See: https://golangci-lint.run/usage/configuration/
 
 run:
@@ -24,7 +24,7 @@ linters-settings:
   gofmt:
     simplify: true
   goimports:
-    local-prefixes: github.com/2ajoyce/opencycle
+    local-prefixes: github.com/2ajoyce/openmenses
 
 issues:
   # Don't report issues in generated code

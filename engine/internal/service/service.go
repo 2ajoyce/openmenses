@@ -1,6 +1,6 @@
 // Package service implements the Connect-RPC CycleTrackerService for the
-// opencycle engine. It orchestrates storage, validation, and domain rules to
-// fulfill each RPC defined in proto/opencycle/v1/service.proto.
+// openmenses engine. It orchestrates storage, validation, and domain rules to
+// fulfill each RPC defined in proto/openmenses/v1/service.proto.
 package service
 
 import (
@@ -13,23 +13,23 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/2ajoyce/opencycle/engine/internal/rules"
-	"github.com/2ajoyce/opencycle/engine/internal/storage"
-	"github.com/2ajoyce/opencycle/engine/internal/timeline"
-	"github.com/2ajoyce/opencycle/engine/internal/validation"
-	v1 "github.com/2ajoyce/opencycle/gen/go/opencycle/v1"
-	"github.com/2ajoyce/opencycle/gen/go/opencycle/v1/opencyclev1connect"
+	"github.com/2ajoyce/openmenses/engine/internal/rules"
+	"github.com/2ajoyce/openmenses/engine/internal/storage"
+	"github.com/2ajoyce/openmenses/engine/internal/timeline"
+	"github.com/2ajoyce/openmenses/engine/internal/validation"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
+	"github.com/2ajoyce/openmenses/gen/go/openmenses/v1/openmensesv1connect"
 	"github.com/oklog/ulid/v2"
 )
 
-// CycleTrackerService implements opencyclev1connect.CycleTrackerServiceHandler.
+// CycleTrackerService implements openmensesv1connect.CycleTrackerServiceHandler.
 type CycleTrackerService struct {
 	store     storage.Repository
 	validator *validation.Validator
 }
 
 // Compile-time assertion that CycleTrackerService satisfies the handler interface.
-var _ opencyclev1connect.CycleTrackerServiceHandler = (*CycleTrackerService)(nil)
+var _ openmensesv1connect.CycleTrackerServiceHandler = (*CycleTrackerService)(nil)
 
 // New creates a CycleTrackerService backed by the provided store.
 func New(store storage.Repository) (*CycleTrackerService, error) {

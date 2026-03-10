@@ -7,7 +7,7 @@ import (
 
 	_ "modernc.org/sqlite"
 
-	"github.com/2ajoyce/opencycle/engine/internal/storage/migrations"
+	"github.com/2ajoyce/openmenses/engine/internal/storage/migrations"
 )
 
 func openDB(t *testing.T) *sql.DB {

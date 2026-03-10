@@ -1,6 +1,6 @@
 # ui — TypeScript UI
 
-This directory contains the **TypeScript UI layer** for opencycle.
+This directory contains the **TypeScript UI layer** for openmenses.
 
 ## Architecture rules
 

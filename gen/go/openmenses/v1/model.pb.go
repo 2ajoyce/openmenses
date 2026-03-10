@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: opencycle/v1/model.proto
+// source: openmenses/v1/model.proto
 
-package opencyclev1
+package openmensesv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
@@ -58,11 +58,11 @@ func (x BiologicalCycleModel) String() string {
 }
 
 func (BiologicalCycleModel) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[0].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[0].Descriptor()
 }
 
 func (BiologicalCycleModel) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[0]
+	return &file_openmenses_v1_model_proto_enumTypes[0]
 }
 
 func (x BiologicalCycleModel) Number() protoreflect.EnumNumber {
@@ -71,7 +71,7 @@ func (x BiologicalCycleModel) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use BiologicalCycleModel.Descriptor instead.
 func (BiologicalCycleModel) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{0}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{0}
 }
 
 type ContraceptionType int32
@@ -131,11 +131,11 @@ func (x ContraceptionType) String() string {
 }
 
 func (ContraceptionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[1].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[1].Descriptor()
 }
 
 func (ContraceptionType) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[1]
+	return &file_openmenses_v1_model_proto_enumTypes[1]
 }
 
 func (x ContraceptionType) Number() protoreflect.EnumNumber {
@@ -144,7 +144,7 @@ func (x ContraceptionType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ContraceptionType.Descriptor instead.
 func (ContraceptionType) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{1}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{1}
 }
 
 type CycleRegularity int32
@@ -186,11 +186,11 @@ func (x CycleRegularity) String() string {
 }
 
 func (CycleRegularity) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[2].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[2].Descriptor()
 }
 
 func (CycleRegularity) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[2]
+	return &file_openmenses_v1_model_proto_enumTypes[2]
 }
 
 func (x CycleRegularity) Number() protoreflect.EnumNumber {
@@ -199,7 +199,7 @@ func (x CycleRegularity) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use CycleRegularity.Descriptor instead.
 func (CycleRegularity) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{2}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{2}
 }
 
 type ReproductiveGoal int32
@@ -241,11 +241,11 @@ func (x ReproductiveGoal) String() string {
 }
 
 func (ReproductiveGoal) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[3].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[3].Descriptor()
 }
 
 func (ReproductiveGoal) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[3]
+	return &file_openmenses_v1_model_proto_enumTypes[3]
 }
 
 func (x ReproductiveGoal) Number() protoreflect.EnumNumber {
@@ -254,7 +254,7 @@ func (x ReproductiveGoal) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ReproductiveGoal.Descriptor instead.
 func (ReproductiveGoal) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{3}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{3}
 }
 
 type HealthCondition int32
@@ -308,11 +308,11 @@ func (x HealthCondition) String() string {
 }
 
 func (HealthCondition) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[4].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[4].Descriptor()
 }
 
 func (HealthCondition) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[4]
+	return &file_openmenses_v1_model_proto_enumTypes[4]
 }
 
 func (x HealthCondition) Number() protoreflect.EnumNumber {
@@ -321,7 +321,7 @@ func (x HealthCondition) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use HealthCondition.Descriptor instead.
 func (HealthCondition) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{4}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{4}
 }
 
 type TrackingFocus int32
@@ -369,11 +369,11 @@ func (x TrackingFocus) String() string {
 }
 
 func (TrackingFocus) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[5].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[5].Descriptor()
 }
 
 func (TrackingFocus) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[5]
+	return &file_openmenses_v1_model_proto_enumTypes[5]
 }
 
 func (x TrackingFocus) Number() protoreflect.EnumNumber {
@@ -382,7 +382,7 @@ func (x TrackingFocus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TrackingFocus.Descriptor instead.
 func (TrackingFocus) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{5}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{5}
 }
 
 type BleedingFlow int32
@@ -424,11 +424,11 @@ func (x BleedingFlow) String() string {
 }
 
 func (BleedingFlow) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[6].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[6].Descriptor()
 }
 
 func (BleedingFlow) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[6]
+	return &file_openmenses_v1_model_proto_enumTypes[6]
 }
 
 func (x BleedingFlow) Number() protoreflect.EnumNumber {
@@ -437,7 +437,7 @@ func (x BleedingFlow) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use BleedingFlow.Descriptor instead.
 func (BleedingFlow) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{6}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{6}
 }
 
 type SymptomType int32
@@ -497,11 +497,11 @@ func (x SymptomType) String() string {
 }
 
 func (SymptomType) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[7].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[7].Descriptor()
 }
 
 func (SymptomType) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[7]
+	return &file_openmenses_v1_model_proto_enumTypes[7]
 }
 
 func (x SymptomType) Number() protoreflect.EnumNumber {
@@ -510,7 +510,7 @@ func (x SymptomType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SymptomType.Descriptor instead.
 func (SymptomType) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{7}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{7}
 }
 
 type SymptomSeverity int32
@@ -552,11 +552,11 @@ func (x SymptomSeverity) String() string {
 }
 
 func (SymptomSeverity) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[8].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[8].Descriptor()
 }
 
 func (SymptomSeverity) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[8]
+	return &file_openmenses_v1_model_proto_enumTypes[8]
 }
 
 func (x SymptomSeverity) Number() protoreflect.EnumNumber {
@@ -565,7 +565,7 @@ func (x SymptomSeverity) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SymptomSeverity.Descriptor instead.
 func (SymptomSeverity) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{8}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{8}
 }
 
 type MoodType int32
@@ -616,11 +616,11 @@ func (x MoodType) String() string {
 }
 
 func (MoodType) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[9].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[9].Descriptor()
 }
 
 func (MoodType) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[9]
+	return &file_openmenses_v1_model_proto_enumTypes[9]
 }
 
 func (x MoodType) Number() protoreflect.EnumNumber {
@@ -629,7 +629,7 @@ func (x MoodType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MoodType.Descriptor instead.
 func (MoodType) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{9}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{9}
 }
 
 type MoodIntensity int32
@@ -668,11 +668,11 @@ func (x MoodIntensity) String() string {
 }
 
 func (MoodIntensity) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[10].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[10].Descriptor()
 }
 
 func (MoodIntensity) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[10]
+	return &file_openmenses_v1_model_proto_enumTypes[10]
 }
 
 func (x MoodIntensity) Number() protoreflect.EnumNumber {
@@ -681,7 +681,7 @@ func (x MoodIntensity) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MoodIntensity.Descriptor instead.
 func (MoodIntensity) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{10}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{10}
 }
 
 type MedicationCategory int32
@@ -729,11 +729,11 @@ func (x MedicationCategory) String() string {
 }
 
 func (MedicationCategory) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[11].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[11].Descriptor()
 }
 
 func (MedicationCategory) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[11]
+	return &file_openmenses_v1_model_proto_enumTypes[11]
 }
 
 func (x MedicationCategory) Number() protoreflect.EnumNumber {
@@ -742,7 +742,7 @@ func (x MedicationCategory) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MedicationCategory.Descriptor instead.
 func (MedicationCategory) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{11}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{11}
 }
 
 type MedicationEventStatus int32
@@ -781,11 +781,11 @@ func (x MedicationEventStatus) String() string {
 }
 
 func (MedicationEventStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[12].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[12].Descriptor()
 }
 
 func (MedicationEventStatus) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[12]
+	return &file_openmenses_v1_model_proto_enumTypes[12]
 }
 
 func (x MedicationEventStatus) Number() protoreflect.EnumNumber {
@@ -794,7 +794,7 @@ func (x MedicationEventStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MedicationEventStatus.Descriptor instead.
 func (MedicationEventStatus) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{12}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{12}
 }
 
 type CycleSource int32
@@ -830,11 +830,11 @@ func (x CycleSource) String() string {
 }
 
 func (CycleSource) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[13].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[13].Descriptor()
 }
 
 func (CycleSource) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[13]
+	return &file_openmenses_v1_model_proto_enumTypes[13]
 }
 
 func (x CycleSource) Number() protoreflect.EnumNumber {
@@ -843,7 +843,7 @@ func (x CycleSource) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use CycleSource.Descriptor instead.
 func (CycleSource) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{13}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{13}
 }
 
 type CyclePhase int32
@@ -888,11 +888,11 @@ func (x CyclePhase) String() string {
 }
 
 func (CyclePhase) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[14].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[14].Descriptor()
 }
 
 func (CyclePhase) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[14]
+	return &file_openmenses_v1_model_proto_enumTypes[14]
 }
 
 func (x CyclePhase) Number() protoreflect.EnumNumber {
@@ -901,7 +901,7 @@ func (x CyclePhase) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use CyclePhase.Descriptor instead.
 func (CyclePhase) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{14}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{14}
 }
 
 type ConfidenceLevel int32
@@ -940,11 +940,11 @@ func (x ConfidenceLevel) String() string {
 }
 
 func (ConfidenceLevel) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[15].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[15].Descriptor()
 }
 
 func (ConfidenceLevel) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[15]
+	return &file_openmenses_v1_model_proto_enumTypes[15]
 }
 
 func (x ConfidenceLevel) Number() protoreflect.EnumNumber {
@@ -953,7 +953,7 @@ func (x ConfidenceLevel) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ConfidenceLevel.Descriptor instead.
 func (ConfidenceLevel) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{15}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{15}
 }
 
 type PredictionType int32
@@ -995,11 +995,11 @@ func (x PredictionType) String() string {
 }
 
 func (PredictionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[16].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[16].Descriptor()
 }
 
 func (PredictionType) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[16]
+	return &file_openmenses_v1_model_proto_enumTypes[16]
 }
 
 func (x PredictionType) Number() protoreflect.EnumNumber {
@@ -1008,7 +1008,7 @@ func (x PredictionType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PredictionType.Descriptor instead.
 func (PredictionType) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{16}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{16}
 }
 
 type InsightType int32
@@ -1050,11 +1050,11 @@ func (x InsightType) String() string {
 }
 
 func (InsightType) Descriptor() protoreflect.EnumDescriptor {
-	return file_opencycle_v1_model_proto_enumTypes[17].Descriptor()
+	return file_openmenses_v1_model_proto_enumTypes[17].Descriptor()
 }
 
 func (InsightType) Type() protoreflect.EnumType {
-	return &file_opencycle_v1_model_proto_enumTypes[17]
+	return &file_openmenses_v1_model_proto_enumTypes[17]
 }
 
 func (x InsightType) Number() protoreflect.EnumNumber {
@@ -1063,25 +1063,25 @@ func (x InsightType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use InsightType.Descriptor instead.
 func (InsightType) EnumDescriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{17}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{17}
 }
 
 type UserProfile struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	Id               string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	BiologicalCycle  BiologicalCycleModel   `protobuf:"varint,2,opt,name=biological_cycle,json=biologicalCycle,proto3,enum=opencycle.v1.BiologicalCycleModel" json:"biological_cycle,omitempty"`
-	Contraception    ContraceptionType      `protobuf:"varint,3,opt,name=contraception,proto3,enum=opencycle.v1.ContraceptionType" json:"contraception,omitempty"`
-	CycleRegularity  CycleRegularity        `protobuf:"varint,4,opt,name=cycle_regularity,json=cycleRegularity,proto3,enum=opencycle.v1.CycleRegularity" json:"cycle_regularity,omitempty"`
-	ReproductiveGoal ReproductiveGoal       `protobuf:"varint,5,opt,name=reproductive_goal,json=reproductiveGoal,proto3,enum=opencycle.v1.ReproductiveGoal" json:"reproductive_goal,omitempty"`
-	HealthConditions []HealthCondition      `protobuf:"varint,6,rep,packed,name=health_conditions,json=healthConditions,proto3,enum=opencycle.v1.HealthCondition" json:"health_conditions,omitempty"`
-	TrackingFocus    []TrackingFocus        `protobuf:"varint,7,rep,packed,name=tracking_focus,json=trackingFocus,proto3,enum=opencycle.v1.TrackingFocus" json:"tracking_focus,omitempty"`
+	BiologicalCycle  BiologicalCycleModel   `protobuf:"varint,2,opt,name=biological_cycle,json=biologicalCycle,proto3,enum=openmenses.v1.BiologicalCycleModel" json:"biological_cycle,omitempty"`
+	Contraception    ContraceptionType      `protobuf:"varint,3,opt,name=contraception,proto3,enum=openmenses.v1.ContraceptionType" json:"contraception,omitempty"`
+	CycleRegularity  CycleRegularity        `protobuf:"varint,4,opt,name=cycle_regularity,json=cycleRegularity,proto3,enum=openmenses.v1.CycleRegularity" json:"cycle_regularity,omitempty"`
+	ReproductiveGoal ReproductiveGoal       `protobuf:"varint,5,opt,name=reproductive_goal,json=reproductiveGoal,proto3,enum=openmenses.v1.ReproductiveGoal" json:"reproductive_goal,omitempty"`
+	HealthConditions []HealthCondition      `protobuf:"varint,6,rep,packed,name=health_conditions,json=healthConditions,proto3,enum=openmenses.v1.HealthCondition" json:"health_conditions,omitempty"`
+	TrackingFocus    []TrackingFocus        `protobuf:"varint,7,rep,packed,name=tracking_focus,json=trackingFocus,proto3,enum=openmenses.v1.TrackingFocus" json:"tracking_focus,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
 
 func (x *UserProfile) Reset() {
 	*x = UserProfile{}
-	mi := &file_opencycle_v1_model_proto_msgTypes[0]
+	mi := &file_openmenses_v1_model_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1093,7 +1093,7 @@ func (x *UserProfile) String() string {
 func (*UserProfile) ProtoMessage() {}
 
 func (x *UserProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_model_proto_msgTypes[0]
+	mi := &file_openmenses_v1_model_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1106,7 +1106,7 @@ func (x *UserProfile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserProfile.ProtoReflect.Descriptor instead.
 func (*UserProfile) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{0}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *UserProfile) GetId() string {
@@ -1163,7 +1163,7 @@ type BleedingObservation struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Timestamp     *DateTime              `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	Flow          BleedingFlow           `protobuf:"varint,4,opt,name=flow,proto3,enum=opencycle.v1.BleedingFlow" json:"flow,omitempty"`
+	Flow          BleedingFlow           `protobuf:"varint,4,opt,name=flow,proto3,enum=openmenses.v1.BleedingFlow" json:"flow,omitempty"`
 	Note          string                 `protobuf:"bytes,5,opt,name=note,proto3" json:"note,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1171,7 +1171,7 @@ type BleedingObservation struct {
 
 func (x *BleedingObservation) Reset() {
 	*x = BleedingObservation{}
-	mi := &file_opencycle_v1_model_proto_msgTypes[1]
+	mi := &file_openmenses_v1_model_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1183,7 +1183,7 @@ func (x *BleedingObservation) String() string {
 func (*BleedingObservation) ProtoMessage() {}
 
 func (x *BleedingObservation) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_model_proto_msgTypes[1]
+	mi := &file_openmenses_v1_model_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1196,7 +1196,7 @@ func (x *BleedingObservation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BleedingObservation.ProtoReflect.Descriptor instead.
 func (*BleedingObservation) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{1}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *BleedingObservation) GetId() string {
@@ -1239,8 +1239,8 @@ type SymptomObservation struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Timestamp     *DateTime              `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	Symptom       SymptomType            `protobuf:"varint,4,opt,name=symptom,proto3,enum=opencycle.v1.SymptomType" json:"symptom,omitempty"`
-	Severity      SymptomSeverity        `protobuf:"varint,5,opt,name=severity,proto3,enum=opencycle.v1.SymptomSeverity" json:"severity,omitempty"`
+	Symptom       SymptomType            `protobuf:"varint,4,opt,name=symptom,proto3,enum=openmenses.v1.SymptomType" json:"symptom,omitempty"`
+	Severity      SymptomSeverity        `protobuf:"varint,5,opt,name=severity,proto3,enum=openmenses.v1.SymptomSeverity" json:"severity,omitempty"`
 	Note          string                 `protobuf:"bytes,6,opt,name=note,proto3" json:"note,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1248,7 +1248,7 @@ type SymptomObservation struct {
 
 func (x *SymptomObservation) Reset() {
 	*x = SymptomObservation{}
-	mi := &file_opencycle_v1_model_proto_msgTypes[2]
+	mi := &file_openmenses_v1_model_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1260,7 +1260,7 @@ func (x *SymptomObservation) String() string {
 func (*SymptomObservation) ProtoMessage() {}
 
 func (x *SymptomObservation) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_model_proto_msgTypes[2]
+	mi := &file_openmenses_v1_model_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1273,7 +1273,7 @@ func (x *SymptomObservation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SymptomObservation.ProtoReflect.Descriptor instead.
 func (*SymptomObservation) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{2}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SymptomObservation) GetId() string {
@@ -1323,8 +1323,8 @@ type MoodObservation struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Timestamp     *DateTime              `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	Mood          MoodType               `protobuf:"varint,4,opt,name=mood,proto3,enum=opencycle.v1.MoodType" json:"mood,omitempty"`
-	Intensity     MoodIntensity          `protobuf:"varint,5,opt,name=intensity,proto3,enum=opencycle.v1.MoodIntensity" json:"intensity,omitempty"`
+	Mood          MoodType               `protobuf:"varint,4,opt,name=mood,proto3,enum=openmenses.v1.MoodType" json:"mood,omitempty"`
+	Intensity     MoodIntensity          `protobuf:"varint,5,opt,name=intensity,proto3,enum=openmenses.v1.MoodIntensity" json:"intensity,omitempty"`
 	Note          string                 `protobuf:"bytes,6,opt,name=note,proto3" json:"note,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1332,7 +1332,7 @@ type MoodObservation struct {
 
 func (x *MoodObservation) Reset() {
 	*x = MoodObservation{}
-	mi := &file_opencycle_v1_model_proto_msgTypes[3]
+	mi := &file_openmenses_v1_model_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1344,7 +1344,7 @@ func (x *MoodObservation) String() string {
 func (*MoodObservation) ProtoMessage() {}
 
 func (x *MoodObservation) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_model_proto_msgTypes[3]
+	mi := &file_openmenses_v1_model_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1357,7 +1357,7 @@ func (x *MoodObservation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MoodObservation.ProtoReflect.Descriptor instead.
 func (*MoodObservation) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{3}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *MoodObservation) GetId() string {
@@ -1407,7 +1407,7 @@ type Medication struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Category      MedicationCategory     `protobuf:"varint,4,opt,name=category,proto3,enum=opencycle.v1.MedicationCategory" json:"category,omitempty"`
+	Category      MedicationCategory     `protobuf:"varint,4,opt,name=category,proto3,enum=openmenses.v1.MedicationCategory" json:"category,omitempty"`
 	Active        bool                   `protobuf:"varint,5,opt,name=active,proto3" json:"active,omitempty"`
 	Note          string                 `protobuf:"bytes,6,opt,name=note,proto3" json:"note,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -1416,7 +1416,7 @@ type Medication struct {
 
 func (x *Medication) Reset() {
 	*x = Medication{}
-	mi := &file_opencycle_v1_model_proto_msgTypes[4]
+	mi := &file_openmenses_v1_model_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1428,7 +1428,7 @@ func (x *Medication) String() string {
 func (*Medication) ProtoMessage() {}
 
 func (x *Medication) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_model_proto_msgTypes[4]
+	mi := &file_openmenses_v1_model_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1441,7 +1441,7 @@ func (x *Medication) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Medication.ProtoReflect.Descriptor instead.
 func (*Medication) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{4}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Medication) GetId() string {
@@ -1492,7 +1492,7 @@ type MedicationEvent struct {
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	MedicationId  string                 `protobuf:"bytes,3,opt,name=medication_id,json=medicationId,proto3" json:"medication_id,omitempty"`
 	Timestamp     *DateTime              `protobuf:"bytes,4,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	Status        MedicationEventStatus  `protobuf:"varint,5,opt,name=status,proto3,enum=opencycle.v1.MedicationEventStatus" json:"status,omitempty"`
+	Status        MedicationEventStatus  `protobuf:"varint,5,opt,name=status,proto3,enum=openmenses.v1.MedicationEventStatus" json:"status,omitempty"`
 	Dose          string                 `protobuf:"bytes,6,opt,name=dose,proto3" json:"dose,omitempty"`
 	Note          string                 `protobuf:"bytes,7,opt,name=note,proto3" json:"note,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -1501,7 +1501,7 @@ type MedicationEvent struct {
 
 func (x *MedicationEvent) Reset() {
 	*x = MedicationEvent{}
-	mi := &file_opencycle_v1_model_proto_msgTypes[5]
+	mi := &file_openmenses_v1_model_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1513,7 +1513,7 @@ func (x *MedicationEvent) String() string {
 func (*MedicationEvent) ProtoMessage() {}
 
 func (x *MedicationEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_model_proto_msgTypes[5]
+	mi := &file_openmenses_v1_model_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1526,7 +1526,7 @@ func (x *MedicationEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MedicationEvent.ProtoReflect.Descriptor instead.
 func (*MedicationEvent) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{5}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *MedicationEvent) GetId() string {
@@ -1584,14 +1584,14 @@ type Cycle struct {
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	StartDate     *LocalDate             `protobuf:"bytes,3,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
 	EndDate       *LocalDate             `protobuf:"bytes,4,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
-	Source        CycleSource            `protobuf:"varint,5,opt,name=source,proto3,enum=opencycle.v1.CycleSource" json:"source,omitempty"`
+	Source        CycleSource            `protobuf:"varint,5,opt,name=source,proto3,enum=openmenses.v1.CycleSource" json:"source,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Cycle) Reset() {
 	*x = Cycle{}
-	mi := &file_opencycle_v1_model_proto_msgTypes[6]
+	mi := &file_openmenses_v1_model_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1603,7 +1603,7 @@ func (x *Cycle) String() string {
 func (*Cycle) ProtoMessage() {}
 
 func (x *Cycle) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_model_proto_msgTypes[6]
+	mi := &file_openmenses_v1_model_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1616,7 +1616,7 @@ func (x *Cycle) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Cycle.ProtoReflect.Descriptor instead.
 func (*Cycle) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{6}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Cycle) GetId() string {
@@ -1659,8 +1659,8 @@ type PhaseEstimate struct {
 	Id                string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId            string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Date              *LocalDate             `protobuf:"bytes,3,opt,name=date,proto3" json:"date,omitempty"`
-	Phase             CyclePhase             `protobuf:"varint,4,opt,name=phase,proto3,enum=opencycle.v1.CyclePhase" json:"phase,omitempty"`
-	Confidence        ConfidenceLevel        `protobuf:"varint,5,opt,name=confidence,proto3,enum=opencycle.v1.ConfidenceLevel" json:"confidence,omitempty"`
+	Phase             CyclePhase             `protobuf:"varint,4,opt,name=phase,proto3,enum=openmenses.v1.CyclePhase" json:"phase,omitempty"`
+	Confidence        ConfidenceLevel        `protobuf:"varint,5,opt,name=confidence,proto3,enum=openmenses.v1.ConfidenceLevel" json:"confidence,omitempty"`
 	BasedOnRecordRefs []*RecordRef           `protobuf:"bytes,6,rep,name=based_on_record_refs,json=basedOnRecordRefs,proto3" json:"based_on_record_refs,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
@@ -1668,7 +1668,7 @@ type PhaseEstimate struct {
 
 func (x *PhaseEstimate) Reset() {
 	*x = PhaseEstimate{}
-	mi := &file_opencycle_v1_model_proto_msgTypes[7]
+	mi := &file_openmenses_v1_model_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1680,7 +1680,7 @@ func (x *PhaseEstimate) String() string {
 func (*PhaseEstimate) ProtoMessage() {}
 
 func (x *PhaseEstimate) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_model_proto_msgTypes[7]
+	mi := &file_openmenses_v1_model_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1693,7 +1693,7 @@ func (x *PhaseEstimate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhaseEstimate.ProtoReflect.Descriptor instead.
 func (*PhaseEstimate) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{7}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *PhaseEstimate) GetId() string {
@@ -1742,10 +1742,10 @@ type Prediction struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	Id                 string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId             string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Kind               PredictionType         `protobuf:"varint,3,opt,name=kind,proto3,enum=opencycle.v1.PredictionType" json:"kind,omitempty"`
+	Kind               PredictionType         `protobuf:"varint,3,opt,name=kind,proto3,enum=openmenses.v1.PredictionType" json:"kind,omitempty"`
 	PredictedStartDate *LocalDate             `protobuf:"bytes,4,opt,name=predicted_start_date,json=predictedStartDate,proto3" json:"predicted_start_date,omitempty"`
 	PredictedEndDate   *LocalDate             `protobuf:"bytes,5,opt,name=predicted_end_date,json=predictedEndDate,proto3" json:"predicted_end_date,omitempty"`
-	Confidence         ConfidenceLevel        `protobuf:"varint,6,opt,name=confidence,proto3,enum=opencycle.v1.ConfidenceLevel" json:"confidence,omitempty"`
+	Confidence         ConfidenceLevel        `protobuf:"varint,6,opt,name=confidence,proto3,enum=openmenses.v1.ConfidenceLevel" json:"confidence,omitempty"`
 	Rationale          []string               `protobuf:"bytes,7,rep,name=rationale,proto3" json:"rationale,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
@@ -1753,7 +1753,7 @@ type Prediction struct {
 
 func (x *Prediction) Reset() {
 	*x = Prediction{}
-	mi := &file_opencycle_v1_model_proto_msgTypes[8]
+	mi := &file_openmenses_v1_model_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1765,7 +1765,7 @@ func (x *Prediction) String() string {
 func (*Prediction) ProtoMessage() {}
 
 func (x *Prediction) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_model_proto_msgTypes[8]
+	mi := &file_openmenses_v1_model_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1778,7 +1778,7 @@ func (x *Prediction) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Prediction.ProtoReflect.Descriptor instead.
 func (*Prediction) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{8}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Prediction) GetId() string {
@@ -1834,17 +1834,17 @@ type Insight struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	Id                 string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId             string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Kind               InsightType            `protobuf:"varint,3,opt,name=kind,proto3,enum=opencycle.v1.InsightType" json:"kind,omitempty"`
+	Kind               InsightType            `protobuf:"varint,3,opt,name=kind,proto3,enum=openmenses.v1.InsightType" json:"kind,omitempty"`
 	Summary            string                 `protobuf:"bytes,4,opt,name=summary,proto3" json:"summary,omitempty"`
 	EvidenceRecordRefs []*RecordRef           `protobuf:"bytes,5,rep,name=evidence_record_refs,json=evidenceRecordRefs,proto3" json:"evidence_record_refs,omitempty"`
-	Confidence         ConfidenceLevel        `protobuf:"varint,6,opt,name=confidence,proto3,enum=opencycle.v1.ConfidenceLevel" json:"confidence,omitempty"`
+	Confidence         ConfidenceLevel        `protobuf:"varint,6,opt,name=confidence,proto3,enum=openmenses.v1.ConfidenceLevel" json:"confidence,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
 
 func (x *Insight) Reset() {
 	*x = Insight{}
-	mi := &file_opencycle_v1_model_proto_msgTypes[9]
+	mi := &file_openmenses_v1_model_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1856,7 +1856,7 @@ func (x *Insight) String() string {
 func (*Insight) ProtoMessage() {}
 
 func (x *Insight) ProtoReflect() protoreflect.Message {
-	mi := &file_opencycle_v1_model_proto_msgTypes[9]
+	mi := &file_openmenses_v1_model_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1869,7 +1869,7 @@ func (x *Insight) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Insight.ProtoReflect.Descriptor instead.
 func (*Insight) Descriptor() ([]byte, []int) {
-	return file_opencycle_v1_model_proto_rawDescGZIP(), []int{9}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *Insight) GetId() string {
@@ -1914,105 +1914,105 @@ func (x *Insight) GetConfidence() ConfidenceLevel {
 	return ConfidenceLevel_CONFIDENCE_LEVEL_UNSPECIFIED
 }
 
-var File_opencycle_v1_model_proto protoreflect.FileDescriptor
+var File_openmenses_v1_model_proto protoreflect.FileDescriptor
 
-const file_opencycle_v1_model_proto_rawDesc = "" +
+const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\n" +
-	"\x18opencycle/v1/model.proto\x12\fopencycle.v1\x1a\x1bbuf/validate/validate.proto\x1a\x18opencycle/v1/types.proto\"\xac\x04\n" +
+	"\x19openmenses/v1/model.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19openmenses/v1/types.proto\"\xb2\x04\n" +
 	"\vUserProfile\x12\x1a\n" +
 	"\x02id\x18\x01 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x02id\x12Y\n" +
-	"\x10biological_cycle\x18\x02 \x01(\x0e2\".opencycle.v1.BiologicalCycleModelB\n" +
-	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x0fbiologicalCycle\x12Q\n" +
-	"\rcontraception\x18\x03 \x01(\x0e2\x1f.opencycle.v1.ContraceptionTypeB\n" +
-	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\rcontraception\x12T\n" +
-	"\x10cycle_regularity\x18\x04 \x01(\x0e2\x1d.opencycle.v1.CycleRegularityB\n" +
-	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x0fcycleRegularity\x12W\n" +
-	"\x11reproductive_goal\x18\x05 \x01(\x0e2\x1e.opencycle.v1.ReproductiveGoalB\n" +
-	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x10reproductiveGoal\x12T\n" +
-	"\x11health_conditions\x18\x06 \x03(\x0e2\x1d.opencycle.v1.HealthConditionB\b\xbaH\x05\x92\x01\x02\x18\x01R\x10healthConditions\x12N\n" +
-	"\x0etracking_focus\x18\a \x03(\x0e2\x1b.opencycle.v1.TrackingFocusB\n" +
-	"\xbaH\a\x92\x01\x04\b\x01\x18\x01R\rtrackingFocus\"\xe0\x01\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x02id\x12Z\n" +
+	"\x10biological_cycle\x18\x02 \x01(\x0e2#.openmenses.v1.BiologicalCycleModelB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x0fbiologicalCycle\x12R\n" +
+	"\rcontraception\x18\x03 \x01(\x0e2 .openmenses.v1.ContraceptionTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\rcontraception\x12U\n" +
+	"\x10cycle_regularity\x18\x04 \x01(\x0e2\x1e.openmenses.v1.CycleRegularityB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x0fcycleRegularity\x12X\n" +
+	"\x11reproductive_goal\x18\x05 \x01(\x0e2\x1f.openmenses.v1.ReproductiveGoalB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x10reproductiveGoal\x12U\n" +
+	"\x11health_conditions\x18\x06 \x03(\x0e2\x1e.openmenses.v1.HealthConditionB\b\xbaH\x05\x92\x01\x02\x18\x01R\x10healthConditions\x12O\n" +
+	"\x0etracking_focus\x18\a \x03(\x0e2\x1c.openmenses.v1.TrackingFocusB\n" +
+	"\xbaH\a\x92\x01\x04\b\x01\x18\x01R\rtrackingFocus\"\xe2\x01\n" +
 	"\x13BleedingObservation\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
-	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x124\n" +
-	"\ttimestamp\x18\x03 \x01(\v2\x16.opencycle.v1.DateTimeR\ttimestamp\x12:\n" +
-	"\x04flow\x18\x04 \x01(\x0e2\x1a.opencycle.v1.BleedingFlowB\n" +
+	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x125\n" +
+	"\ttimestamp\x18\x03 \x01(\v2\x17.openmenses.v1.DateTimeR\ttimestamp\x12;\n" +
+	"\x04flow\x18\x04 \x01(\x0e2\x1b.openmenses.v1.BleedingFlowB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04flow\x12\x1c\n" +
-	"\x04note\x18\x05 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xa9\x02\n" +
+	"\x04note\x18\x05 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xac\x02\n" +
 	"\x12SymptomObservation\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
-	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x124\n" +
-	"\ttimestamp\x18\x03 \x01(\v2\x16.opencycle.v1.DateTimeR\ttimestamp\x12?\n" +
-	"\asymptom\x18\x04 \x01(\x0e2\x19.opencycle.v1.SymptomTypeB\n" +
-	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\asymptom\x12C\n" +
-	"\bseverity\x18\x05 \x01(\x0e2\x1d.opencycle.v1.SymptomSeverityB\b\xbaH\x05\x82\x01\x02\x10\x01R\bseverity\x12\x1c\n" +
-	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\x9d\x02\n" +
+	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x125\n" +
+	"\ttimestamp\x18\x03 \x01(\v2\x17.openmenses.v1.DateTimeR\ttimestamp\x12@\n" +
+	"\asymptom\x18\x04 \x01(\x0e2\x1a.openmenses.v1.SymptomTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\asymptom\x12D\n" +
+	"\bseverity\x18\x05 \x01(\x0e2\x1e.openmenses.v1.SymptomSeverityB\b\xbaH\x05\x82\x01\x02\x10\x01R\bseverity\x12\x1c\n" +
+	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xa0\x02\n" +
 	"\x0fMoodObservation\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
-	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x124\n" +
-	"\ttimestamp\x18\x03 \x01(\v2\x16.opencycle.v1.DateTimeR\ttimestamp\x126\n" +
-	"\x04mood\x18\x04 \x01(\x0e2\x16.opencycle.v1.MoodTypeB\n" +
-	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04mood\x12C\n" +
-	"\tintensity\x18\x05 \x01(\x0e2\x1b.opencycle.v1.MoodIntensityB\b\xbaH\x05\x82\x01\x02\x10\x01R\tintensity\x12\x1c\n" +
-	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xe7\x01\n" +
+	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x125\n" +
+	"\ttimestamp\x18\x03 \x01(\v2\x17.openmenses.v1.DateTimeR\ttimestamp\x127\n" +
+	"\x04mood\x18\x04 \x01(\x0e2\x17.openmenses.v1.MoodTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04mood\x12D\n" +
+	"\tintensity\x18\x05 \x01(\x0e2\x1c.openmenses.v1.MoodIntensityB\b\xbaH\x05\x82\x01\x02\x10\x01R\tintensity\x12\x1c\n" +
+	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xe8\x01\n" +
 	"\n" +
 	"Medication\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12\x1e\n" +
 	"\x04name\x18\x03 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\x80\x02R\x04name\x12H\n" +
-	"\bcategory\x18\x04 \x01(\x0e2 .opencycle.v1.MedicationCategoryB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x02R\x04name\x12I\n" +
+	"\bcategory\x18\x04 \x01(\x0e2!.openmenses.v1.MedicationCategoryB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\bcategory\x12\x16\n" +
 	"\x06active\x18\x05 \x01(\bR\x06active\x12\x1c\n" +
-	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xb4\x02\n" +
+	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xb6\x02\n" +
 	"\x0fMedicationEvent\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12,\n" +
-	"\rmedication_id\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\fmedicationId\x124\n" +
-	"\ttimestamp\x18\x04 \x01(\v2\x16.opencycle.v1.DateTimeR\ttimestamp\x12G\n" +
-	"\x06status\x18\x05 \x01(\x0e2#.opencycle.v1.MedicationEventStatusB\n" +
+	"\rmedication_id\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\fmedicationId\x125\n" +
+	"\ttimestamp\x18\x04 \x01(\v2\x17.openmenses.v1.DateTimeR\ttimestamp\x12H\n" +
+	"\x06status\x18\x05 \x01(\x0e2$.openmenses.v1.MedicationEventStatusB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x06status\x12\x1b\n" +
 	"\x04dose\x18\x06 \x01(\tB\a\xbaH\x04r\x02\x18@R\x04dose\x12\x1c\n" +
-	"\x04note\x18\a \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xeb\x01\n" +
+	"\x04note\x18\a \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xee\x01\n" +
 	"\x05Cycle\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
-	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x126\n" +
+	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x127\n" +
 	"\n" +
-	"start_date\x18\x03 \x01(\v2\x17.opencycle.v1.LocalDateR\tstartDate\x122\n" +
-	"\bend_date\x18\x04 \x01(\v2\x17.opencycle.v1.LocalDateR\aendDate\x12;\n" +
-	"\x06source\x18\x05 \x01(\x0e2\x19.opencycle.v1.CycleSourceB\b\xbaH\x05\x82\x01\x02\x10\x01R\x06source\"\xc4\x02\n" +
+	"start_date\x18\x03 \x01(\v2\x18.openmenses.v1.LocalDateR\tstartDate\x123\n" +
+	"\bend_date\x18\x04 \x01(\v2\x18.openmenses.v1.LocalDateR\aendDate\x12<\n" +
+	"\x06source\x18\x05 \x01(\x0e2\x1a.openmenses.v1.CycleSourceB\b\xbaH\x05\x82\x01\x02\x10\x01R\x06source\"\xc8\x02\n" +
 	"\rPhaseEstimate\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
-	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12+\n" +
-	"\x04date\x18\x03 \x01(\v2\x17.opencycle.v1.LocalDateR\x04date\x128\n" +
-	"\x05phase\x18\x04 \x01(\x0e2\x18.opencycle.v1.CyclePhaseB\b\xbaH\x05\x82\x01\x02\x10\x01R\x05phase\x12G\n" +
+	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12,\n" +
+	"\x04date\x18\x03 \x01(\v2\x18.openmenses.v1.LocalDateR\x04date\x129\n" +
+	"\x05phase\x18\x04 \x01(\x0e2\x19.openmenses.v1.CyclePhaseB\b\xbaH\x05\x82\x01\x02\x10\x01R\x05phase\x12H\n" +
 	"\n" +
-	"confidence\x18\x05 \x01(\x0e2\x1d.opencycle.v1.ConfidenceLevelB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
-	"confidence\x12H\n" +
-	"\x14based_on_record_refs\x18\x06 \x03(\v2\x17.opencycle.v1.RecordRefR\x11basedOnRecordRefs\"\x88\x03\n" +
+	"confidence\x18\x05 \x01(\x0e2\x1e.openmenses.v1.ConfidenceLevelB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
+	"confidence\x12I\n" +
+	"\x14based_on_record_refs\x18\x06 \x03(\v2\x18.openmenses.v1.RecordRefR\x11basedOnRecordRefs\"\x8c\x03\n" +
 	"\n" +
 	"Prediction\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
-	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12<\n" +
-	"\x04kind\x18\x03 \x01(\x0e2\x1c.opencycle.v1.PredictionTypeB\n" +
-	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04kind\x12I\n" +
-	"\x14predicted_start_date\x18\x04 \x01(\v2\x17.opencycle.v1.LocalDateR\x12predictedStartDate\x12E\n" +
-	"\x12predicted_end_date\x18\x05 \x01(\v2\x17.opencycle.v1.LocalDateR\x10predictedEndDate\x12G\n" +
+	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12=\n" +
+	"\x04kind\x18\x03 \x01(\x0e2\x1d.openmenses.v1.PredictionTypeB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04kind\x12J\n" +
+	"\x14predicted_start_date\x18\x04 \x01(\v2\x18.openmenses.v1.LocalDateR\x12predictedStartDate\x12F\n" +
+	"\x12predicted_end_date\x18\x05 \x01(\v2\x18.openmenses.v1.LocalDateR\x10predictedEndDate\x12H\n" +
 	"\n" +
-	"confidence\x18\x06 \x01(\x0e2\x1d.opencycle.v1.ConfidenceLevelB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
+	"confidence\x18\x06 \x01(\x0e2\x1e.openmenses.v1.ConfidenceLevelB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
 	"confidence\x12&\n" +
-	"\trationale\x18\a \x03(\tB\b\xbaH\x05\x92\x01\x02\x10\x10R\trationale\"\xb9\x02\n" +
+	"\trationale\x18\a \x03(\tB\b\xbaH\x05\x92\x01\x02\x10\x10R\trationale\"\xbc\x02\n" +
 	"\aInsight\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
-	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x129\n" +
-	"\x04kind\x18\x03 \x01(\x0e2\x19.opencycle.v1.InsightTypeB\n" +
+	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12:\n" +
+	"\x04kind\x18\x03 \x01(\x0e2\x1a.openmenses.v1.InsightTypeB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04kind\x12$\n" +
 	"\asummary\x18\x04 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\x80\x10R\asummary\x12I\n" +
-	"\x14evidence_record_refs\x18\x05 \x03(\v2\x17.opencycle.v1.RecordRefR\x12evidenceRecordRefs\x12G\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x10R\asummary\x12J\n" +
+	"\x14evidence_record_refs\x18\x05 \x03(\v2\x18.openmenses.v1.RecordRefR\x12evidenceRecordRefs\x12H\n" +
 	"\n" +
-	"confidence\x18\x06 \x01(\x0e2\x1d.opencycle.v1.ConfidenceLevelB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
+	"confidence\x18\x06 \x01(\x0e2\x1e.openmenses.v1.ConfidenceLevelB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
 	"confidence*\xbc\x01\n" +
 	"\x14BiologicalCycleModel\x12&\n" +
 	"\"BIOLOGICAL_CYCLE_MODEL_UNSPECIFIED\x10\x00\x12$\n" +
@@ -2142,87 +2142,87 @@ const file_opencycle_v1_model_proto_rawDesc = "" +
 	"!INSIGHT_TYPE_CYCLE_LENGTH_PATTERN\x10\x01\x12 \n" +
 	"\x1cINSIGHT_TYPE_SYMPTOM_PATTERN\x10\x02\x12-\n" +
 	")INSIGHT_TYPE_MEDICATION_ADHERENCE_PATTERN\x10\x03\x12!\n" +
-	"\x1dINSIGHT_TYPE_BLEEDING_PATTERN\x10\x04B>Z<github.com/2ajoyce/opencycle/gen/go/opencycle/v1;opencyclev1b\x06proto3"
+	"\x1dINSIGHT_TYPE_BLEEDING_PATTERN\x10\x04BAZ?github.com/2ajoyce/openmenses/gen/go/openmenses/v1;openmensesv1b\x06proto3"
 
 var (
-	file_opencycle_v1_model_proto_rawDescOnce sync.Once
-	file_opencycle_v1_model_proto_rawDescData []byte
+	file_openmenses_v1_model_proto_rawDescOnce sync.Once
+	file_openmenses_v1_model_proto_rawDescData []byte
 )
 
-func file_opencycle_v1_model_proto_rawDescGZIP() []byte {
-	file_opencycle_v1_model_proto_rawDescOnce.Do(func() {
-		file_opencycle_v1_model_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_opencycle_v1_model_proto_rawDesc), len(file_opencycle_v1_model_proto_rawDesc)))
+func file_openmenses_v1_model_proto_rawDescGZIP() []byte {
+	file_openmenses_v1_model_proto_rawDescOnce.Do(func() {
+		file_openmenses_v1_model_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_openmenses_v1_model_proto_rawDesc), len(file_openmenses_v1_model_proto_rawDesc)))
 	})
-	return file_opencycle_v1_model_proto_rawDescData
+	return file_openmenses_v1_model_proto_rawDescData
 }
 
-var file_opencycle_v1_model_proto_enumTypes = make([]protoimpl.EnumInfo, 18)
-var file_opencycle_v1_model_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
-var file_opencycle_v1_model_proto_goTypes = []any{
-	(BiologicalCycleModel)(0),   // 0: opencycle.v1.BiologicalCycleModel
-	(ContraceptionType)(0),      // 1: opencycle.v1.ContraceptionType
-	(CycleRegularity)(0),        // 2: opencycle.v1.CycleRegularity
-	(ReproductiveGoal)(0),       // 3: opencycle.v1.ReproductiveGoal
-	(HealthCondition)(0),        // 4: opencycle.v1.HealthCondition
-	(TrackingFocus)(0),          // 5: opencycle.v1.TrackingFocus
-	(BleedingFlow)(0),           // 6: opencycle.v1.BleedingFlow
-	(SymptomType)(0),            // 7: opencycle.v1.SymptomType
-	(SymptomSeverity)(0),        // 8: opencycle.v1.SymptomSeverity
-	(MoodType)(0),               // 9: opencycle.v1.MoodType
-	(MoodIntensity)(0),          // 10: opencycle.v1.MoodIntensity
-	(MedicationCategory)(0),     // 11: opencycle.v1.MedicationCategory
-	(MedicationEventStatus)(0),  // 12: opencycle.v1.MedicationEventStatus
-	(CycleSource)(0),            // 13: opencycle.v1.CycleSource
-	(CyclePhase)(0),             // 14: opencycle.v1.CyclePhase
-	(ConfidenceLevel)(0),        // 15: opencycle.v1.ConfidenceLevel
-	(PredictionType)(0),         // 16: opencycle.v1.PredictionType
-	(InsightType)(0),            // 17: opencycle.v1.InsightType
-	(*UserProfile)(nil),         // 18: opencycle.v1.UserProfile
-	(*BleedingObservation)(nil), // 19: opencycle.v1.BleedingObservation
-	(*SymptomObservation)(nil),  // 20: opencycle.v1.SymptomObservation
-	(*MoodObservation)(nil),     // 21: opencycle.v1.MoodObservation
-	(*Medication)(nil),          // 22: opencycle.v1.Medication
-	(*MedicationEvent)(nil),     // 23: opencycle.v1.MedicationEvent
-	(*Cycle)(nil),               // 24: opencycle.v1.Cycle
-	(*PhaseEstimate)(nil),       // 25: opencycle.v1.PhaseEstimate
-	(*Prediction)(nil),          // 26: opencycle.v1.Prediction
-	(*Insight)(nil),             // 27: opencycle.v1.Insight
-	(*DateTime)(nil),            // 28: opencycle.v1.DateTime
-	(*LocalDate)(nil),           // 29: opencycle.v1.LocalDate
-	(*RecordRef)(nil),           // 30: opencycle.v1.RecordRef
+var file_openmenses_v1_model_proto_enumTypes = make([]protoimpl.EnumInfo, 18)
+var file_openmenses_v1_model_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_openmenses_v1_model_proto_goTypes = []any{
+	(BiologicalCycleModel)(0),   // 0: openmenses.v1.BiologicalCycleModel
+	(ContraceptionType)(0),      // 1: openmenses.v1.ContraceptionType
+	(CycleRegularity)(0),        // 2: openmenses.v1.CycleRegularity
+	(ReproductiveGoal)(0),       // 3: openmenses.v1.ReproductiveGoal
+	(HealthCondition)(0),        // 4: openmenses.v1.HealthCondition
+	(TrackingFocus)(0),          // 5: openmenses.v1.TrackingFocus
+	(BleedingFlow)(0),           // 6: openmenses.v1.BleedingFlow
+	(SymptomType)(0),            // 7: openmenses.v1.SymptomType
+	(SymptomSeverity)(0),        // 8: openmenses.v1.SymptomSeverity
+	(MoodType)(0),               // 9: openmenses.v1.MoodType
+	(MoodIntensity)(0),          // 10: openmenses.v1.MoodIntensity
+	(MedicationCategory)(0),     // 11: openmenses.v1.MedicationCategory
+	(MedicationEventStatus)(0),  // 12: openmenses.v1.MedicationEventStatus
+	(CycleSource)(0),            // 13: openmenses.v1.CycleSource
+	(CyclePhase)(0),             // 14: openmenses.v1.CyclePhase
+	(ConfidenceLevel)(0),        // 15: openmenses.v1.ConfidenceLevel
+	(PredictionType)(0),         // 16: openmenses.v1.PredictionType
+	(InsightType)(0),            // 17: openmenses.v1.InsightType
+	(*UserProfile)(nil),         // 18: openmenses.v1.UserProfile
+	(*BleedingObservation)(nil), // 19: openmenses.v1.BleedingObservation
+	(*SymptomObservation)(nil),  // 20: openmenses.v1.SymptomObservation
+	(*MoodObservation)(nil),     // 21: openmenses.v1.MoodObservation
+	(*Medication)(nil),          // 22: openmenses.v1.Medication
+	(*MedicationEvent)(nil),     // 23: openmenses.v1.MedicationEvent
+	(*Cycle)(nil),               // 24: openmenses.v1.Cycle
+	(*PhaseEstimate)(nil),       // 25: openmenses.v1.PhaseEstimate
+	(*Prediction)(nil),          // 26: openmenses.v1.Prediction
+	(*Insight)(nil),             // 27: openmenses.v1.Insight
+	(*DateTime)(nil),            // 28: openmenses.v1.DateTime
+	(*LocalDate)(nil),           // 29: openmenses.v1.LocalDate
+	(*RecordRef)(nil),           // 30: openmenses.v1.RecordRef
 }
-var file_opencycle_v1_model_proto_depIdxs = []int32{
-	0,  // 0: opencycle.v1.UserProfile.biological_cycle:type_name -> opencycle.v1.BiologicalCycleModel
-	1,  // 1: opencycle.v1.UserProfile.contraception:type_name -> opencycle.v1.ContraceptionType
-	2,  // 2: opencycle.v1.UserProfile.cycle_regularity:type_name -> opencycle.v1.CycleRegularity
-	3,  // 3: opencycle.v1.UserProfile.reproductive_goal:type_name -> opencycle.v1.ReproductiveGoal
-	4,  // 4: opencycle.v1.UserProfile.health_conditions:type_name -> opencycle.v1.HealthCondition
-	5,  // 5: opencycle.v1.UserProfile.tracking_focus:type_name -> opencycle.v1.TrackingFocus
-	28, // 6: opencycle.v1.BleedingObservation.timestamp:type_name -> opencycle.v1.DateTime
-	6,  // 7: opencycle.v1.BleedingObservation.flow:type_name -> opencycle.v1.BleedingFlow
-	28, // 8: opencycle.v1.SymptomObservation.timestamp:type_name -> opencycle.v1.DateTime
-	7,  // 9: opencycle.v1.SymptomObservation.symptom:type_name -> opencycle.v1.SymptomType
-	8,  // 10: opencycle.v1.SymptomObservation.severity:type_name -> opencycle.v1.SymptomSeverity
-	28, // 11: opencycle.v1.MoodObservation.timestamp:type_name -> opencycle.v1.DateTime
-	9,  // 12: opencycle.v1.MoodObservation.mood:type_name -> opencycle.v1.MoodType
-	10, // 13: opencycle.v1.MoodObservation.intensity:type_name -> opencycle.v1.MoodIntensity
-	11, // 14: opencycle.v1.Medication.category:type_name -> opencycle.v1.MedicationCategory
-	28, // 15: opencycle.v1.MedicationEvent.timestamp:type_name -> opencycle.v1.DateTime
-	12, // 16: opencycle.v1.MedicationEvent.status:type_name -> opencycle.v1.MedicationEventStatus
-	29, // 17: opencycle.v1.Cycle.start_date:type_name -> opencycle.v1.LocalDate
-	29, // 18: opencycle.v1.Cycle.end_date:type_name -> opencycle.v1.LocalDate
-	13, // 19: opencycle.v1.Cycle.source:type_name -> opencycle.v1.CycleSource
-	29, // 20: opencycle.v1.PhaseEstimate.date:type_name -> opencycle.v1.LocalDate
-	14, // 21: opencycle.v1.PhaseEstimate.phase:type_name -> opencycle.v1.CyclePhase
-	15, // 22: opencycle.v1.PhaseEstimate.confidence:type_name -> opencycle.v1.ConfidenceLevel
-	30, // 23: opencycle.v1.PhaseEstimate.based_on_record_refs:type_name -> opencycle.v1.RecordRef
-	16, // 24: opencycle.v1.Prediction.kind:type_name -> opencycle.v1.PredictionType
-	29, // 25: opencycle.v1.Prediction.predicted_start_date:type_name -> opencycle.v1.LocalDate
-	29, // 26: opencycle.v1.Prediction.predicted_end_date:type_name -> opencycle.v1.LocalDate
-	15, // 27: opencycle.v1.Prediction.confidence:type_name -> opencycle.v1.ConfidenceLevel
-	17, // 28: opencycle.v1.Insight.kind:type_name -> opencycle.v1.InsightType
-	30, // 29: opencycle.v1.Insight.evidence_record_refs:type_name -> opencycle.v1.RecordRef
-	15, // 30: opencycle.v1.Insight.confidence:type_name -> opencycle.v1.ConfidenceLevel
+var file_openmenses_v1_model_proto_depIdxs = []int32{
+	0,  // 0: openmenses.v1.UserProfile.biological_cycle:type_name -> openmenses.v1.BiologicalCycleModel
+	1,  // 1: openmenses.v1.UserProfile.contraception:type_name -> openmenses.v1.ContraceptionType
+	2,  // 2: openmenses.v1.UserProfile.cycle_regularity:type_name -> openmenses.v1.CycleRegularity
+	3,  // 3: openmenses.v1.UserProfile.reproductive_goal:type_name -> openmenses.v1.ReproductiveGoal
+	4,  // 4: openmenses.v1.UserProfile.health_conditions:type_name -> openmenses.v1.HealthCondition
+	5,  // 5: openmenses.v1.UserProfile.tracking_focus:type_name -> openmenses.v1.TrackingFocus
+	28, // 6: openmenses.v1.BleedingObservation.timestamp:type_name -> openmenses.v1.DateTime
+	6,  // 7: openmenses.v1.BleedingObservation.flow:type_name -> openmenses.v1.BleedingFlow
+	28, // 8: openmenses.v1.SymptomObservation.timestamp:type_name -> openmenses.v1.DateTime
+	7,  // 9: openmenses.v1.SymptomObservation.symptom:type_name -> openmenses.v1.SymptomType
+	8,  // 10: openmenses.v1.SymptomObservation.severity:type_name -> openmenses.v1.SymptomSeverity
+	28, // 11: openmenses.v1.MoodObservation.timestamp:type_name -> openmenses.v1.DateTime
+	9,  // 12: openmenses.v1.MoodObservation.mood:type_name -> openmenses.v1.MoodType
+	10, // 13: openmenses.v1.MoodObservation.intensity:type_name -> openmenses.v1.MoodIntensity
+	11, // 14: openmenses.v1.Medication.category:type_name -> openmenses.v1.MedicationCategory
+	28, // 15: openmenses.v1.MedicationEvent.timestamp:type_name -> openmenses.v1.DateTime
+	12, // 16: openmenses.v1.MedicationEvent.status:type_name -> openmenses.v1.MedicationEventStatus
+	29, // 17: openmenses.v1.Cycle.start_date:type_name -> openmenses.v1.LocalDate
+	29, // 18: openmenses.v1.Cycle.end_date:type_name -> openmenses.v1.LocalDate
+	13, // 19: openmenses.v1.Cycle.source:type_name -> openmenses.v1.CycleSource
+	29, // 20: openmenses.v1.PhaseEstimate.date:type_name -> openmenses.v1.LocalDate
+	14, // 21: openmenses.v1.PhaseEstimate.phase:type_name -> openmenses.v1.CyclePhase
+	15, // 22: openmenses.v1.PhaseEstimate.confidence:type_name -> openmenses.v1.ConfidenceLevel
+	30, // 23: openmenses.v1.PhaseEstimate.based_on_record_refs:type_name -> openmenses.v1.RecordRef
+	16, // 24: openmenses.v1.Prediction.kind:type_name -> openmenses.v1.PredictionType
+	29, // 25: openmenses.v1.Prediction.predicted_start_date:type_name -> openmenses.v1.LocalDate
+	29, // 26: openmenses.v1.Prediction.predicted_end_date:type_name -> openmenses.v1.LocalDate
+	15, // 27: openmenses.v1.Prediction.confidence:type_name -> openmenses.v1.ConfidenceLevel
+	17, // 28: openmenses.v1.Insight.kind:type_name -> openmenses.v1.InsightType
+	30, // 29: openmenses.v1.Insight.evidence_record_refs:type_name -> openmenses.v1.RecordRef
+	15, // 30: openmenses.v1.Insight.confidence:type_name -> openmenses.v1.ConfidenceLevel
 	31, // [31:31] is the sub-list for method output_type
 	31, // [31:31] is the sub-list for method input_type
 	31, // [31:31] is the sub-list for extension type_name
@@ -2230,28 +2230,28 @@ var file_opencycle_v1_model_proto_depIdxs = []int32{
 	0,  // [0:31] is the sub-list for field type_name
 }
 
-func init() { file_opencycle_v1_model_proto_init() }
-func file_opencycle_v1_model_proto_init() {
-	if File_opencycle_v1_model_proto != nil {
+func init() { file_openmenses_v1_model_proto_init() }
+func file_openmenses_v1_model_proto_init() {
+	if File_openmenses_v1_model_proto != nil {
 		return
 	}
-	file_opencycle_v1_types_proto_init()
+	file_openmenses_v1_types_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_opencycle_v1_model_proto_rawDesc), len(file_opencycle_v1_model_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_openmenses_v1_model_proto_rawDesc), len(file_openmenses_v1_model_proto_rawDesc)),
 			NumEnums:      18,
 			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_opencycle_v1_model_proto_goTypes,
-		DependencyIndexes: file_opencycle_v1_model_proto_depIdxs,
-		EnumInfos:         file_opencycle_v1_model_proto_enumTypes,
-		MessageInfos:      file_opencycle_v1_model_proto_msgTypes,
+		GoTypes:           file_openmenses_v1_model_proto_goTypes,
+		DependencyIndexes: file_openmenses_v1_model_proto_depIdxs,
+		EnumInfos:         file_openmenses_v1_model_proto_enumTypes,
+		MessageInfos:      file_openmenses_v1_model_proto_msgTypes,
 	}.Build()
-	File_opencycle_v1_model_proto = out.File
-	file_opencycle_v1_model_proto_goTypes = nil
-	file_opencycle_v1_model_proto_depIdxs = nil
+	File_openmenses_v1_model_proto = out.File
+	file_openmenses_v1_model_proto_goTypes = nil
+	file_openmenses_v1_model_proto_depIdxs = nil
 }

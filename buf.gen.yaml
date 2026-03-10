@@ -1,4 +1,4 @@
-# buf.gen.yaml — Code generation configuration for opencycle
+# buf.gen.yaml — Code generation configuration for openmenses
 # See: https://buf.build/docs/configuration/v2/buf-gen-yaml
 #
 # This file controls how protobuf definitions are compiled into Go and

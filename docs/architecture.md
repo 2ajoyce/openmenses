@@ -1,8 +1,8 @@
-# Architecture — opencycle
+# Architecture — openmenses
 
 ## Overview
 
-opencycle is a monorepo structured around a clear set of layers with strict boundaries.
+openmenses is a monorepo structured around a clear set of layers with strict boundaries.
 The application runs entirely on-device. There is no central server.
 
 ```
@@ -26,7 +26,7 @@ The application runs entirely on-device. There is no central server.
         │ generated from
 ┌───────▼──────────────────────────┐
 │      proto/ (canonical contract)  │
-│  proto/opencycle/v1/*.proto       │
+│  proto/openmenses/v1/*.proto       │
 └──────────────────────────────────┘
 ```
 
@@ -47,7 +47,7 @@ The application runs entirely on-device. There is no central server.
 - Contains all business logic: cycle rules, predictions, insights, storage.
 - Runs as a library linked into the mobile wrappers.
 - No HTTP server. No network listener. No telemetry.
-- Internal packages are not part of the public API; `pkg/opencycle/` is.
+- Internal packages are not part of the public API; `pkg/openmenses/` is.
 
 ### TypeScript UI (`ui/`)
 - Presentation layer only.

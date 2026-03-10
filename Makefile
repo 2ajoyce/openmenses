@@ -1,4 +1,4 @@
-# Root Makefile — opencycle
+# Root Makefile — openmenses
 #
 # Use these targets for all development and CI tasks.
 # Do not run underlying tools directly unless debugging a specific issue.

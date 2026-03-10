@@ -1,4 +1,4 @@
-# buf.yaml — Buf configuration for opencycle proto files
+# buf.yaml — Buf configuration for openmenses proto files
 # See: https://buf.build/docs/configuration/v2/buf-yaml
 
 version: v2
@@ -12,7 +12,7 @@ deps:
 lint:
   use:
     - STANDARD
-  # Enforce package version suffixes (e.g., opencycle.v1)
+  # Enforce package version suffixes (e.g., openmenses.v1)
   except: []
 
 breaking:
