@@ -10,7 +10,7 @@
 version: v2
 
 inputs:
-  - module: .
+  - directory: proto
 
 plugins:
   # --- Go: protobuf messages ---

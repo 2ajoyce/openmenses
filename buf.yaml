@@ -11,7 +11,7 @@ deps:
 
 lint:
   use:
-    - DEFAULT
+    - STANDARD
   # Enforce package version suffixes (e.g., opencycle.v1)
   except: []
 
