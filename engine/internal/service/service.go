@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"math"
 
 	"connectrpc.com/connect"
@@ -131,6 +132,9 @@ func (s *CycleTrackerService) GetUserProfile(
 	ctx context.Context,
 	req *connect.Request[v1.GetUserProfileRequest],
 ) (*connect.Response[v1.GetUserProfileResponse], error) {
+	if err := s.validator.ValidateRequest(req.Msg); err != nil {
+		return nil, toConnectErr(err)
+	}
 	profile, err := s.store.UserProfiles().GetByID(ctx, req.Msg.GetUserId())
 	if err != nil {
 		return nil, toConnectErr(err)
@@ -179,7 +183,9 @@ func (s *CycleTrackerService) CreateBleedingObservation(
 	}
 	// Best-effort: errors here do not fail the request because the observation
 	// is already persisted and ListCycles re-derives on demand.
-	_ = s.redetectAndStoreCycles(ctx, obs.GetUserId())
+	if err := s.redetectAndStoreCycles(ctx, obs.GetUserId()); err != nil {
+		log.Printf("redetectAndStoreCycles: user %s: %v", obs.GetUserId(), err)
+	}
 	return connect.NewResponse(&v1.CreateBleedingObservationResponse{Observation: obs}), nil
 }
 
@@ -280,6 +286,9 @@ func (s *CycleTrackerService) ListTimeline(
 	ctx context.Context,
 	req *connect.Request[v1.ListTimelineRequest],
 ) (*connect.Response[v1.ListTimelineResponse], error) {
+	if err := s.validator.ValidateRequest(req.Msg); err != nil {
+		return nil, toConnectErr(err)
+	}
 	userID := req.Msg.GetUserId()
 	start, end := "0001-01-01", "9999-12-31"
 	if r := req.Msg.GetRange(); r != nil {
@@ -309,6 +318,9 @@ func (s *CycleTrackerService) ListCycles(
 	ctx context.Context,
 	req *connect.Request[v1.ListCyclesRequest],
 ) (*connect.Response[v1.ListCyclesResponse], error) {
+	if err := s.validator.ValidateRequest(req.Msg); err != nil {
+		return nil, toConnectErr(err)
+	}
 	cycles, err := rules.DetectCycles(ctx, req.Msg.GetUserId(), s.store)
 	if err != nil {
 		return nil, toConnectErr(err)
@@ -322,8 +334,11 @@ func (s *CycleTrackerService) ListCycles(
 // Phase 4.
 func (s *CycleTrackerService) ListPredictions(
 	_ context.Context,
-	_ *connect.Request[v1.ListPredictionsRequest],
+	req *connect.Request[v1.ListPredictionsRequest],
 ) (*connect.Response[v1.ListPredictionsResponse], error) {
+	if err := s.validator.ValidateRequest(req.Msg); err != nil {
+		return nil, toConnectErr(err)
+	}
 	return connect.NewResponse(&v1.ListPredictionsResponse{}), nil
 }
 
@@ -331,8 +346,11 @@ func (s *CycleTrackerService) ListPredictions(
 // Phase 5.
 func (s *CycleTrackerService) ListInsights(
 	_ context.Context,
-	_ *connect.Request[v1.ListInsightsRequest],
+	req *connect.Request[v1.ListInsightsRequest],
 ) (*connect.Response[v1.ListInsightsResponse], error) {
+	if err := s.validator.ValidateRequest(req.Msg); err != nil {
+		return nil, toConnectErr(err)
+	}
 	return connect.NewResponse(&v1.ListInsightsResponse{}), nil
 }
 
@@ -361,6 +379,9 @@ func (s *CycleTrackerService) ExportData(
 	ctx context.Context,
 	req *connect.Request[v1.ExportDataRequest],
 ) (*connect.Response[v1.ExportDataResponse], error) {
+	if err := s.validator.ValidateRequest(req.Msg); err != nil {
+		return nil, toConnectErr(err)
+	}
 	userID := req.Msg.GetUserId()
 	payload := exportPayload{Version: exportFormatVersion, UserID: userID}
 

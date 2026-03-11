@@ -283,6 +283,17 @@ func TestCreateSymptom_AutoID(t *testing.T) {
 	}
 }
 
+func TestCreateSymptom_ValidationFailure(t *testing.T) {
+	svc := newSvc(t)
+	// SYMPTOM_TYPE_UNSPECIFIED (value 0) violates the not_in:[0] schema constraint.
+	bad := validSymptom("s1", "u1", "2026-01-15")
+	bad.Symptom = v1.SymptomType_SYMPTOM_TYPE_UNSPECIFIED
+	_, err := svc.CreateSymptomObservation(ctx, connect.NewRequest(&v1.CreateSymptomObservationRequest{Observation: bad}))
+	if codeOf(err) != connect.CodeInvalidArgument {
+		t.Fatalf("want CodeInvalidArgument, got %v", err)
+	}
+}
+
 // ─── CreateMoodObservation ────────────────────────────────────────────────────
 
 func TestCreateMood_HappyPath(t *testing.T) {
@@ -300,6 +311,29 @@ func TestCreateMood_HappyPath(t *testing.T) {
 func TestCreateMood_NilObservation(t *testing.T) {
 	svc := newSvc(t)
 	_, err := svc.CreateMoodObservation(ctx, connect.NewRequest(&v1.CreateMoodObservationRequest{}))
+	if codeOf(err) != connect.CodeInvalidArgument {
+		t.Fatalf("want CodeInvalidArgument, got %v", err)
+	}
+}
+
+func TestCreateMood_AutoID(t *testing.T) {
+	svc := newSvc(t)
+	obs := validMood("", "u1", "2026-01-15")
+	resp, err := svc.CreateMoodObservation(ctx, connect.NewRequest(&v1.CreateMoodObservationRequest{Observation: obs}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.Msg.GetObservation().GetId() == "" {
+		t.Error("expected auto-assigned ID, got empty")
+	}
+}
+
+func TestCreateMood_ValidationFailure(t *testing.T) {
+	svc := newSvc(t)
+	// MOOD_TYPE_UNSPECIFIED (value 0) violates the not_in:[0] schema constraint.
+	bad := validMood("m1", "u1", "2026-01-15")
+	bad.Mood = v1.MoodType_MOOD_TYPE_UNSPECIFIED
+	_, err := svc.CreateMoodObservation(ctx, connect.NewRequest(&v1.CreateMoodObservationRequest{Observation: bad}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
 	}
@@ -339,6 +373,17 @@ func TestCreateMedication_AutoID(t *testing.T) {
 	}
 }
 
+func TestCreateMedication_ValidationFailure(t *testing.T) {
+	svc := newSvc(t)
+	// Empty name violates the min_len:1 schema constraint.
+	bad := validMedication("med1", "u1")
+	bad.Name = ""
+	_, err := svc.CreateMedication(ctx, connect.NewRequest(&v1.CreateMedicationRequest{Medication: bad}))
+	if codeOf(err) != connect.CodeInvalidArgument {
+		t.Fatalf("want CodeInvalidArgument, got %v", err)
+	}
+}
+
 // ─── CreateMedicationEvent ────────────────────────────────────────────────────
 
 func TestCreateMedEvent_HappyPath(t *testing.T) {
@@ -373,6 +418,23 @@ func TestCreateMedEvent_NilEvent(t *testing.T) {
 	_, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
+	}
+}
+
+func TestCreateMedEvent_AutoID(t *testing.T) {
+	store := memory.New()
+	if err := store.Medications().Create(ctx, validMedication("med1", "u1")); err != nil {
+		t.Fatal(err)
+	}
+	svc := newSvcWithStore(t, store)
+	// No ID provided – service should assign one.
+	ev := validMedEvent("", "u1", "med1", "2026-01-15")
+	resp, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{Event: ev}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.Msg.GetEvent().GetId() == "" {
+		t.Error("expected auto-assigned ID, got empty")
 	}
 }
 
