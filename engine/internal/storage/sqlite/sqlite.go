@@ -8,6 +8,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"google.golang.org/protobuf/proto"
 	_ "modernc.org/sqlite"
@@ -949,20 +950,7 @@ func isConflict(err error) bool {
 		return false
 	}
 	// modernc/sqlite returns errors with "UNIQUE constraint failed" in the message.
-	return containsStr(err.Error(), "UNIQUE constraint failed")
-}
-
-func containsStr(s, sub string) bool {
-	return len(s) >= len(sub) && (s == sub || len(s) > 0 && stringContains(s, sub))
-}
-
-func stringContains(s, sub string) bool {
-	for i := 0; i <= len(s)-len(sub); i++ {
-		if s[i:i+len(sub)] == sub {
-			return true
-		}
-	}
-	return false
+	return strings.Contains(err.Error(), "UNIQUE constraint failed")
 }
 
 func requireAffected(res sql.Result) error {
