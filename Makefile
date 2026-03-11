@@ -3,6 +3,13 @@
 # Use these targets for all development and CI tasks.
 # Do not run underlying tools directly unless debugging a specific issue.
 
+# On Windows, npm is npm.cmd; on Unix it is npm.
+ifeq ($(OS),Windows_NT)
+    NPM := npm.cmd
+else
+    NPM := npm
+endif
+
 .PHONY: proto-lint proto-generate proto-breaking \
         engine-lint engine-test \
         ui-lint ui-test \
@@ -36,10 +43,10 @@ engine-test:
 # ---------------------------------------------------------------------------
 
 ui-lint:
-	cd ui && npm run lint && npm run typecheck
+	cd ui && $(NPM) run lint && $(NPM) run typecheck
 
 ui-test:
-	cd ui && npm run test
+	cd ui && $(NPM) run test
 
 # ---------------------------------------------------------------------------
 # Aggregate targets

@@ -13,13 +13,14 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 
+	"github.com/oklog/ulid/v2"
+
 	"github.com/2ajoyce/openmenses/engine/internal/rules"
 	"github.com/2ajoyce/openmenses/engine/internal/storage"
 	"github.com/2ajoyce/openmenses/engine/internal/timeline"
 	"github.com/2ajoyce/openmenses/engine/internal/validation"
 	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 	"github.com/2ajoyce/openmenses/gen/go/openmenses/v1/openmensesv1connect"
-	"github.com/oklog/ulid/v2"
 )
 
 // CycleTrackerService implements openmensesv1connect.CycleTrackerServiceHandler.
@@ -93,23 +94,6 @@ func paginateAll[T any](ctx context.Context, fetch func(ctx context.Context, tok
 		token = next
 	}
 	return all, nil
-}
-
-// paginate drives a paginated fetch function until exhausted. Each invocation
-// receives the current page token and returns the next token (empty = done).
-func paginate(ctx context.Context, fetch func(token string) (string, error)) error {
-	_ = ctx // ctx accepted for future cancellation support
-	token := ""
-	for {
-		next, err := fetch(token)
-		if err != nil {
-			return err
-		}
-		if next == "" {
-			return nil
-		}
-		token = next
-	}
 }
 
 var protoJSONMarshal = protojson.MarshalOptions{EmitUnpopulated: false}
