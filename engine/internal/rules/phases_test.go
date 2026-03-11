@@ -199,6 +199,106 @@ func TestPhases_Confidence_IrregularModelCapsAtMedium(t *testing.T) {
 	}
 }
 
+// ---- Irregular model phase widening (§2.3) -------------------------------- //
+
+// irregularProfile returns a profile with BIOLOGICAL_CYCLE_MODEL_IRREGULAR.
+func irregularProfile() *v1.UserProfile {
+	return &v1.UserProfile{
+		Id:              "u1",
+		BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_IRREGULAR,
+		CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
+	}
+}
+
+// TestPhases_Irregular_28Day verifies the ±3-day widening for a 28-day cycle.
+// O = 28-14 = 14.  Expected widened boundaries:
+//   - Menstruation:     days 1–8      (5+3)
+//   - Follicular:       day 9         (O-5 = 9; 1 day)
+//   - Ovulation window: days 10–18    (O-4=10, O+4=18; 9 days)
+//   - Luteal:           days 19–28    (O+5=19; 10 days)
+func TestPhases_Irregular_28Day(t *testing.T) {
+	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
+	ests := rules.EstimatePhases(cycle, irregularProfile(), 28, 5)
+
+	if len(ests) != 28 {
+		t.Fatalf("expected 28 estimates, got %d", len(ests))
+	}
+
+	gotMen := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
+	gotFol := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_FOLLICULAR)
+	gotOvl := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
+	gotLut := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_LUTEAL)
+
+	if gotMen != 8 {
+		t.Errorf("menstruation = %d days, want 8 (widened from 5)", gotMen)
+	}
+	if gotFol != 1 {
+		t.Errorf("follicular = %d days, want 1 (compressed for 28-day cycle)", gotFol)
+	}
+	if gotOvl != 9 {
+		t.Errorf("ovulation_window = %d days, want 9 (widened ±3 from 3)", gotOvl)
+	}
+	if gotLut != 10 {
+		t.Errorf("luteal = %d days, want 10", gotLut)
+	}
+}
+
+// TestPhases_Irregular_30Day verifies the ±3-day widening for a 30-day cycle.
+// O = 30-14 = 16.  Expected:
+//   - Menstruation:     days 1–8      (8 days)
+//   - Follicular:       days 9–11     (O-5=11; 3 days)
+//   - Ovulation window: days 12–20    (O-4=12, O+4=20; 9 days)
+//   - Luteal:           days 21–30    (O+5=21; 10 days)
+func TestPhases_Irregular_30Day(t *testing.T) {
+	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-30")
+	ests := rules.EstimatePhases(cycle, irregularProfile(), 30, 5)
+
+	if len(ests) != 30 {
+		t.Fatalf("expected 30 estimates, got %d", len(ests))
+	}
+
+	gotMen := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
+	gotFol := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_FOLLICULAR)
+	gotOvl := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
+	gotLut := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_LUTEAL)
+
+	if gotMen != 8 {
+		t.Errorf("menstruation = %d days, want 8", gotMen)
+	}
+	if gotFol != 3 {
+		t.Errorf("follicular = %d days, want 3", gotFol)
+	}
+	if gotOvl != 9 {
+		t.Errorf("ovulation_window = %d days, want 9", gotOvl)
+	}
+	if gotLut != 10 {
+		t.Errorf("luteal = %d days, want 10", gotLut)
+	}
+}
+
+// TestPhases_Irregular_WiderThanOvulatory verifies that the irregular model's
+// ovulation window is always wider than the standard ovulatory model.
+func TestPhases_Irregular_WiderThanOvulatory(t *testing.T) {
+	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
+
+	ovulatoryEsts := rules.EstimatePhases(cycle, regularProfile(), 28, 5)
+	irregularEsts := rules.EstimatePhases(cycle, irregularProfile(), 28, 5)
+
+	stdOvl := countPhase(ovulatoryEsts, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
+	irrOvl := countPhase(irregularEsts, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
+
+	if irrOvl <= stdOvl {
+		t.Errorf("irregular ovulation window (%d days) should be wider than standard (%d days)", irrOvl, stdOvl)
+	}
+
+	stdMen := countPhase(ovulatoryEsts, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
+	irrMen := countPhase(irregularEsts, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
+
+	if irrMen <= stdMen {
+		t.Errorf("irregular menstruation (%d days) should be wider than standard (%d days)", irrMen, stdMen)
+	}
+}
+
 // ---- Dates fields populated correctly ------------------------------------ //
 
 func TestPhases_DatesSequential(t *testing.T) {

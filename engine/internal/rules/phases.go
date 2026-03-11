@@ -55,9 +55,14 @@ func EstimatePhases(
 	}
 
 	confidence := computeConfidence(completedCycles, profile)
-	fn := ovulatoryPhaseFn(avgCycleLen)
-	if profile.GetBiologicalCycle() == v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED {
+	var fn phaseFn
+	switch profile.GetBiologicalCycle() {
+	case v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED:
 		fn = suppressedPhaseFn()
+	case v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_IRREGULAR:
+		fn = irregularPhaseFn(avgCycleLen)
+	default:
+		fn = ovulatoryPhaseFn(avgCycleLen)
 	}
 
 	entropy := ulid.DefaultEntropy()
@@ -81,9 +86,6 @@ func EstimatePhases(
 //   - Days 6–(O-2):   FOLLICULAR
 //   - Days (O-1)–(O+1): OVULATION_WINDOW
 //   - Days (O+2)–end: LUTEAL
-//
-// The irregular model reuses this function; confidence capping is applied in
-// computeConfidence rather than modifying phase boundaries.
 func ovulatoryPhaseFn(cycleLen int) phaseFn {
 	o := cycleLen - 14
 	if o < 6 {
@@ -96,6 +98,40 @@ func ovulatoryPhaseFn(cycleLen int) phaseFn {
 		case dayNum <= o-2:
 			return v1.CyclePhase_CYCLE_PHASE_FOLLICULAR
 		case dayNum <= o+1:
+			return v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW
+		default:
+			return v1.CyclePhase_CYCLE_PHASE_LUTEAL
+		}
+	}
+}
+
+// irregularPhaseFn returns a phase function for the irregular cycle model
+// (BIOLOGICAL_CYCLE_MODEL_IRREGULAR) per domain rules §2.3. All phase
+// boundaries are widened by ±3 days compared to the ovulatory model:
+//
+//   - Menses ends at day 8 (5+3)
+//   - Ovulation window: days (O-4)–(O+4), a 9-day window centred on O
+//   - Follicular: days 9–(O-5), may be empty for short cycles (O ≤ 13)
+//   - Luteal: days (O+5)–end
+//
+// The switch is evaluated in order so menstruation takes precedence when
+// follicular would otherwise be empty.
+func irregularPhaseFn(cycleLen int) phaseFn {
+	o := cycleLen - 14
+	if o < 6 {
+		o = 6 // safety clamp: ovulation cannot precede follicular phase
+	}
+	// Widened boundary values (see §2.3).
+	mensEnd := 5 + 3 // = 8
+	follEnd := o - 5 // = O-5; may be ≤ mensEnd for short cycles
+	ovEnd := o + 4   // = O+4
+	return func(dayNum int) v1.CyclePhase {
+		switch {
+		case dayNum <= mensEnd:
+			return v1.CyclePhase_CYCLE_PHASE_MENSTRUATION
+		case dayNum <= follEnd:
+			return v1.CyclePhase_CYCLE_PHASE_FOLLICULAR
+		case dayNum <= ovEnd:
 			return v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW
 		default:
 			return v1.CyclePhase_CYCLE_PHASE_LUTEAL
