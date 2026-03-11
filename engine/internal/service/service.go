@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math"
 
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -627,9 +628,9 @@ func (s *CycleTrackerService) ImportData(
 
 // redetectAndStoreCycles recomputes derived cycles for userID and replaces the
 // stored derived cycles with the new set. User-confirmed cycles are never
-// modified.
+// modified. Phase estimates are regenerated for all cycles after detection.
 func (s *CycleTrackerService) redetectAndStoreCycles(ctx context.Context, userID string) error {
-	// Delete all existing derived cycles for this user.
+	// Delete all existing derived cycles and their associated phase estimates.
 	existing, err := paginateAll(ctx, func(ctx context.Context, token string) ([]*v1.Cycle, string, error) {
 		pg, err := s.store.Cycles().ListByUser(ctx, userID, storage.PageRequest{PageSize: 500, PageToken: token})
 		return pg.Items, pg.NextPageToken, err
@@ -639,6 +640,9 @@ func (s *CycleTrackerService) redetectAndStoreCycles(ctx context.Context, userID
 	}
 	for _, c := range existing {
 		if c.GetSource() == v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING {
+			if err := s.store.PhaseEstimates().DeleteByCycleID(ctx, c.GetId()); err != nil {
+				return err
+			}
 			if err := s.store.Cycles().DeleteByID(ctx, c.GetId()); err != nil && !errors.Is(err, storage.ErrNotFound) {
 				return err
 			}
@@ -657,5 +661,46 @@ func (s *CycleTrackerService) redetectAndStoreCycles(ctx context.Context, userID
 			}
 		}
 	}
+
+	// Estimate and store phases for all cycles (derived + confirmed).
+	return s.estimateAndStorePhases(ctx, userID, newCycles)
+}
+
+// estimateAndStorePhases computes PhaseEstimates for each cycle and persists
+// them. Conflicts (already-existing estimates) are silently skipped.
+func (s *CycleTrackerService) estimateAndStorePhases(ctx context.Context, userID string, cycles []*v1.Cycle) error {
+	profile, err := s.store.UserProfiles().GetByID(ctx, userID)
+	if err != nil {
+		if errors.Is(err, storage.ErrNotFound) {
+			return nil // no profile yet — estimation requires profile
+		}
+		return err
+	}
+
+	stats := rules.Stats(cycles)
+	avgLen := int(math.Round(stats.Average))
+	completed := countCompletedCycles(cycles)
+
+	for _, c := range cycles {
+		estimates := rules.EstimatePhases(c, profile, avgLen, completed)
+		for _, est := range estimates {
+			if err := s.store.PhaseEstimates().Create(ctx, est); err != nil {
+				if !errors.Is(err, storage.ErrConflict) {
+					return err
+				}
+			}
+		}
+	}
 	return nil
+}
+
+// countCompletedCycles returns the number of cycles with a non-empty end_date.
+func countCompletedCycles(cycles []*v1.Cycle) int {
+	n := 0
+	for _, c := range cycles {
+		if c.GetEndDate().GetValue() != "" {
+			n++
+		}
+	}
+	return n
 }
