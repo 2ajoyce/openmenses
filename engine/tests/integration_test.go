@@ -202,6 +202,21 @@ func TestIntegration_FullLifecycle_Regular28Day(t *testing.T) {
 			if len(tlResp.Msg.GetRecords()) < 5 {
 				t.Errorf("timeline for 2025-09-01..05: got %d records, want ≥ 5", len(tlResp.Msg.GetRecords()))
 			}
+
+			// Phase estimates must be present in the full timeline: EstimatePhases
+			// is wired into the cycle detection flow, so at least one PhaseEstimate
+			// record should appear after the fixture is imported.
+			allRecords := collectAllTimeline(t, ctx, client, userID)
+			var hasPhaseEstimate bool
+			for _, r := range allRecords {
+				if r.GetPhaseEstimate() != nil {
+					hasPhaseEstimate = true
+					break
+				}
+			}
+			if !hasPhaseEstimate {
+				t.Error("no PhaseEstimate records found in timeline; expected EstimatePhases to produce phase data for detected cycles")
+			}
 		})
 	}
 }

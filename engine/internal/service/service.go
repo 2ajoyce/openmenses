@@ -642,6 +642,15 @@ func (s *CycleTrackerService) ImportData(
 		count++
 	}
 
+	// Trigger cycle re-detection and phase estimation now that all observations
+	// have been persisted. Errors are logged but not propagated so that the
+	// import itself is not rolled back.
+	if payload.UserID != "" {
+		if err := s.redetectAndStoreCycles(ctx, payload.UserID); err != nil {
+			log.Printf("ImportData: redetectAndStoreCycles: user %s: %v", payload.UserID, err)
+		}
+	}
+
 	return connect.NewResponse(&v1.ImportDataResponse{RecordsImported: count}), nil
 }
 
