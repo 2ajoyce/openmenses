@@ -485,3 +485,96 @@ func TestIsProfileComplete_MissingCycleRegularity(t *testing.T) {
 		t.Fatal("expected incomplete profile to return false")
 	}
 }
+
+// ---- Malformed timestamp strings ------------------------------------------ //
+
+// malformedTimestamps contains strings that are 20–64 characters but do not
+// conform to RFC3339 format. All should be rejected after 16.1 and 16.2 fixes.
+var malformedTimestamps = []string{
+	"not-a-valid-timestamp-xx",        // garbage, 24 chars
+	"2026/03/09 10:00:00 +00:00 UTC!", // slashes/space instead of dashes/T
+	"20260309T100000Z000000000000000", // no dashes or colons, 31 chars
+}
+
+func TestBleeding_MalformedTimestamp(t *testing.T) {
+	for _, ts := range malformedTimestamps {
+		t.Run(ts, func(t *testing.T) {
+			val := newValidator(t)
+			val.Now = fixedNow()
+			obs := &v1.BleedingObservation{
+				Id:        "b1",
+				UserId:    "u1",
+				Timestamp: &v1.DateTime{Value: ts},
+				Flow:      v1.BleedingFlow_BLEEDING_FLOW_MEDIUM,
+			}
+			if err := val.ValidateBleedingObservation(ctx, obs); err == nil {
+				t.Fatalf("expected validation error for malformed timestamp %q", ts)
+			}
+		})
+	}
+}
+
+func TestSymptom_MalformedTimestamp(t *testing.T) {
+	for _, ts := range malformedTimestamps {
+		t.Run(ts, func(t *testing.T) {
+			val := newValidator(t)
+			val.Now = fixedNow()
+			obs := &v1.SymptomObservation{
+				Id:        "s1",
+				UserId:    "u1",
+				Timestamp: &v1.DateTime{Value: ts},
+				Symptom:   v1.SymptomType_SYMPTOM_TYPE_CRAMPS,
+			}
+			if err := val.ValidateSymptomObservation(ctx, obs); err == nil {
+				t.Fatalf("expected validation error for malformed timestamp %q", ts)
+			}
+		})
+	}
+}
+
+func TestMood_MalformedTimestamp(t *testing.T) {
+	for _, ts := range malformedTimestamps {
+		t.Run(ts, func(t *testing.T) {
+			val := newValidator(t)
+			val.Now = fixedNow()
+			obs := &v1.MoodObservation{
+				Id:        "m1",
+				UserId:    "u1",
+				Timestamp: &v1.DateTime{Value: ts},
+				Mood:      v1.MoodType_MOOD_TYPE_HAPPY,
+			}
+			if err := val.ValidateMoodObservation(ctx, obs); err == nil {
+				t.Fatalf("expected validation error for malformed timestamp %q", ts)
+			}
+		})
+	}
+}
+
+func TestMedEvent_MalformedTimestamp(t *testing.T) {
+	store := memory.New()
+	if err := store.Medications().Create(ctx, &v1.Medication{
+		Id:       "med1",
+		UserId:   "u1",
+		Name:     "Ibuprofen",
+		Category: v1.MedicationCategory_MEDICATION_CATEGORY_PAIN_RELIEF,
+		Active:   true,
+	}); err != nil {
+		panic(err)
+	}
+	for _, ts := range malformedTimestamps {
+		t.Run(ts, func(t *testing.T) {
+			val := newValidatorWithStore(t, store)
+			val.Now = fixedNow()
+			event := &v1.MedicationEvent{
+				Id:           "e1",
+				UserId:       "u1",
+				MedicationId: "med1",
+				Timestamp:    &v1.DateTime{Value: ts},
+				Status:       v1.MedicationEventStatus_MEDICATION_EVENT_STATUS_TAKEN,
+			}
+			if err := val.ValidateMedicationEvent(ctx, event); err == nil {
+				t.Fatalf("expected validation error for malformed timestamp %q", ts)
+			}
+		})
+	}
+}

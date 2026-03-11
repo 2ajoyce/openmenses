@@ -17,6 +17,7 @@ message DateTime {
   string value = 1 [(buf.validate.field).string = {
     min_len: 20
     max_len: 64
+    pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}"
   }];
 }
 

@@ -431,9 +431,9 @@ const file_openmenses_v1_types_proto_rawDesc = "" +
 	"\x19openmenses/v1/types.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\"I\n" +
 	"\tLocalDate\x12<\n" +
 	"\x05value\x18\x01 \x01(\tB&\xbaH#r!2\x1c^[0-9]{4}-[0-9]{2}-[0-9]{2}$\x98\x01\n" +
-	"R\x05value\"+\n" +
-	"\bDateTime\x12\x1f\n" +
-	"\x05value\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x14\x18@R\x05value\"'\n" +
+	"R\x05value\"c\n" +
+	"\bDateTime\x12W\n" +
+	"\x05value\x18\x01 \x01(\tBA\xbaH>r<\x10\x14\x18@26^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}R\x05value\"'\n" +
 	"\tRecordRef\x12\x1a\n" +
 	"\x02id\x18\x01 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x02id\"g\n" +
