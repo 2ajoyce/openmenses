@@ -82,6 +82,26 @@ func phaseEstimate(id, userID, date string) *v1.PhaseEstimate {
 	}
 }
 
+// recordTimestamp returns the full timestamp or date string from a
+// TimelineRecord for use in intra-day ordering assertions.
+func recordTimestamp(r *v1.TimelineRecord) string {
+	switch x := r.GetRecord().(type) {
+	case *v1.TimelineRecord_BleedingObservation:
+		return x.BleedingObservation.GetTimestamp().GetValue()
+	case *v1.TimelineRecord_SymptomObservation:
+		return x.SymptomObservation.GetTimestamp().GetValue()
+	case *v1.TimelineRecord_MoodObservation:
+		return x.MoodObservation.GetTimestamp().GetValue()
+	case *v1.TimelineRecord_MedicationEvent:
+		return x.MedicationEvent.GetTimestamp().GetValue()
+	case *v1.TimelineRecord_Cycle:
+		return x.Cycle.GetStartDate().GetValue()
+	case *v1.TimelineRecord_PhaseEstimate:
+		return x.PhaseEstimate.GetDate().GetValue()
+	}
+	return ""
+}
+
 // recordDate extracts the YYYY-MM-DD date prefix from a TimelineRecord for
 // use in ordering assertions.
 func recordDate(r *v1.TimelineRecord) string {
@@ -377,6 +397,65 @@ func TestBuildTimeline_DefaultPageSize(t *testing.T) {
 	}
 	if next == "" {
 		t.Error("want non-empty next token for partial page")
+	}
+}
+
+// TestBuildTimeline_IntraDayChronologicalOrdering verifies that records on the
+// same day are sorted by their full timestamp (most-recent-first) rather than
+// by entity-type insertion order.
+func TestBuildTimeline_IntraDayChronologicalOrdering(t *testing.T) {
+	store := memory.New()
+
+	// All three records share the same calendar day but have different times.
+	// Bleeding at 14:00, mood at 11:00, symptom at 08:00.
+	bleedingRec := &v1.BleedingObservation{
+		Id:        "b1",
+		UserId:    "u1",
+		Timestamp: &v1.DateTime{Value: "2024-07-15T14:00:00Z"},
+		Flow:      v1.BleedingFlow_BLEEDING_FLOW_MEDIUM,
+	}
+	moodRec := &v1.MoodObservation{
+		Id:        "m1",
+		UserId:    "u1",
+		Timestamp: &v1.DateTime{Value: "2024-07-15T11:00:00Z"},
+		Mood:      v1.MoodType_MOOD_TYPE_HAPPY,
+	}
+	symptomRec := &v1.SymptomObservation{
+		Id:        "s1",
+		UserId:    "u1",
+		Timestamp: &v1.DateTime{Value: "2024-07-15T08:00:00Z"},
+		Symptom:   v1.SymptomType_SYMPTOM_TYPE_CRAMPS,
+	}
+
+	if err := store.BleedingObservations().Create(ctx, bleedingRec); err != nil {
+		t.Fatal(err)
+	}
+	if err := store.MoodObservations().Create(ctx, moodRec); err != nil {
+		t.Fatal(err)
+	}
+	if err := store.SymptomObservations().Create(ctx, symptomRec); err != nil {
+		t.Fatal(err)
+	}
+
+	records, _, err := timeline.BuildTimeline(ctx, store, "u1", "2024-07-15", "2024-07-15", storage.PageRequest{})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(records) != 3 {
+		t.Fatalf("want 3 records, got %d", len(records))
+	}
+
+	// Expected descending (most-recent-first) order: 14:00, 11:00, 08:00.
+	wantTimestamps := []string{
+		"2024-07-15T14:00:00Z",
+		"2024-07-15T11:00:00Z",
+		"2024-07-15T08:00:00Z",
+	}
+	for i, want := range wantTimestamps {
+		got := recordTimestamp(records[i])
+		if got != want {
+			t.Errorf("records[%d]: want timestamp %q, got %q", i, want, got)
+		}
 	}
 }
 
