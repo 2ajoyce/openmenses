@@ -1,0 +1,33 @@
+{
+    "version": "1",
+    "user_id": "user-firsttime",
+    "profile": {
+        "id": "user-firsttime",
+        "biologicalCycle": "BIOLOGICAL_CYCLE_MODEL_OVULATORY",
+        "contraception": "CONTRACEPTION_TYPE_NONE",
+        "cycleRegularity": "CYCLE_REGULARITY_UNKNOWN",
+        "reproductiveGoal": "REPRODUCTIVE_GOAL_PREGNANCY_IRRELEVANT",
+        "trackingFocus": [
+            "TRACKING_FOCUS_BLEEDING"
+        ]
+    },
+    "bleeding_observations": [
+        {
+            "id": "ft-b-1",
+            "userId": "user-firsttime",
+            "timestamp": {
+                "value": "2026-01-15T09:30:00Z"
+            },
+            "flow": "BLEEDING_FLOW_MEDIUM",
+            "note": "First time tracking"
+        },
+        {
+            "id": "ft-b-2",
+            "userId": "user-firsttime",
+            "timestamp": {
+                "value": "2026-01-16T09:30:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        }
+    ]
+}
