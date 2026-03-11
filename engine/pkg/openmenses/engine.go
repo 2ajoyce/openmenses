@@ -78,9 +78,7 @@ func NewEngine(ctx context.Context, opts ...Option) (*Engine, error) {
 
 	svc, err := service.New(store)
 	if err != nil {
-		if closeFn != nil {
-			closeFn() //nolint:errcheck
-		}
+		closeFn() //nolint:errcheck
 		return nil, fmt.Errorf("openmenses: init service: %w", err)
 	}
 
