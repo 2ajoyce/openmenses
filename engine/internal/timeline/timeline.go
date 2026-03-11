@@ -20,19 +20,11 @@ const (
 
 // entry is an intermediate type used to accumulate records before sorting.
 type entry struct {
-	// key is the YYYY-MM-DD date prefix (or the full timestamp) used for
-	// lexicographic descending sort (most-recent-first).
+	// key is the full timestamp or date string used for lexicographic
+	// descending sort (most-recent-first). Using the full timestamp preserves
+	// intra-day chronological ordering for records that carry a time component.
 	key    string
 	record *v1.TimelineRecord
-}
-
-// dateKey extracts the YYYY-MM-DD prefix from a timestamp or date string.
-// If the string is shorter than 10 characters it is returned as-is.
-func dateKey(s string) string {
-	if len(s) >= 10 {
-		return s[:10]
-	}
-	return s
 }
 
 // BuildTimeline queries every observable record type (bleeding observations,
@@ -59,7 +51,7 @@ func BuildTimeline(
 	var entries []entry
 
 	add := func(key string, rec *v1.TimelineRecord) {
-		entries = append(entries, entry{key: dateKey(key), record: rec})
+		entries = append(entries, entry{key: key, record: rec})
 	}
 
 	// ── bleeding observations ────────────────────────────────────────────────
