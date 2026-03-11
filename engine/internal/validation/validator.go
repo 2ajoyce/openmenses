@@ -262,6 +262,13 @@ func (v *Validator) ValidateUserProfile(_ context.Context, profile *v1.UserProfi
 	return finalise(v.schemaValidate(profile))
 }
 
+// ValidateRequest runs protovalidate schema constraints on an RPC request
+// message. This enforces buf.validate annotations on the request wrapper itself
+// (e.g. min_len constraints on user_id fields) before the handler is entered.
+func (v *Validator) ValidateRequest(msg proto.Message) error {
+	return finalise(v.schemaValidate(msg))
+}
+
 // IsProfileComplete reports whether the profile has the fields required for
 // predictions and phase estimates: biological_cycle and cycle_regularity must
 // both be non-UNSPECIFIED. tracking_focus is enforced by proto schema.
