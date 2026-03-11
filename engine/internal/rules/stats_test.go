@@ -156,3 +156,63 @@ func TestWindowStats_IgnoresOpenEnded(t *testing.T) {
 		t.Fatalf("Count = %d, want 1 (open-ended excluded)", s.Count)
 	}
 }
+
+// ---- Stats: outlier filtering --------------------------------------------- //
+
+func TestStats_ExcludesOutlierShortCycle(t *testing.T) {
+	cycles := []*v1.Cycle{
+		makeCycle("c1", "u1", "2026-01-01", "2026-01-28"), // 28 days — normal
+		makeCycle("c2", "u1", "2026-01-29", "2026-02-05"), // 8 days — outlier (< 15)
+		makeCycle("c3", "u1", "2026-02-06", "2026-03-07"), // 30 days — normal
+	}
+	s := rules.Stats(cycles)
+	// Only 28 and 30 should be counted.
+	if s.Count != 2 {
+		t.Fatalf("Count = %d, want 2 (outlier excluded)", s.Count)
+	}
+	if !approxEqual(s.Average, 29.0, 0.001) {
+		t.Errorf("Average = %.4f, want 29 (only 28 and 30)", s.Average)
+	}
+}
+
+func TestStats_ExcludesOutlierLongCycle(t *testing.T) {
+	cycles := []*v1.Cycle{
+		makeCycle("c1", "u1", "2026-01-01", "2026-01-28"), // 28 days — normal
+		makeCycle("c2", "u1", "2026-01-29", "2026-05-07"), // 99 days — outlier (> 90)
+		makeCycle("c3", "u1", "2026-05-08", "2026-06-06"), // 30 days — normal
+	}
+	s := rules.Stats(cycles)
+	if s.Count != 2 {
+		t.Fatalf("Count = %d, want 2 (outlier excluded)", s.Count)
+	}
+	if !approxEqual(s.Average, 29.0, 0.001) {
+		t.Errorf("Average = %.4f, want 29 (only 28 and 30)", s.Average)
+	}
+}
+
+func TestStats_AllOutliers_EmptyResult(t *testing.T) {
+	cycles := []*v1.Cycle{
+		makeCycle("c1", "u1", "2026-01-01", "2026-01-05"), // 5 days
+		makeCycle("c2", "u1", "2026-01-06", "2026-05-15"), // 130 days
+	}
+	s := rules.Stats(cycles)
+	if s.Count != 0 {
+		t.Fatalf("Count = %d, want 0 (all outliers)", s.Count)
+	}
+}
+
+func TestWindowStats_ExcludesOutliers(t *testing.T) {
+	cycles := []*v1.Cycle{
+		makeCycle("c1", "u1", "2025-01-01", "2025-01-28"), // 28 days
+		makeCycle("c2", "u1", "2025-01-29", "2025-02-03"), // 6 days — outlier
+		makeCycle("c3", "u1", "2026-01-01", "2026-01-30"), // 30 days
+	}
+	// Last 3 cycles include all 3, but outlier is filtered from stats.
+	s := rules.WindowStats(cycles, 3)
+	if s.Count != 2 {
+		t.Fatalf("Count = %d, want 2 (outlier excluded)", s.Count)
+	}
+	if !approxEqual(s.Average, 29.0, 0.001) {
+		t.Errorf("Average = %.4f, want 29 (only 28 and 30)", s.Average)
+	}
+}

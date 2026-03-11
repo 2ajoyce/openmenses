@@ -19,6 +19,25 @@ import (
 // two distinct episodes per domain rules §1.1.
 const minNonBleedingGap = 3
 
+// MinCycleLength is the minimum valid cycle length in days per domain rules
+// §1.2. Cycles shorter than this are considered outliers.
+const MinCycleLength = 15
+
+// MaxCycleLength is the maximum valid cycle length in days per domain rules
+// §1.2. Cycles longer than this are considered outliers.
+const MaxCycleLength = 90
+
+// IsOutlierLength reports whether a completed cycle's length falls outside
+// the valid bounds (15–90 days) per domain rules §1.2. Open-ended cycles
+// (no end_date) are never considered outliers.
+func IsOutlierLength(c *v1.Cycle) bool {
+	l := CycleLength(c)
+	if l <= 0 {
+		return false // open-ended or unparseable
+	}
+	return l < MinCycleLength || l > MaxCycleLength
+}
+
 // DetectCycles derives cycles from bleeding observations stored for userID.
 // USER_CONFIRMED cycles are fetched from storage and preserved unchanged.
 // DERIVED cycles are recomputed from scratch; the caller is responsible for
