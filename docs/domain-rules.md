@@ -36,6 +36,8 @@ A new cycle begins on the **first calendar day of a bleeding episode** that is p
 
 Cycles shorter than 15 days or longer than 90 days are **flagged** with a warning but are stored and not rejected. The engine records these outliers and excludes them from statistics and predictions by default.
 
+**Implementation:** The `rules.IsOutlierLength()` function determines whether a completed cycle falls outside the 15–90 day bounds. `rules.Stats()` and `rules.WindowStats()` automatically exclude outlier-length cycles from their computations. Outlier cycles are still stored and returned by `DetectCycles` and `ListCycles`; they are filtered only at the statistics layer.
+
 ### 1.3 Cycle `end_date` Semantics
 
 `Cycle.end_date` is the **day before the start of the next cycle**. It is inclusive: the last day that belongs to a cycle is `end_date`.

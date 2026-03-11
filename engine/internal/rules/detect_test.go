@@ -331,3 +331,82 @@ func TestDetect_MultipleEpisodes_CorrectBoundaries(t *testing.T) {
 		t.Errorf("cycle[2] should be open-ended, got end_date=%q", got)
 	}
 }
+
+// ---- IsOutlierLength ------------------------------------------------------ //
+
+func TestIsOutlierLength_NormalCycle(t *testing.T) {
+	c := &v1.Cycle{
+		Id:        "c1",
+		UserId:    "u1",
+		StartDate: &v1.LocalDate{Value: "2026-01-01"},
+		EndDate:   &v1.LocalDate{Value: "2026-01-28"}, // 28 days
+		Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,
+	}
+	if rules.IsOutlierLength(c) {
+		t.Error("28-day cycle should not be an outlier")
+	}
+}
+
+func TestIsOutlierLength_TooShort(t *testing.T) {
+	c := &v1.Cycle{
+		Id:        "c1",
+		UserId:    "u1",
+		StartDate: &v1.LocalDate{Value: "2026-01-01"},
+		EndDate:   &v1.LocalDate{Value: "2026-01-10"}, // 10 days
+		Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,
+	}
+	if !rules.IsOutlierLength(c) {
+		t.Error("10-day cycle should be an outlier (< 15)")
+	}
+}
+
+func TestIsOutlierLength_TooLong(t *testing.T) {
+	c := &v1.Cycle{
+		Id:        "c1",
+		UserId:    "u1",
+		StartDate: &v1.LocalDate{Value: "2026-01-01"},
+		EndDate:   &v1.LocalDate{Value: "2026-05-01"}, // 121 days
+		Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,
+	}
+	if !rules.IsOutlierLength(c) {
+		t.Error("121-day cycle should be an outlier (> 90)")
+	}
+}
+
+func TestIsOutlierLength_AtMinBound(t *testing.T) {
+	c := &v1.Cycle{
+		Id:        "c1",
+		UserId:    "u1",
+		StartDate: &v1.LocalDate{Value: "2026-01-01"},
+		EndDate:   &v1.LocalDate{Value: "2026-01-15"}, // 15 days
+		Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,
+	}
+	if rules.IsOutlierLength(c) {
+		t.Error("15-day cycle should not be an outlier (= min)")
+	}
+}
+
+func TestIsOutlierLength_AtMaxBound(t *testing.T) {
+	c := &v1.Cycle{
+		Id:        "c1",
+		UserId:    "u1",
+		StartDate: &v1.LocalDate{Value: "2026-01-01"},
+		EndDate:   &v1.LocalDate{Value: "2026-03-31"}, // 90 days
+		Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,
+	}
+	if rules.IsOutlierLength(c) {
+		t.Error("90-day cycle should not be an outlier (= max)")
+	}
+}
+
+func TestIsOutlierLength_OpenEnded(t *testing.T) {
+	c := &v1.Cycle{
+		Id:        "c1",
+		UserId:    "u1",
+		StartDate: &v1.LocalDate{Value: "2026-01-01"},
+		Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,
+	}
+	if rules.IsOutlierLength(c) {
+		t.Error("open-ended cycle should not be an outlier")
+	}
+}

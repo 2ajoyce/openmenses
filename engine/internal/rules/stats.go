@@ -60,20 +60,21 @@ func completedOnly(cycles []*v1.Cycle) []*v1.Cycle {
 	return out
 }
 
-// completedLengths returns the length in days for each completed cycle.
+// completedLengths returns the length in days for each completed cycle,
+// excluding outlier-length cycles (outside 15–90 days) per domain rules §1.2.
 func completedLengths(cycles []*v1.Cycle) []int {
 	out := make([]int, 0, len(cycles))
 	for _, c := range cycles {
-		if l := cycleLength(c); l > 0 {
+		if l := CycleLength(c); l > 0 && !IsOutlierLength(c) {
 			out = append(out, l)
 		}
 	}
 	return out
 }
 
-// cycleLength returns the inclusive number of days from start_date to end_date.
+// CycleLength returns the inclusive number of days from start_date to end_date.
 // Returns 0 for open-ended cycles or cycles with unparseable dates.
-func cycleLength(c *v1.Cycle) int {
+func CycleLength(c *v1.Cycle) int {
 	start := c.GetStartDate().GetValue()
 	end := c.GetEndDate().GetValue()
 	if start == "" || end == "" {
