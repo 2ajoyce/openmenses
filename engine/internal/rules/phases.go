@@ -67,15 +67,22 @@ func EstimatePhases(
 
 	entropy := ulid.DefaultEntropy()
 	cycleID := cycle.GetId()
+	irregularModel := profile.GetBiologicalCycle() == v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_IRREGULAR
 	var estimates []*v1.PhaseEstimate
 	for d := startTime; !d.After(endTime); d = d.AddDate(0, 0, 1) {
 		dayNum := int(d.Sub(startTime).Hours()/24) + 1
+		phase := fn(dayNum)
+		conf := confidence
+		// §2.3: ovulation window is always LOW for the irregular model.
+		if irregularModel && phase == v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW {
+			conf = v1.ConfidenceLevel_CONFIDENCE_LEVEL_LOW
+		}
 		est := &v1.PhaseEstimate{
 			Id:         ulid.MustNew(ulid.Now(), entropy).String(),
 			UserId:     cycle.GetUserId(),
 			Date:       &v1.LocalDate{Value: d.Format("2006-01-02")},
-			Phase:      fn(dayNum),
-			Confidence: confidence,
+			Phase:      phase,
+			Confidence: conf,
 		}
 		if cycleID != "" {
 			est.BasedOnRecordRefs = []*v1.RecordRef{{Id: cycleID}}
