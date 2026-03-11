@@ -732,6 +732,67 @@ func TestIntegration_FullFeaturedUser(t *testing.T) {
 	}
 }
 
+// ─── sample export ────────────────────────────────────────────────────────────
+
+// TestSampleExport_ImportAndVerify loads the sample export file using
+// LoadSampleExportBytes, imports it, and verifies that the resulting state is
+// correct: profile accessible, timeline non-empty, and note fields preserved.
+// This exercises the sample export file and the LoadSampleExportBytes helper.
+func TestSampleExport_ImportAndVerify(t *testing.T) {
+	for _, v := range storageVariants() {
+		v := v
+		t.Run(v.name, func(t *testing.T) {
+			t.Parallel()
+			ctx := context.Background()
+			client := engineClient(t, v.opts...)
+
+			data, err := LoadSampleExportBytes("full_featured_user_export.json")
+			if err != nil {
+				t.Fatalf("LoadSampleExportBytes: %v", err)
+			}
+			importResp, err := client.ImportData(ctx, connect.NewRequest(&v1.ImportDataRequest{Data: data}))
+			if err != nil {
+				t.Fatalf("ImportData(sample export): %v", err)
+			}
+			if importResp.Msg.GetRecordsImported() == 0 {
+				t.Error("ImportData: expected > 0 records, got 0")
+			}
+
+			const userID = "user-full"
+
+			profResp, err := client.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{UserId: userID}))
+			if err != nil {
+				t.Fatalf("GetUserProfile: %v", err)
+			}
+			if profResp.Msg.GetProfile().GetId() != userID {
+				t.Errorf("profile ID = %q, want %q", profResp.Msg.GetProfile().GetId(), userID)
+			}
+
+			allRecords := collectAllTimeline(t, ctx, client, userID)
+			if len(allRecords) == 0 {
+				t.Fatal("timeline empty after importing sample export")
+			}
+
+			// Verify that note fields survive the import: the sample export
+			// includes notes on bleeding and mood observations.
+			var foundNote bool
+			for _, r := range allRecords {
+				if b := r.GetBleedingObservation(); b != nil && b.GetNote() != "" {
+					foundNote = true
+					break
+				}
+				if m := r.GetMoodObservation(); m != nil && m.GetNote() != "" {
+					foundNote = true
+					break
+				}
+			}
+			if !foundNote {
+				t.Error("no note fields found in imported timeline; expected notes from sample export to be preserved")
+			}
+		})
+	}
+}
+
 // ─── private helpers ──────────────────────────────────────────────────────────
 
 // countBleedingRecords counts TimelineRecord entries that contain a
