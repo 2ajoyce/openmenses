@@ -373,6 +373,200 @@ func TestMedication_ListByUser(t *testing.T) {
 	}
 }
 
+// ---- SymptomObservation -----------------------------------------------------
+
+func symptom(id, userID, ts string) *v1.SymptomObservation {
+	return &v1.SymptomObservation{
+		Id:        id,
+		UserId:    userID,
+		Timestamp: dateTime(ts),
+		Symptom:   v1.SymptomType_SYMPTOM_TYPE_CRAMPS,
+		Severity:  v1.SymptomSeverity_SYMPTOM_SEVERITY_MODERATE,
+	}
+}
+
+func TestSymptom_CreateAndGet(t *testing.T) {
+	s := newStore()
+	obs := symptom("s1", "u1", "2026-01-01T08:00:00Z")
+	mustNoErr(t, s.SymptomObservations().Create(ctx, obs))
+	got, err := s.SymptomObservations().GetByID(ctx, "s1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got.GetId() != "s1" {
+		t.Fatalf("got %q", got.GetId())
+	}
+}
+
+func TestSymptom_DuplicateIDRejected(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.SymptomObservations().Create(ctx, symptom("s1", "u1", "2026-01-01T08:00:00Z")))
+	err := s.SymptomObservations().Create(ctx, symptom("s1", "u1", "2026-01-01T08:00:00Z"))
+	if !errors.Is(err, storage.ErrConflict) {
+		t.Fatalf("want ErrConflict, got %v", err)
+	}
+}
+
+func TestSymptom_GetNotFound(t *testing.T) {
+	s := newStore()
+	_, err := s.SymptomObservations().GetByID(ctx, "nope")
+	if !errors.Is(err, storage.ErrNotFound) {
+		t.Fatalf("want ErrNotFound, got %v", err)
+	}
+}
+
+func TestSymptom_Delete(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.SymptomObservations().Create(ctx, symptom("s1", "u1", "2026-01-01T08:00:00Z")))
+	mustNoErr(t, s.SymptomObservations().DeleteByID(ctx, "s1"))
+	_, err := s.SymptomObservations().GetByID(ctx, "s1")
+	if !errors.Is(err, storage.ErrNotFound) {
+		t.Fatal("expected not found after delete")
+	}
+}
+
+func TestSymptom_DeleteNotFound(t *testing.T) {
+	s := newStore()
+	err := s.SymptomObservations().DeleteByID(ctx, "nope")
+	if !errors.Is(err, storage.ErrNotFound) {
+		t.Fatalf("want ErrNotFound, got %v", err)
+	}
+}
+
+func TestSymptom_ListByUserAndDateRange(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.SymptomObservations().Create(ctx, symptom("s1", "u1", "2026-01-05T08:00:00Z")))
+	mustNoErr(t, s.SymptomObservations().Create(ctx, symptom("s2", "u1", "2026-01-10T08:00:00Z")))
+	mustNoErr(t, s.SymptomObservations().Create(ctx, symptom("s3", "u1", "2026-02-01T08:00:00Z")))
+	mustNoErr(t, s.SymptomObservations().Create(ctx, symptom("s4", "u2", "2026-01-07T08:00:00Z")))
+
+	page, err := s.SymptomObservations().ListByUserAndDateRange(ctx, "u1", "2026-01-01", "2026-01-31", storage.PageRequest{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(page.Items) != 2 {
+		t.Fatalf("want 2, got %d", len(page.Items))
+	}
+}
+
+func TestSymptom_Pagination(t *testing.T) {
+	s := newStore()
+	for i := 0; i < 5; i++ {
+		ts := fmt.Sprintf("2026-01-%02dT08:00:00Z", i+1)
+		mustNoErr(t, s.SymptomObservations().Create(ctx, symptom(fmt.Sprintf("s%d", i), "u1", ts)))
+	}
+
+	page1, _ := s.SymptomObservations().ListByUserAndDateRange(ctx, "u1", "", "", storage.PageRequest{PageSize: 2})
+	if len(page1.Items) != 2 || page1.NextPageToken == "" {
+		t.Fatalf("page1: got %d items, token=%q", len(page1.Items), page1.NextPageToken)
+	}
+	page2, _ := s.SymptomObservations().ListByUserAndDateRange(ctx, "u1", "", "", storage.PageRequest{PageSize: 2, PageToken: page1.NextPageToken})
+	if len(page2.Items) != 2 {
+		t.Fatalf("page2: want 2, got %d", len(page2.Items))
+	}
+	page3, _ := s.SymptomObservations().ListByUserAndDateRange(ctx, "u1", "", "", storage.PageRequest{PageSize: 2, PageToken: page2.NextPageToken})
+	if len(page3.Items) != 1 || page3.NextPageToken != "" {
+		t.Fatalf("page3: got %d items, token=%q", len(page3.Items), page3.NextPageToken)
+	}
+}
+
+// ---- MoodObservation --------------------------------------------------------
+
+func mood(id, userID, ts string) *v1.MoodObservation {
+	return &v1.MoodObservation{
+		Id:        id,
+		UserId:    userID,
+		Timestamp: dateTime(ts),
+		Mood:      v1.MoodType_MOOD_TYPE_HAPPY,
+		Intensity: v1.MoodIntensity_MOOD_INTENSITY_MEDIUM,
+	}
+}
+
+func TestMood_CreateAndGet(t *testing.T) {
+	s := newStore()
+	obs := mood("mo1", "u1", "2026-01-01T08:00:00Z")
+	mustNoErr(t, s.MoodObservations().Create(ctx, obs))
+	got, err := s.MoodObservations().GetByID(ctx, "mo1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got.GetId() != "mo1" {
+		t.Fatalf("got %q", got.GetId())
+	}
+}
+
+func TestMood_DuplicateIDRejected(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.MoodObservations().Create(ctx, mood("mo1", "u1", "2026-01-01T08:00:00Z")))
+	err := s.MoodObservations().Create(ctx, mood("mo1", "u1", "2026-01-01T08:00:00Z"))
+	if !errors.Is(err, storage.ErrConflict) {
+		t.Fatalf("want ErrConflict, got %v", err)
+	}
+}
+
+func TestMood_GetNotFound(t *testing.T) {
+	s := newStore()
+	_, err := s.MoodObservations().GetByID(ctx, "nope")
+	if !errors.Is(err, storage.ErrNotFound) {
+		t.Fatalf("want ErrNotFound, got %v", err)
+	}
+}
+
+func TestMood_Delete(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.MoodObservations().Create(ctx, mood("mo1", "u1", "2026-01-01T08:00:00Z")))
+	mustNoErr(t, s.MoodObservations().DeleteByID(ctx, "mo1"))
+	_, err := s.MoodObservations().GetByID(ctx, "mo1")
+	if !errors.Is(err, storage.ErrNotFound) {
+		t.Fatal("expected not found after delete")
+	}
+}
+
+func TestMood_DeleteNotFound(t *testing.T) {
+	s := newStore()
+	err := s.MoodObservations().DeleteByID(ctx, "nope")
+	if !errors.Is(err, storage.ErrNotFound) {
+		t.Fatalf("want ErrNotFound, got %v", err)
+	}
+}
+
+func TestMood_ListByUserAndDateRange(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.MoodObservations().Create(ctx, mood("mo1", "u1", "2026-01-05T08:00:00Z")))
+	mustNoErr(t, s.MoodObservations().Create(ctx, mood("mo2", "u1", "2026-01-10T08:00:00Z")))
+	mustNoErr(t, s.MoodObservations().Create(ctx, mood("mo3", "u1", "2026-02-01T08:00:00Z")))
+	mustNoErr(t, s.MoodObservations().Create(ctx, mood("mo4", "u2", "2026-01-07T08:00:00Z")))
+
+	page, err := s.MoodObservations().ListByUserAndDateRange(ctx, "u1", "2026-01-01", "2026-01-31", storage.PageRequest{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(page.Items) != 2 {
+		t.Fatalf("want 2, got %d", len(page.Items))
+	}
+}
+
+func TestMood_Pagination(t *testing.T) {
+	s := newStore()
+	for i := 0; i < 5; i++ {
+		ts := fmt.Sprintf("2026-01-%02dT08:00:00Z", i+1)
+		mustNoErr(t, s.MoodObservations().Create(ctx, mood(fmt.Sprintf("mo%d", i), "u1", ts)))
+	}
+
+	page1, _ := s.MoodObservations().ListByUserAndDateRange(ctx, "u1", "", "", storage.PageRequest{PageSize: 2})
+	if len(page1.Items) != 2 || page1.NextPageToken == "" {
+		t.Fatalf("page1: got %d items, token=%q", len(page1.Items), page1.NextPageToken)
+	}
+	page2, _ := s.MoodObservations().ListByUserAndDateRange(ctx, "u1", "", "", storage.PageRequest{PageSize: 2, PageToken: page1.NextPageToken})
+	if len(page2.Items) != 2 {
+		t.Fatalf("page2: want 2, got %d", len(page2.Items))
+	}
+	page3, _ := s.MoodObservations().ListByUserAndDateRange(ctx, "u1", "", "", storage.PageRequest{PageSize: 2, PageToken: page2.NextPageToken})
+	if len(page3.Items) != 1 || page3.NextPageToken != "" {
+		t.Fatalf("page3: got %d items, token=%q", len(page3.Items), page3.NextPageToken)
+	}
+}
+
 // ---- MedicationEvent --------------------------------------------------------
 
 func medEvent(id, userID, medID, ts string) *v1.MedicationEvent {
@@ -385,6 +579,70 @@ func medEvent(id, userID, medID, ts string) *v1.MedicationEvent {
 	}
 }
 
+func TestMedicationEvent_CreateAndGet(t *testing.T) {
+	s := newStore()
+	ev := medEvent("e1", "u1", "m1", "2026-01-01T08:00:00Z")
+	mustNoErr(t, s.MedicationEvents().Create(ctx, ev))
+	got, err := s.MedicationEvents().GetByID(ctx, "e1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got.GetId() != "e1" {
+		t.Fatalf("got %q", got.GetId())
+	}
+}
+
+func TestMedicationEvent_DuplicateIDRejected(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.MedicationEvents().Create(ctx, medEvent("e1", "u1", "m1", "2026-01-01T08:00:00Z")))
+	err := s.MedicationEvents().Create(ctx, medEvent("e1", "u1", "m1", "2026-01-01T08:00:00Z"))
+	if !errors.Is(err, storage.ErrConflict) {
+		t.Fatalf("want ErrConflict, got %v", err)
+	}
+}
+
+func TestMedicationEvent_GetNotFound(t *testing.T) {
+	s := newStore()
+	_, err := s.MedicationEvents().GetByID(ctx, "nope")
+	if !errors.Is(err, storage.ErrNotFound) {
+		t.Fatalf("want ErrNotFound, got %v", err)
+	}
+}
+
+func TestMedicationEvent_Delete(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.MedicationEvents().Create(ctx, medEvent("e1", "u1", "m1", "2026-01-01T08:00:00Z")))
+	mustNoErr(t, s.MedicationEvents().DeleteByID(ctx, "e1"))
+	_, err := s.MedicationEvents().GetByID(ctx, "e1")
+	if !errors.Is(err, storage.ErrNotFound) {
+		t.Fatal("expected not found after delete")
+	}
+}
+
+func TestMedicationEvent_DeleteNotFound(t *testing.T) {
+	s := newStore()
+	err := s.MedicationEvents().DeleteByID(ctx, "nope")
+	if !errors.Is(err, storage.ErrNotFound) {
+		t.Fatalf("want ErrNotFound, got %v", err)
+	}
+}
+
+func TestMedicationEvent_ListByUserAndDateRange(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.MedicationEvents().Create(ctx, medEvent("e1", "u1", "m1", "2026-01-05T08:00:00Z")))
+	mustNoErr(t, s.MedicationEvents().Create(ctx, medEvent("e2", "u1", "m1", "2026-01-10T08:00:00Z")))
+	mustNoErr(t, s.MedicationEvents().Create(ctx, medEvent("e3", "u1", "m1", "2026-02-01T08:00:00Z")))
+	mustNoErr(t, s.MedicationEvents().Create(ctx, medEvent("e4", "u2", "m2", "2026-01-07T08:00:00Z")))
+
+	page, err := s.MedicationEvents().ListByUserAndDateRange(ctx, "u1", "2026-01-01", "2026-01-31", storage.PageRequest{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(page.Items) != 2 {
+		t.Fatalf("want 2, got %d", len(page.Items))
+	}
+}
+
 func TestMedicationEvent_ListByMedicationID(t *testing.T) {
 	s := newStore()
 	mustNoErr(t, s.MedicationEvents().Create(ctx, medEvent("e1", "u1", "m1", "2026-01-01T08:00:00Z")))
@@ -393,6 +651,95 @@ func TestMedicationEvent_ListByMedicationID(t *testing.T) {
 	page, _ := s.MedicationEvents().ListByMedicationID(ctx, "m1", storage.PageRequest{})
 	if len(page.Items) != 2 {
 		t.Fatalf("want 2, got %d", len(page.Items))
+	}
+}
+
+// ---- PhaseEstimate ----------------------------------------------------------
+
+func phaseEstimate(id, userID, date, cycleID string) *v1.PhaseEstimate {
+	return &v1.PhaseEstimate{
+		Id:         id,
+		UserId:     userID,
+		Date:       localDate(date),
+		Phase:      v1.CyclePhase_CYCLE_PHASE_FOLLICULAR,
+		Confidence: v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM,
+		BasedOnRecordRefs: []*v1.RecordRef{
+			{Id: cycleID},
+		},
+	}
+}
+
+func TestPhaseEstimate_CreateAndList(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.PhaseEstimates().Create(ctx, phaseEstimate("pe1", "u1", "2026-01-05", "cy1")))
+	mustNoErr(t, s.PhaseEstimates().Create(ctx, phaseEstimate("pe2", "u1", "2026-01-10", "cy1")))
+	mustNoErr(t, s.PhaseEstimates().Create(ctx, phaseEstimate("pe3", "u1", "2026-02-01", "cy2")))
+	mustNoErr(t, s.PhaseEstimates().Create(ctx, phaseEstimate("pe4", "u2", "2026-01-07", "cy3")))
+
+	page, err := s.PhaseEstimates().ListByUserAndDateRange(ctx, "u1", "2026-01-01", "2026-01-31", storage.PageRequest{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(page.Items) != 2 {
+		t.Fatalf("want 2, got %d", len(page.Items))
+	}
+}
+
+func TestPhaseEstimate_DuplicateIDRejected(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.PhaseEstimates().Create(ctx, phaseEstimate("pe1", "u1", "2026-01-05", "cy1")))
+	err := s.PhaseEstimates().Create(ctx, phaseEstimate("pe1", "u1", "2026-01-05", "cy1"))
+	if !errors.Is(err, storage.ErrConflict) {
+		t.Fatalf("want ErrConflict, got %v", err)
+	}
+}
+
+func TestPhaseEstimate_DeleteByCycleID(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.PhaseEstimates().Create(ctx, phaseEstimate("pe1", "u1", "2026-01-05", "cy1")))
+	mustNoErr(t, s.PhaseEstimates().Create(ctx, phaseEstimate("pe2", "u1", "2026-01-06", "cy1")))
+	mustNoErr(t, s.PhaseEstimates().Create(ctx, phaseEstimate("pe3", "u1", "2026-02-01", "cy2")))
+
+	mustNoErr(t, s.PhaseEstimates().DeleteByCycleID(ctx, "cy1"))
+
+	page, _ := s.PhaseEstimates().ListByUserAndDateRange(ctx, "u1", "", "", storage.PageRequest{})
+	if len(page.Items) != 1 {
+		t.Fatalf("want 1 remaining, got %d", len(page.Items))
+	}
+	if page.Items[0].GetId() != "pe3" {
+		t.Fatalf("expected pe3 to survive, got %s", page.Items[0].GetId())
+	}
+}
+
+func TestPhaseEstimate_ListEmpty(t *testing.T) {
+	s := newStore()
+	page, err := s.PhaseEstimates().ListByUserAndDateRange(ctx, "u1", "", "", storage.PageRequest{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(page.Items) != 0 {
+		t.Fatal("expected empty")
+	}
+}
+
+func TestPhaseEstimate_Pagination(t *testing.T) {
+	s := newStore()
+	for i := 0; i < 5; i++ {
+		d := fmt.Sprintf("2026-01-%02d", i+1)
+		mustNoErr(t, s.PhaseEstimates().Create(ctx, phaseEstimate(fmt.Sprintf("pe%d", i), "u1", d, "cy1")))
+	}
+
+	page1, _ := s.PhaseEstimates().ListByUserAndDateRange(ctx, "u1", "", "", storage.PageRequest{PageSize: 2})
+	if len(page1.Items) != 2 || page1.NextPageToken == "" {
+		t.Fatalf("page1: got %d items, token=%q", len(page1.Items), page1.NextPageToken)
+	}
+	page2, _ := s.PhaseEstimates().ListByUserAndDateRange(ctx, "u1", "", "", storage.PageRequest{PageSize: 2, PageToken: page1.NextPageToken})
+	if len(page2.Items) != 2 {
+		t.Fatalf("page2: want 2, got %d", len(page2.Items))
+	}
+	page3, _ := s.PhaseEstimates().ListByUserAndDateRange(ctx, "u1", "", "", storage.PageRequest{PageSize: 2, PageToken: page2.NextPageToken})
+	if len(page3.Items) != 1 || page3.NextPageToken != "" {
+		t.Fatalf("page3: got %d items, token=%q", len(page3.Items), page3.NextPageToken)
 	}
 }
 
