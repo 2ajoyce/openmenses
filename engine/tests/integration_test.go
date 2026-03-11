@@ -495,6 +495,128 @@ func TestIntegration_Pagination_Timeline(t *testing.T) {
 	}
 }
 
+// ─── edge cases ───────────────────────────────────────────────────────────────
+
+// TestIntegration_EdgeCase_SingleObservation verifies that the engine handles
+// gracefully the case where a user has exactly one bleeding observation. The
+// timeline must contain the observation, ListCycles must return at most one
+// open-ended cycle (or zero cycles), and no panics or errors occur.
+func TestIntegration_EdgeCase_SingleObservation(t *testing.T) {
+	for _, v := range storageVariants() {
+		v := v
+		t.Run(v.name, func(t *testing.T) {
+			t.Parallel()
+			ctx := context.Background()
+			client := engineClient(t, v.opts...)
+
+			const userID = "user-single-obs"
+			_, err := client.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{
+				Profile: &v1.UserProfile{
+					Id:               userID,
+					BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
+					Contraception:    v1.ContraceptionType_CONTRACEPTION_TYPE_NONE,
+					CycleRegularity:  v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
+					ReproductiveGoal: v1.ReproductiveGoal_REPRODUCTIVE_GOAL_PREGNANCY_IRRELEVANT,
+					TrackingFocus:    []v1.TrackingFocus{v1.TrackingFocus_TRACKING_FOCUS_BLEEDING},
+				},
+			}))
+			if err != nil {
+				t.Fatalf("UpsertUserProfile: %v", err)
+			}
+
+			// Create exactly one bleeding observation.
+			_, err = client.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+				Observation: &v1.BleedingObservation{
+					UserId:    userID,
+					Timestamp: &v1.DateTime{Value: "2026-01-01T08:00:00Z"},
+					Flow:      v1.BleedingFlow_BLEEDING_FLOW_MEDIUM,
+				},
+			}))
+			if err != nil {
+				t.Fatalf("CreateBleedingObservation: %v", err)
+			}
+
+			// Timeline must contain exactly the one observation.
+			tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
+				UserId: userID,
+			}))
+			if err != nil {
+				t.Fatalf("ListTimeline: %v", err)
+			}
+			bleedingCount := countBleedingRecords(tlResp.Msg.GetRecords())
+			if bleedingCount != 1 {
+				t.Errorf("timeline bleeding count = %d, want 1", bleedingCount)
+			}
+
+			// ListCycles must succeed and return at most one open-ended cycle.
+			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{UserId: userID}))
+			if err != nil {
+				t.Fatalf("ListCycles: %v", err)
+			}
+			cycles := cyclResp.Msg.GetCycles()
+			if len(cycles) > 1 {
+				t.Errorf("ListCycles: got %d cycles, want ≤ 1 for single observation", len(cycles))
+			}
+			// Any detected cycle must be open-ended (no end_date) because there is
+			// no subsequent bleeding episode to close it.
+			for _, c := range cycles {
+				if c.GetEndDate().GetValue() != "" {
+					t.Errorf("cycle has end_date %q; expected open-ended cycle for single observation", c.GetEndDate().GetValue())
+				}
+			}
+		})
+	}
+}
+
+// TestIntegration_EdgeCase_MaxPagination verifies that requesting a page size
+// larger than the total record count returns all records in a single page with
+// an empty next_page_token.
+func TestIntegration_EdgeCase_MaxPagination(t *testing.T) {
+	for _, v := range storageVariants() {
+		v := v
+		t.Run(v.name, func(t *testing.T) {
+			t.Parallel()
+			ctx := context.Background()
+			client := engineClient(t, v.opts...)
+
+			// firsttime_user has 2 bleeding observations — a small, known dataset
+			// guaranteed to fit within an oversized page request.
+			importFixture(t, client, "firsttime_user.json")
+			const userID = "user-firsttime"
+
+			// Determine total record count via full pagination.
+			allRecords := collectAllTimeline(t, ctx, client, userID)
+			totalRecords := len(allRecords)
+			if totalRecords == 0 {
+				t.Fatal("expected at least one record after import")
+			}
+
+			// Request a page size much larger than the total record count.
+			oversizedPageSize := uint32(totalRecords + 1000)
+			// Cap at the proto-constrained maximum of 500; if totalRecords exceeds
+			// that the test would be vacuous anyway, so clamp to avoid a validation error.
+			if oversizedPageSize > 500 {
+				oversizedPageSize = 500
+			}
+			resp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
+				UserId: userID,
+				Pagination: &v1.PaginationRequest{
+					PageSize: oversizedPageSize,
+				},
+			}))
+			if err != nil {
+				t.Fatalf("ListTimeline with oversized page: %v", err)
+			}
+			if len(resp.Msg.GetRecords()) != totalRecords {
+				t.Errorf("oversized page: got %d records, want %d", len(resp.Msg.GetRecords()), totalRecords)
+			}
+			if token := resp.Msg.GetPagination().GetNextPageToken(); token != "" {
+				t.Errorf("next_page_token = %q; want empty when all records fit in one page", token)
+			}
+		})
+	}
+}
+
 // ─── concurrent access ────────────────────────────────────────────────────────
 
 // TestIntegration_ConcurrentAccess launches multiple goroutines that
