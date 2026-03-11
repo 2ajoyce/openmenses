@@ -10,7 +10,7 @@ else
     NPM := npm
 endif
 
-.PHONY: proto-lint proto-generate proto-breaking \
+.PHONY: proto-lint proto-generate proto-breaking proto-check \
         engine-lint engine-test \
         ui-lint ui-test \
         lint test ci
@@ -24,6 +24,12 @@ proto-lint:
 
 proto-generate:
 	buf generate
+
+# Run buf generate and fail if gen/ differs from what is committed.
+# Use this in CI to catch proto changes whose generated output was not committed.
+proto-check:
+	buf generate
+	git diff --exit-code -- gen/
 
 proto-breaking:
 	buf breaking --against '.git#branch=main'
@@ -59,4 +65,4 @@ lint: proto-lint engine-lint ui-lint
 test: engine-test ui-test
 
 # Full CI validation (linting + generation check + tests)
-ci: proto-lint proto-generate engine-lint engine-test ui-lint ui-test
+ci: proto-lint proto-check engine-lint engine-test ui-lint ui-test
