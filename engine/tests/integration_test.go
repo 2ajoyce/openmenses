@@ -918,8 +918,19 @@ func TestSampleExport_ImportAndVerify(t *testing.T) {
 			if err != nil {
 				t.Fatalf("GetUserProfile: %v", err)
 			}
-			if profResp.Msg.GetProfile().GetId() != userID {
-				t.Errorf("profile ID = %q, want %q", profResp.Msg.GetProfile().GetId(), userID)
+			prof := profResp.Msg.GetProfile()
+			if prof.GetId() != userID {
+				t.Errorf("profile ID = %q, want %q", prof.GetId(), userID)
+			}
+			// 25.2: Verify rich profile fields round-trip correctly.
+			if prof.GetBiologicalCycle() != v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY {
+				t.Errorf("profile BiologicalCycle = %v, want BIOLOGICAL_CYCLE_MODEL_OVULATORY", prof.GetBiologicalCycle())
+			}
+			if prof.GetContraception() != v1.ContraceptionType_CONTRACEPTION_TYPE_NONE {
+				t.Errorf("profile Contraception = %v, want CONTRACEPTION_TYPE_NONE", prof.GetContraception())
+			}
+			if len(prof.GetHealthConditions()) == 0 {
+				t.Error("profile HealthConditions is empty; expected at least one condition from sample export")
 			}
 
 			allRecords := collectAllTimeline(t, ctx, client, userID)
@@ -927,21 +938,59 @@ func TestSampleExport_ImportAndVerify(t *testing.T) {
 				t.Fatal("timeline empty after importing sample export")
 			}
 
-			// Verify that note fields survive the import: the sample export
-			// includes notes on bleeding and mood observations.
-			var foundNote bool
+			// 25.1: Verify all record types are present in the timeline.
+			var hasBleeding, hasSymptom, hasMood, hasMedEvent bool
+			// 25.3: Verify note fields survive import across all record types.
+			var foundBleedingNote, foundSymptomNote, foundMoodNote, foundMedNote bool
 			for _, r := range allRecords {
-				if b := r.GetBleedingObservation(); b != nil && b.GetNote() != "" {
-					foundNote = true
-					break
+				if b := r.GetBleedingObservation(); b != nil {
+					hasBleeding = true
+					if b.GetNote() != "" {
+						foundBleedingNote = true
+					}
 				}
-				if m := r.GetMoodObservation(); m != nil && m.GetNote() != "" {
-					foundNote = true
-					break
+				if s := r.GetSymptomObservation(); s != nil {
+					hasSymptom = true
+					if s.GetNote() != "" {
+						foundSymptomNote = true
+					}
+				}
+				if m := r.GetMoodObservation(); m != nil {
+					hasMood = true
+					if m.GetNote() != "" {
+						foundMoodNote = true
+					}
+				}
+				if me := r.GetMedicationEvent(); me != nil {
+					hasMedEvent = true
+					if me.GetNote() != "" {
+						foundMedNote = true
+					}
 				}
 			}
-			if !foundNote {
-				t.Error("no note fields found in imported timeline; expected notes from sample export to be preserved")
+			if !hasBleeding {
+				t.Error("timeline missing bleeding observation records after sample export import")
+			}
+			if !hasSymptom {
+				t.Error("timeline missing symptom observation records after sample export import")
+			}
+			if !hasMood {
+				t.Error("timeline missing mood observation records after sample export import")
+			}
+			if !hasMedEvent {
+				t.Error("timeline missing medication event records after sample export import")
+			}
+			if !foundBleedingNote {
+				t.Error("no note found on any bleeding observation; expected notes from sample export to be preserved")
+			}
+			if !foundSymptomNote {
+				t.Error("no note found on any symptom observation; expected notes from sample export to be preserved")
+			}
+			if !foundMoodNote {
+				t.Error("no note found on any mood observation; expected notes from sample export to be preserved")
+			}
+			if !foundMedNote {
+				t.Error("no note found on any medication event; expected notes from sample export to be preserved")
 			}
 		})
 	}
