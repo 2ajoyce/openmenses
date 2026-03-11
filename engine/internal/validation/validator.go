@@ -97,14 +97,18 @@ func finalise(viols []FieldViolation) error {
 }
 
 // futureViolation returns a FieldViolation when tsValue is more than 1 minute
-// in the future relative to v.Now(). Returns nil otherwise.
+// in the future relative to v.Now(). Returns a FieldViolation when tsValue is
+// not a valid RFC3339 timestamp (defense-in-depth). Returns nil otherwise.
 func (v *Validator) futureViolation(field, tsValue string) *FieldViolation {
 	if tsValue == "" {
 		return nil
 	}
 	t, err := time.Parse(time.RFC3339, tsValue)
 	if err != nil {
-		return nil
+		return &FieldViolation{
+			Field:       field,
+			Description: "timestamp is not a valid RFC3339 datetime",
+		}
 	}
 	if t.After(v.Now().Add(time.Minute)) {
 		return &FieldViolation{
