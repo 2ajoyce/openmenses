@@ -812,6 +812,23 @@ func TestIntegration_HormonalSuppressedUser(t *testing.T) {
 			if len(cyclResp.Msg.GetCycles()) < 1 {
 				t.Error("expected ≥ 1 withdrawal bleed cycle")
 			}
+
+			// The hormonal suppressed fixture contains medication events spanning
+			// multiple pill packs; assert at least one appears in the timeline.
+			tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{UserId: userID}))
+			if err != nil {
+				t.Fatalf("ListTimeline: %v", err)
+			}
+			var hasMedEvent bool
+			for _, r := range tlResp.Msg.GetRecords() {
+				if r.GetMedicationEvent() != nil {
+					hasMedEvent = true
+					break
+				}
+			}
+			if !hasMedEvent {
+				t.Error("timeline missing medication event records")
+			}
 		})
 	}
 }
