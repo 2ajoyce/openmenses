@@ -72,7 +72,8 @@
             "timestamp": {
                 "value": "2026-01-01T08:00:00Z"
             },
-            "flow": "BLEEDING_FLOW_HEAVY"
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "note": "cycle gap: 31 days"
         },
         {
             "id": "full-b-c2-2",
@@ -112,7 +113,8 @@
             "timestamp": {
                 "value": "2026-02-02T08:00:00Z"
             },
-            "flow": "BLEEDING_FLOW_HEAVY"
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "note": "cycle gap: 32 days"
         },
         {
             "id": "full-b-c3-2",
@@ -200,7 +202,8 @@
                 "value": "2026-01-30T18:00:00Z"
             },
             "symptom": "SYMPTOM_TYPE_BREAST_TENDERNESS",
-            "severity": "SYMPTOM_SEVERITY_MILD"
+            "severity": "SYMPTOM_SEVERITY_MILD",
+            "note": "pre-period"
         },
         {
             "id": "full-s-7",
@@ -209,7 +212,8 @@
                 "value": "2026-02-01T08:00:00Z"
             },
             "symptom": "SYMPTOM_TYPE_BLOATING",
-            "severity": "SYMPTOM_SEVERITY_MILD"
+            "severity": "SYMPTOM_SEVERITY_MILD",
+            "note": "pre-period"
         },
         {
             "id": "full-s-8",
@@ -229,7 +233,8 @@
                 "value": "2025-11-28T20:00:00Z"
             },
             "mood": "MOOD_TYPE_IRRITABLE",
-            "intensity": "MOOD_INTENSITY_HIGH"
+            "intensity": "MOOD_INTENSITY_HIGH",
+            "note": "PMS"
         },
         {
             "id": "full-m-2",
@@ -238,7 +243,8 @@
                 "value": "2025-11-29T20:00:00Z"
             },
             "mood": "MOOD_TYPE_ANXIOUS",
-            "intensity": "MOOD_INTENSITY_MEDIUM"
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "note": "PMS"
         },
         {
             "id": "full-m-3",
@@ -274,7 +280,8 @@
                 "value": "2025-12-26T10:00:00Z"
             },
             "mood": "MOOD_TYPE_HAPPY",
-            "intensity": "MOOD_INTENSITY_MEDIUM"
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "note": "mid-cycle"
         },
         {
             "id": "full-m-7",
@@ -283,7 +290,8 @@
                 "value": "2025-12-29T20:00:00Z"
             },
             "mood": "MOOD_TYPE_IRRITABLE",
-            "intensity": "MOOD_INTENSITY_HIGH"
+            "intensity": "MOOD_INTENSITY_HIGH",
+            "note": "PMS"
         },
         {
             "id": "full-m-8",
@@ -292,7 +300,8 @@
                 "value": "2025-12-30T20:00:00Z"
             },
             "mood": "MOOD_TYPE_SAD",
-            "intensity": "MOOD_INTENSITY_MEDIUM"
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "note": "PMS"
         },
         {
             "id": "full-m-9",
@@ -328,7 +337,8 @@
                 "value": "2026-01-26T10:00:00Z"
             },
             "mood": "MOOD_TYPE_HAPPY",
-            "intensity": "MOOD_INTENSITY_MEDIUM"
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "note": "mid-cycle"
         },
         {
             "id": "full-m-13",
@@ -337,7 +347,8 @@
                 "value": "2026-01-30T20:00:00Z"
             },
             "mood": "MOOD_TYPE_ANXIOUS",
-            "intensity": "MOOD_INTENSITY_MEDIUM"
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "note": "PMS"
         },
         {
             "id": "full-m-14",
@@ -346,7 +357,8 @@
                 "value": "2026-01-31T20:00:00Z"
             },
             "mood": "MOOD_TYPE_IRRITABLE",
-            "intensity": "MOOD_INTENSITY_HIGH"
+            "intensity": "MOOD_INTENSITY_HIGH",
+            "note": "PMS"
         },
         {
             "id": "full-m-15",
