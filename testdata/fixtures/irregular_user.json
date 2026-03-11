@@ -1,0 +1,213 @@
+{
+    "version": "1",
+    "user_id": "user-irregular",
+    "profile": {
+        "id": "user-irregular",
+        "biologicalCycle": "BIOLOGICAL_CYCLE_MODEL_IRREGULAR",
+        "contraception": "CONTRACEPTION_TYPE_NONE",
+        "cycleRegularity": "CYCLE_REGULARITY_VERY_IRREGULAR",
+        "reproductiveGoal": "REPRODUCTIVE_GOAL_NOT_TRACKING_FERTILITY",
+        "trackingFocus": [
+            "TRACKING_FOCUS_BLEEDING"
+        ]
+    },
+    "bleeding_observations": [
+        {
+            "id": "irr-b-c1-1",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-10-01T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_HEAVY"
+        },
+        {
+            "id": "irr-b-c1-2",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-10-02T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_MEDIUM"
+        },
+        {
+            "id": "irr-b-c1-3",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-10-03T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "irr-b-c1-4",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-10-04T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "irr-b-c2-1",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-10-22T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "note": "cycle gap: 21 days"
+        },
+        {
+            "id": "irr-b-c2-2",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-10-23T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_MEDIUM"
+        },
+        {
+            "id": "irr-b-c2-3",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-10-24T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "irr-b-c2-4",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-10-25T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "irr-b-c3-1",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-11-26T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "note": "cycle gap: 35 days"
+        },
+        {
+            "id": "irr-b-c3-2",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-11-27T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_MEDIUM"
+        },
+        {
+            "id": "irr-b-c3-3",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-11-28T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "irr-b-c3-4",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-11-29T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "irr-b-c4-1",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-12-24T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "note": "cycle gap: 28 days"
+        },
+        {
+            "id": "irr-b-c4-2",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-12-25T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_MEDIUM"
+        },
+        {
+            "id": "irr-b-c4-3",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-12-26T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "irr-b-c4-4",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2025-12-27T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "irr-b-c5-1",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2026-02-04T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "note": "cycle gap: 42 days"
+        },
+        {
+            "id": "irr-b-c5-2",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2026-02-05T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_MEDIUM"
+        },
+        {
+            "id": "irr-b-c5-3",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2026-02-06T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "irr-b-c5-4",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2026-02-07T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "irr-b-c6-1",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2026-03-01T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "note": "cycle gap: 25 days"
+        },
+        {
+            "id": "irr-b-c6-2",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2026-03-02T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_MEDIUM"
+        },
+        {
+            "id": "irr-b-c6-3",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2026-03-03T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "irr-b-c6-4",
+            "userId": "user-irregular",
+            "timestamp": {
+                "value": "2026-03-04T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        }
+    ]
+}

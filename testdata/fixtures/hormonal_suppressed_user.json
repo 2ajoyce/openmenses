@@ -1,0 +1,421 @@
+{
+    "version": "1",
+    "user_id": "user-hormonal",
+    "profile": {
+        "id": "user-hormonal",
+        "biologicalCycle": "BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED",
+        "contraception": "CONTRACEPTION_TYPE_HORMONAL_PILL",
+        "cycleRegularity": "CYCLE_REGULARITY_REGULAR",
+        "reproductiveGoal": "REPRODUCTIVE_GOAL_AVOID_PREGNANCY",
+        "trackingFocus": [
+            "TRACKING_FOCUS_BLEEDING",
+            "TRACKING_FOCUS_MEDICATION"
+        ]
+    },
+    "bleeding_observations": [
+        {
+            "id": "hor-b-e1-1",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-09-03T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING",
+            "note": "withdrawal bleed day 1"
+        },
+        {
+            "id": "hor-b-e1-2",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-09-04T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e1-3",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-09-05T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e1-4",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-09-06T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e1-5",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-09-07T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e1-6",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-09-08T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e1-7",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-09-09T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e2-1",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-10-01T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING",
+            "note": "withdrawal bleed day 1"
+        },
+        {
+            "id": "hor-b-e2-2",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-10-02T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e2-3",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-10-03T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e2-4",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-10-04T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e2-5",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-10-05T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e2-6",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-10-06T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e2-7",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-10-07T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e3-1",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-10-29T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e3-2",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-10-30T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e3-3",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-10-31T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e3-4",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-11-01T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e3-5",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-11-02T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e3-6",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-11-03T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e3-7",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-11-04T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e4-1",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-11-26T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e4-2",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-11-27T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e4-3",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-11-28T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e4-4",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-11-29T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e4-5",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-11-30T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e4-6",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-12-01T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e4-7",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-12-02T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e5-1",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-12-24T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e5-2",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-12-25T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e5-3",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-12-26T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e5-4",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-12-27T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e5-5",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-12-28T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e5-6",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-12-29T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e5-7",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2025-12-30T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e6-1",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-01-21T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e6-2",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-01-22T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e6-3",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-01-23T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e6-4",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-01-24T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e6-5",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-01-25T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e6-6",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-01-26T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e6-7",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-01-27T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e7-1",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-02-18T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e7-2",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-02-19T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e7-3",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-02-20T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e7-4",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-02-21T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_LIGHT"
+        },
+        {
+            "id": "hor-b-e7-5",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-02-22T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e7-6",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-02-23T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        },
+        {
+            "id": "hor-b-e7-7",
+            "userId": "user-hormonal",
+            "timestamp": {
+                "value": "2026-02-24T08:00:00Z"
+            },
+            "flow": "BLEEDING_FLOW_SPOTTING"
+        }
+    ],
+    "medications": [
+        {
+            "id": "hor-med-1",
+            "userId": "user-hormonal",
+            "name": "Levonorgestrel/Ethinylestradiol 150/30",
+            "category": "MEDICATION_CATEGORY_BIRTH_CONTROL",
+            "active": true,
+            "note": "Combined oral contraceptive, 21 active + 7 placebo"
+        }
+    ]
+}
