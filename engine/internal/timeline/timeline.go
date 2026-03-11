@@ -174,7 +174,7 @@ func BuildTimeline(
 		}
 	}
 
-	// Sort most-recent-first (descending lexicographic order of YYYY-MM-DD keys).
+	// Sort most-recent-first (descending lexicographic order of full timestamp/date keys).
 	sort.SliceStable(entries, func(i, j int) bool {
 		return entries[i].key > entries[j].key
 	})
