@@ -101,6 +101,17 @@ When ≥ 3 completed cycles are available, the engine uses the user's average cy
 - Confidence never exceeds `CONFIDENCE_LEVEL_MEDIUM` for any phase estimate.
 - Phase ranges use wider windows: ±3 days on all boundaries.
 
+**Implementation:** The `rules.irregularPhaseFn` applies ±3-day widening to every phase boundary compared to the standard ovulatory model. For a cycle of length `L` with ovulation day `O = L − 14`:
+
+| Phase            | Standard day range | Widened day range (Irregular) |
+| ---------------- | ------------------ | ----------------------------- |
+| Menstruation     | 1–5                | 1–8                           |
+| Follicular       | 6–(O-2)            | 9–(O-5)                       |
+| Ovulation window | (O-1)–(O+1)        | (O-4)–(O+4) ← 9-day window    |
+| Luteal           | (O+2)–end          | (O+5)–end                     |
+
+For shorter cycles where `O ≤ 13` (i.e., cycle length ≤ 27 days), the follicular phase is absent and the ovulation window begins immediately after menstruation.
+
 ### 2.4 Confidence Assignment
 
 | Condition                             | Confidence                       |
