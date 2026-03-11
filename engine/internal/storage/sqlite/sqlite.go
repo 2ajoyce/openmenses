@@ -678,8 +678,8 @@ func (r *cycleRepo) Update(ctx context.Context, cycle *v1.Cycle) error {
 		endArg = nil
 	}
 	res, err := r.db.ExecContext(ctx,
-		`UPDATE cycles SET start_date = ?, end_date = ?, data = ? WHERE id = ?`,
-		cycle.GetStartDate().GetValue(), endArg, data, cycle.GetId())
+		`UPDATE cycles SET start_date = ?, end_date = ?, data = ?, user_id = ? WHERE id = ?`,
+		cycle.GetStartDate().GetValue(), endArg, data, cycle.GetUserId(), cycle.GetId())
 	if err != nil {
 		return err
 	}
