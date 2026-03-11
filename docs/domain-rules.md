@@ -86,6 +86,8 @@ Default phase day ranges, anchored to cycle day 1 (first day of bleeding):
 
 Ovulation day **O** is estimated as `cycle_length − 14`. For a 28-day cycle: O = 14.
 
+**Minimum ovulation day:** O is clamped to a minimum of 6 (`O = max(cycle_length − 14, 6)`) to prevent the ovulation window from falling before the end of menstruation. This applies when `cycle_length < 20` days.
+
 When ≥ 3 completed cycles are available, the engine uses the user's average cycle length to compute O. Otherwise the engine uses 28 days as the assumed cycle length to compute rough estimates, with `CONFIDENCE_LEVEL_LOW`.
 
 ### 2.2 Hormonally Suppressed Cycle Phase Model (`BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED`)
