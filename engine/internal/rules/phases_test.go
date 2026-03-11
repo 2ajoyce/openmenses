@@ -194,8 +194,17 @@ func TestPhases_Confidence_IrregularModelCapsAtMedium(t *testing.T) {
 	}
 	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
 	ests := rules.EstimatePhases(cycle, profile, 28, 10)
-	if !allConfidence(ests, v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM) {
-		t.Error("expected MEDIUM confidence for IRREGULAR model regardless of cycle count")
+	// §2.3: ovulation window is always LOW; all other phases are capped at MEDIUM.
+	for _, e := range ests {
+		if e.GetPhase() == v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW {
+			if e.GetConfidence() != v1.ConfidenceLevel_CONFIDENCE_LEVEL_LOW {
+				t.Errorf("ovulation window phase: expected LOW confidence, got %v", e.GetConfidence())
+			}
+		} else {
+			if e.GetConfidence() != v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM {
+				t.Errorf("non-ovulation phase %v: expected MEDIUM confidence, got %v", e.GetPhase(), e.GetConfidence())
+			}
+		}
 	}
 }
 
