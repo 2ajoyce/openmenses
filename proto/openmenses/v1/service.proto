@@ -30,7 +30,7 @@ service CycleTrackerService {
 }
 
 message GetUserProfileRequest {
-  string user_id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 1 [(buf.validate.field).string.min_len = 1];
 }
 
 message GetUserProfileResponse {
@@ -46,42 +46,47 @@ message UpsertUserProfileResponse {
 }
 
 message CreateBleedingObservationRequest {
-  BleedingObservation observation = 1;
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
+  BleedingObservation observation = 2;
 }
 message CreateBleedingObservationResponse {
   BleedingObservation observation = 1;
 }
 
 message CreateSymptomObservationRequest {
-  SymptomObservation observation = 1;
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
+  SymptomObservation observation = 2;
 }
 message CreateSymptomObservationResponse {
   SymptomObservation observation = 1;
 }
 
 message CreateMoodObservationRequest {
-  MoodObservation observation = 1;
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
+  MoodObservation observation = 2;
 }
 message CreateMoodObservationResponse {
   MoodObservation observation = 1;
 }
 
 message CreateMedicationRequest {
-  Medication medication = 1;
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
+  Medication medication = 2;
 }
 message CreateMedicationResponse {
   Medication medication = 1;
 }
 
 message CreateMedicationEventRequest {
-  MedicationEvent event = 1;
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
+  MedicationEvent event = 2;
 }
 message CreateMedicationEventResponse {
   MedicationEvent event = 1;
 }
 
 message ListTimelineRequest {
-  string user_id = 1 [(buf.validate.field).string.min_len = 1];
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
   DateRange range = 2;
   PaginationRequest pagination = 3;
 }
@@ -106,28 +111,28 @@ message ListTimelineResponse {
 }
 
 message ListCyclesRequest {
-  string user_id = 1 [(buf.validate.field).string.min_len = 1];
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
 }
 message ListCyclesResponse {
   repeated Cycle cycles = 1;
 }
 
 message ListPredictionsRequest {
-  string user_id = 1 [(buf.validate.field).string.min_len = 1];
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
 }
 message ListPredictionsResponse {
   repeated Prediction predictions = 1;
 }
 
 message ListInsightsRequest {
-  string user_id = 1 [(buf.validate.field).string.min_len = 1];
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
 }
 message ListInsightsResponse {
   repeated Insight insights = 1;
 }
 
 message ExportDataRequest {
-  string user_id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 1 [(buf.validate.field).string.min_len = 1];
 }
 message ExportDataResponse {
   bytes data = 1;

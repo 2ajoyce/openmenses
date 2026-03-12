@@ -135,7 +135,7 @@ func (s *CycleTrackerService) GetUserProfile(
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
-	profile, err := s.store.UserProfiles().GetByID(ctx, req.Msg.GetUserId())
+	profile, err := s.store.UserProfiles().GetByID(ctx, req.Msg.GetName())
 	if err != nil {
 		return nil, toConnectErr(err)
 	}
@@ -168,10 +168,12 @@ func (s *CycleTrackerService) CreateBleedingObservation(
 	ctx context.Context,
 	req *connect.Request[v1.CreateBleedingObservationRequest],
 ) (*connect.Response[v1.CreateBleedingObservationResponse], error) {
+	userID := req.Msg.GetParent()
 	obs := req.Msg.GetObservation()
 	if obs == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("observation is required"))
 	}
+	obs.UserId = userID
 	if obs.GetName() == "" {
 		obs.Name = newID()
 	}
@@ -183,8 +185,8 @@ func (s *CycleTrackerService) CreateBleedingObservation(
 	}
 	// Best-effort: errors here do not fail the request because the observation
 	// is already persisted and ListCycles re-derives on demand.
-	if err := s.redetectAndStoreCycles(ctx, obs.GetUserId()); err != nil {
-		log.Printf("redetectAndStoreCycles: user %s: %v", obs.GetUserId(), err)
+	if err := s.redetectAndStoreCycles(ctx, userID); err != nil {
+		log.Printf("redetectAndStoreCycles: user %s: %v", userID, err)
 	}
 	return connect.NewResponse(&v1.CreateBleedingObservationResponse{Observation: obs}), nil
 }
@@ -194,10 +196,12 @@ func (s *CycleTrackerService) CreateSymptomObservation(
 	ctx context.Context,
 	req *connect.Request[v1.CreateSymptomObservationRequest],
 ) (*connect.Response[v1.CreateSymptomObservationResponse], error) {
+	userID := req.Msg.GetParent()
 	obs := req.Msg.GetObservation()
 	if obs == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("observation is required"))
 	}
+	obs.UserId = userID
 	if obs.GetName() == "" {
 		obs.Name = newID()
 	}
@@ -215,10 +219,12 @@ func (s *CycleTrackerService) CreateMoodObservation(
 	ctx context.Context,
 	req *connect.Request[v1.CreateMoodObservationRequest],
 ) (*connect.Response[v1.CreateMoodObservationResponse], error) {
+	userID := req.Msg.GetParent()
 	obs := req.Msg.GetObservation()
 	if obs == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("observation is required"))
 	}
+	obs.UserId = userID
 	if obs.GetName() == "" {
 		obs.Name = newID()
 	}
@@ -238,10 +244,12 @@ func (s *CycleTrackerService) CreateMedication(
 	ctx context.Context,
 	req *connect.Request[v1.CreateMedicationRequest],
 ) (*connect.Response[v1.CreateMedicationResponse], error) {
+	userID := req.Msg.GetParent()
 	med := req.Msg.GetMedication()
 	if med == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("medication is required"))
 	}
+	med.UserId = userID
 	if med.GetName() == "" {
 		med.Name = newID()
 	}
@@ -260,10 +268,12 @@ func (s *CycleTrackerService) CreateMedicationEvent(
 	ctx context.Context,
 	req *connect.Request[v1.CreateMedicationEventRequest],
 ) (*connect.Response[v1.CreateMedicationEventResponse], error) {
+	userID := req.Msg.GetParent()
 	event := req.Msg.GetEvent()
 	if event == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("event is required"))
 	}
+	event.UserId = userID
 	if event.GetName() == "" {
 		event.Name = newID()
 	}
@@ -289,7 +299,7 @@ func (s *CycleTrackerService) ListTimeline(
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
-	userID := req.Msg.GetUserId()
+	userID := req.Msg.GetParent()
 	start, end := "0001-01-01", "9999-12-31"
 	if r := req.Msg.GetRange(); r != nil {
 		if r.GetStart().GetValue() != "" {
@@ -321,7 +331,7 @@ func (s *CycleTrackerService) ListCycles(
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
-	cycles, err := rules.DetectCycles(ctx, req.Msg.GetUserId(), s.store)
+	cycles, err := rules.DetectCycles(ctx, req.Msg.GetParent(), s.store)
 	if err != nil {
 		return nil, toConnectErr(err)
 	}
@@ -382,7 +392,7 @@ func (s *CycleTrackerService) ExportData(
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
-	userID := req.Msg.GetUserId()
+	userID := req.Msg.GetName()
 	payload := exportPayload{Version: exportFormatVersion, UserID: userID}
 
 	// UserProfile (optional – may not exist for new users)

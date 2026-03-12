@@ -1,4 +1,4 @@
-﻿// Package memory provides a thread-safe in-memory implementation of
+// Package memory provides a thread-safe in-memory implementation of
 // the storage.Repository interface. It is intended for use in tests and
 // as the storage backend for the engine-dev CLI when no SQLite path is given.
 package memory
