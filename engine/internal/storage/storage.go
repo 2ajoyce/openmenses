@@ -14,12 +14,12 @@ var (
 	// ErrNotFound is returned when a requested record does not exist.
 	ErrNotFound = errors.New("record not found")
 
-	// ErrConflict is returned when a record with the same ID already exists,
+	// ErrConflict is returned when a record with the same name already exists,
 	// or when an operation would violate a uniqueness constraint.
 	ErrConflict = errors.New("record conflict")
 
 	// ErrInvalidInput is returned when the caller provides invalid arguments
-	// that are caught at the storage layer (e.g. empty ID).
+	// that are caught at the storage layer (e.g. empty name).
 	ErrInvalidInput = errors.New("invalid input")
 )
 

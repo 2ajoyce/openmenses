@@ -66,7 +66,7 @@ func EstimatePhases(
 	}
 
 	entropy := ulid.DefaultEntropy()
-	cycleID := cycle.GetId()
+	cycleID := cycle.GetName()
 	irregularModel := profile.GetBiologicalCycle() == v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_IRREGULAR
 	var estimates []*v1.PhaseEstimate
 	for d := startTime; !d.After(endTime); d = d.AddDate(0, 0, 1) {
@@ -78,14 +78,14 @@ func EstimatePhases(
 			conf = v1.ConfidenceLevel_CONFIDENCE_LEVEL_LOW
 		}
 		est := &v1.PhaseEstimate{
-			Id:         ulid.MustNew(ulid.Now(), entropy).String(),
+			Name:       ulid.MustNew(ulid.Now(), entropy).String(),
 			UserId:     cycle.GetUserId(),
 			Date:       &v1.LocalDate{Value: d.Format("2006-01-02")},
 			Phase:      phase,
 			Confidence: conf,
 		}
 		if cycleID != "" {
-			est.BasedOnRecordRefs = []*v1.RecordRef{{Id: cycleID}}
+			est.BasedOnRecordRefs = []*v1.RecordRef{{Name: cycleID}}
 		}
 		estimates = append(estimates, est)
 	}

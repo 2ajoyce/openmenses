@@ -15,7 +15,7 @@ var ctx = context.Background()
 // (YYYY-MM-DD) and flow.
 func makeObs(id, uid, date string, flow v1.BleedingFlow) *v1.BleedingObservation {
 	return &v1.BleedingObservation{
-		Id:        id,
+		Name:      id,
 		UserId:    uid,
 		Timestamp: &v1.DateTime{Value: date + "T00:00:00Z"},
 		Flow:      flow,
@@ -193,7 +193,7 @@ func TestDetect_ConfirmedCycle_NotOverridden(t *testing.T) {
 	store := memory.New()
 	// Store a user-confirmed cycle.
 	confirmed := &v1.Cycle{
-		Id:        "cy-confirmed",
+		Name:      "cy-confirmed",
 		UserId:    "u1",
 		StartDate: &v1.LocalDate{Value: "2026-01-01"},
 		EndDate:   &v1.LocalDate{Value: "2026-01-28"},
@@ -215,8 +215,8 @@ func TestDetect_ConfirmedCycle_NotOverridden(t *testing.T) {
 	if len(cycles) != 1 {
 		t.Fatalf("expected 1 cycle (confirmed preserved), got %d", len(cycles))
 	}
-	if cycles[0].GetId() != "cy-confirmed" {
-		t.Errorf("expected confirmed cycle id, got %q", cycles[0].GetId())
+	if cycles[0].GetName() != "cy-confirmed" {
+		t.Errorf("expected confirmed cycle name, got %q", cycles[0].GetName())
 	}
 }
 
@@ -224,7 +224,7 @@ func TestDetect_DerivedAfterConfirmed_BothPresent(t *testing.T) {
 	store := memory.New()
 	// Confirmed cycle in January.
 	mustCreate(t, store.Cycles().Create, &v1.Cycle{
-		Id:        "cy-confirmed",
+		Name:      "cy-confirmed",
 		UserId:    "u1",
 		StartDate: &v1.LocalDate{Value: "2026-01-01"},
 		EndDate:   &v1.LocalDate{Value: "2026-01-28"},
@@ -242,8 +242,8 @@ func TestDetect_DerivedAfterConfirmed_BothPresent(t *testing.T) {
 		t.Fatalf("expected 2 cycles, got %d", len(cycles))
 	}
 	// Sorted by start_date: confirmed first, then derived.
-	if cycles[0].GetId() != "cy-confirmed" {
-		t.Errorf("expected confirmed cycle first, got id=%q", cycles[0].GetId())
+	if cycles[0].GetName() != "cy-confirmed" {
+		t.Errorf("expected confirmed cycle first, got name=%q", cycles[0].GetName())
 	}
 	if cycles[1].GetSource() != v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING {
 		t.Error("expected second cycle to be derived")
@@ -336,7 +336,7 @@ func TestDetect_MultipleEpisodes_CorrectBoundaries(t *testing.T) {
 
 func TestIsOutlierLength_NormalCycle(t *testing.T) {
 	c := &v1.Cycle{
-		Id:        "c1",
+		Name:      "c1",
 		UserId:    "u1",
 		StartDate: &v1.LocalDate{Value: "2026-01-01"},
 		EndDate:   &v1.LocalDate{Value: "2026-01-28"}, // 28 days
@@ -349,7 +349,7 @@ func TestIsOutlierLength_NormalCycle(t *testing.T) {
 
 func TestIsOutlierLength_TooShort(t *testing.T) {
 	c := &v1.Cycle{
-		Id:        "c1",
+		Name:      "c1",
 		UserId:    "u1",
 		StartDate: &v1.LocalDate{Value: "2026-01-01"},
 		EndDate:   &v1.LocalDate{Value: "2026-01-10"}, // 10 days
@@ -362,7 +362,7 @@ func TestIsOutlierLength_TooShort(t *testing.T) {
 
 func TestIsOutlierLength_TooLong(t *testing.T) {
 	c := &v1.Cycle{
-		Id:        "c1",
+		Name:      "c1",
 		UserId:    "u1",
 		StartDate: &v1.LocalDate{Value: "2026-01-01"},
 		EndDate:   &v1.LocalDate{Value: "2026-05-01"}, // 121 days
@@ -375,7 +375,7 @@ func TestIsOutlierLength_TooLong(t *testing.T) {
 
 func TestIsOutlierLength_AtMinBound(t *testing.T) {
 	c := &v1.Cycle{
-		Id:        "c1",
+		Name:      "c1",
 		UserId:    "u1",
 		StartDate: &v1.LocalDate{Value: "2026-01-01"},
 		EndDate:   &v1.LocalDate{Value: "2026-01-15"}, // 15 days
@@ -388,7 +388,7 @@ func TestIsOutlierLength_AtMinBound(t *testing.T) {
 
 func TestIsOutlierLength_AtMaxBound(t *testing.T) {
 	c := &v1.Cycle{
-		Id:        "c1",
+		Name:      "c1",
 		UserId:    "u1",
 		StartDate: &v1.LocalDate{Value: "2026-01-01"},
 		EndDate:   &v1.LocalDate{Value: "2026-03-31"}, // 90 days
@@ -499,7 +499,7 @@ func TestDetect_RedetectionAfterNewObservation(t *testing.T) {
 
 func TestIsOutlierLength_OpenEnded(t *testing.T) {
 	c := &v1.Cycle{
-		Id:        "c1",
+		Name:      "c1",
 		UserId:    "u1",
 		StartDate: &v1.LocalDate{Value: "2026-01-01"},
 		Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,

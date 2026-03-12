@@ -164,7 +164,7 @@ func computeDerivedCycles(userID string, obs []*v1.BleedingObservation) []*v1.Cy
 		}
 
 		c := &v1.Cycle{
-			Id:        ulid.MustNew(ulid.Now(), entropy).String(),
+			Name:      ulid.MustNew(ulid.Now(), entropy).String(),
 			UserId:    userID,
 			StartDate: &v1.LocalDate{Value: start},
 			Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,

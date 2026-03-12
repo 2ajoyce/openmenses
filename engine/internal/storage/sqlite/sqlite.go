@@ -141,8 +141,8 @@ func (r *userProfileRepo) GetByID(ctx context.Context, id string) (*v1.UserProfi
 }
 
 func (r *userProfileRepo) Upsert(ctx context.Context, profile *v1.UserProfile) error {
-	if profile.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if profile.GetName() == "" {
+		return fmt.Errorf("%w: profile name is required", storage.ErrInvalidInput)
 	}
 	data, err := marshal(profile)
 	if err != nil {
@@ -151,7 +151,7 @@ func (r *userProfileRepo) Upsert(ctx context.Context, profile *v1.UserProfile) e
 	_, err = r.db.ExecContext(ctx,
 		`INSERT INTO user_profiles (id, data) VALUES (?, ?)
 		 ON CONFLICT(id) DO UPDATE SET data = excluded.data`,
-		profile.GetId(), data)
+		profile.GetName(), data)
 	return err
 }
 
@@ -160,8 +160,8 @@ func (r *userProfileRepo) Upsert(ctx context.Context, profile *v1.UserProfile) e
 type bleedingRepo struct{ db *sql.DB }
 
 func (r *bleedingRepo) Create(ctx context.Context, obs *v1.BleedingObservation) error {
-	if obs.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if obs.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	data, err := marshal(obs)
 	if err != nil {
@@ -169,9 +169,9 @@ func (r *bleedingRepo) Create(ctx context.Context, obs *v1.BleedingObservation) 
 	}
 	_, err = r.db.ExecContext(ctx,
 		`INSERT INTO bleeding_observations (id, user_id, timestamp, data) VALUES (?, ?, ?, ?)`,
-		obs.GetId(), obs.GetUserId(), obs.GetTimestamp().GetValue(), data)
+		obs.GetName(), obs.GetUserId(), obs.GetTimestamp().GetValue(), data)
 	if isConflict(err) {
-		return fmt.Errorf("%w: bleeding observation %s", storage.ErrConflict, obs.GetId())
+		return fmt.Errorf("%w: bleeding observation %s", storage.ErrConflict, obs.GetName())
 	}
 	return err
 }
@@ -243,8 +243,8 @@ func scanBleedings(rows *sql.Rows, limit, offset int) (storage.ListPage[*v1.Blee
 type symptomRepo struct{ db *sql.DB }
 
 func (r *symptomRepo) Create(ctx context.Context, obs *v1.SymptomObservation) error {
-	if obs.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if obs.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	data, err := marshal(obs)
 	if err != nil {
@@ -252,9 +252,9 @@ func (r *symptomRepo) Create(ctx context.Context, obs *v1.SymptomObservation) er
 	}
 	_, err = r.db.ExecContext(ctx,
 		`INSERT INTO symptom_observations (id, user_id, timestamp, data) VALUES (?, ?, ?, ?)`,
-		obs.GetId(), obs.GetUserId(), obs.GetTimestamp().GetValue(), data)
+		obs.GetName(), obs.GetUserId(), obs.GetTimestamp().GetValue(), data)
 	if isConflict(err) {
-		return fmt.Errorf("%w: symptom observation %s", storage.ErrConflict, obs.GetId())
+		return fmt.Errorf("%w: symptom observation %s", storage.ErrConflict, obs.GetName())
 	}
 	return err
 }
@@ -326,8 +326,8 @@ func scanSymptoms(rows *sql.Rows, limit, offset int) (storage.ListPage[*v1.Sympt
 type moodRepo struct{ db *sql.DB }
 
 func (r *moodRepo) Create(ctx context.Context, obs *v1.MoodObservation) error {
-	if obs.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if obs.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	data, err := marshal(obs)
 	if err != nil {
@@ -335,9 +335,9 @@ func (r *moodRepo) Create(ctx context.Context, obs *v1.MoodObservation) error {
 	}
 	_, err = r.db.ExecContext(ctx,
 		`INSERT INTO mood_observations (id, user_id, timestamp, data) VALUES (?, ?, ?, ?)`,
-		obs.GetId(), obs.GetUserId(), obs.GetTimestamp().GetValue(), data)
+		obs.GetName(), obs.GetUserId(), obs.GetTimestamp().GetValue(), data)
 	if isConflict(err) {
-		return fmt.Errorf("%w: mood observation %s", storage.ErrConflict, obs.GetId())
+		return fmt.Errorf("%w: mood observation %s", storage.ErrConflict, obs.GetName())
 	}
 	return err
 }
@@ -409,8 +409,8 @@ func scanMoods(rows *sql.Rows, limit, offset int) (storage.ListPage[*v1.MoodObse
 type medicationRepo struct{ db *sql.DB }
 
 func (r *medicationRepo) Create(ctx context.Context, med *v1.Medication) error {
-	if med.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if med.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	data, err := marshal(med)
 	if err != nil {
@@ -418,9 +418,9 @@ func (r *medicationRepo) Create(ctx context.Context, med *v1.Medication) error {
 	}
 	_, err = r.db.ExecContext(ctx,
 		`INSERT INTO medications (id, user_id, data) VALUES (?, ?, ?)`,
-		med.GetId(), med.GetUserId(), data)
+		med.GetName(), med.GetUserId(), data)
 	if isConflict(err) {
-		return fmt.Errorf("%w: medication %s", storage.ErrConflict, med.GetId())
+		return fmt.Errorf("%w: medication %s", storage.ErrConflict, med.GetName())
 	}
 	return err
 }
@@ -471,8 +471,8 @@ func (r *medicationRepo) ListByUser(ctx context.Context, userID string, page sto
 }
 
 func (r *medicationRepo) Update(ctx context.Context, med *v1.Medication) error {
-	if med.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if med.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	data, err := marshal(med)
 	if err != nil {
@@ -480,7 +480,7 @@ func (r *medicationRepo) Update(ctx context.Context, med *v1.Medication) error {
 	}
 	res, err := r.db.ExecContext(ctx,
 		`UPDATE medications SET data = ?, user_id = ? WHERE id = ?`,
-		data, med.GetUserId(), med.GetId())
+		data, med.GetUserId(), med.GetName())
 	if err != nil {
 		return err
 	}
@@ -500,8 +500,8 @@ func (r *medicationRepo) DeleteByID(ctx context.Context, id string) error {
 type medicationEventRepo struct{ db *sql.DB }
 
 func (r *medicationEventRepo) Create(ctx context.Context, ev *v1.MedicationEvent) error {
-	if ev.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if ev.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	data, err := marshal(ev)
 	if err != nil {
@@ -509,9 +509,9 @@ func (r *medicationEventRepo) Create(ctx context.Context, ev *v1.MedicationEvent
 	}
 	_, err = r.db.ExecContext(ctx,
 		`INSERT INTO medication_events (id, user_id, medication_id, timestamp, data) VALUES (?, ?, ?, ?, ?)`,
-		ev.GetId(), ev.GetUserId(), ev.GetMedicationId(), ev.GetTimestamp().GetValue(), data)
+		ev.GetName(), ev.GetUserId(), ev.GetMedicationId(), ev.GetTimestamp().GetValue(), data)
 	if isConflict(err) {
-		return fmt.Errorf("%w: medication event %s", storage.ErrConflict, ev.GetId())
+		return fmt.Errorf("%w: medication event %s", storage.ErrConflict, ev.GetName())
 	}
 	return err
 }
@@ -598,8 +598,8 @@ func scanMedEvents(rows *sql.Rows, limit, offset int) (storage.ListPage[*v1.Medi
 type cycleRepo struct{ db *sql.DB }
 
 func (r *cycleRepo) Create(ctx context.Context, cycle *v1.Cycle) error {
-	if cycle.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if cycle.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	data, err := marshal(cycle)
 	if err != nil {
@@ -612,9 +612,9 @@ func (r *cycleRepo) Create(ctx context.Context, cycle *v1.Cycle) error {
 	}
 	_, err = r.db.ExecContext(ctx,
 		`INSERT INTO cycles (id, user_id, start_date, end_date, data) VALUES (?, ?, ?, ?, ?)`,
-		cycle.GetId(), cycle.GetUserId(), cycle.GetStartDate().GetValue(), endArg, data)
+		cycle.GetName(), cycle.GetUserId(), cycle.GetStartDate().GetValue(), endArg, data)
 	if isConflict(err) {
-		return fmt.Errorf("%w: cycle %s", storage.ErrConflict, cycle.GetId())
+		return fmt.Errorf("%w: cycle %s", storage.ErrConflict, cycle.GetName())
 	}
 	return err
 }
@@ -666,8 +666,8 @@ func (r *cycleRepo) ListByUserAndDateRange(ctx context.Context, userID, start, e
 }
 
 func (r *cycleRepo) Update(ctx context.Context, cycle *v1.Cycle) error {
-	if cycle.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if cycle.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	data, err := marshal(cycle)
 	if err != nil {
@@ -680,7 +680,7 @@ func (r *cycleRepo) Update(ctx context.Context, cycle *v1.Cycle) error {
 	}
 	res, err := r.db.ExecContext(ctx,
 		`UPDATE cycles SET start_date = ?, end_date = ?, data = ?, user_id = ? WHERE id = ?`,
-		cycle.GetStartDate().GetValue(), endArg, data, cycle.GetUserId(), cycle.GetId())
+		cycle.GetStartDate().GetValue(), endArg, data, cycle.GetUserId(), cycle.GetName())
 	if err != nil {
 		return err
 	}
@@ -724,8 +724,8 @@ func scanCycles(rows *sql.Rows, limit, offset int) (storage.ListPage[*v1.Cycle],
 type phaseEstimateRepo struct{ db *sql.DB }
 
 func (r *phaseEstimateRepo) Create(ctx context.Context, est *v1.PhaseEstimate) error {
-	if est.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if est.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	data, err := marshal(est)
 	if err != nil {
@@ -733,9 +733,9 @@ func (r *phaseEstimateRepo) Create(ctx context.Context, est *v1.PhaseEstimate) e
 	}
 	_, err = r.db.ExecContext(ctx,
 		`INSERT INTO phase_estimates (id, user_id, date, data) VALUES (?, ?, ?, ?)`,
-		est.GetId(), est.GetUserId(), est.GetDate().GetValue(), data)
+		est.GetName(), est.GetUserId(), est.GetDate().GetValue(), data)
 	if isConflict(err) {
-		return fmt.Errorf("%w: phase estimate %s", storage.ErrConflict, est.GetId())
+		return fmt.Errorf("%w: phase estimate %s", storage.ErrConflict, est.GetName())
 	}
 	return err
 }
@@ -781,7 +781,7 @@ func (r *phaseEstimateRepo) ListByUserAndDateRange(ctx context.Context, userID, 
 }
 
 func (r *phaseEstimateRepo) DeleteByCycleID(ctx context.Context, cycleID string) error {
-	// Phase estimates store their associated cycle ID in based_on_record_refs.
+	// Phase estimates store their associated cycle name in based_on_record_refs.
 	// Because the refs are encoded in the blob, we load all estimates for the user
 	// and delete those that reference the cycleID. This is acceptable because
 	// DeleteByCycleID is a rare, write-heavy operation triggered by re-detection.
@@ -803,7 +803,7 @@ func (r *phaseEstimateRepo) DeleteByCycleID(ctx context.Context, cycleID string)
 			return err
 		}
 		for _, ref := range est.GetBasedOnRecordRefs() {
-			if ref.GetId() == cycleID {
+			if ref.GetName() == cycleID {
 				toDelete = append(toDelete, id)
 				break
 			}
@@ -826,8 +826,8 @@ func (r *phaseEstimateRepo) DeleteByCycleID(ctx context.Context, cycleID string)
 type predictionRepo struct{ db *sql.DB }
 
 func (r *predictionRepo) Create(ctx context.Context, pred *v1.Prediction) error {
-	if pred.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if pred.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	data, err := marshal(pred)
 	if err != nil {
@@ -835,9 +835,9 @@ func (r *predictionRepo) Create(ctx context.Context, pred *v1.Prediction) error 
 	}
 	_, err = r.db.ExecContext(ctx,
 		`INSERT INTO predictions (id, user_id, data) VALUES (?, ?, ?)`,
-		pred.GetId(), pred.GetUserId(), data)
+		pred.GetName(), pred.GetUserId(), data)
 	if isConflict(err) {
-		return fmt.Errorf("%w: prediction %s", storage.ErrConflict, pred.GetId())
+		return fmt.Errorf("%w: prediction %s", storage.ErrConflict, pred.GetName())
 	}
 	return err
 }
@@ -887,8 +887,8 @@ func (r *predictionRepo) DeleteByUser(ctx context.Context, userID string) error 
 type insightRepo struct{ db *sql.DB }
 
 func (r *insightRepo) Create(ctx context.Context, insight *v1.Insight) error {
-	if insight.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if insight.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	data, err := marshal(insight)
 	if err != nil {
@@ -896,9 +896,9 @@ func (r *insightRepo) Create(ctx context.Context, insight *v1.Insight) error {
 	}
 	_, err = r.db.ExecContext(ctx,
 		`INSERT INTO insights (id, user_id, data) VALUES (?, ?, ?)`,
-		insight.GetId(), insight.GetUserId(), data)
+		insight.GetName(), insight.GetUserId(), data)
 	if isConflict(err) {
-		return fmt.Errorf("%w: insight %s", storage.ErrConflict, insight.GetId())
+		return fmt.Errorf("%w: insight %s", storage.ErrConflict, insight.GetName())
 	}
 	return err
 }

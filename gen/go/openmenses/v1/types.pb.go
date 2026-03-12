@@ -182,7 +182,7 @@ func (x *DateTime) GetValue() string {
 
 type RecordRef struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -217,9 +217,9 @@ func (*RecordRef) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_types_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *RecordRef) GetId() string {
+func (x *RecordRef) GetName() string {
 	if x != nil {
-		return x.Id
+		return x.Name
 	}
 	return ""
 }
@@ -433,10 +433,10 @@ const file_openmenses_v1_types_proto_rawDesc = "" +
 	"\x05value\x18\x01 \x01(\tB&\xbaH#r!2\x1c^[0-9]{4}-[0-9]{2}-[0-9]{2}$\x98\x01\n" +
 	"R\x05value\"c\n" +
 	"\bDateTime\x12W\n" +
-	"\x05value\x18\x01 \x01(\tBA\xbaH>r<\x10\x14\x18@26^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}R\x05value\"'\n" +
-	"\tRecordRef\x12\x1a\n" +
-	"\x02id\x18\x01 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x02id\"g\n" +
+	"\x05value\x18\x01 \x01(\tBA\xbaH>r<\x10\x14\x18@26^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}R\x05value\"+\n" +
+	"\tRecordRef\x12\x1e\n" +
+	"\x04name\x18\x01 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x04name\"g\n" +
 	"\tDateRange\x12.\n" +
 	"\x05start\x18\x01 \x01(\v2\x18.openmenses.v1.LocalDateR\x05start\x12*\n" +
 	"\x03end\x18\x02 \x01(\v2\x18.openmenses.v1.LocalDateR\x03end\"i\n" +

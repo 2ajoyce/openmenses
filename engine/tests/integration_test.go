@@ -123,8 +123,8 @@ func TestFixture_AllFixturesImportCleanly(t *testing.T) {
 					if err != nil {
 						t.Fatalf("GetUserProfile after import: %v", err)
 					}
-					if profResp.Msg.GetProfile().GetId() != userID {
-						t.Errorf("profile ID = %q, want %q", profResp.Msg.GetProfile().GetId(), userID)
+					if profResp.Msg.GetProfile().GetName() != userID {
+						t.Errorf("profile name = %q, want %q", profResp.Msg.GetProfile().GetName(), userID)
 					}
 
 					// Timeline must return at least one record for the imported data.
@@ -240,8 +240,8 @@ func TestIntegration_FullLifecycle_FirstTimeUser(t *testing.T) {
 			if err != nil {
 				t.Fatalf("GetUserProfile: %v", err)
 			}
-			if profResp.Msg.GetProfile().GetId() != userID {
-				t.Errorf("profile ID = %q, want %q", profResp.Msg.GetProfile().GetId(), userID)
+			if profResp.Msg.GetProfile().GetName() != userID {
+				t.Errorf("profile name = %q, want %q", profResp.Msg.GetProfile().GetName(), userID)
 			}
 
 			// At least one open-ended cycle should be detected from the 2 bleeding days.
@@ -301,7 +301,7 @@ func TestIntegration_FullLifecycle_IrregularUser(t *testing.T) {
 // TestIntegration_ImportExportRoundTrip imports a fixture into engine A,
 // exports all data, imports the export into engine B, and verifies that:
 //   - The same number of bleeding observations exist in B.
-//   - The profile IDs match.
+//   - The profile names match.
 //   - The timeline record count matches.
 func TestIntegration_ImportExportRoundTrip(t *testing.T) {
 	for _, v := range storageVariants() {
@@ -350,8 +350,8 @@ func TestIntegration_ImportExportRoundTrip(t *testing.T) {
 			if err != nil {
 				t.Fatalf("B GetUserProfile: %v", err)
 			}
-			if profB.Msg.GetProfile().GetId() != userID {
-				t.Errorf("B profile ID = %q, want %q", profB.Msg.GetProfile().GetId(), userID)
+			if profB.Msg.GetProfile().GetName() != userID {
+				t.Errorf("B profile name = %q, want %q", profB.Msg.GetProfile().GetName(), userID)
 			}
 
 			// Timeline in B must have the same bleeding observations as A.
@@ -512,7 +512,7 @@ func TestIntegration_EdgeCase_SingleObservation(t *testing.T) {
 			const userID = "user-single-obs"
 			_, err := client.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{
 				Profile: &v1.UserProfile{
-					Id:               userID,
+					Name:             userID,
 					BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
 					Contraception:    v1.ContraceptionType_CONTRACEPTION_TYPE_NONE,
 					CycleRegularity:  v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
@@ -636,7 +636,7 @@ func TestIntegration_ConcurrentAccess(t *testing.T) {
 			// First, create the profile (serial).
 			_, err := client.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{
 				Profile: &v1.UserProfile{
-					Id:               userID,
+					Name:             userID,
 					BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
 					Contraception:    v1.ContraceptionType_CONTRACEPTION_TYPE_NONE,
 					CycleRegularity:  v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
@@ -649,7 +649,7 @@ func TestIntegration_ConcurrentAccess(t *testing.T) {
 			}
 
 			// Log observations concurrently from different goroutines.
-			// Each goroutine uses a distinct date to avoid duplicate ID conflicts.
+			// Each goroutine uses a distinct date to avoid duplicate name conflicts.
 			dates := []string{
 				"2025-01-10", "2025-02-07", "2025-03-07", "2025-04-04",
 				"2025-05-02", "2025-05-30", "2025-06-27", "2025-07-25",
@@ -709,7 +709,7 @@ func TestIntegration_CycleRedetection(t *testing.T) {
 			const userID = "user-redetect"
 			_, err := client.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{
 				Profile: &v1.UserProfile{
-					Id:               userID,
+					Name:             userID,
 					BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
 					Contraception:    v1.ContraceptionType_CONTRACEPTION_TYPE_NONE,
 					CycleRegularity:  v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
@@ -919,8 +919,8 @@ func TestSampleExport_ImportAndVerify(t *testing.T) {
 				t.Fatalf("GetUserProfile: %v", err)
 			}
 			prof := profResp.Msg.GetProfile()
-			if prof.GetId() != userID {
-				t.Errorf("profile ID = %q, want %q", prof.GetId(), userID)
+			if prof.GetName() != userID {
+				t.Errorf("profile name = %q, want %q", prof.GetName(), userID)
 			}
 			// 25.2: Verify rich profile fields round-trip correctly.
 			if prof.GetBiologicalCycle() != v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY {

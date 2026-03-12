@@ -10,7 +10,7 @@ import (
 // regularProfile returns a profile with an ovulatory, regular cycle model.
 func regularProfile() *v1.UserProfile {
 	return &v1.UserProfile{
-		Id:              "u1",
+		Name:            "u1",
 		BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
 		CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
 	}
@@ -109,7 +109,7 @@ func TestPhases_OpenEnded_DefaultAvg(t *testing.T) {
 
 func TestPhases_HormonallySuppressed_NoOvulationWindow(t *testing.T) {
 	profile := &v1.UserProfile{
-		Id:              "u1",
+		Name:            "u1",
 		BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED,
 		CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
 	}
@@ -161,7 +161,7 @@ func TestPhases_Confidence_HighFor5PlusCycles(t *testing.T) {
 
 func TestPhases_Confidence_VeryIrregularCapsAtLow(t *testing.T) {
 	profile := &v1.UserProfile{
-		Id:              "u1",
+		Name:            "u1",
 		BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
 		CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR,
 	}
@@ -175,7 +175,7 @@ func TestPhases_Confidence_VeryIrregularCapsAtLow(t *testing.T) {
 
 func TestPhases_Confidence_SomewhatIrregularCapsAtMedium(t *testing.T) {
 	profile := &v1.UserProfile{
-		Id:              "u1",
+		Name:            "u1",
 		BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
 		CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_SOMEWHAT_IRREGULAR,
 	}
@@ -188,7 +188,7 @@ func TestPhases_Confidence_SomewhatIrregularCapsAtMedium(t *testing.T) {
 
 func TestPhases_Confidence_IrregularModelCapsAtMedium(t *testing.T) {
 	profile := &v1.UserProfile{
-		Id:              "u1",
+		Name:            "u1",
 		BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_IRREGULAR,
 		CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
 	}
@@ -213,7 +213,7 @@ func TestPhases_Confidence_IrregularModelCapsAtMedium(t *testing.T) {
 // irregularProfile returns a profile with BIOLOGICAL_CYCLE_MODEL_IRREGULAR.
 func irregularProfile() *v1.UserProfile {
 	return &v1.UserProfile{
-		Id:              "u1",
+		Name:            "u1",
 		BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_IRREGULAR,
 		CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
 	}
@@ -324,8 +324,8 @@ func TestPhases_DatesSequential(t *testing.T) {
 		if e.GetUserId() != "u1" {
 			t.Errorf("estimate[%d] user_id = %q, want u1", i, e.GetUserId())
 		}
-		if e.GetId() == "" {
-			t.Errorf("estimate[%d] has empty id", i)
+		if e.GetName() == "" {
+			t.Errorf("estimate[%d] has empty name", i)
 		}
 	}
 }
@@ -333,7 +333,7 @@ func TestPhases_DatesSequential(t *testing.T) {
 // ---- No start date --------------------------------------------------------- //
 
 func TestPhases_MissingStartDate_Empty(t *testing.T) {
-	cycle := &v1.Cycle{Id: "cy1", UserId: "u1"}
+	cycle := &v1.Cycle{Name: "cy1", UserId: "u1"}
 	ests := rules.EstimatePhases(cycle, regularProfile(), 28, 5)
 	if len(ests) != 0 {
 		t.Errorf("expected 0 estimates for cycle with no start_date, got %d", len(ests))

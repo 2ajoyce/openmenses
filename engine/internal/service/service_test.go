@@ -50,7 +50,7 @@ func codeOf(err error) connect.Code {
 
 func validProfile(id string) *v1.UserProfile {
 	return &v1.UserProfile{
-		Id:               id,
+		Name:             id,
 		BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
 		Contraception:    v1.ContraceptionType_CONTRACEPTION_TYPE_NONE,
 		CycleRegularity:  v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
@@ -61,7 +61,7 @@ func validProfile(id string) *v1.UserProfile {
 
 func validBleeding(id, userID, date string) *v1.BleedingObservation {
 	return &v1.BleedingObservation{
-		Id:        id,
+		Name:      id,
 		UserId:    userID,
 		Timestamp: &v1.DateTime{Value: date + "T10:00:00Z"},
 		Flow:      v1.BleedingFlow_BLEEDING_FLOW_MEDIUM,
@@ -70,7 +70,7 @@ func validBleeding(id, userID, date string) *v1.BleedingObservation {
 
 func validSymptom(id, userID, date string) *v1.SymptomObservation {
 	return &v1.SymptomObservation{
-		Id:        id,
+		Name:      id,
 		UserId:    userID,
 		Timestamp: &v1.DateTime{Value: date + "T10:00:00Z"},
 		Symptom:   v1.SymptomType_SYMPTOM_TYPE_CRAMPS,
@@ -79,7 +79,7 @@ func validSymptom(id, userID, date string) *v1.SymptomObservation {
 
 func validMood(id, userID, date string) *v1.MoodObservation {
 	return &v1.MoodObservation{
-		Id:        id,
+		Name:      id,
 		UserId:    userID,
 		Timestamp: &v1.DateTime{Value: date + "T10:00:00Z"},
 		Mood:      v1.MoodType_MOOD_TYPE_HAPPY,
@@ -88,17 +88,17 @@ func validMood(id, userID, date string) *v1.MoodObservation {
 
 func validMedication(id, userID string) *v1.Medication {
 	return &v1.Medication{
-		Id:       id,
-		UserId:   userID,
-		Name:     "Ibuprofen",
-		Category: v1.MedicationCategory_MEDICATION_CATEGORY_PAIN_RELIEF,
-		Active:   true,
+		Name:        id,
+		UserId:      userID,
+		DisplayName: "Ibuprofen",
+		Category:    v1.MedicationCategory_MEDICATION_CATEGORY_PAIN_RELIEF,
+		Active:      true,
 	}
 }
 
 func validMedEvent(id, userID, medID, date string) *v1.MedicationEvent {
 	return &v1.MedicationEvent{
-		Id:           id,
+		Name:         id,
 		UserId:       userID,
 		MedicationId: medID,
 		Timestamp:    &v1.DateTime{Value: date + "T10:00:00Z"},
@@ -126,8 +126,8 @@ func TestGetUserProfile_Found(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.Msg.GetProfile().GetId() != "u1" {
-		t.Errorf("got profile id %q, want u1", resp.Msg.GetProfile().GetId())
+	if resp.Msg.GetProfile().GetName() != "u1" {
+		t.Errorf("got profile name %q, want u1", resp.Msg.GetProfile().GetName())
 	}
 }
 
@@ -140,8 +140,8 @@ func TestUpsertUserProfile_HappyPath(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.Msg.GetProfile().GetId() != "u1" {
-		t.Errorf("got %q, want u1", resp.Msg.GetProfile().GetId())
+	if resp.Msg.GetProfile().GetName() != "u1" {
+		t.Errorf("got %q, want u1", resp.Msg.GetProfile().GetName())
 	}
 }
 
@@ -149,7 +149,7 @@ func TestUpsertUserProfile_ValidationFailure(t *testing.T) {
 	svc := newSvc(t)
 	// Missing required fields (no tracking_focus).
 	bad := &v1.UserProfile{
-		Id:               "u1",
+		Name:             "u1",
 		BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
 		Contraception:    v1.ContraceptionType_CONTRACEPTION_TYPE_NONE,
 		CycleRegularity:  v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
@@ -189,21 +189,21 @@ func TestCreateBleeding_HappyPath(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.Msg.GetObservation().GetId() != "b1" {
-		t.Errorf("got id %q, want b1", resp.Msg.GetObservation().GetId())
+	if resp.Msg.GetObservation().GetName() != "b1" {
+		t.Errorf("got name %q, want b1", resp.Msg.GetObservation().GetName())
 	}
 }
 
 func TestCreateBleeding_AutoID(t *testing.T) {
 	svc := newSvc(t)
-	// No ID provided – service should assign one.
+	// No name provided – service should assign one.
 	obs := validBleeding("", "u1", "2026-01-15")
 	resp, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Observation: obs}))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.Msg.GetObservation().GetId() == "" {
-		t.Error("expected auto-assigned ID, got empty string")
+	if resp.Msg.GetObservation().GetName() == "" {
+		t.Error("expected auto-assigned name, got empty string")
 	}
 }
 
@@ -258,8 +258,8 @@ func TestCreateSymptom_HappyPath(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.Msg.GetObservation().GetId() != "s1" {
-		t.Errorf("got id %q, want s1", resp.Msg.GetObservation().GetId())
+	if resp.Msg.GetObservation().GetName() != "s1" {
+		t.Errorf("got name %q, want s1", resp.Msg.GetObservation().GetName())
 	}
 }
 
@@ -278,8 +278,8 @@ func TestCreateSymptom_AutoID(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.Msg.GetObservation().GetId() == "" {
-		t.Error("expected auto-assigned ID, got empty")
+	if resp.Msg.GetObservation().GetName() == "" {
+		t.Error("expected auto-assigned name, got empty")
 	}
 }
 
@@ -303,8 +303,8 @@ func TestCreateMood_HappyPath(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.Msg.GetObservation().GetId() != "m1" {
-		t.Errorf("got id %q, want m1", resp.Msg.GetObservation().GetId())
+	if resp.Msg.GetObservation().GetName() != "m1" {
+		t.Errorf("got name %q, want m1", resp.Msg.GetObservation().GetName())
 	}
 }
 
@@ -323,8 +323,8 @@ func TestCreateMood_AutoID(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.Msg.GetObservation().GetId() == "" {
-		t.Error("expected auto-assigned ID, got empty")
+	if resp.Msg.GetObservation().GetName() == "" {
+		t.Error("expected auto-assigned name, got empty")
 	}
 }
 
@@ -348,8 +348,8 @@ func TestCreateMedication_HappyPath(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.Msg.GetMedication().GetId() != "med1" {
-		t.Errorf("got id %q, want med1", resp.Msg.GetMedication().GetId())
+	if resp.Msg.GetMedication().GetName() != "med1" {
+		t.Errorf("got name %q, want med1", resp.Msg.GetMedication().GetName())
 	}
 }
 
@@ -368,8 +368,8 @@ func TestCreateMedication_AutoID(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.Msg.GetMedication().GetId() == "" {
-		t.Error("expected auto-assigned ID")
+	if resp.Msg.GetMedication().GetName() == "" {
+		t.Error("expected auto-assigned name")
 	}
 }
 
@@ -377,7 +377,7 @@ func TestCreateMedication_ValidationFailure(t *testing.T) {
 	svc := newSvc(t)
 	// Empty name violates the min_len:1 schema constraint.
 	bad := validMedication("med1", "u1")
-	bad.Name = ""
+	bad.DisplayName = ""
 	_, err := svc.CreateMedication(ctx, connect.NewRequest(&v1.CreateMedicationRequest{Medication: bad}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
@@ -398,8 +398,8 @@ func TestCreateMedEvent_HappyPath(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.Msg.GetEvent().GetId() != "ev1" {
-		t.Errorf("got id %q, want ev1", resp.Msg.GetEvent().GetId())
+	if resp.Msg.GetEvent().GetName() != "ev1" {
+		t.Errorf("got name %q, want ev1", resp.Msg.GetEvent().GetName())
 	}
 }
 
@@ -427,14 +427,14 @@ func TestCreateMedEvent_AutoID(t *testing.T) {
 		t.Fatal(err)
 	}
 	svc := newSvcWithStore(t, store)
-	// No ID provided – service should assign one.
+	// No name provided – service should assign one.
 	ev := validMedEvent("", "u1", "med1", "2026-01-15")
 	resp, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{Event: ev}))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.Msg.GetEvent().GetId() == "" {
-		t.Error("expected auto-assigned ID, got empty")
+	if resp.Msg.GetEvent().GetName() == "" {
+		t.Error("expected auto-assigned name, got empty")
 	}
 }
 
@@ -539,7 +539,7 @@ func TestListTimeline_DateRangeFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, r := range resp.Msg.GetRecords() {
-		if bo := r.GetBleedingObservation(); bo != nil && bo.GetId() == "b1" {
+		if bo := r.GetBleedingObservation(); bo != nil && bo.GetName() == "b1" {
 			t.Error("b1 (Jan 5) should not appear in Jan 15–31 range")
 		}
 	}
@@ -721,7 +721,7 @@ func TestImportData_RoundTrip(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if profResp.Msg.GetProfile().GetId() != "u1" {
+	if profResp.Msg.GetProfile().GetName() != "u1" {
 		t.Error("profile not found after import")
 	}
 }
