@@ -14,6 +14,7 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"github.com/oklog/ulid/v2"
 
@@ -124,6 +125,44 @@ func marshalAll[T proto.Message](items []T) ([]json.RawMessage, error) {
 	return out, nil
 }
 
+// applyUserProfileFieldMask merges updates into existing according to the
+// field paths specified in mask. If mask is nil or empty, all fields from
+// updates are used (full replace).
+func applyUserProfileFieldMask(existing, updates *v1.UserProfile, mask *fieldmaskpb.FieldMask) *v1.UserProfile {
+	// If no mask or empty mask, do a full replace of all fields
+	if mask == nil || len(mask.GetPaths()) == 0 {
+		return &v1.UserProfile{
+			Name:             updates.GetName(),
+			BiologicalCycle:  updates.GetBiologicalCycle(),
+			Contraception:    updates.GetContraception(),
+			CycleRegularity:  updates.GetCycleRegularity(),
+			ReproductiveGoal: updates.GetReproductiveGoal(),
+			HealthConditions: updates.GetHealthConditions(),
+			TrackingFocus:    updates.GetTrackingFocus(),
+		}
+	}
+
+	// Apply only the fields specified in the mask.
+	// Note: "name" is intentionally excluded to prevent changing the profile ID.
+	for _, path := range mask.GetPaths() {
+		switch path {
+		case "biological_cycle":
+			existing.BiologicalCycle = updates.BiologicalCycle
+		case "contraception":
+			existing.Contraception = updates.Contraception
+		case "cycle_regularity":
+			existing.CycleRegularity = updates.CycleRegularity
+		case "reproductive_goal":
+			existing.ReproductiveGoal = updates.ReproductiveGoal
+		case "health_conditions":
+			existing.HealthConditions = updates.HealthConditions
+		case "tracking_focus":
+			existing.TrackingFocus = updates.TrackingFocus
+		}
+	}
+	return existing
+}
+
 // ─── RPC: user profile ────────────────────────────────────────────────────────
 
 // GetUserProfile fetches the profile for the given user name.
@@ -172,19 +211,34 @@ func (s *CycleTrackerService) UpdateUserProfile(
 	ctx context.Context,
 	req *connect.Request[v1.UpdateUserProfileRequest],
 ) (*connect.Response[v1.UpdateUserProfileResponse], error) {
-	profile := req.Msg.GetProfile()
-	if profile == nil {
+	updates := req.Msg.GetProfile()
+	if updates == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("profile is required"))
 	}
-	if profile.GetName() == "" {
+	if updates.GetName() == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("profile.name is required"))
 	}
+
+	// Fetch the existing profile
+	existing, err := s.store.UserProfiles().GetByID(ctx, updates.GetName())
+	if err != nil {
+		return nil, toConnectErr(err)
+	}
+
+	// Apply the update mask to merge only specified fields
+	mask := req.Msg.GetUpdateMask()
+	profile := applyUserProfileFieldMask(existing, updates, mask)
+
+	// Validate the merged profile
 	if err := s.validator.ValidateUserProfile(ctx, profile); err != nil {
 		return nil, toConnectErr(err)
 	}
+
+	// Persist the updated profile
 	if err := s.store.UserProfiles().Update(ctx, profile); err != nil {
 		return nil, toConnectErr(err)
 	}
+
 	return connect.NewResponse(&v1.UpdateUserProfileResponse{Profile: profile}), nil
 }
 
