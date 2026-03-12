@@ -58,14 +58,14 @@ func TestIntegration_CreateProfileLogObservationListTimeline(t *testing.T) {
 		TrackingFocus:    []v1.TrackingFocus{v1.TrackingFocus_TRACKING_FOCUS_BLEEDING},
 	}
 
-	upsertResp, err := client.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{
+	createProfileResp, err := client.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{
 		Profile: profile,
 	}))
 	if err != nil {
 		t.Fatalf("CreateUserProfile: %v", err)
 	}
-	if upsertResp.Msg.GetProfile().GetName() != userID {
-		t.Errorf("upserted profile name = %q, want %q", upsertResp.Msg.GetProfile().GetName(), userID)
+	if createProfileResp.Msg.GetProfile().GetName() != userID {
+		t.Errorf("created profile name = %q, want %q", createProfileResp.Msg.GetProfile().GetName(), userID)
 	}
 
 	// 2. Log a bleeding observation on 2026-01-01.
@@ -135,7 +135,7 @@ func TestIntegration_InMemoryEngineHandler(t *testing.T) {
 }
 
 // TestIntegration_SQLiteEngine verifies the SQLite backend initialises and
-// accepts profile upserts.
+// creates user profiles.
 func TestIntegration_SQLiteEngine(t *testing.T) {
 	ctx := context.Background()
 

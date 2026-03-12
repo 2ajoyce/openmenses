@@ -382,9 +382,9 @@ func TestIntegration_ImportIdempotent(t *testing.T) {
 			count1 := importFixture(t, client, "firsttime_user.json")
 			count2 := importFixture(t, client, "firsttime_user.json")
 
-			// Profile upsert always counts as 1; bleeding obs with same IDs are
+			// Profile creation always counts as 1; bleeding obs with same IDs are
 			// skipped (ErrConflict) so count2 should be ≤ count1 (only the profile
-			// re-upsert contributes).
+			// creation contributes).
 			if count2 > count1 {
 				t.Errorf("second import created more records (%d) than first (%d); expected idempotent behaviour", count2, count1)
 			}
