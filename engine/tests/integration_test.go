@@ -119,7 +119,7 @@ func TestFixture_AllFixturesImportCleanly(t *testing.T) {
 					userID := envelope.UserID
 
 					// Profile must be retrievable.
-					profResp, err := client.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{UserId: userID}))
+					profResp, err := client.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: userID}))
 					if err != nil {
 						t.Fatalf("GetUserProfile after import: %v", err)
 					}
@@ -129,7 +129,7 @@ func TestFixture_AllFixturesImportCleanly(t *testing.T) {
 
 					// Timeline must return at least one record for the imported data.
 					tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
-						UserId: userID,
+						Parent: userID,
 					}))
 					if err != nil {
 						t.Fatalf("ListTimeline after import: %v", err)
@@ -165,7 +165,7 @@ func TestIntegration_FullLifecycle_Regular28Day(t *testing.T) {
 			const userID = "user-regular-28day"
 
 			// Cycles must be detected from bleeding data.
-			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{UserId: userID}))
+			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("ListCycles: %v", err)
 			}
@@ -190,7 +190,7 @@ func TestIntegration_FullLifecycle_Regular28Day(t *testing.T) {
 
 			// Timeline query for cycle-1 bleed period returns at least 5 records.
 			tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
-				UserId: userID,
+				Parent: userID,
 				Range: &v1.DateRange{
 					Start: &v1.LocalDate{Value: "2025-09-01"},
 					End:   &v1.LocalDate{Value: "2025-09-05"},
@@ -236,7 +236,7 @@ func TestIntegration_FullLifecycle_FirstTimeUser(t *testing.T) {
 			const userID = "user-firsttime"
 
 			// Profile must be accessible.
-			profResp, err := client.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{UserId: userID}))
+			profResp, err := client.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: userID}))
 			if err != nil {
 				t.Fatalf("GetUserProfile: %v", err)
 			}
@@ -245,7 +245,7 @@ func TestIntegration_FullLifecycle_FirstTimeUser(t *testing.T) {
 			}
 
 			// At least one open-ended cycle should be detected from the 2 bleeding days.
-			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{UserId: userID}))
+			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("ListCycles: %v", err)
 			}
@@ -255,7 +255,7 @@ func TestIntegration_FullLifecycle_FirstTimeUser(t *testing.T) {
 
 			// Timeline must include both observations.
 			tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
-				UserId: userID,
+				Parent: userID,
 				Range: &v1.DateRange{
 					Start: &v1.LocalDate{Value: "2026-01-15"},
 					End:   &v1.LocalDate{Value: "2026-01-16"},
@@ -284,7 +284,7 @@ func TestIntegration_FullLifecycle_IrregularUser(t *testing.T) {
 			importFixture(t, client, "irregular_user.json")
 			const userID = "user-irregular"
 
-			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{UserId: userID}))
+			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("ListCycles: %v", err)
 			}
@@ -316,7 +316,7 @@ func TestIntegration_ImportExportRoundTrip(t *testing.T) {
 			const userID = "user-regular-28day"
 
 			// Get timeline record count from A.
-			tlA, err := clientA.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{UserId: userID}))
+			tlA, err := clientA.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("A ListTimeline: %v", err)
 			}
@@ -326,7 +326,7 @@ func TestIntegration_ImportExportRoundTrip(t *testing.T) {
 			}
 
 			// Export from A.
-			exportResp, err := clientA.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{UserId: userID}))
+			exportResp, err := clientA.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{Name: userID}))
 			if err != nil {
 				t.Fatalf("ExportData: %v", err)
 			}
@@ -346,7 +346,7 @@ func TestIntegration_ImportExportRoundTrip(t *testing.T) {
 			}
 
 			// Profile must be present in B.
-			profB, err := clientB.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{UserId: userID}))
+			profB, err := clientB.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: userID}))
 			if err != nil {
 				t.Fatalf("B GetUserProfile: %v", err)
 			}
@@ -356,7 +356,7 @@ func TestIntegration_ImportExportRoundTrip(t *testing.T) {
 
 			// Timeline in B must have the same bleeding observations as A.
 			// (Derived cycles are not exported, so total record count may differ.)
-			tlB, err := clientB.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{UserId: userID}))
+			tlB, err := clientB.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("B ListTimeline: %v", err)
 			}
@@ -407,7 +407,7 @@ func TestIntegration_EmptyDatabase(t *testing.T) {
 			const userID = "nonexistent-user"
 
 			// GetUserProfile on missing user → CodeNotFound.
-			_, err := client.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{UserId: userID}))
+			_, err := client.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: userID}))
 			if err == nil {
 				t.Error("expected CodeNotFound for missing user, got nil error")
 			} else {
@@ -418,7 +418,7 @@ func TestIntegration_EmptyDatabase(t *testing.T) {
 			}
 
 			// ListCycles on missing user → empty list, no error.
-			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{UserId: userID}))
+			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("ListCycles on empty DB: %v", err)
 			}
@@ -427,7 +427,7 @@ func TestIntegration_EmptyDatabase(t *testing.T) {
 			}
 
 			// ListTimeline on missing user → empty list, no error.
-			tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{UserId: userID}))
+			tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("ListTimeline on empty DB: %v", err)
 			}
@@ -436,7 +436,7 @@ func TestIntegration_EmptyDatabase(t *testing.T) {
 			}
 
 			// ExportData on missing user → valid (empty) payload.
-			exportResp, err := client.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{UserId: userID}))
+			exportResp, err := client.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{Name: userID}))
 			if err != nil {
 				t.Fatalf("ExportData on empty DB: %v", err)
 			}
@@ -470,7 +470,7 @@ func TestIntegration_Pagination_Timeline(t *testing.T) {
 			var pageToken string
 			for {
 				resp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
-					UserId: userID,
+					Parent: userID,
 					Pagination: &v1.PaginationRequest{
 						PageSize:  5,
 						PageToken: pageToken,
@@ -526,8 +526,8 @@ func TestIntegration_EdgeCase_SingleObservation(t *testing.T) {
 
 			// Create exactly one bleeding observation.
 			_, err = client.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+				Parent: userID,
 				Observation: &v1.BleedingObservation{
-					UserId:    userID,
 					Timestamp: &v1.DateTime{Value: "2026-01-01T08:00:00Z"},
 					Flow:      v1.BleedingFlow_BLEEDING_FLOW_MEDIUM,
 				},
@@ -538,7 +538,7 @@ func TestIntegration_EdgeCase_SingleObservation(t *testing.T) {
 
 			// Timeline must contain exactly the one observation.
 			tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
-				UserId: userID,
+				Parent: userID,
 			}))
 			if err != nil {
 				t.Fatalf("ListTimeline: %v", err)
@@ -549,7 +549,7 @@ func TestIntegration_EdgeCase_SingleObservation(t *testing.T) {
 			}
 
 			// ListCycles must succeed and return at most one open-ended cycle.
-			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{UserId: userID}))
+			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("ListCycles: %v", err)
 			}
@@ -599,7 +599,7 @@ func TestIntegration_EdgeCase_MaxPagination(t *testing.T) {
 				oversizedPageSize = 500
 			}
 			resp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
-				UserId: userID,
+				Parent: userID,
 				Pagination: &v1.PaginationRequest{
 					PageSize: oversizedPageSize,
 				},
@@ -664,8 +664,8 @@ func TestIntegration_ConcurrentAccess(t *testing.T) {
 				go func() {
 					defer wg.Done()
 					_, errs[i] = client.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+						Parent: userID,
 						Observation: &v1.BleedingObservation{
-							UserId:    userID,
 							Timestamp: &v1.DateTime{Value: dates[i] + "T10:00:00Z"},
 							Flow:      v1.BleedingFlow_BLEEDING_FLOW_MEDIUM,
 						},
@@ -724,8 +724,8 @@ func TestIntegration_CycleRedetection(t *testing.T) {
 			// Cycle 1: days 2025-06-01..05
 			for _, date := range []string{"2025-06-01", "2025-06-02", "2025-06-03", "2025-06-04", "2025-06-05"} {
 				_, err := client.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+					Parent: userID,
 					Observation: &v1.BleedingObservation{
-						UserId:    userID,
 						Timestamp: &v1.DateTime{Value: date + "T10:00:00Z"},
 						Flow:      v1.BleedingFlow_BLEEDING_FLOW_MEDIUM,
 					},
@@ -736,7 +736,7 @@ func TestIntegration_CycleRedetection(t *testing.T) {
 			}
 
 			// After cycle 1: expect 1 open-ended cycle.
-			c1, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{UserId: userID}))
+			c1, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("ListCycles after c1: %v", err)
 			}
@@ -747,8 +747,8 @@ func TestIntegration_CycleRedetection(t *testing.T) {
 			// Cycle 2: days 2025-06-29..07-02
 			for _, date := range []string{"2025-06-29", "2025-06-30", "2025-07-01", "2025-07-02"} {
 				_, err := client.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+					Parent: userID,
 					Observation: &v1.BleedingObservation{
-						UserId:    userID,
 						Timestamp: &v1.DateTime{Value: date + "T10:00:00Z"},
 						Flow:      v1.BleedingFlow_BLEEDING_FLOW_MEDIUM,
 					},
@@ -759,7 +759,7 @@ func TestIntegration_CycleRedetection(t *testing.T) {
 			}
 
 			// After cycle 2 start: cycle 1 must now be closed and cycle 2 open.
-			c2, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{UserId: userID}))
+			c2, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("ListCycles after c2: %v", err)
 			}
@@ -796,7 +796,7 @@ func TestIntegration_HormonalSuppressedUser(t *testing.T) {
 			importFixture(t, client, "hormonal_suppressed_user.json")
 			const userID = "user-hormonal"
 
-			profResp, err := client.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{UserId: userID}))
+			profResp, err := client.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: userID}))
 			if err != nil {
 				t.Fatalf("GetUserProfile: %v", err)
 			}
@@ -805,7 +805,7 @@ func TestIntegration_HormonalSuppressedUser(t *testing.T) {
 			}
 
 			// At least one withdrawal bleed cycle should be detected.
-			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{UserId: userID}))
+			cyclResp, err := client.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("ListCycles: %v", err)
 			}
@@ -815,7 +815,7 @@ func TestIntegration_HormonalSuppressedUser(t *testing.T) {
 
 			// The hormonal suppressed fixture contains medication events spanning
 			// multiple pill packs; assert at least one appears in the timeline.
-			tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{UserId: userID}))
+			tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("ListTimeline: %v", err)
 			}
@@ -849,7 +849,7 @@ func TestIntegration_FullFeaturedUser(t *testing.T) {
 			importFixture(t, client, "full_featured_user.json")
 			const userID = "user-full"
 
-			tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{UserId: userID}))
+			tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("ListTimeline: %v", err)
 			}
@@ -914,7 +914,7 @@ func TestSampleExport_ImportAndVerify(t *testing.T) {
 
 			const userID = "user-full"
 
-			profResp, err := client.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{UserId: userID}))
+			profResp, err := client.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: userID}))
 			if err != nil {
 				t.Fatalf("GetUserProfile: %v", err)
 			}
@@ -1019,7 +1019,7 @@ func collectAllTimeline(t *testing.T, ctx context.Context, client openmensesv1co
 	var pageToken string
 	for {
 		resp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
-			UserId: userID,
+			Parent: userID,
 			Pagination: &v1.PaginationRequest{
 				PageSize:  500,
 				PageToken: pageToken,

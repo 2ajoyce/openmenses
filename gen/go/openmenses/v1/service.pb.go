@@ -24,7 +24,7 @@ const (
 
 type GetUserProfileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,9 +59,9 @@ func (*GetUserProfileRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetUserProfileRequest) GetUserId() string {
+func (x *GetUserProfileRequest) GetName() string {
 	if x != nil {
-		return x.UserId
+		return x.Name
 	}
 	return ""
 }
@@ -200,7 +200,8 @@ func (x *UpsertUserProfileResponse) GetProfile() *UserProfile {
 
 type CreateBleedingObservationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Observation   *BleedingObservation   `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Observation   *BleedingObservation   `protobuf:"bytes,2,opt,name=observation,proto3" json:"observation,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -233,6 +234,13 @@ func (x *CreateBleedingObservationRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateBleedingObservationRequest.ProtoReflect.Descriptor instead.
 func (*CreateBleedingObservationRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *CreateBleedingObservationRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
 }
 
 func (x *CreateBleedingObservationRequest) GetObservation() *BleedingObservation {
@@ -288,7 +296,8 @@ func (x *CreateBleedingObservationResponse) GetObservation() *BleedingObservatio
 
 type CreateSymptomObservationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Observation   *SymptomObservation    `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Observation   *SymptomObservation    `protobuf:"bytes,2,opt,name=observation,proto3" json:"observation,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -321,6 +330,13 @@ func (x *CreateSymptomObservationRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateSymptomObservationRequest.ProtoReflect.Descriptor instead.
 func (*CreateSymptomObservationRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *CreateSymptomObservationRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
 }
 
 func (x *CreateSymptomObservationRequest) GetObservation() *SymptomObservation {
@@ -376,7 +392,8 @@ func (x *CreateSymptomObservationResponse) GetObservation() *SymptomObservation 
 
 type CreateMoodObservationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Observation   *MoodObservation       `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Observation   *MoodObservation       `protobuf:"bytes,2,opt,name=observation,proto3" json:"observation,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -409,6 +426,13 @@ func (x *CreateMoodObservationRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateMoodObservationRequest.ProtoReflect.Descriptor instead.
 func (*CreateMoodObservationRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *CreateMoodObservationRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
 }
 
 func (x *CreateMoodObservationRequest) GetObservation() *MoodObservation {
@@ -464,7 +488,8 @@ func (x *CreateMoodObservationResponse) GetObservation() *MoodObservation {
 
 type CreateMedicationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Medication    *Medication            `protobuf:"bytes,1,opt,name=medication,proto3" json:"medication,omitempty"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Medication    *Medication            `protobuf:"bytes,2,opt,name=medication,proto3" json:"medication,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -497,6 +522,13 @@ func (x *CreateMedicationRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateMedicationRequest.ProtoReflect.Descriptor instead.
 func (*CreateMedicationRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *CreateMedicationRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
 }
 
 func (x *CreateMedicationRequest) GetMedication() *Medication {
@@ -552,7 +584,8 @@ func (x *CreateMedicationResponse) GetMedication() *Medication {
 
 type CreateMedicationEventRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Event         *MedicationEvent       `protobuf:"bytes,1,opt,name=event,proto3" json:"event,omitempty"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Event         *MedicationEvent       `protobuf:"bytes,2,opt,name=event,proto3" json:"event,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -585,6 +618,13 @@ func (x *CreateMedicationEventRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateMedicationEventRequest.ProtoReflect.Descriptor instead.
 func (*CreateMedicationEventRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *CreateMedicationEventRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
 }
 
 func (x *CreateMedicationEventRequest) GetEvent() *MedicationEvent {
@@ -640,7 +680,7 @@ func (x *CreateMedicationEventResponse) GetEvent() *MedicationEvent {
 
 type ListTimelineRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	Range         *DateRange             `protobuf:"bytes,2,opt,name=range,proto3" json:"range,omitempty"`
 	Pagination    *PaginationRequest     `protobuf:"bytes,3,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -677,9 +717,9 @@ func (*ListTimelineRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *ListTimelineRequest) GetUserId() string {
+func (x *ListTimelineRequest) GetParent() string {
 	if x != nil {
-		return x.UserId
+		return x.Parent
 	}
 	return ""
 }
@@ -946,7 +986,7 @@ func (x *ListTimelineResponse) GetPagination() *PaginationResponse {
 
 type ListCyclesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -981,9 +1021,9 @@ func (*ListCyclesRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{17}
 }
 
-func (x *ListCyclesRequest) GetUserId() string {
+func (x *ListCyclesRequest) GetParent() string {
 	if x != nil {
-		return x.UserId
+		return x.Parent
 	}
 	return ""
 }
@@ -1034,7 +1074,7 @@ func (x *ListCyclesResponse) GetCycles() []*Cycle {
 
 type ListPredictionsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1069,9 +1109,9 @@ func (*ListPredictionsRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{19}
 }
 
-func (x *ListPredictionsRequest) GetUserId() string {
+func (x *ListPredictionsRequest) GetParent() string {
 	if x != nil {
-		return x.UserId
+		return x.Parent
 	}
 	return ""
 }
@@ -1122,7 +1162,7 @@ func (x *ListPredictionsResponse) GetPredictions() []*Prediction {
 
 type ListInsightsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1157,9 +1197,9 @@ func (*ListInsightsRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{21}
 }
 
-func (x *ListInsightsRequest) GetUserId() string {
+func (x *ListInsightsRequest) GetParent() string {
 	if x != nil {
-		return x.UserId
+		return x.Parent
 	}
 	return ""
 }
@@ -1210,7 +1250,7 @@ func (x *ListInsightsResponse) GetInsights() []*Insight {
 
 type ExportDataRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1245,9 +1285,9 @@ func (*ExportDataRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{23}
 }
 
-func (x *ExportDataRequest) GetUserId() string {
+func (x *ExportDataRequest) GetName() string {
 	if x != nil {
-		return x.UserId
+		return x.Name
 	}
 	return ""
 }
@@ -1388,41 +1428,46 @@ var File_openmenses_v1_service_proto protoreflect.FileDescriptor
 
 const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1bopenmenses/v1/service.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19openmenses/v1/model.proto\x1a\x19openmenses/v1/types.proto\"9\n" +
-	"\x15GetUserProfileRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"N\n" +
+	"\x1bopenmenses/v1/service.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19openmenses/v1/model.proto\x1a\x19openmenses/v1/types.proto\"4\n" +
+	"\x15GetUserProfileRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"N\n" +
 	"\x16GetUserProfileResponse\x124\n" +
 	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\"P\n" +
 	"\x18UpsertUserProfileRequest\x124\n" +
 	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\"Q\n" +
 	"\x19UpsertUserProfileResponse\x124\n" +
-	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\"h\n" +
-	" CreateBleedingObservationRequest\x12D\n" +
-	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"i\n" +
+	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\"\x89\x01\n" +
+	" CreateBleedingObservationRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12D\n" +
+	"\vobservation\x18\x02 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"i\n" +
 	"!CreateBleedingObservationResponse\x12D\n" +
-	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"f\n" +
-	"\x1fCreateSymptomObservationRequest\x12C\n" +
-	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\"g\n" +
+	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"\x87\x01\n" +
+	"\x1fCreateSymptomObservationRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12C\n" +
+	"\vobservation\x18\x02 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\"g\n" +
 	" CreateSymptomObservationResponse\x12C\n" +
-	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\"`\n" +
-	"\x1cCreateMoodObservationRequest\x12@\n" +
-	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\"a\n" +
+	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\"\x81\x01\n" +
+	"\x1cCreateMoodObservationRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
+	"\vobservation\x18\x02 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\"a\n" +
 	"\x1dCreateMoodObservationResponse\x12@\n" +
-	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\"T\n" +
-	"\x17CreateMedicationRequest\x129\n" +
+	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\"u\n" +
+	"\x17CreateMedicationRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x129\n" +
 	"\n" +
-	"medication\x18\x01 \x01(\v2\x19.openmenses.v1.MedicationR\n" +
+	"medication\x18\x02 \x01(\v2\x19.openmenses.v1.MedicationR\n" +
 	"medication\"U\n" +
 	"\x18CreateMedicationResponse\x129\n" +
 	"\n" +
 	"medication\x18\x01 \x01(\v2\x19.openmenses.v1.MedicationR\n" +
-	"medication\"T\n" +
-	"\x1cCreateMedicationEventRequest\x124\n" +
-	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\"U\n" +
+	"medication\"u\n" +
+	"\x1cCreateMedicationEventRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x124\n" +
+	"\x05event\x18\x02 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\"U\n" +
 	"\x1dCreateMedicationEventResponse\x124\n" +
-	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\"\xa9\x01\n" +
-	"\x13ListTimelineRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12.\n" +
+	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\"\xa8\x01\n" +
+	"\x13ListTimelineRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12.\n" +
 	"\x05range\x18\x02 \x01(\v2\x18.openmenses.v1.DateRangeR\x05range\x12@\n" +
 	"\n" +
 	"pagination\x18\x03 \x01(\v2 .openmenses.v1.PaginationRequestR\n" +
@@ -1446,21 +1491,21 @@ const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\arecords\x18\x01 \x03(\v2\x1d.openmenses.v1.TimelineRecordR\arecords\x12A\n" +
 	"\n" +
 	"pagination\x18\x02 \x01(\v2!.openmenses.v1.PaginationResponseR\n" +
-	"pagination\"5\n" +
-	"\x11ListCyclesRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"B\n" +
+	"pagination\"4\n" +
+	"\x11ListCyclesRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\"B\n" +
 	"\x12ListCyclesResponse\x12,\n" +
-	"\x06cycles\x18\x01 \x03(\v2\x14.openmenses.v1.CycleR\x06cycles\":\n" +
-	"\x16ListPredictionsRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"V\n" +
+	"\x06cycles\x18\x01 \x03(\v2\x14.openmenses.v1.CycleR\x06cycles\"9\n" +
+	"\x16ListPredictionsRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\"V\n" +
 	"\x17ListPredictionsResponse\x12;\n" +
-	"\vpredictions\x18\x01 \x03(\v2\x19.openmenses.v1.PredictionR\vpredictions\"7\n" +
-	"\x13ListInsightsRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"J\n" +
+	"\vpredictions\x18\x01 \x03(\v2\x19.openmenses.v1.PredictionR\vpredictions\"6\n" +
+	"\x13ListInsightsRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\"J\n" +
 	"\x14ListInsightsResponse\x122\n" +
-	"\binsights\x18\x01 \x03(\v2\x16.openmenses.v1.InsightR\binsights\"5\n" +
-	"\x11ExportDataRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\"(\n" +
+	"\binsights\x18\x01 \x03(\v2\x16.openmenses.v1.InsightR\binsights\"0\n" +
+	"\x11ExportDataRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"(\n" +
 	"\x12ExportDataResponse\x12\x12\n" +
 	"\x04data\x18\x01 \x01(\fR\x04data\"'\n" +
 	"\x11ImportDataRequest\x12\x12\n" +

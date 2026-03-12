@@ -110,7 +110,7 @@ func validMedEvent(id, userID, medID, date string) *v1.MedicationEvent {
 
 func TestGetUserProfile_NotFound(t *testing.T) {
 	svc := newSvc(t)
-	_, err := svc.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{UserId: "missing"}))
+	_, err := svc.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: "missing"}))
 	if codeOf(err) != connect.CodeNotFound {
 		t.Fatalf("want CodeNotFound, got %v", err)
 	}
@@ -122,7 +122,7 @@ func TestGetUserProfile_Found(t *testing.T) {
 		t.Fatal(err)
 	}
 	svc := newSvcWithStore(t, store)
-	resp, err := svc.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{UserId: "u1"}))
+	resp, err := svc.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -185,7 +185,7 @@ func TestUpsertUserProfile_Update(t *testing.T) {
 func TestCreateBleeding_HappyPath(t *testing.T) {
 	svc := newSvc(t)
 	obs := validBleeding("b1", "u1", "2026-01-15")
-	resp, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Observation: obs}))
+	resp, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -198,7 +198,7 @@ func TestCreateBleeding_AutoID(t *testing.T) {
 	svc := newSvc(t)
 	// No name provided – service should assign one.
 	obs := validBleeding("", "u1", "2026-01-15")
-	resp, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Observation: obs}))
+	resp, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -209,7 +209,7 @@ func TestCreateBleeding_AutoID(t *testing.T) {
 
 func TestCreateBleeding_NilObservation(t *testing.T) {
 	svc := newSvc(t)
-	_, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{}))
+	_, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1"}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
 	}
@@ -218,10 +218,10 @@ func TestCreateBleeding_NilObservation(t *testing.T) {
 func TestCreateBleeding_DuplicateID(t *testing.T) {
 	svc := newSvc(t)
 	obs := validBleeding("b1", "u1", "2026-01-15")
-	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Observation: obs})); err != nil {
+	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
 		t.Fatal(err)
 	}
-	_, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Observation: obs}))
+	_, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs}))
 	if codeOf(err) != connect.CodeAlreadyExists {
 		t.Fatalf("want CodeAlreadyExists, got %v", err)
 	}
@@ -236,11 +236,11 @@ func TestCreateBleeding_TriggersRedetection(t *testing.T) {
 		validBleeding("b2", "u1", "2026-01-02"),
 		validBleeding("b3", "u1", "2026-01-30"),
 	} {
-		if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Observation: obs})); err != nil {
+		if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
 			t.Fatal(err)
 		}
 	}
-	resp, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{UserId: "u1"}))
+	resp, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -254,7 +254,7 @@ func TestCreateBleeding_TriggersRedetection(t *testing.T) {
 func TestCreateSymptom_HappyPath(t *testing.T) {
 	svc := newSvc(t)
 	obs := validSymptom("s1", "u1", "2026-01-15")
-	resp, err := svc.CreateSymptomObservation(ctx, connect.NewRequest(&v1.CreateSymptomObservationRequest{Observation: obs}))
+	resp, err := svc.CreateSymptomObservation(ctx, connect.NewRequest(&v1.CreateSymptomObservationRequest{Parent: "u1", Observation: obs}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -265,7 +265,7 @@ func TestCreateSymptom_HappyPath(t *testing.T) {
 
 func TestCreateSymptom_NilObservation(t *testing.T) {
 	svc := newSvc(t)
-	_, err := svc.CreateSymptomObservation(ctx, connect.NewRequest(&v1.CreateSymptomObservationRequest{}))
+	_, err := svc.CreateSymptomObservation(ctx, connect.NewRequest(&v1.CreateSymptomObservationRequest{Parent: "u1"}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
 	}
@@ -274,7 +274,7 @@ func TestCreateSymptom_NilObservation(t *testing.T) {
 func TestCreateSymptom_AutoID(t *testing.T) {
 	svc := newSvc(t)
 	obs := validSymptom("", "u1", "2026-01-15")
-	resp, err := svc.CreateSymptomObservation(ctx, connect.NewRequest(&v1.CreateSymptomObservationRequest{Observation: obs}))
+	resp, err := svc.CreateSymptomObservation(ctx, connect.NewRequest(&v1.CreateSymptomObservationRequest{Parent: "u1", Observation: obs}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -288,7 +288,7 @@ func TestCreateSymptom_ValidationFailure(t *testing.T) {
 	// SYMPTOM_TYPE_UNSPECIFIED (value 0) violates the not_in:[0] schema constraint.
 	bad := validSymptom("s1", "u1", "2026-01-15")
 	bad.Symptom = v1.SymptomType_SYMPTOM_TYPE_UNSPECIFIED
-	_, err := svc.CreateSymptomObservation(ctx, connect.NewRequest(&v1.CreateSymptomObservationRequest{Observation: bad}))
+	_, err := svc.CreateSymptomObservation(ctx, connect.NewRequest(&v1.CreateSymptomObservationRequest{Parent: "u1", Observation: bad}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
 	}
@@ -299,7 +299,7 @@ func TestCreateSymptom_ValidationFailure(t *testing.T) {
 func TestCreateMood_HappyPath(t *testing.T) {
 	svc := newSvc(t)
 	obs := validMood("m1", "u1", "2026-01-15")
-	resp, err := svc.CreateMoodObservation(ctx, connect.NewRequest(&v1.CreateMoodObservationRequest{Observation: obs}))
+	resp, err := svc.CreateMoodObservation(ctx, connect.NewRequest(&v1.CreateMoodObservationRequest{Parent: "u1", Observation: obs}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -310,7 +310,7 @@ func TestCreateMood_HappyPath(t *testing.T) {
 
 func TestCreateMood_NilObservation(t *testing.T) {
 	svc := newSvc(t)
-	_, err := svc.CreateMoodObservation(ctx, connect.NewRequest(&v1.CreateMoodObservationRequest{}))
+	_, err := svc.CreateMoodObservation(ctx, connect.NewRequest(&v1.CreateMoodObservationRequest{Parent: "u1"}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
 	}
@@ -319,7 +319,7 @@ func TestCreateMood_NilObservation(t *testing.T) {
 func TestCreateMood_AutoID(t *testing.T) {
 	svc := newSvc(t)
 	obs := validMood("", "u1", "2026-01-15")
-	resp, err := svc.CreateMoodObservation(ctx, connect.NewRequest(&v1.CreateMoodObservationRequest{Observation: obs}))
+	resp, err := svc.CreateMoodObservation(ctx, connect.NewRequest(&v1.CreateMoodObservationRequest{Parent: "u1", Observation: obs}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -333,7 +333,7 @@ func TestCreateMood_ValidationFailure(t *testing.T) {
 	// MOOD_TYPE_UNSPECIFIED (value 0) violates the not_in:[0] schema constraint.
 	bad := validMood("m1", "u1", "2026-01-15")
 	bad.Mood = v1.MoodType_MOOD_TYPE_UNSPECIFIED
-	_, err := svc.CreateMoodObservation(ctx, connect.NewRequest(&v1.CreateMoodObservationRequest{Observation: bad}))
+	_, err := svc.CreateMoodObservation(ctx, connect.NewRequest(&v1.CreateMoodObservationRequest{Parent: "u1", Observation: bad}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
 	}
@@ -344,7 +344,7 @@ func TestCreateMood_ValidationFailure(t *testing.T) {
 func TestCreateMedication_HappyPath(t *testing.T) {
 	svc := newSvc(t)
 	med := validMedication("med1", "u1")
-	resp, err := svc.CreateMedication(ctx, connect.NewRequest(&v1.CreateMedicationRequest{Medication: med}))
+	resp, err := svc.CreateMedication(ctx, connect.NewRequest(&v1.CreateMedicationRequest{Parent: "u1", Medication: med}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -355,7 +355,7 @@ func TestCreateMedication_HappyPath(t *testing.T) {
 
 func TestCreateMedication_NilMedication(t *testing.T) {
 	svc := newSvc(t)
-	_, err := svc.CreateMedication(ctx, connect.NewRequest(&v1.CreateMedicationRequest{}))
+	_, err := svc.CreateMedication(ctx, connect.NewRequest(&v1.CreateMedicationRequest{Parent: "u1"}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
 	}
@@ -364,7 +364,7 @@ func TestCreateMedication_NilMedication(t *testing.T) {
 func TestCreateMedication_AutoID(t *testing.T) {
 	svc := newSvc(t)
 	med := validMedication("", "u1")
-	resp, err := svc.CreateMedication(ctx, connect.NewRequest(&v1.CreateMedicationRequest{Medication: med}))
+	resp, err := svc.CreateMedication(ctx, connect.NewRequest(&v1.CreateMedicationRequest{Parent: "u1", Medication: med}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -378,7 +378,7 @@ func TestCreateMedication_ValidationFailure(t *testing.T) {
 	// Empty name violates the min_len:1 schema constraint.
 	bad := validMedication("med1", "u1")
 	bad.DisplayName = ""
-	_, err := svc.CreateMedication(ctx, connect.NewRequest(&v1.CreateMedicationRequest{Medication: bad}))
+	_, err := svc.CreateMedication(ctx, connect.NewRequest(&v1.CreateMedicationRequest{Parent: "u1", Medication: bad}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
 	}
@@ -394,7 +394,7 @@ func TestCreateMedEvent_HappyPath(t *testing.T) {
 	}
 	svc := newSvcWithStore(t, store)
 	ev := validMedEvent("ev1", "u1", "med1", "2026-01-15")
-	resp, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{Event: ev}))
+	resp, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{Parent: "u1", Event: ev}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -407,7 +407,7 @@ func TestCreateMedEvent_MissingMedication(t *testing.T) {
 	svc := newSvc(t)
 	// medication "med1" does not exist in the store.
 	ev := validMedEvent("ev1", "u1", "med1", "2026-01-15")
-	_, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{Event: ev}))
+	_, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{Parent: "u1", Event: ev}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument for missing medication, got %v", err)
 	}
@@ -415,7 +415,7 @@ func TestCreateMedEvent_MissingMedication(t *testing.T) {
 
 func TestCreateMedEvent_NilEvent(t *testing.T) {
 	svc := newSvc(t)
-	_, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{}))
+	_, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{Parent: "u1"}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
 	}
@@ -429,7 +429,7 @@ func TestCreateMedEvent_AutoID(t *testing.T) {
 	svc := newSvcWithStore(t, store)
 	// No name provided – service should assign one.
 	ev := validMedEvent("", "u1", "med1", "2026-01-15")
-	resp, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{Event: ev}))
+	resp, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{Parent: "u1", Event: ev}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -442,7 +442,7 @@ func TestCreateMedEvent_AutoID(t *testing.T) {
 
 func TestListCycles_EmptyUser(t *testing.T) {
 	svc := newSvc(t)
-	resp, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{UserId: "u1"}))
+	resp, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -455,10 +455,10 @@ func TestListCycles_DetectsFromObs(t *testing.T) {
 	svc := newSvc(t)
 	// Log a single bleeding day.
 	obs := validBleeding("b1", "u1", "2026-01-01")
-	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Observation: obs})); err != nil {
+	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
 		t.Fatal(err)
 	}
-	resp, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{UserId: "u1"}))
+	resp, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -474,7 +474,7 @@ func TestListCycles_DetectsFromObs(t *testing.T) {
 
 func TestListTimeline_Empty(t *testing.T) {
 	svc := newSvc(t)
-	resp, err := svc.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{UserId: "u1"}))
+	resp, err := svc.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{Parent: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -487,16 +487,18 @@ func TestListTimeline_MixedRecords_SortedDescending(t *testing.T) {
 	svc := newSvc(t)
 	// Add a bleeding obs and a symptom obs on different days.
 	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+		Parent:      "u1",
 		Observation: validBleeding("b1", "u1", "2026-01-10"),
 	})); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := svc.CreateSymptomObservation(ctx, connect.NewRequest(&v1.CreateSymptomObservationRequest{
+		Parent:      "u1",
 		Observation: validSymptom("s1", "u1", "2026-01-15"),
 	})); err != nil {
 		t.Fatal(err)
 	}
-	resp, err := svc.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{UserId: "u1"}))
+	resp, err := svc.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{Parent: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -518,18 +520,20 @@ func TestListTimeline_MixedRecords_SortedDescending(t *testing.T) {
 func TestListTimeline_DateRangeFilter(t *testing.T) {
 	svc := newSvc(t)
 	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+		Parent:      "u1",
 		Observation: validBleeding("b1", "u1", "2026-01-05"),
 	})); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+		Parent:      "u1",
 		Observation: validBleeding("b2", "u1", "2026-01-20"),
 	})); err != nil {
 		t.Fatal(err)
 	}
 	// Request only Jan 15–31; should NOT include b1 (Jan 5).
 	resp, err := svc.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
-		UserId: "u1",
+		Parent: "u1",
 		Range: &v1.DateRange{
 			Start: &v1.LocalDate{Value: "2026-01-15"},
 			End:   &v1.LocalDate{Value: "2026-01-31"},
@@ -551,13 +555,13 @@ func TestListTimeline_Pagination(t *testing.T) {
 	for i := 1; i <= 5; i++ {
 		date := "2026-01-0" + string(rune('0'+i))
 		obs := validBleeding("b"+string(rune('0'+i)), "u1", date)
-		if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Observation: obs})); err != nil {
+		if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
 			t.Fatal(err)
 		}
 	}
 	// Request page size 2, first page.
 	resp1, err := svc.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
-		UserId:     "u1",
+		Parent:     "u1",
 		Pagination: &v1.PaginationRequest{PageSize: 2},
 	}))
 	if err != nil {
@@ -572,7 +576,7 @@ func TestListTimeline_Pagination(t *testing.T) {
 	}
 	// Fetch second page.
 	resp2, err := svc.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
-		UserId:     "u1",
+		Parent:     "u1",
 		Pagination: &v1.PaginationRequest{PageSize: 2, PageToken: nextToken},
 	}))
 	if err != nil {
@@ -587,7 +591,7 @@ func TestListTimeline_Pagination(t *testing.T) {
 
 func TestListPredictions_ReturnsEmpty(t *testing.T) {
 	svc := newSvc(t)
-	resp, err := svc.ListPredictions(ctx, connect.NewRequest(&v1.ListPredictionsRequest{UserId: "u1"}))
+	resp, err := svc.ListPredictions(ctx, connect.NewRequest(&v1.ListPredictionsRequest{Parent: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -600,7 +604,7 @@ func TestListPredictions_ReturnsEmpty(t *testing.T) {
 
 func TestListInsights_ReturnsEmpty(t *testing.T) {
 	svc := newSvc(t)
-	resp, err := svc.ListInsights(ctx, connect.NewRequest(&v1.ListInsightsRequest{UserId: "u1"}))
+	resp, err := svc.ListInsights(ctx, connect.NewRequest(&v1.ListInsightsRequest{Parent: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -613,7 +617,7 @@ func TestListInsights_ReturnsEmpty(t *testing.T) {
 
 func TestExportData_EmptyUser(t *testing.T) {
 	svc := newSvc(t)
-	resp, err := svc.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{UserId: "u1"}))
+	resp, err := svc.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{Name: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -634,10 +638,10 @@ func TestExportData_WithRecords(t *testing.T) {
 		t.Fatal(err)
 	}
 	obs := validBleeding("b1", "u1", "2026-01-15")
-	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Observation: obs})); err != nil {
+	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
 		t.Fatal(err)
 	}
-	resp, err := svc.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{UserId: "u1"}))
+	resp, err := svc.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{Name: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -692,17 +696,19 @@ func TestImportData_RoundTrip(t *testing.T) {
 		t.Fatal(err)
 	}
 	if _, err := srcSvc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+		Parent:      "u1",
 		Observation: validBleeding("b1", "u1", "2026-01-15"),
 	})); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := srcSvc.CreateSymptomObservation(ctx, connect.NewRequest(&v1.CreateSymptomObservationRequest{
+		Parent:      "u1",
 		Observation: validSymptom("s1", "u1", "2026-01-16"),
 	})); err != nil {
 		t.Fatal(err)
 	}
 	// Export from source.
-	exportResp, err := srcSvc.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{UserId: "u1"}))
+	exportResp, err := srcSvc.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{Name: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -717,7 +723,7 @@ func TestImportData_RoundTrip(t *testing.T) {
 		t.Errorf("want 3 records imported, got %d", importResp.Msg.GetRecordsImported())
 	}
 	// Verify the profile exists in destination.
-	profResp, err := dstSvc.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{UserId: "u1"}))
+	profResp, err := dstSvc.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -733,11 +739,12 @@ func TestImportData_IdempotentReImport(t *testing.T) {
 		t.Fatal(err)
 	}
 	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+		Parent:      "u1",
 		Observation: validBleeding("b1", "u1", "2026-01-15"),
 	})); err != nil {
 		t.Fatal(err)
 	}
-	exportResp, err := svc.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{UserId: "u1"}))
+	exportResp, err := svc.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{Name: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -71,8 +71,8 @@ func TestIntegration_CreateProfileLogObservationListTimeline(t *testing.T) {
 	// 2. Log a bleeding observation on 2026-01-01.
 	const obsDate = "2026-01-01"
 	createResp, err := client.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+		Parent: userID,
 		Observation: &v1.BleedingObservation{
-			UserId:    userID,
 			Timestamp: &v1.DateTime{Value: obsDate + "T10:00:00Z"},
 			Flow:      v1.BleedingFlow_BLEEDING_FLOW_MEDIUM,
 		},
@@ -87,7 +87,7 @@ func TestIntegration_CreateProfileLogObservationListTimeline(t *testing.T) {
 
 	// 3. List the timeline for that day and verify the observation is present.
 	tlResp, err := client.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{
-		UserId: userID,
+		Parent: userID,
 		Range: &v1.DateRange{
 			Start: &v1.LocalDate{Value: obsDate},
 			End:   &v1.LocalDate{Value: obsDate},
