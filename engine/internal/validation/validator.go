@@ -236,12 +236,12 @@ func (v *Validator) ValidateCycle(ctx context.Context, c *v1.Cycle) error {
 		)
 		if err == nil {
 			for _, existing := range page.Items {
-				if existing.GetId() != c.GetId() {
+				if existing.GetName() != c.GetName() {
 					viols = append(viols, FieldViolation{
 						Field: "cycle",
 						Description: fmt.Sprintf(
 							"date range overlaps with existing cycle %s (%s\u2013%s)",
-							existing.GetId(),
+							existing.GetName(),
 							existing.GetStartDate().GetValue(),
 							existing.GetEndDate().GetValue(),
 						),

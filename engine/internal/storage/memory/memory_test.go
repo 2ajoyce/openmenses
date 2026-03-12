@@ -25,7 +25,7 @@ func dateTime(s string) *v1.DateTime   { return &v1.DateTime{Value: s} }
 
 func TestUserProfile_UpsertAndGet(t *testing.T) {
 	s := newStore()
-	p := &v1.UserProfile{Id: "u1"}
+	p := &v1.UserProfile{Name: "u1"}
 	if err := s.UserProfiles().Upsert(ctx, p); err != nil {
 		t.Fatal(err)
 	}
@@ -33,8 +33,8 @@ func TestUserProfile_UpsertAndGet(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got.GetId() != "u1" {
-		t.Fatalf("got id %q, want %q", got.GetId(), "u1")
+	if got.GetName() != "u1" {
+		t.Fatalf("got name %q, want %q", got.GetName(), "u1")
 	}
 }
 
@@ -55,8 +55,8 @@ func mustNoErr(t *testing.T, err error) {
 
 func TestUserProfile_UpsertOverwrite(t *testing.T) {
 	s := newStore()
-	mustNoErr(t, s.UserProfiles().Upsert(ctx, &v1.UserProfile{Id: "u1", CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_REGULAR}))
-	mustNoErr(t, s.UserProfiles().Upsert(ctx, &v1.UserProfile{Id: "u1", CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR}))
+	mustNoErr(t, s.UserProfiles().Upsert(ctx, &v1.UserProfile{Name: "u1", CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_REGULAR}))
+	mustNoErr(t, s.UserProfiles().Upsert(ctx, &v1.UserProfile{Name: "u1", CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR}))
 	got, _ := s.UserProfiles().GetByID(ctx, "u1")
 	if got.GetCycleRegularity() != v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR {
 		t.Fatal("upsert did not overwrite")
@@ -75,7 +75,7 @@ func TestUserProfile_EmptyIDRejected(t *testing.T) {
 
 func bleeding(id, userID, ts string) *v1.BleedingObservation {
 	return &v1.BleedingObservation{
-		Id:        id,
+		Name:      id,
 		UserId:    userID,
 		Timestamp: dateTime(ts),
 		Flow:      v1.BleedingFlow_BLEEDING_FLOW_MEDIUM,
@@ -92,8 +92,8 @@ func TestBleeding_CreateAndGet(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got.GetId() != "b1" {
-		t.Fatalf("got %q", got.GetId())
+	if got.GetName() != "b1" {
+		t.Fatalf("got %q", got.GetName())
 	}
 }
 
@@ -149,7 +149,7 @@ func TestBleeding_ListByUserAndDateRange(t *testing.T) {
 	if len(page.Items) != 2 {
 		t.Fatalf("want 2, got %d", len(page.Items))
 	}
-	if page.Items[0].GetId() != "b1" || page.Items[1].GetId() != "b2" {
+	if page.Items[0].GetName() != "b1" || page.Items[1].GetName() != "b2" {
 		t.Fatal("wrong order or items")
 	}
 }
@@ -237,7 +237,7 @@ func TestBleeding_ConcurrentAccess(t *testing.T) {
 
 func cycle(id, userID, start, end string) *v1.Cycle {
 	c := &v1.Cycle{
-		Id:        id,
+		Name:      id,
 		UserId:    userID,
 		StartDate: localDate(start),
 		Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,
@@ -327,11 +327,11 @@ func TestCycle_ListByUser(t *testing.T) {
 
 func med(id, userID string) *v1.Medication {
 	return &v1.Medication{
-		Id:       id,
-		UserId:   userID,
-		Name:     "Ibuprofen",
-		Category: v1.MedicationCategory_MEDICATION_CATEGORY_PAIN_RELIEF,
-		Active:   true,
+		Name:        id,
+		UserId:      userID,
+		DisplayName: "Ibuprofen",
+		Category:    v1.MedicationCategory_MEDICATION_CATEGORY_PAIN_RELIEF,
+		Active:      true,
 	}
 }
 
@@ -377,7 +377,7 @@ func TestMedication_ListByUser(t *testing.T) {
 
 func symptom(id, userID, ts string) *v1.SymptomObservation {
 	return &v1.SymptomObservation{
-		Id:        id,
+		Name:      id,
 		UserId:    userID,
 		Timestamp: dateTime(ts),
 		Symptom:   v1.SymptomType_SYMPTOM_TYPE_CRAMPS,
@@ -393,8 +393,8 @@ func TestSymptom_CreateAndGet(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got.GetId() != "s1" {
-		t.Fatalf("got %q", got.GetId())
+	if got.GetName() != "s1" {
+		t.Fatalf("got %q", got.GetName())
 	}
 }
 
@@ -474,7 +474,7 @@ func TestSymptom_Pagination(t *testing.T) {
 
 func mood(id, userID, ts string) *v1.MoodObservation {
 	return &v1.MoodObservation{
-		Id:        id,
+		Name:      id,
 		UserId:    userID,
 		Timestamp: dateTime(ts),
 		Mood:      v1.MoodType_MOOD_TYPE_HAPPY,
@@ -490,8 +490,8 @@ func TestMood_CreateAndGet(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got.GetId() != "mo1" {
-		t.Fatalf("got %q", got.GetId())
+	if got.GetName() != "mo1" {
+		t.Fatalf("got %q", got.GetName())
 	}
 }
 
@@ -571,7 +571,7 @@ func TestMood_Pagination(t *testing.T) {
 
 func medEvent(id, userID, medID, ts string) *v1.MedicationEvent {
 	return &v1.MedicationEvent{
-		Id:           id,
+		Name:         id,
 		UserId:       userID,
 		MedicationId: medID,
 		Timestamp:    dateTime(ts),
@@ -587,8 +587,8 @@ func TestMedicationEvent_CreateAndGet(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got.GetId() != "e1" {
-		t.Fatalf("got %q", got.GetId())
+	if got.GetName() != "e1" {
+		t.Fatalf("got %q", got.GetName())
 	}
 }
 
@@ -658,13 +658,13 @@ func TestMedicationEvent_ListByMedicationID(t *testing.T) {
 
 func phaseEstimate(id, userID, date, cycleID string) *v1.PhaseEstimate {
 	return &v1.PhaseEstimate{
-		Id:         id,
+		Name:       id,
 		UserId:     userID,
 		Date:       localDate(date),
 		Phase:      v1.CyclePhase_CYCLE_PHASE_FOLLICULAR,
 		Confidence: v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM,
 		BasedOnRecordRefs: []*v1.RecordRef{
-			{Id: cycleID},
+			{Name: cycleID},
 		},
 	}
 }
@@ -706,8 +706,8 @@ func TestPhaseEstimate_DeleteByCycleID(t *testing.T) {
 	if len(page.Items) != 1 {
 		t.Fatalf("want 1 remaining, got %d", len(page.Items))
 	}
-	if page.Items[0].GetId() != "pe3" {
-		t.Fatalf("expected pe3 to survive, got %s", page.Items[0].GetId())
+	if page.Items[0].GetName() != "pe3" {
+		t.Fatalf("expected pe3 to survive, got %s", page.Items[0].GetName())
 	}
 }
 
@@ -747,7 +747,7 @@ func TestPhaseEstimate_Pagination(t *testing.T) {
 
 func prediction(id, userID, start string) *v1.Prediction {
 	return &v1.Prediction{
-		Id:                 id,
+		Name:               id,
 		UserId:             userID,
 		Kind:               v1.PredictionType_PREDICTION_TYPE_NEXT_BLEED,
 		PredictedStartDate: localDate(start),
@@ -784,7 +784,7 @@ func TestPrediction_CreateListDeleteByUser(t *testing.T) {
 
 func insight(id, userID string) *v1.Insight {
 	return &v1.Insight{
-		Id:         id,
+		Name:       id,
 		UserId:     userID,
 		Kind:       v1.InsightType_INSIGHT_TYPE_CYCLE_LENGTH_PATTERN,
 		Summary:    "Your cycles are regular.",

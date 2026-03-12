@@ -8,7 +8,7 @@ import "openmenses/v1/types.proto";
 option go_package = "github.com/2ajoyce/openmenses/gen/go/openmenses/v1;openmensesv1";
 
 message UserProfile {
-  string id = 1 [(buf.validate.field).string = {
+  string name = 1 [(buf.validate.field).string = {
     min_len: 1
     max_len: 128
   }];
@@ -36,7 +36,7 @@ message UserProfile {
 }
 
 message BleedingObservation {
-  string id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   DateTime timestamp = 3;
   BleedingFlow flow = 4 [(buf.validate.field).enum = {
@@ -47,7 +47,7 @@ message BleedingObservation {
 }
 
 message SymptomObservation {
-  string id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   DateTime timestamp = 3;
   SymptomType symptom = 4 [(buf.validate.field).enum = {
@@ -59,7 +59,7 @@ message SymptomObservation {
 }
 
 message MoodObservation {
-  string id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   DateTime timestamp = 3;
   MoodType mood = 4 [(buf.validate.field).enum = {
@@ -71,9 +71,9 @@ message MoodObservation {
 }
 
 message Medication {
-  string id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
-  string name = 3 [(buf.validate.field).string = {
+  string display_name = 3 [(buf.validate.field).string = {
     min_len: 1
     max_len: 256
   }];
@@ -86,7 +86,7 @@ message Medication {
 }
 
 message MedicationEvent {
-  string id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   string medication_id = 3 [(buf.validate.field).string.min_len = 1];
   DateTime timestamp = 4;
@@ -99,7 +99,7 @@ message MedicationEvent {
 }
 
 message Cycle {
-  string id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   LocalDate start_date = 3;
   LocalDate end_date = 4;
@@ -107,7 +107,7 @@ message Cycle {
 }
 
 message PhaseEstimate {
-  string id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   LocalDate date = 3;
   CyclePhase phase = 4 [(buf.validate.field).enum.defined_only = true];
@@ -116,7 +116,7 @@ message PhaseEstimate {
 }
 
 message Prediction {
-  string id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   PredictionType kind = 3 [(buf.validate.field).enum = {
     defined_only: true
@@ -129,7 +129,7 @@ message Prediction {
 }
 
 message Insight {
-  string id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   InsightType kind = 3 [(buf.validate.field).enum = {
     defined_only: true

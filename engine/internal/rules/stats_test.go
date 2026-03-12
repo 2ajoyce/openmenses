@@ -12,7 +12,7 @@ import (
 // Pass empty string for end to create an open-ended cycle.
 func makeCycle(id, uid, start, end string) *v1.Cycle {
 	c := &v1.Cycle{
-		Id:        id,
+		Name:      id,
 		UserId:    uid,
 		StartDate: &v1.LocalDate{Value: start},
 		Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,

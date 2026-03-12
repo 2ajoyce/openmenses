@@ -1068,7 +1068,7 @@ func (InsightType) EnumDescriptor() ([]byte, []int) {
 
 type UserProfile struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
-	Id               string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name             string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	BiologicalCycle  BiologicalCycleModel   `protobuf:"varint,2,opt,name=biological_cycle,json=biologicalCycle,proto3,enum=openmenses.v1.BiologicalCycleModel" json:"biological_cycle,omitempty"`
 	Contraception    ContraceptionType      `protobuf:"varint,3,opt,name=contraception,proto3,enum=openmenses.v1.ContraceptionType" json:"contraception,omitempty"`
 	CycleRegularity  CycleRegularity        `protobuf:"varint,4,opt,name=cycle_regularity,json=cycleRegularity,proto3,enum=openmenses.v1.CycleRegularity" json:"cycle_regularity,omitempty"`
@@ -1109,9 +1109,9 @@ func (*UserProfile) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *UserProfile) GetId() string {
+func (x *UserProfile) GetName() string {
 	if x != nil {
-		return x.Id
+		return x.Name
 	}
 	return ""
 }
@@ -1160,7 +1160,7 @@ func (x *UserProfile) GetTrackingFocus() []TrackingFocus {
 
 type BleedingObservation struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Timestamp     *DateTime              `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	Flow          BleedingFlow           `protobuf:"varint,4,opt,name=flow,proto3,enum=openmenses.v1.BleedingFlow" json:"flow,omitempty"`
@@ -1199,9 +1199,9 @@ func (*BleedingObservation) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *BleedingObservation) GetId() string {
+func (x *BleedingObservation) GetName() string {
 	if x != nil {
-		return x.Id
+		return x.Name
 	}
 	return ""
 }
@@ -1236,7 +1236,7 @@ func (x *BleedingObservation) GetNote() string {
 
 type SymptomObservation struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Timestamp     *DateTime              `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	Symptom       SymptomType            `protobuf:"varint,4,opt,name=symptom,proto3,enum=openmenses.v1.SymptomType" json:"symptom,omitempty"`
@@ -1276,9 +1276,9 @@ func (*SymptomObservation) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *SymptomObservation) GetId() string {
+func (x *SymptomObservation) GetName() string {
 	if x != nil {
-		return x.Id
+		return x.Name
 	}
 	return ""
 }
@@ -1320,7 +1320,7 @@ func (x *SymptomObservation) GetNote() string {
 
 type MoodObservation struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Timestamp     *DateTime              `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	Mood          MoodType               `protobuf:"varint,4,opt,name=mood,proto3,enum=openmenses.v1.MoodType" json:"mood,omitempty"`
@@ -1360,9 +1360,9 @@ func (*MoodObservation) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *MoodObservation) GetId() string {
+func (x *MoodObservation) GetName() string {
 	if x != nil {
-		return x.Id
+		return x.Name
 	}
 	return ""
 }
@@ -1404,9 +1404,9 @@ func (x *MoodObservation) GetNote() string {
 
 type Medication struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	DisplayName   string                 `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	Category      MedicationCategory     `protobuf:"varint,4,opt,name=category,proto3,enum=openmenses.v1.MedicationCategory" json:"category,omitempty"`
 	Active        bool                   `protobuf:"varint,5,opt,name=active,proto3" json:"active,omitempty"`
 	Note          string                 `protobuf:"bytes,6,opt,name=note,proto3" json:"note,omitempty"`
@@ -1444,9 +1444,9 @@ func (*Medication) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *Medication) GetId() string {
+func (x *Medication) GetName() string {
 	if x != nil {
-		return x.Id
+		return x.Name
 	}
 	return ""
 }
@@ -1458,9 +1458,9 @@ func (x *Medication) GetUserId() string {
 	return ""
 }
 
-func (x *Medication) GetName() string {
+func (x *Medication) GetDisplayName() string {
 	if x != nil {
-		return x.Name
+		return x.DisplayName
 	}
 	return ""
 }
@@ -1488,7 +1488,7 @@ func (x *Medication) GetNote() string {
 
 type MedicationEvent struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	MedicationId  string                 `protobuf:"bytes,3,opt,name=medication_id,json=medicationId,proto3" json:"medication_id,omitempty"`
 	Timestamp     *DateTime              `protobuf:"bytes,4,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
@@ -1529,9 +1529,9 @@ func (*MedicationEvent) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *MedicationEvent) GetId() string {
+func (x *MedicationEvent) GetName() string {
 	if x != nil {
-		return x.Id
+		return x.Name
 	}
 	return ""
 }
@@ -1580,7 +1580,7 @@ func (x *MedicationEvent) GetNote() string {
 
 type Cycle struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	StartDate     *LocalDate             `protobuf:"bytes,3,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
 	EndDate       *LocalDate             `protobuf:"bytes,4,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
@@ -1619,9 +1619,9 @@ func (*Cycle) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *Cycle) GetId() string {
+func (x *Cycle) GetName() string {
 	if x != nil {
-		return x.Id
+		return x.Name
 	}
 	return ""
 }
@@ -1656,7 +1656,7 @@ func (x *Cycle) GetSource() CycleSource {
 
 type PhaseEstimate struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
-	Id                string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name              string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	UserId            string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Date              *LocalDate             `protobuf:"bytes,3,opt,name=date,proto3" json:"date,omitempty"`
 	Phase             CyclePhase             `protobuf:"varint,4,opt,name=phase,proto3,enum=openmenses.v1.CyclePhase" json:"phase,omitempty"`
@@ -1696,9 +1696,9 @@ func (*PhaseEstimate) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *PhaseEstimate) GetId() string {
+func (x *PhaseEstimate) GetName() string {
 	if x != nil {
-		return x.Id
+		return x.Name
 	}
 	return ""
 }
@@ -1740,7 +1740,7 @@ func (x *PhaseEstimate) GetBasedOnRecordRefs() []*RecordRef {
 
 type Prediction struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
-	Id                 string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name               string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	UserId             string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Kind               PredictionType         `protobuf:"varint,3,opt,name=kind,proto3,enum=openmenses.v1.PredictionType" json:"kind,omitempty"`
 	PredictedStartDate *LocalDate             `protobuf:"bytes,4,opt,name=predicted_start_date,json=predictedStartDate,proto3" json:"predicted_start_date,omitempty"`
@@ -1781,9 +1781,9 @@ func (*Prediction) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *Prediction) GetId() string {
+func (x *Prediction) GetName() string {
 	if x != nil {
-		return x.Id
+		return x.Name
 	}
 	return ""
 }
@@ -1832,7 +1832,7 @@ func (x *Prediction) GetRationale() []string {
 
 type Insight struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
-	Id                 string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name               string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	UserId             string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Kind               InsightType            `protobuf:"varint,3,opt,name=kind,proto3,enum=openmenses.v1.InsightType" json:"kind,omitempty"`
 	Summary            string                 `protobuf:"bytes,4,opt,name=summary,proto3" json:"summary,omitempty"`
@@ -1872,9 +1872,9 @@ func (*Insight) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *Insight) GetId() string {
+func (x *Insight) GetName() string {
 	if x != nil {
-		return x.Id
+		return x.Name
 	}
 	return ""
 }
@@ -1918,10 +1918,10 @@ var File_openmenses_v1_model_proto protoreflect.FileDescriptor
 
 const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\n" +
-	"\x19openmenses/v1/model.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19openmenses/v1/types.proto\"\xb2\x04\n" +
-	"\vUserProfile\x12\x1a\n" +
-	"\x02id\x18\x01 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x02id\x12Z\n" +
+	"\x19openmenses/v1/model.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19openmenses/v1/types.proto\"\xb6\x04\n" +
+	"\vUserProfile\x12\x1e\n" +
+	"\x04name\x18\x01 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x04name\x12Z\n" +
 	"\x10biological_cycle\x18\x02 \x01(\x0e2#.openmenses.v1.BiologicalCycleModelB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x0fbiologicalCycle\x12R\n" +
 	"\rcontraception\x18\x03 \x01(\x0e2 .openmenses.v1.ContraceptionTypeB\n" +
@@ -1932,68 +1932,68 @@ const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x10reproductiveGoal\x12U\n" +
 	"\x11health_conditions\x18\x06 \x03(\x0e2\x1e.openmenses.v1.HealthConditionB\b\xbaH\x05\x92\x01\x02\x18\x01R\x10healthConditions\x12O\n" +
 	"\x0etracking_focus\x18\a \x03(\x0e2\x1c.openmenses.v1.TrackingFocusB\n" +
-	"\xbaH\a\x92\x01\x04\b\x01\x18\x01R\rtrackingFocus\"\xe2\x01\n" +
-	"\x13BleedingObservation\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
+	"\xbaH\a\x92\x01\x04\b\x01\x18\x01R\rtrackingFocus\"\xe6\x01\n" +
+	"\x13BleedingObservation\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x125\n" +
 	"\ttimestamp\x18\x03 \x01(\v2\x17.openmenses.v1.DateTimeR\ttimestamp\x12;\n" +
 	"\x04flow\x18\x04 \x01(\x0e2\x1b.openmenses.v1.BleedingFlowB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04flow\x12\x1c\n" +
-	"\x04note\x18\x05 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xac\x02\n" +
-	"\x12SymptomObservation\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
+	"\x04note\x18\x05 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xb0\x02\n" +
+	"\x12SymptomObservation\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x125\n" +
 	"\ttimestamp\x18\x03 \x01(\v2\x17.openmenses.v1.DateTimeR\ttimestamp\x12@\n" +
 	"\asymptom\x18\x04 \x01(\x0e2\x1a.openmenses.v1.SymptomTypeB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\asymptom\x12D\n" +
 	"\bseverity\x18\x05 \x01(\x0e2\x1e.openmenses.v1.SymptomSeverityB\b\xbaH\x05\x82\x01\x02\x10\x01R\bseverity\x12\x1c\n" +
-	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xa0\x02\n" +
-	"\x0fMoodObservation\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
+	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xa4\x02\n" +
+	"\x0fMoodObservation\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x125\n" +
 	"\ttimestamp\x18\x03 \x01(\v2\x17.openmenses.v1.DateTimeR\ttimestamp\x127\n" +
 	"\x04mood\x18\x04 \x01(\x0e2\x17.openmenses.v1.MoodTypeB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04mood\x12D\n" +
 	"\tintensity\x18\x05 \x01(\x0e2\x1c.openmenses.v1.MoodIntensityB\b\xbaH\x05\x82\x01\x02\x10\x01R\tintensity\x12\x1c\n" +
-	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xe8\x01\n" +
+	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xfb\x01\n" +
 	"\n" +
-	"Medication\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
-	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12\x1e\n" +
-	"\x04name\x18\x03 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\x80\x02R\x04name\x12I\n" +
+	"Medication\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
+	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12-\n" +
+	"\fdisplay_name\x18\x03 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x01\x18\x80\x02R\vdisplayName\x12I\n" +
 	"\bcategory\x18\x04 \x01(\x0e2!.openmenses.v1.MedicationCategoryB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\bcategory\x12\x16\n" +
 	"\x06active\x18\x05 \x01(\bR\x06active\x12\x1c\n" +
-	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xb6\x02\n" +
-	"\x0fMedicationEvent\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
+	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xba\x02\n" +
+	"\x0fMedicationEvent\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12,\n" +
 	"\rmedication_id\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\fmedicationId\x125\n" +
 	"\ttimestamp\x18\x04 \x01(\v2\x17.openmenses.v1.DateTimeR\ttimestamp\x12H\n" +
 	"\x06status\x18\x05 \x01(\x0e2$.openmenses.v1.MedicationEventStatusB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x06status\x12\x1b\n" +
 	"\x04dose\x18\x06 \x01(\tB\a\xbaH\x04r\x02\x18@R\x04dose\x12\x1c\n" +
-	"\x04note\x18\a \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xee\x01\n" +
-	"\x05Cycle\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
+	"\x04note\x18\a \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xf2\x01\n" +
+	"\x05Cycle\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x127\n" +
 	"\n" +
 	"start_date\x18\x03 \x01(\v2\x18.openmenses.v1.LocalDateR\tstartDate\x123\n" +
 	"\bend_date\x18\x04 \x01(\v2\x18.openmenses.v1.LocalDateR\aendDate\x12<\n" +
-	"\x06source\x18\x05 \x01(\x0e2\x1a.openmenses.v1.CycleSourceB\b\xbaH\x05\x82\x01\x02\x10\x01R\x06source\"\xc8\x02\n" +
-	"\rPhaseEstimate\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
+	"\x06source\x18\x05 \x01(\x0e2\x1a.openmenses.v1.CycleSourceB\b\xbaH\x05\x82\x01\x02\x10\x01R\x06source\"\xcc\x02\n" +
+	"\rPhaseEstimate\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12,\n" +
 	"\x04date\x18\x03 \x01(\v2\x18.openmenses.v1.LocalDateR\x04date\x129\n" +
 	"\x05phase\x18\x04 \x01(\x0e2\x19.openmenses.v1.CyclePhaseB\b\xbaH\x05\x82\x01\x02\x10\x01R\x05phase\x12H\n" +
 	"\n" +
 	"confidence\x18\x05 \x01(\x0e2\x1e.openmenses.v1.ConfidenceLevelB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
 	"confidence\x12I\n" +
-	"\x14based_on_record_refs\x18\x06 \x03(\v2\x18.openmenses.v1.RecordRefR\x11basedOnRecordRefs\"\x8c\x03\n" +
+	"\x14based_on_record_refs\x18\x06 \x03(\v2\x18.openmenses.v1.RecordRefR\x11basedOnRecordRefs\"\x90\x03\n" +
 	"\n" +
-	"Prediction\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
+	"Prediction\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12=\n" +
 	"\x04kind\x18\x03 \x01(\x0e2\x1d.openmenses.v1.PredictionTypeB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04kind\x12J\n" +
@@ -2002,9 +2002,9 @@ const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\n" +
 	"confidence\x18\x06 \x01(\x0e2\x1e.openmenses.v1.ConfidenceLevelB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
 	"confidence\x12&\n" +
-	"\trationale\x18\a \x03(\tB\b\xbaH\x05\x92\x01\x02\x10\x10R\trationale\"\xbc\x02\n" +
-	"\aInsight\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12 \n" +
+	"\trationale\x18\a \x03(\tB\b\xbaH\x05\x92\x01\x02\x10\x10R\trationale\"\xc0\x02\n" +
+	"\aInsight\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12:\n" +
 	"\x04kind\x18\x03 \x01(\x0e2\x1a.openmenses.v1.InsightTypeB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04kind\x12$\n" +

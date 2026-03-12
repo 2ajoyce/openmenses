@@ -17,7 +17,7 @@ var ctx = context.Background()
 
 func bleeding(id, userID, date string) *v1.BleedingObservation {
 	return &v1.BleedingObservation{
-		Id:        id,
+		Name:      id,
 		UserId:    userID,
 		Timestamp: &v1.DateTime{Value: date + "T10:00:00Z"},
 		Flow:      v1.BleedingFlow_BLEEDING_FLOW_MEDIUM,
@@ -26,7 +26,7 @@ func bleeding(id, userID, date string) *v1.BleedingObservation {
 
 func symptom(id, userID, date string) *v1.SymptomObservation {
 	return &v1.SymptomObservation{
-		Id:        id,
+		Name:      id,
 		UserId:    userID,
 		Timestamp: &v1.DateTime{Value: date + "T10:00:00Z"},
 		Symptom:   v1.SymptomType_SYMPTOM_TYPE_CRAMPS,
@@ -35,7 +35,7 @@ func symptom(id, userID, date string) *v1.SymptomObservation {
 
 func mood(id, userID, date string) *v1.MoodObservation {
 	return &v1.MoodObservation{
-		Id:        id,
+		Name:      id,
 		UserId:    userID,
 		Timestamp: &v1.DateTime{Value: date + "T10:00:00Z"},
 		Mood:      v1.MoodType_MOOD_TYPE_HAPPY,
@@ -44,17 +44,17 @@ func mood(id, userID, date string) *v1.MoodObservation {
 
 func medication(id, userID string) *v1.Medication {
 	return &v1.Medication{
-		Id:       id,
-		UserId:   userID,
-		Name:     "Ibuprofen",
-		Category: v1.MedicationCategory_MEDICATION_CATEGORY_PAIN_RELIEF,
-		Active:   true,
+		Name:        id,
+		UserId:      userID,
+		DisplayName: "Ibuprofen",
+		Category:    v1.MedicationCategory_MEDICATION_CATEGORY_PAIN_RELIEF,
+		Active:      true,
 	}
 }
 
 func medEvent(id, userID, medID, date string) *v1.MedicationEvent {
 	return &v1.MedicationEvent{
-		Id:           id,
+		Name:         id,
 		UserId:       userID,
 		MedicationId: medID,
 		Timestamp:    &v1.DateTime{Value: date + "T10:00:00Z"},
@@ -64,7 +64,7 @@ func medEvent(id, userID, medID, date string) *v1.MedicationEvent {
 
 func cycle(id, userID, startDate, endDate string) *v1.Cycle {
 	return &v1.Cycle{
-		Id:        id,
+		Name:      id,
 		UserId:    userID,
 		StartDate: &v1.LocalDate{Value: startDate},
 		EndDate:   &v1.LocalDate{Value: endDate},
@@ -74,7 +74,7 @@ func cycle(id, userID, startDate, endDate string) *v1.Cycle {
 
 func phaseEstimate(id, userID, date string) *v1.PhaseEstimate {
 	return &v1.PhaseEstimate{
-		Id:         id,
+		Name:       id,
 		UserId:     userID,
 		Date:       &v1.LocalDate{Value: date},
 		Phase:      v1.CyclePhase_CYCLE_PHASE_MENSTRUATION,
@@ -409,19 +409,19 @@ func TestBuildTimeline_IntraDayChronologicalOrdering(t *testing.T) {
 	// All three records share the same calendar day but have different times.
 	// Bleeding at 14:00, mood at 11:00, symptom at 08:00.
 	bleedingRec := &v1.BleedingObservation{
-		Id:        "b1",
+		Name:      "b1",
 		UserId:    "u1",
 		Timestamp: &v1.DateTime{Value: "2024-07-15T14:00:00Z"},
 		Flow:      v1.BleedingFlow_BLEEDING_FLOW_MEDIUM,
 	}
 	moodRec := &v1.MoodObservation{
-		Id:        "m1",
+		Name:      "m1",
 		UserId:    "u1",
 		Timestamp: &v1.DateTime{Value: "2024-07-15T11:00:00Z"},
 		Mood:      v1.MoodType_MOOD_TYPE_HAPPY,
 	}
 	symptomRec := &v1.SymptomObservation{
-		Id:        "s1",
+		Name:      "s1",
 		UserId:    "u1",
 		Timestamp: &v1.DateTime{Value: "2024-07-15T08:00:00Z"},
 		Symptom:   v1.SymptomType_SYMPTOM_TYPE_CRAMPS,

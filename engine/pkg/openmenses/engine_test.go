@@ -50,7 +50,7 @@ func TestIntegration_CreateProfileLogObservationListTimeline(t *testing.T) {
 
 	// 1. Create user profile.
 	profile := &v1.UserProfile{
-		Id:               userID,
+		Name:             userID,
 		BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
 		Contraception:    v1.ContraceptionType_CONTRACEPTION_TYPE_NONE,
 		CycleRegularity:  v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
@@ -64,8 +64,8 @@ func TestIntegration_CreateProfileLogObservationListTimeline(t *testing.T) {
 	if err != nil {
 		t.Fatalf("UpsertUserProfile: %v", err)
 	}
-	if upsertResp.Msg.GetProfile().GetId() != userID {
-		t.Errorf("upserted profile ID = %q, want %q", upsertResp.Msg.GetProfile().GetId(), userID)
+	if upsertResp.Msg.GetProfile().GetName() != userID {
+		t.Errorf("upserted profile name = %q, want %q", upsertResp.Msg.GetProfile().GetName(), userID)
 	}
 
 	// 2. Log a bleeding observation on 2026-01-01.
@@ -80,9 +80,9 @@ func TestIntegration_CreateProfileLogObservationListTimeline(t *testing.T) {
 	if err != nil {
 		t.Fatalf("CreateBleedingObservation: %v", err)
 	}
-	obsID := createResp.Msg.GetObservation().GetId()
+	obsID := createResp.Msg.GetObservation().GetName()
 	if obsID == "" {
-		t.Error("created observation has empty ID")
+		t.Error("created observation has empty name")
 	}
 
 	// 3. List the timeline for that day and verify the observation is present.
@@ -102,10 +102,10 @@ func TestIntegration_CreateProfileLogObservationListTimeline(t *testing.T) {
 		t.Fatal("timeline returned no records, expected at least one bleeding observation")
 	}
 
-	// Find the bleeding record by ID.
+	// Find the bleeding record by name.
 	var found bool
 	for _, r := range records {
-		if b := r.GetBleedingObservation(); b != nil && b.GetId() == obsID {
+		if b := r.GetBleedingObservation(); b != nil && b.GetName() == obsID {
 			found = true
 			break
 		}
@@ -158,7 +158,7 @@ func TestIntegration_SQLiteEngine(t *testing.T) {
 	const userID = "user-sqlite-test"
 	resp, err := client.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{
 		Profile: &v1.UserProfile{
-			Id:               userID,
+			Name:             userID,
 			BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
 			Contraception:    v1.ContraceptionType_CONTRACEPTION_TYPE_NONE,
 			CycleRegularity:  v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
@@ -169,7 +169,7 @@ func TestIntegration_SQLiteEngine(t *testing.T) {
 	if err != nil {
 		t.Fatalf("UpsertUserProfile (sqlite): %v", err)
 	}
-	if resp.Msg.GetProfile().GetId() != userID {
-		t.Errorf("profile ID = %q, want %q", resp.Msg.GetProfile().GetId(), userID)
+	if resp.Msg.GetProfile().GetName() != userID {
+		t.Errorf("profile name = %q, want %q", resp.Msg.GetProfile().GetName(), userID)
 	}
 }

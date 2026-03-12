@@ -126,7 +126,7 @@ func marshalAll[T proto.Message](items []T) ([]json.RawMessage, error) {
 
 // ─── RPC: user profile ────────────────────────────────────────────────────────
 
-// GetUserProfile fetches the profile for the given user ID.
+// GetUserProfile fetches the profile for the given user name.
 // Returns CodeNotFound if no profile exists.
 func (s *CycleTrackerService) GetUserProfile(
 	ctx context.Context,
@@ -143,7 +143,7 @@ func (s *CycleTrackerService) GetUserProfile(
 }
 
 // UpsertUserProfile validates and persists a user profile, creating or
-// replacing any existing profile for the same user ID.
+// replacing any existing profile for the same user name.
 func (s *CycleTrackerService) UpsertUserProfile(
 	ctx context.Context,
 	req *connect.Request[v1.UpsertUserProfileRequest],
@@ -161,7 +161,7 @@ func (s *CycleTrackerService) UpsertUserProfile(
 // ─── RPC: observations ────────────────────────────────────────────────────────
 
 // CreateBleedingObservation validates and persists a bleeding observation.
-// A ULID is assigned when the request does not supply an ID. Cycle
+// A ULID is assigned when the request does not supply a name. Cycle
 // re-detection is triggered after the observation is saved so that the stored
 // cycle list stays current for timeline queries.
 func (s *CycleTrackerService) CreateBleedingObservation(
@@ -172,8 +172,8 @@ func (s *CycleTrackerService) CreateBleedingObservation(
 	if obs == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("observation is required"))
 	}
-	if obs.GetId() == "" {
-		obs.Id = newID()
+	if obs.GetName() == "" {
+		obs.Name = newID()
 	}
 	if err := s.validator.ValidateBleedingObservation(ctx, obs); err != nil {
 		return nil, toConnectErr(err)
@@ -198,8 +198,8 @@ func (s *CycleTrackerService) CreateSymptomObservation(
 	if obs == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("observation is required"))
 	}
-	if obs.GetId() == "" {
-		obs.Id = newID()
+	if obs.GetName() == "" {
+		obs.Name = newID()
 	}
 	if err := s.validator.ValidateSymptomObservation(ctx, obs); err != nil {
 		return nil, toConnectErr(err)
@@ -219,8 +219,8 @@ func (s *CycleTrackerService) CreateMoodObservation(
 	if obs == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("observation is required"))
 	}
-	if obs.GetId() == "" {
-		obs.Id = newID()
+	if obs.GetName() == "" {
+		obs.Name = newID()
 	}
 	if err := s.validator.ValidateMoodObservation(ctx, obs); err != nil {
 		return nil, toConnectErr(err)
@@ -242,8 +242,8 @@ func (s *CycleTrackerService) CreateMedication(
 	if med == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("medication is required"))
 	}
-	if med.GetId() == "" {
-		med.Id = newID()
+	if med.GetName() == "" {
+		med.Name = newID()
 	}
 	if err := s.validator.ValidateMedication(ctx, med); err != nil {
 		return nil, toConnectErr(err)
@@ -264,8 +264,8 @@ func (s *CycleTrackerService) CreateMedicationEvent(
 	if event == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("event is required"))
 	}
-	if event.GetId() == "" {
-		event.Id = newID()
+	if event.GetName() == "" {
+		event.Name = newID()
 	}
 	if err := s.validator.ValidateMedicationEvent(ctx, event); err != nil {
 		return nil, toConnectErr(err)
@@ -502,7 +502,7 @@ func (s *CycleTrackerService) ExportData(
 }
 
 // ImportData deserialises a byte slice produced by ExportData, validates every
-// record, and persists it. Records whose ID already exists are skipped without
+// record, and persists it. Records whose name already exists are skipped without
 // error. Returns the count of newly created records.
 func (s *CycleTrackerService) ImportData(
 	ctx context.Context,
@@ -670,10 +670,10 @@ func (s *CycleTrackerService) redetectAndStoreCycles(ctx context.Context, userID
 	}
 	for _, c := range existing {
 		if c.GetSource() == v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING {
-			if err := s.store.PhaseEstimates().DeleteByCycleID(ctx, c.GetId()); err != nil {
+			if err := s.store.PhaseEstimates().DeleteByCycleID(ctx, c.GetName()); err != nil {
 				return err
 			}
-			if err := s.store.Cycles().DeleteByID(ctx, c.GetId()); err != nil && !errors.Is(err, storage.ErrNotFound) {
+			if err := s.store.Cycles().DeleteByID(ctx, c.GetName()); err != nil && !errors.Is(err, storage.ErrNotFound) {
 				return err
 			}
 		}

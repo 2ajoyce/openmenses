@@ -26,7 +26,7 @@ func sortMoodsByTimestamp(items []*v1.MoodObservation) {
 
 func sortMedicationsByID(items []*v1.Medication) {
 	sort.Slice(items, func(i, j int) bool {
-		return items[i].GetId() < items[j].GetId()
+		return items[i].GetName() < items[j].GetName()
 	})
 }
 
@@ -56,6 +56,6 @@ func sortPredictionsByStartDate(items []*v1.Prediction) {
 
 func sortInsightsByID(items []*v1.Insight) {
 	sort.Slice(items, func(i, j int) bool {
-		return items[i].GetId() < items[j].GetId()
+		return items[i].GetName() < items[j].GetName()
 	})
 }

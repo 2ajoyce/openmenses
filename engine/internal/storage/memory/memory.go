@@ -1,4 +1,4 @@
-// Package memory provides a thread-safe in-memory implementation of
+﻿// Package memory provides a thread-safe in-memory implementation of
 // the storage.Repository interface. It is intended for use in tests and
 // as the storage backend for the engine-dev CLI when no SQLite path is given.
 package memory
@@ -138,12 +138,12 @@ func (s *userProfileStore) GetByID(_ context.Context, id string) (*v1.UserProfil
 }
 
 func (s *userProfileStore) Upsert(_ context.Context, profile *v1.UserProfile) error {
-	if profile.GetId() == "" {
-		return fmt.Errorf("%w: profile id is required", storage.ErrInvalidInput)
+	if profile.GetName() == "" {
+		return fmt.Errorf("%w: profile name is required", storage.ErrInvalidInput)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	s.data[profile.GetId()] = proto.Clone(profile).(*v1.UserProfile)
+	s.data[profile.GetName()] = proto.Clone(profile).(*v1.UserProfile)
 	return nil
 }
 
@@ -155,15 +155,15 @@ type bleedingStore struct {
 }
 
 func (s *bleedingStore) Create(_ context.Context, obs *v1.BleedingObservation) error {
-	if obs.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if obs.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if _, exists := s.data[obs.GetId()]; exists {
-		return fmt.Errorf("%w: bleeding observation %s", storage.ErrConflict, obs.GetId())
+	if _, exists := s.data[obs.GetName()]; exists {
+		return fmt.Errorf("%w: bleeding observation %s", storage.ErrConflict, obs.GetName())
 	}
-	s.data[obs.GetId()] = proto.Clone(obs).(*v1.BleedingObservation)
+	s.data[obs.GetName()] = proto.Clone(obs).(*v1.BleedingObservation)
 	return nil
 }
 
@@ -213,15 +213,15 @@ type symptomStore struct {
 }
 
 func (s *symptomStore) Create(_ context.Context, obs *v1.SymptomObservation) error {
-	if obs.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if obs.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if _, exists := s.data[obs.GetId()]; exists {
-		return fmt.Errorf("%w: symptom observation %s", storage.ErrConflict, obs.GetId())
+	if _, exists := s.data[obs.GetName()]; exists {
+		return fmt.Errorf("%w: symptom observation %s", storage.ErrConflict, obs.GetName())
 	}
-	s.data[obs.GetId()] = proto.Clone(obs).(*v1.SymptomObservation)
+	s.data[obs.GetName()] = proto.Clone(obs).(*v1.SymptomObservation)
 	return nil
 }
 
@@ -270,15 +270,15 @@ type moodStore struct {
 }
 
 func (s *moodStore) Create(_ context.Context, obs *v1.MoodObservation) error {
-	if obs.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if obs.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if _, exists := s.data[obs.GetId()]; exists {
-		return fmt.Errorf("%w: mood observation %s", storage.ErrConflict, obs.GetId())
+	if _, exists := s.data[obs.GetName()]; exists {
+		return fmt.Errorf("%w: mood observation %s", storage.ErrConflict, obs.GetName())
 	}
-	s.data[obs.GetId()] = proto.Clone(obs).(*v1.MoodObservation)
+	s.data[obs.GetName()] = proto.Clone(obs).(*v1.MoodObservation)
 	return nil
 }
 
@@ -327,15 +327,15 @@ type medicationStore struct {
 }
 
 func (s *medicationStore) Create(_ context.Context, med *v1.Medication) error {
-	if med.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if med.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if _, exists := s.data[med.GetId()]; exists {
-		return fmt.Errorf("%w: medication %s", storage.ErrConflict, med.GetId())
+	if _, exists := s.data[med.GetName()]; exists {
+		return fmt.Errorf("%w: medication %s", storage.ErrConflict, med.GetName())
 	}
-	s.data[med.GetId()] = proto.Clone(med).(*v1.Medication)
+	s.data[med.GetName()] = proto.Clone(med).(*v1.Medication)
 	return nil
 }
 
@@ -363,15 +363,15 @@ func (s *medicationStore) ListByUser(_ context.Context, userID string, page stor
 }
 
 func (s *medicationStore) Update(_ context.Context, med *v1.Medication) error {
-	if med.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if med.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if _, ok := s.data[med.GetId()]; !ok {
+	if _, ok := s.data[med.GetName()]; !ok {
 		return storage.ErrNotFound
 	}
-	s.data[med.GetId()] = proto.Clone(med).(*v1.Medication)
+	s.data[med.GetName()] = proto.Clone(med).(*v1.Medication)
 	return nil
 }
 
@@ -393,15 +393,15 @@ type medicationEventStore struct {
 }
 
 func (s *medicationEventStore) Create(_ context.Context, ev *v1.MedicationEvent) error {
-	if ev.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if ev.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if _, exists := s.data[ev.GetId()]; exists {
-		return fmt.Errorf("%w: medication event %s", storage.ErrConflict, ev.GetId())
+	if _, exists := s.data[ev.GetName()]; exists {
+		return fmt.Errorf("%w: medication event %s", storage.ErrConflict, ev.GetName())
 	}
-	s.data[ev.GetId()] = proto.Clone(ev).(*v1.MedicationEvent)
+	s.data[ev.GetName()] = proto.Clone(ev).(*v1.MedicationEvent)
 	return nil
 }
 
@@ -463,15 +463,15 @@ type cycleStore struct {
 }
 
 func (s *cycleStore) Create(_ context.Context, cycle *v1.Cycle) error {
-	if cycle.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if cycle.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if _, exists := s.data[cycle.GetId()]; exists {
-		return fmt.Errorf("%w: cycle %s", storage.ErrConflict, cycle.GetId())
+	if _, exists := s.data[cycle.GetName()]; exists {
+		return fmt.Errorf("%w: cycle %s", storage.ErrConflict, cycle.GetName())
 	}
-	s.data[cycle.GetId()] = proto.Clone(cycle).(*v1.Cycle)
+	s.data[cycle.GetName()] = proto.Clone(cycle).(*v1.Cycle)
 	return nil
 }
 
@@ -522,15 +522,15 @@ func (s *cycleStore) ListByUserAndDateRange(_ context.Context, userID, start, en
 }
 
 func (s *cycleStore) Update(_ context.Context, cycle *v1.Cycle) error {
-	if cycle.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if cycle.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if _, ok := s.data[cycle.GetId()]; !ok {
+	if _, ok := s.data[cycle.GetName()]; !ok {
 		return storage.ErrNotFound
 	}
-	s.data[cycle.GetId()] = proto.Clone(cycle).(*v1.Cycle)
+	s.data[cycle.GetName()] = proto.Clone(cycle).(*v1.Cycle)
 	return nil
 }
 
@@ -552,15 +552,15 @@ type phaseEstimateStore struct {
 }
 
 func (s *phaseEstimateStore) Create(_ context.Context, est *v1.PhaseEstimate) error {
-	if est.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if est.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if _, exists := s.data[est.GetId()]; exists {
-		return fmt.Errorf("%w: phase estimate %s", storage.ErrConflict, est.GetId())
+	if _, exists := s.data[est.GetName()]; exists {
+		return fmt.Errorf("%w: phase estimate %s", storage.ErrConflict, est.GetName())
 	}
-	s.data[est.GetId()] = proto.Clone(est).(*v1.PhaseEstimate)
+	s.data[est.GetName()] = proto.Clone(est).(*v1.PhaseEstimate)
 	return nil
 }
 
@@ -586,7 +586,7 @@ func (s *phaseEstimateStore) DeleteByCycleID(_ context.Context, cycleID string) 
 	defer s.mu.Unlock()
 	for id, est := range s.data {
 		for _, ref := range est.GetBasedOnRecordRefs() {
-			if ref.GetId() == cycleID {
+			if ref.GetName() == cycleID {
 				delete(s.data, id)
 				break
 			}
@@ -603,15 +603,15 @@ type predictionStore struct {
 }
 
 func (s *predictionStore) Create(_ context.Context, pred *v1.Prediction) error {
-	if pred.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if pred.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if _, exists := s.data[pred.GetId()]; exists {
-		return fmt.Errorf("%w: prediction %s", storage.ErrConflict, pred.GetId())
+	if _, exists := s.data[pred.GetName()]; exists {
+		return fmt.Errorf("%w: prediction %s", storage.ErrConflict, pred.GetName())
 	}
-	s.data[pred.GetId()] = proto.Clone(pred).(*v1.Prediction)
+	s.data[pred.GetName()] = proto.Clone(pred).(*v1.Prediction)
 	return nil
 }
 
@@ -647,15 +647,15 @@ type insightStore struct {
 }
 
 func (s *insightStore) Create(_ context.Context, insight *v1.Insight) error {
-	if insight.GetId() == "" {
-		return fmt.Errorf("%w: id is required", storage.ErrInvalidInput)
+	if insight.GetName() == "" {
+		return fmt.Errorf("%w: name is required", storage.ErrInvalidInput)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if _, exists := s.data[insight.GetId()]; exists {
-		return fmt.Errorf("%w: insight %s", storage.ErrConflict, insight.GetId())
+	if _, exists := s.data[insight.GetName()]; exists {
+		return fmt.Errorf("%w: insight %s", storage.ErrConflict, insight.GetName())
 	}
-	s.data[insight.GetId()] = proto.Clone(insight).(*v1.Insight)
+	s.data[insight.GetName()] = proto.Clone(insight).(*v1.Insight)
 	return nil
 }
 
