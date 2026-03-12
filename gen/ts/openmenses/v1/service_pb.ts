@@ -5,6 +5,8 @@
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
+import type { FieldMask } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_empty, file_google_protobuf_field_mask } from "@bufbuild/protobuf/wkt";
 import type { BleedingObservation, Cycle, Insight, Medication, MedicationEvent, MoodObservation, PhaseEstimate, Prediction, SymptomObservation, UserProfile } from "./model_pb";
 import { file_openmenses_v1_model } from "./model_pb";
 import type { DateRange, PaginationRequest, PaginationResponse } from "./types_pb";
@@ -15,7 +17,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file openmenses/v1/service.proto.
  */
 export const file_openmenses_v1_service: GenFile = /*@__PURE__*/
-  fileDesc("ChtvcGVubWVuc2VzL3YxL3NlcnZpY2UucHJvdG8SDW9wZW5tZW5zZXMudjEiLgoVR2V0VXNlclByb2ZpbGVSZXF1ZXN0EhUKBG5hbWUYASABKAlCB7pIBHICEAEiRQoWR2V0VXNlclByb2ZpbGVSZXNwb25zZRIrCgdwcm9maWxlGAEgASgLMhoub3Blbm1lbnNlcy52MS5Vc2VyUHJvZmlsZSJHChhVcHNlcnRVc2VyUHJvZmlsZVJlcXVlc3QSKwoHcHJvZmlsZRgBIAEoCzIaLm9wZW5tZW5zZXMudjEuVXNlclByb2ZpbGUiSAoZVXBzZXJ0VXNlclByb2ZpbGVSZXNwb25zZRIrCgdwcm9maWxlGAEgASgLMhoub3Blbm1lbnNlcy52MS5Vc2VyUHJvZmlsZSJ0CiBDcmVhdGVCbGVlZGluZ09ic2VydmF0aW9uUmVxdWVzdBIXCgZwYXJlbnQYASABKAlCB7pIBHICEAESNwoLb2JzZXJ2YXRpb24YAiABKAsyIi5vcGVubWVuc2VzLnYxLkJsZWVkaW5nT2JzZXJ2YXRpb24iXAohQ3JlYXRlQmxlZWRpbmdPYnNlcnZhdGlvblJlc3BvbnNlEjcKC29ic2VydmF0aW9uGAEgASgLMiIub3Blbm1lbnNlcy52MS5CbGVlZGluZ09ic2VydmF0aW9uInIKH0NyZWF0ZVN5bXB0b21PYnNlcnZhdGlvblJlcXVlc3QSFwoGcGFyZW50GAEgASgJQge6SARyAhABEjYKC29ic2VydmF0aW9uGAIgASgLMiEub3Blbm1lbnNlcy52MS5TeW1wdG9tT2JzZXJ2YXRpb24iWgogQ3JlYXRlU3ltcHRvbU9ic2VydmF0aW9uUmVzcG9uc2USNgoLb2JzZXJ2YXRpb24YASABKAsyIS5vcGVubWVuc2VzLnYxLlN5bXB0b21PYnNlcnZhdGlvbiJsChxDcmVhdGVNb29kT2JzZXJ2YXRpb25SZXF1ZXN0EhcKBnBhcmVudBgBIAEoCUIHukgEcgIQARIzCgtvYnNlcnZhdGlvbhgCIAEoCzIeLm9wZW5tZW5zZXMudjEuTW9vZE9ic2VydmF0aW9uIlQKHUNyZWF0ZU1vb2RPYnNlcnZhdGlvblJlc3BvbnNlEjMKC29ic2VydmF0aW9uGAEgASgLMh4ub3Blbm1lbnNlcy52MS5Nb29kT2JzZXJ2YXRpb24iYQoXQ3JlYXRlTWVkaWNhdGlvblJlcXVlc3QSFwoGcGFyZW50GAEgASgJQge6SARyAhABEi0KCm1lZGljYXRpb24YAiABKAsyGS5vcGVubWVuc2VzLnYxLk1lZGljYXRpb24iSQoYQ3JlYXRlTWVkaWNhdGlvblJlc3BvbnNlEi0KCm1lZGljYXRpb24YASABKAsyGS5vcGVubWVuc2VzLnYxLk1lZGljYXRpb24iZgocQ3JlYXRlTWVkaWNhdGlvbkV2ZW50UmVxdWVzdBIXCgZwYXJlbnQYASABKAlCB7pIBHICEAESLQoFZXZlbnQYAiABKAsyHi5vcGVubWVuc2VzLnYxLk1lZGljYXRpb25FdmVudCJOCh1DcmVhdGVNZWRpY2F0aW9uRXZlbnRSZXNwb25zZRItCgVldmVudBgBIAEoCzIeLm9wZW5tZW5zZXMudjEuTWVkaWNhdGlvbkV2ZW50Io0BChNMaXN0VGltZWxpbmVSZXF1ZXN0EhcKBnBhcmVudBgBIAEoCUIHukgEcgIQARInCgVyYW5nZRgCIAEoCzIYLm9wZW5tZW5zZXMudjEuRGF0ZVJhbmdlEjQKCnBhZ2luYXRpb24YAyABKAsyIC5vcGVubWVuc2VzLnYxLlBhZ2luYXRpb25SZXF1ZXN0IoQECg5UaW1lbGluZVJlY29yZBJCChRibGVlZGluZ19vYnNlcnZhdGlvbhgBIAEoCzIiLm9wZW5tZW5zZXMudjEuQmxlZWRpbmdPYnNlcnZhdGlvbkgAEkAKE3N5bXB0b21fb2JzZXJ2YXRpb24YAiABKAsyIS5vcGVubWVuc2VzLnYxLlN5bXB0b21PYnNlcnZhdGlvbkgAEjoKEG1vb2Rfb2JzZXJ2YXRpb24YAyABKAsyHi5vcGVubWVuc2VzLnYxLk1vb2RPYnNlcnZhdGlvbkgAEi8KCm1lZGljYXRpb24YBCABKAsyGS5vcGVubWVuc2VzLnYxLk1lZGljYXRpb25IABI6ChBtZWRpY2F0aW9uX2V2ZW50GAUgASgLMh4ub3Blbm1lbnNlcy52MS5NZWRpY2F0aW9uRXZlbnRIABIlCgVjeWNsZRgGIAEoCzIULm9wZW5tZW5zZXMudjEuQ3ljbGVIABI2Cg5waGFzZV9lc3RpbWF0ZRgHIAEoCzIcLm9wZW5tZW5zZXMudjEuUGhhc2VFc3RpbWF0ZUgAEi8KCnByZWRpY3Rpb24YCCABKAsyGS5vcGVubWVuc2VzLnYxLlByZWRpY3Rpb25IABIpCgdpbnNpZ2h0GAkgASgLMhYub3Blbm1lbnNlcy52MS5JbnNpZ2h0SABCCAoGcmVjb3JkIn0KFExpc3RUaW1lbGluZVJlc3BvbnNlEi4KB3JlY29yZHMYASADKAsyHS5vcGVubWVuc2VzLnYxLlRpbWVsaW5lUmVjb3JkEjUKCnBhZ2luYXRpb24YAiABKAsyIS5vcGVubWVuc2VzLnYxLlBhZ2luYXRpb25SZXNwb25zZSIsChFMaXN0Q3ljbGVzUmVxdWVzdBIXCgZwYXJlbnQYASABKAlCB7pIBHICEAEiOgoSTGlzdEN5Y2xlc1Jlc3BvbnNlEiQKBmN5Y2xlcxgBIAMoCzIULm9wZW5tZW5zZXMudjEuQ3ljbGUiMQoWTGlzdFByZWRpY3Rpb25zUmVxdWVzdBIXCgZwYXJlbnQYASABKAlCB7pIBHICEAEiSQoXTGlzdFByZWRpY3Rpb25zUmVzcG9uc2USLgoLcHJlZGljdGlvbnMYASADKAsyGS5vcGVubWVuc2VzLnYxLlByZWRpY3Rpb24iLgoTTGlzdEluc2lnaHRzUmVxdWVzdBIXCgZwYXJlbnQYASABKAlCB7pIBHICEAEiQAoUTGlzdEluc2lnaHRzUmVzcG9uc2USKAoIaW5zaWdodHMYASADKAsyFi5vcGVubWVuc2VzLnYxLkluc2lnaHQiKgoRRXhwb3J0RGF0YVJlcXVlc3QSFQoEbmFtZRgBIAEoCUIHukgEcgIQASIiChJFeHBvcnREYXRhUmVzcG9uc2USDAoEZGF0YRgBIAEoDCIhChFJbXBvcnREYXRhUmVxdWVzdBIMCgRkYXRhGAEgASgMIi4KEkltcG9ydERhdGFSZXNwb25zZRIYChByZWNvcmRzX2ltcG9ydGVkGAEgASgNMrMKChNDeWNsZVRyYWNrZXJTZXJ2aWNlEl0KDkdldFVzZXJQcm9maWxlEiQub3Blbm1lbnNlcy52MS5HZXRVc2VyUHJvZmlsZVJlcXVlc3QaJS5vcGVubWVuc2VzLnYxLkdldFVzZXJQcm9maWxlUmVzcG9uc2USZgoRVXBzZXJ0VXNlclByb2ZpbGUSJy5vcGVubWVuc2VzLnYxLlVwc2VydFVzZXJQcm9maWxlUmVxdWVzdBooLm9wZW5tZW5zZXMudjEuVXBzZXJ0VXNlclByb2ZpbGVSZXNwb25zZRJ+ChlDcmVhdGVCbGVlZGluZ09ic2VydmF0aW9uEi8ub3Blbm1lbnNlcy52MS5DcmVhdGVCbGVlZGluZ09ic2VydmF0aW9uUmVxdWVzdBowLm9wZW5tZW5zZXMudjEuQ3JlYXRlQmxlZWRpbmdPYnNlcnZhdGlvblJlc3BvbnNlEnsKGENyZWF0ZVN5bXB0b21PYnNlcnZhdGlvbhIuLm9wZW5tZW5zZXMudjEuQ3JlYXRlU3ltcHRvbU9ic2VydmF0aW9uUmVxdWVzdBovLm9wZW5tZW5zZXMudjEuQ3JlYXRlU3ltcHRvbU9ic2VydmF0aW9uUmVzcG9uc2UScgoVQ3JlYXRlTW9vZE9ic2VydmF0aW9uEisub3Blbm1lbnNlcy52MS5DcmVhdGVNb29kT2JzZXJ2YXRpb25SZXF1ZXN0Giwub3Blbm1lbnNlcy52MS5DcmVhdGVNb29kT2JzZXJ2YXRpb25SZXNwb25zZRJjChBDcmVhdGVNZWRpY2F0aW9uEiYub3Blbm1lbnNlcy52MS5DcmVhdGVNZWRpY2F0aW9uUmVxdWVzdBonLm9wZW5tZW5zZXMudjEuQ3JlYXRlTWVkaWNhdGlvblJlc3BvbnNlEnIKFUNyZWF0ZU1lZGljYXRpb25FdmVudBIrLm9wZW5tZW5zZXMudjEuQ3JlYXRlTWVkaWNhdGlvbkV2ZW50UmVxdWVzdBosLm9wZW5tZW5zZXMudjEuQ3JlYXRlTWVkaWNhdGlvbkV2ZW50UmVzcG9uc2USVwoMTGlzdFRpbWVsaW5lEiIub3Blbm1lbnNlcy52MS5MaXN0VGltZWxpbmVSZXF1ZXN0GiMub3Blbm1lbnNlcy52MS5MaXN0VGltZWxpbmVSZXNwb25zZRJRCgpMaXN0Q3ljbGVzEiAub3Blbm1lbnNlcy52MS5MaXN0Q3ljbGVzUmVxdWVzdBohLm9wZW5tZW5zZXMudjEuTGlzdEN5Y2xlc1Jlc3BvbnNlEmAKD0xpc3RQcmVkaWN0aW9ucxIlLm9wZW5tZW5zZXMudjEuTGlzdFByZWRpY3Rpb25zUmVxdWVzdBomLm9wZW5tZW5zZXMudjEuTGlzdFByZWRpY3Rpb25zUmVzcG9uc2USVwoMTGlzdEluc2lnaHRzEiIub3Blbm1lbnNlcy52MS5MaXN0SW5zaWdodHNSZXF1ZXN0GiMub3Blbm1lbnNlcy52MS5MaXN0SW5zaWdodHNSZXNwb25zZRJRCgpFeHBvcnREYXRhEiAub3Blbm1lbnNlcy52MS5FeHBvcnREYXRhUmVxdWVzdBohLm9wZW5tZW5zZXMudjEuRXhwb3J0RGF0YVJlc3BvbnNlElEKCkltcG9ydERhdGESIC5vcGVubWVuc2VzLnYxLkltcG9ydERhdGFSZXF1ZXN0GiEub3Blbm1lbnNlcy52MS5JbXBvcnREYXRhUmVzcG9uc2VCQVo/Z2l0aHViLmNvbS8yYWpveWNlL29wZW5tZW5zZXMvZ2VuL2dvL29wZW5tZW5zZXMvdjE7b3Blbm1lbnNlc3YxYgZwcm90bzM", [file_buf_validate_validate, file_openmenses_v1_model, file_openmenses_v1_types]);
+  fileDesc("ChtvcGVubWVuc2VzL3YxL3NlcnZpY2UucHJvdG8SDW9wZW5tZW5zZXMudjEiLgoVR2V0VXNlclByb2ZpbGVSZXF1ZXN0EhUKBG5hbWUYASABKAlCB7pIBHICEAEiRQoWR2V0VXNlclByb2ZpbGVSZXNwb25zZRIrCgdwcm9maWxlGAEgASgLMhoub3Blbm1lbnNlcy52MS5Vc2VyUHJvZmlsZSJHChhDcmVhdGVVc2VyUHJvZmlsZVJlcXVlc3QSKwoHcHJvZmlsZRgBIAEoCzIaLm9wZW5tZW5zZXMudjEuVXNlclByb2ZpbGUiSAoZQ3JlYXRlVXNlclByb2ZpbGVSZXNwb25zZRIrCgdwcm9maWxlGAEgASgLMhoub3Blbm1lbnNlcy52MS5Vc2VyUHJvZmlsZSJ4ChhVcGRhdGVVc2VyUHJvZmlsZVJlcXVlc3QSKwoHcHJvZmlsZRgBIAEoCzIaLm9wZW5tZW5zZXMudjEuVXNlclByb2ZpbGUSLwoLdXBkYXRlX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrIkgKGVVwZGF0ZVVzZXJQcm9maWxlUmVzcG9uc2USKwoHcHJvZmlsZRgBIAEoCzIaLm9wZW5tZW5zZXMudjEuVXNlclByb2ZpbGUiNgodR2V0QmxlZWRpbmdPYnNlcnZhdGlvblJlcXVlc3QSFQoEbmFtZRgBIAEoCUIHukgEcgIQASJZCh5HZXRCbGVlZGluZ09ic2VydmF0aW9uUmVzcG9uc2USNwoLb2JzZXJ2YXRpb24YASABKAsyIi5vcGVubWVuc2VzLnYxLkJsZWVkaW5nT2JzZXJ2YXRpb24idAogQ3JlYXRlQmxlZWRpbmdPYnNlcnZhdGlvblJlcXVlc3QSFwoGcGFyZW50GAEgASgJQge6SARyAhABEjcKC29ic2VydmF0aW9uGAIgASgLMiIub3Blbm1lbnNlcy52MS5CbGVlZGluZ09ic2VydmF0aW9uIlwKIUNyZWF0ZUJsZWVkaW5nT2JzZXJ2YXRpb25SZXNwb25zZRI3CgtvYnNlcnZhdGlvbhgBIAEoCzIiLm9wZW5tZW5zZXMudjEuQmxlZWRpbmdPYnNlcnZhdGlvbiKMAQogVXBkYXRlQmxlZWRpbmdPYnNlcnZhdGlvblJlcXVlc3QSNwoLb2JzZXJ2YXRpb24YASABKAsyIi5vcGVubWVuc2VzLnYxLkJsZWVkaW5nT2JzZXJ2YXRpb24SLwoLdXBkYXRlX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrIlwKIVVwZGF0ZUJsZWVkaW5nT2JzZXJ2YXRpb25SZXNwb25zZRI3CgtvYnNlcnZhdGlvbhgBIAEoCzIiLm9wZW5tZW5zZXMudjEuQmxlZWRpbmdPYnNlcnZhdGlvbiI5CiBEZWxldGVCbGVlZGluZ09ic2VydmF0aW9uUmVxdWVzdBIVCgRuYW1lGAEgASgJQge6SARyAhABIlwKIURlbGV0ZUJsZWVkaW5nT2JzZXJ2YXRpb25SZXNwb25zZRI3CgtvYnNlcnZhdGlvbhgBIAEoCzIiLm9wZW5tZW5zZXMudjEuQmxlZWRpbmdPYnNlcnZhdGlvbiJwCh9MaXN0QmxlZWRpbmdPYnNlcnZhdGlvbnNSZXF1ZXN0EhcKBnBhcmVudBgBIAEoCUIHukgEcgIQARI0CgpwYWdpbmF0aW9uGAIgASgLMiAub3Blbm1lbnNlcy52MS5QYWdpbmF0aW9uUmVxdWVzdCKTAQogTGlzdEJsZWVkaW5nT2JzZXJ2YXRpb25zUmVzcG9uc2USOAoMb2JzZXJ2YXRpb25zGAEgAygLMiIub3Blbm1lbnNlcy52MS5CbGVlZGluZ09ic2VydmF0aW9uEjUKCnBhZ2luYXRpb24YAiABKAsyIS5vcGVubWVuc2VzLnYxLlBhZ2luYXRpb25SZXNwb25zZSI1ChxHZXRTeW1wdG9tT2JzZXJ2YXRpb25SZXF1ZXN0EhUKBG5hbWUYASABKAlCB7pIBHICEAEiVwodR2V0U3ltcHRvbU9ic2VydmF0aW9uUmVzcG9uc2USNgoLb2JzZXJ2YXRpb24YASABKAsyIS5vcGVubWVuc2VzLnYxLlN5bXB0b21PYnNlcnZhdGlvbiJyCh9DcmVhdGVTeW1wdG9tT2JzZXJ2YXRpb25SZXF1ZXN0EhcKBnBhcmVudBgBIAEoCUIHukgEcgIQARI2CgtvYnNlcnZhdGlvbhgCIAEoCzIhLm9wZW5tZW5zZXMudjEuU3ltcHRvbU9ic2VydmF0aW9uIloKIENyZWF0ZVN5bXB0b21PYnNlcnZhdGlvblJlc3BvbnNlEjYKC29ic2VydmF0aW9uGAEgASgLMiEub3Blbm1lbnNlcy52MS5TeW1wdG9tT2JzZXJ2YXRpb24iigEKH1VwZGF0ZVN5bXB0b21PYnNlcnZhdGlvblJlcXVlc3QSNgoLb2JzZXJ2YXRpb24YASABKAsyIS5vcGVubWVuc2VzLnYxLlN5bXB0b21PYnNlcnZhdGlvbhIvCgt1cGRhdGVfbWFzaxgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE1hc2siWgogVXBkYXRlU3ltcHRvbU9ic2VydmF0aW9uUmVzcG9uc2USNgoLb2JzZXJ2YXRpb24YASABKAsyIS5vcGVubWVuc2VzLnYxLlN5bXB0b21PYnNlcnZhdGlvbiJaCiBEZWxldGVTeW1wdG9tT2JzZXJ2YXRpb25SZXNwb25zZRI2CgtvYnNlcnZhdGlvbhgBIAEoCzIhLm9wZW5tZW5zZXMudjEuU3ltcHRvbU9ic2VydmF0aW9uIjgKH0RlbGV0ZVN5bXB0b21PYnNlcnZhdGlvblJlcXVlc3QSFQoEbmFtZRgBIAEoCUIHukgEcgIQASJvCh5MaXN0U3ltcHRvbU9ic2VydmF0aW9uc1JlcXVlc3QSFwoGcGFyZW50GAEgASgJQge6SARyAhABEjQKCnBhZ2luYXRpb24YAiABKAsyIC5vcGVubWVuc2VzLnYxLlBhZ2luYXRpb25SZXF1ZXN0IpEBCh9MaXN0U3ltcHRvbU9ic2VydmF0aW9uc1Jlc3BvbnNlEjcKDG9ic2VydmF0aW9ucxgBIAMoCzIhLm9wZW5tZW5zZXMudjEuU3ltcHRvbU9ic2VydmF0aW9uEjUKCnBhZ2luYXRpb24YAiABKAsyIS5vcGVubWVuc2VzLnYxLlBhZ2luYXRpb25SZXNwb25zZSIyChlHZXRNb29kT2JzZXJ2YXRpb25SZXF1ZXN0EhUKBG5hbWUYASABKAlCB7pIBHICEAEiUQoaR2V0TW9vZE9ic2VydmF0aW9uUmVzcG9uc2USMwoLb2JzZXJ2YXRpb24YASABKAsyHi5vcGVubWVuc2VzLnYxLk1vb2RPYnNlcnZhdGlvbiJsChxDcmVhdGVNb29kT2JzZXJ2YXRpb25SZXF1ZXN0EhcKBnBhcmVudBgBIAEoCUIHukgEcgIQARIzCgtvYnNlcnZhdGlvbhgCIAEoCzIeLm9wZW5tZW5zZXMudjEuTW9vZE9ic2VydmF0aW9uIlQKHUNyZWF0ZU1vb2RPYnNlcnZhdGlvblJlc3BvbnNlEjMKC29ic2VydmF0aW9uGAEgASgLMh4ub3Blbm1lbnNlcy52MS5Nb29kT2JzZXJ2YXRpb24ihAEKHFVwZGF0ZU1vb2RPYnNlcnZhdGlvblJlcXVlc3QSMwoLb2JzZXJ2YXRpb24YASABKAsyHi5vcGVubWVuc2VzLnYxLk1vb2RPYnNlcnZhdGlvbhIvCgt1cGRhdGVfbWFzaxgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE1hc2siVAodVXBkYXRlTW9vZE9ic2VydmF0aW9uUmVzcG9uc2USMwoLb2JzZXJ2YXRpb24YASABKAsyHi5vcGVubWVuc2VzLnYxLk1vb2RPYnNlcnZhdGlvbiJUCh1EZWxldGVNb29kT2JzZXJ2YXRpb25SZXNwb25zZRIzCgtvYnNlcnZhdGlvbhgBIAEoCzIeLm9wZW5tZW5zZXMudjEuTW9vZE9ic2VydmF0aW9uIjUKHERlbGV0ZU1vb2RPYnNlcnZhdGlvblJlcXVlc3QSFQoEbmFtZRgBIAEoCUIHukgEcgIQASJsChtMaXN0TW9vZE9ic2VydmF0aW9uc1JlcXVlc3QSFwoGcGFyZW50GAEgASgJQge6SARyAhABEjQKCnBhZ2luYXRpb24YAiABKAsyIC5vcGVubWVuc2VzLnYxLlBhZ2luYXRpb25SZXF1ZXN0IosBChxMaXN0TW9vZE9ic2VydmF0aW9uc1Jlc3BvbnNlEjQKDG9ic2VydmF0aW9ucxgBIAMoCzIeLm9wZW5tZW5zZXMudjEuTW9vZE9ic2VydmF0aW9uEjUKCnBhZ2luYXRpb24YAiABKAsyIS5vcGVubWVuc2VzLnYxLlBhZ2luYXRpb25SZXNwb25zZSItChRHZXRNZWRpY2F0aW9uUmVxdWVzdBIVCgRuYW1lGAEgASgJQge6SARyAhABIkYKFUdldE1lZGljYXRpb25SZXNwb25zZRItCgptZWRpY2F0aW9uGAEgASgLMhkub3Blbm1lbnNlcy52MS5NZWRpY2F0aW9uImEKF0NyZWF0ZU1lZGljYXRpb25SZXF1ZXN0EhcKBnBhcmVudBgBIAEoCUIHukgEcgIQARItCgptZWRpY2F0aW9uGAIgASgLMhkub3Blbm1lbnNlcy52MS5NZWRpY2F0aW9uIkkKGENyZWF0ZU1lZGljYXRpb25SZXNwb25zZRItCgptZWRpY2F0aW9uGAEgASgLMhkub3Blbm1lbnNlcy52MS5NZWRpY2F0aW9uInkKF1VwZGF0ZU1lZGljYXRpb25SZXF1ZXN0Ei0KCm1lZGljYXRpb24YASABKAsyGS5vcGVubWVuc2VzLnYxLk1lZGljYXRpb24SLwoLdXBkYXRlX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrIkkKGERlbGV0ZU1lZGljYXRpb25SZXNwb25zZRItCgptZWRpY2F0aW9uGAEgASgLMhkub3Blbm1lbnNlcy52MS5NZWRpY2F0aW9uIkkKGFVwZGF0ZU1lZGljYXRpb25SZXNwb25zZRItCgptZWRpY2F0aW9uGAEgASgLMhkub3Blbm1lbnNlcy52MS5NZWRpY2F0aW9uIjAKF0RlbGV0ZU1lZGljYXRpb25SZXF1ZXN0EhUKBG5hbWUYASABKAlCB7pIBHICEAEiZwoWTGlzdE1lZGljYXRpb25zUmVxdWVzdBIXCgZwYXJlbnQYASABKAlCB7pIBHICEAESNAoKcGFnaW5hdGlvbhgCIAEoCzIgLm9wZW5tZW5zZXMudjEuUGFnaW5hdGlvblJlcXVlc3QigAEKF0xpc3RNZWRpY2F0aW9uc1Jlc3BvbnNlEi4KC21lZGljYXRpb25zGAEgAygLMhkub3Blbm1lbnNlcy52MS5NZWRpY2F0aW9uEjUKCnBhZ2luYXRpb24YAiABKAsyIS5vcGVubWVuc2VzLnYxLlBhZ2luYXRpb25SZXNwb25zZSIyChlHZXRNZWRpY2F0aW9uRXZlbnRSZXF1ZXN0EhUKBG5hbWUYASABKAlCB7pIBHICEAEiSwoaR2V0TWVkaWNhdGlvbkV2ZW50UmVzcG9uc2USLQoFZXZlbnQYASABKAsyHi5vcGVubWVuc2VzLnYxLk1lZGljYXRpb25FdmVudCJmChxDcmVhdGVNZWRpY2F0aW9uRXZlbnRSZXF1ZXN0EhcKBnBhcmVudBgBIAEoCUIHukgEcgIQARItCgVldmVudBgCIAEoCzIeLm9wZW5tZW5zZXMudjEuTWVkaWNhdGlvbkV2ZW50Ik4KHUNyZWF0ZU1lZGljYXRpb25FdmVudFJlc3BvbnNlEi0KBWV2ZW50GAEgASgLMh4ub3Blbm1lbnNlcy52MS5NZWRpY2F0aW9uRXZlbnQifgocVXBkYXRlTWVkaWNhdGlvbkV2ZW50UmVxdWVzdBItCgVldmVudBgBIAEoCzIeLm9wZW5tZW5zZXMudjEuTWVkaWNhdGlvbkV2ZW50Ei8KC3VwZGF0ZV9tYXNrGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzayJOCh1EZWxldGVNZWRpY2F0aW9uRXZlbnRSZXNwb25zZRItCgVldmVudBgBIAEoCzIeLm9wZW5tZW5zZXMudjEuTWVkaWNhdGlvbkV2ZW50Ik4KHVVwZGF0ZU1lZGljYXRpb25FdmVudFJlc3BvbnNlEi0KBWV2ZW50GAEgASgLMh4ub3Blbm1lbnNlcy52MS5NZWRpY2F0aW9uRXZlbnQiNQocRGVsZXRlTWVkaWNhdGlvbkV2ZW50UmVxdWVzdBIVCgRuYW1lGAEgASgJQge6SARyAhABImwKG0xpc3RNZWRpY2F0aW9uRXZlbnRzUmVxdWVzdBIXCgZwYXJlbnQYASABKAlCB7pIBHICEAESNAoKcGFnaW5hdGlvbhgCIAEoCzIgLm9wZW5tZW5zZXMudjEuUGFnaW5hdGlvblJlcXVlc3QihQEKHExpc3RNZWRpY2F0aW9uRXZlbnRzUmVzcG9uc2USLgoGZXZlbnRzGAEgAygLMh4ub3Blbm1lbnNlcy52MS5NZWRpY2F0aW9uRXZlbnQSNQoKcGFnaW5hdGlvbhgCIAEoCzIhLm9wZW5tZW5zZXMudjEuUGFnaW5hdGlvblJlc3BvbnNlIo0BChNMaXN0VGltZWxpbmVSZXF1ZXN0EhcKBnBhcmVudBgBIAEoCUIHukgEcgIQARInCgVyYW5nZRgCIAEoCzIYLm9wZW5tZW5zZXMudjEuRGF0ZVJhbmdlEjQKCnBhZ2luYXRpb24YAyABKAsyIC5vcGVubWVuc2VzLnYxLlBhZ2luYXRpb25SZXF1ZXN0IoQECg5UaW1lbGluZVJlY29yZBJCChRibGVlZGluZ19vYnNlcnZhdGlvbhgBIAEoCzIiLm9wZW5tZW5zZXMudjEuQmxlZWRpbmdPYnNlcnZhdGlvbkgAEkAKE3N5bXB0b21fb2JzZXJ2YXRpb24YAiABKAsyIS5vcGVubWVuc2VzLnYxLlN5bXB0b21PYnNlcnZhdGlvbkgAEjoKEG1vb2Rfb2JzZXJ2YXRpb24YAyABKAsyHi5vcGVubWVuc2VzLnYxLk1vb2RPYnNlcnZhdGlvbkgAEi8KCm1lZGljYXRpb24YBCABKAsyGS5vcGVubWVuc2VzLnYxLk1lZGljYXRpb25IABI6ChBtZWRpY2F0aW9uX2V2ZW50GAUgASgLMh4ub3Blbm1lbnNlcy52MS5NZWRpY2F0aW9uRXZlbnRIABIlCgVjeWNsZRgGIAEoCzIULm9wZW5tZW5zZXMudjEuQ3ljbGVIABI2Cg5waGFzZV9lc3RpbWF0ZRgHIAEoCzIcLm9wZW5tZW5zZXMudjEuUGhhc2VFc3RpbWF0ZUgAEi8KCnByZWRpY3Rpb24YCCABKAsyGS5vcGVubWVuc2VzLnYxLlByZWRpY3Rpb25IABIpCgdpbnNpZ2h0GAkgASgLMhYub3Blbm1lbnNlcy52MS5JbnNpZ2h0SABCCAoGcmVjb3JkIn0KFExpc3RUaW1lbGluZVJlc3BvbnNlEi4KB3JlY29yZHMYASADKAsyHS5vcGVubWVuc2VzLnYxLlRpbWVsaW5lUmVjb3JkEjUKCnBhZ2luYXRpb24YAiABKAsyIS5vcGVubWVuc2VzLnYxLlBhZ2luYXRpb25SZXNwb25zZSIoCg9HZXRDeWNsZVJlcXVlc3QSFQoEbmFtZRgBIAEoCUIHukgEcgIQASI3ChBHZXRDeWNsZVJlc3BvbnNlEiMKBWN5Y2xlGAEgASgLMhQub3Blbm1lbnNlcy52MS5DeWNsZSJiChFMaXN0Q3ljbGVzUmVxdWVzdBIXCgZwYXJlbnQYASABKAlCB7pIBHICEAESNAoKcGFnaW5hdGlvbhgCIAEoCzIgLm9wZW5tZW5zZXMudjEuUGFnaW5hdGlvblJlcXVlc3QicQoSTGlzdEN5Y2xlc1Jlc3BvbnNlEiQKBmN5Y2xlcxgBIAMoCzIULm9wZW5tZW5zZXMudjEuQ3ljbGUSNQoKcGFnaW5hdGlvbhgCIAEoCzIhLm9wZW5tZW5zZXMudjEuUGFnaW5hdGlvblJlc3BvbnNlImcKFkxpc3RQcmVkaWN0aW9uc1JlcXVlc3QSFwoGcGFyZW50GAEgASgJQge6SARyAhABEjQKCnBhZ2luYXRpb24YAiABKAsyIC5vcGVubWVuc2VzLnYxLlBhZ2luYXRpb25SZXF1ZXN0IoABChdMaXN0UHJlZGljdGlvbnNSZXNwb25zZRIuCgtwcmVkaWN0aW9ucxgBIAMoCzIZLm9wZW5tZW5zZXMudjEuUHJlZGljdGlvbhI1CgpwYWdpbmF0aW9uGAIgASgLMiEub3Blbm1lbnNlcy52MS5QYWdpbmF0aW9uUmVzcG9uc2UiZAoTTGlzdEluc2lnaHRzUmVxdWVzdBIXCgZwYXJlbnQYASABKAlCB7pIBHICEAESNAoKcGFnaW5hdGlvbhgCIAEoCzIgLm9wZW5tZW5zZXMudjEuUGFnaW5hdGlvblJlcXVlc3QidwoUTGlzdEluc2lnaHRzUmVzcG9uc2USKAoIaW5zaWdodHMYASADKAsyFi5vcGVubWVuc2VzLnYxLkluc2lnaHQSNQoKcGFnaW5hdGlvbhgCIAEoCzIhLm9wZW5tZW5zZXMudjEuUGFnaW5hdGlvblJlc3BvbnNlIjAKF0NyZWF0ZURhdGFFeHBvcnRSZXF1ZXN0EhUKBG5hbWUYASABKAlCB7pIBHICEAEiKAoYQ3JlYXRlRGF0YUV4cG9ydFJlc3BvbnNlEgwKBGRhdGEYASABKAwiJwoXQ3JlYXRlRGF0YUltcG9ydFJlcXVlc3QSDAoEZGF0YRgBIAEoDCI0ChhDcmVhdGVEYXRhSW1wb3J0UmVzcG9uc2USGAoQcmVjb3Jkc19pbXBvcnRlZBgBIAEoDTL4HQoTQ3ljbGVUcmFja2VyU2VydmljZRJdCg5HZXRVc2VyUHJvZmlsZRIkLm9wZW5tZW5zZXMudjEuR2V0VXNlclByb2ZpbGVSZXF1ZXN0GiUub3Blbm1lbnNlcy52MS5HZXRVc2VyUHJvZmlsZVJlc3BvbnNlEmYKEUNyZWF0ZVVzZXJQcm9maWxlEicub3Blbm1lbnNlcy52MS5DcmVhdGVVc2VyUHJvZmlsZVJlcXVlc3QaKC5vcGVubWVuc2VzLnYxLkNyZWF0ZVVzZXJQcm9maWxlUmVzcG9uc2USZgoRVXBkYXRlVXNlclByb2ZpbGUSJy5vcGVubWVuc2VzLnYxLlVwZGF0ZVVzZXJQcm9maWxlUmVxdWVzdBooLm9wZW5tZW5zZXMudjEuVXBkYXRlVXNlclByb2ZpbGVSZXNwb25zZRJ1ChZHZXRCbGVlZGluZ09ic2VydmF0aW9uEiwub3Blbm1lbnNlcy52MS5HZXRCbGVlZGluZ09ic2VydmF0aW9uUmVxdWVzdBotLm9wZW5tZW5zZXMudjEuR2V0QmxlZWRpbmdPYnNlcnZhdGlvblJlc3BvbnNlEn4KGUNyZWF0ZUJsZWVkaW5nT2JzZXJ2YXRpb24SLy5vcGVubWVuc2VzLnYxLkNyZWF0ZUJsZWVkaW5nT2JzZXJ2YXRpb25SZXF1ZXN0GjAub3Blbm1lbnNlcy52MS5DcmVhdGVCbGVlZGluZ09ic2VydmF0aW9uUmVzcG9uc2USfgoZVXBkYXRlQmxlZWRpbmdPYnNlcnZhdGlvbhIvLm9wZW5tZW5zZXMudjEuVXBkYXRlQmxlZWRpbmdPYnNlcnZhdGlvblJlcXVlc3QaMC5vcGVubWVuc2VzLnYxLlVwZGF0ZUJsZWVkaW5nT2JzZXJ2YXRpb25SZXNwb25zZRJ+ChlEZWxldGVCbGVlZGluZ09ic2VydmF0aW9uEi8ub3Blbm1lbnNlcy52MS5EZWxldGVCbGVlZGluZ09ic2VydmF0aW9uUmVxdWVzdBowLm9wZW5tZW5zZXMudjEuRGVsZXRlQmxlZWRpbmdPYnNlcnZhdGlvblJlc3BvbnNlEnsKGExpc3RCbGVlZGluZ09ic2VydmF0aW9ucxIuLm9wZW5tZW5zZXMudjEuTGlzdEJsZWVkaW5nT2JzZXJ2YXRpb25zUmVxdWVzdBovLm9wZW5tZW5zZXMudjEuTGlzdEJsZWVkaW5nT2JzZXJ2YXRpb25zUmVzcG9uc2UScgoVR2V0U3ltcHRvbU9ic2VydmF0aW9uEisub3Blbm1lbnNlcy52MS5HZXRTeW1wdG9tT2JzZXJ2YXRpb25SZXF1ZXN0Giwub3Blbm1lbnNlcy52MS5HZXRTeW1wdG9tT2JzZXJ2YXRpb25SZXNwb25zZRJ7ChhDcmVhdGVTeW1wdG9tT2JzZXJ2YXRpb24SLi5vcGVubWVuc2VzLnYxLkNyZWF0ZVN5bXB0b21PYnNlcnZhdGlvblJlcXVlc3QaLy5vcGVubWVuc2VzLnYxLkNyZWF0ZVN5bXB0b21PYnNlcnZhdGlvblJlc3BvbnNlEnsKGFVwZGF0ZVN5bXB0b21PYnNlcnZhdGlvbhIuLm9wZW5tZW5zZXMudjEuVXBkYXRlU3ltcHRvbU9ic2VydmF0aW9uUmVxdWVzdBovLm9wZW5tZW5zZXMudjEuVXBkYXRlU3ltcHRvbU9ic2VydmF0aW9uUmVzcG9uc2USewoYRGVsZXRlU3ltcHRvbU9ic2VydmF0aW9uEi4ub3Blbm1lbnNlcy52MS5EZWxldGVTeW1wdG9tT2JzZXJ2YXRpb25SZXF1ZXN0Gi8ub3Blbm1lbnNlcy52MS5EZWxldGVTeW1wdG9tT2JzZXJ2YXRpb25SZXNwb25zZRJ4ChdMaXN0U3ltcHRvbU9ic2VydmF0aW9ucxItLm9wZW5tZW5zZXMudjEuTGlzdFN5bXB0b21PYnNlcnZhdGlvbnNSZXF1ZXN0Gi4ub3Blbm1lbnNlcy52MS5MaXN0U3ltcHRvbU9ic2VydmF0aW9uc1Jlc3BvbnNlEmkKEkdldE1vb2RPYnNlcnZhdGlvbhIoLm9wZW5tZW5zZXMudjEuR2V0TW9vZE9ic2VydmF0aW9uUmVxdWVzdBopLm9wZW5tZW5zZXMudjEuR2V0TW9vZE9ic2VydmF0aW9uUmVzcG9uc2UScgoVQ3JlYXRlTW9vZE9ic2VydmF0aW9uEisub3Blbm1lbnNlcy52MS5DcmVhdGVNb29kT2JzZXJ2YXRpb25SZXF1ZXN0Giwub3Blbm1lbnNlcy52MS5DcmVhdGVNb29kT2JzZXJ2YXRpb25SZXNwb25zZRJyChVVcGRhdGVNb29kT2JzZXJ2YXRpb24SKy5vcGVubWVuc2VzLnYxLlVwZGF0ZU1vb2RPYnNlcnZhdGlvblJlcXVlc3QaLC5vcGVubWVuc2VzLnYxLlVwZGF0ZU1vb2RPYnNlcnZhdGlvblJlc3BvbnNlEnIKFURlbGV0ZU1vb2RPYnNlcnZhdGlvbhIrLm9wZW5tZW5zZXMudjEuRGVsZXRlTW9vZE9ic2VydmF0aW9uUmVxdWVzdBosLm9wZW5tZW5zZXMudjEuRGVsZXRlTW9vZE9ic2VydmF0aW9uUmVzcG9uc2USbwoUTGlzdE1vb2RPYnNlcnZhdGlvbnMSKi5vcGVubWVuc2VzLnYxLkxpc3RNb29kT2JzZXJ2YXRpb25zUmVxdWVzdBorLm9wZW5tZW5zZXMudjEuTGlzdE1vb2RPYnNlcnZhdGlvbnNSZXNwb25zZRJaCg1HZXRNZWRpY2F0aW9uEiMub3Blbm1lbnNlcy52MS5HZXRNZWRpY2F0aW9uUmVxdWVzdBokLm9wZW5tZW5zZXMudjEuR2V0TWVkaWNhdGlvblJlc3BvbnNlEmMKEENyZWF0ZU1lZGljYXRpb24SJi5vcGVubWVuc2VzLnYxLkNyZWF0ZU1lZGljYXRpb25SZXF1ZXN0Gicub3Blbm1lbnNlcy52MS5DcmVhdGVNZWRpY2F0aW9uUmVzcG9uc2USYwoQVXBkYXRlTWVkaWNhdGlvbhImLm9wZW5tZW5zZXMudjEuVXBkYXRlTWVkaWNhdGlvblJlcXVlc3QaJy5vcGVubWVuc2VzLnYxLlVwZGF0ZU1lZGljYXRpb25SZXNwb25zZRJjChBEZWxldGVNZWRpY2F0aW9uEiYub3Blbm1lbnNlcy52MS5EZWxldGVNZWRpY2F0aW9uUmVxdWVzdBonLm9wZW5tZW5zZXMudjEuRGVsZXRlTWVkaWNhdGlvblJlc3BvbnNlEmAKD0xpc3RNZWRpY2F0aW9ucxIlLm9wZW5tZW5zZXMudjEuTGlzdE1lZGljYXRpb25zUmVxdWVzdBomLm9wZW5tZW5zZXMudjEuTGlzdE1lZGljYXRpb25zUmVzcG9uc2USaQoSR2V0TWVkaWNhdGlvbkV2ZW50Eigub3Blbm1lbnNlcy52MS5HZXRNZWRpY2F0aW9uRXZlbnRSZXF1ZXN0Gikub3Blbm1lbnNlcy52MS5HZXRNZWRpY2F0aW9uRXZlbnRSZXNwb25zZRJyChVDcmVhdGVNZWRpY2F0aW9uRXZlbnQSKy5vcGVubWVuc2VzLnYxLkNyZWF0ZU1lZGljYXRpb25FdmVudFJlcXVlc3QaLC5vcGVubWVuc2VzLnYxLkNyZWF0ZU1lZGljYXRpb25FdmVudFJlc3BvbnNlEnIKFVVwZGF0ZU1lZGljYXRpb25FdmVudBIrLm9wZW5tZW5zZXMudjEuVXBkYXRlTWVkaWNhdGlvbkV2ZW50UmVxdWVzdBosLm9wZW5tZW5zZXMudjEuVXBkYXRlTWVkaWNhdGlvbkV2ZW50UmVzcG9uc2UScgoVRGVsZXRlTWVkaWNhdGlvbkV2ZW50Eisub3Blbm1lbnNlcy52MS5EZWxldGVNZWRpY2F0aW9uRXZlbnRSZXF1ZXN0Giwub3Blbm1lbnNlcy52MS5EZWxldGVNZWRpY2F0aW9uRXZlbnRSZXNwb25zZRJvChRMaXN0TWVkaWNhdGlvbkV2ZW50cxIqLm9wZW5tZW5zZXMudjEuTGlzdE1lZGljYXRpb25FdmVudHNSZXF1ZXN0Gisub3Blbm1lbnNlcy52MS5MaXN0TWVkaWNhdGlvbkV2ZW50c1Jlc3BvbnNlElcKDExpc3RUaW1lbGluZRIiLm9wZW5tZW5zZXMudjEuTGlzdFRpbWVsaW5lUmVxdWVzdBojLm9wZW5tZW5zZXMudjEuTGlzdFRpbWVsaW5lUmVzcG9uc2USSwoIR2V0Q3ljbGUSHi5vcGVubWVuc2VzLnYxLkdldEN5Y2xlUmVxdWVzdBofLm9wZW5tZW5zZXMudjEuR2V0Q3ljbGVSZXNwb25zZRJRCgpMaXN0Q3ljbGVzEiAub3Blbm1lbnNlcy52MS5MaXN0Q3ljbGVzUmVxdWVzdBohLm9wZW5tZW5zZXMudjEuTGlzdEN5Y2xlc1Jlc3BvbnNlEmAKD0xpc3RQcmVkaWN0aW9ucxIlLm9wZW5tZW5zZXMudjEuTGlzdFByZWRpY3Rpb25zUmVxdWVzdBomLm9wZW5tZW5zZXMudjEuTGlzdFByZWRpY3Rpb25zUmVzcG9uc2USVwoMTGlzdEluc2lnaHRzEiIub3Blbm1lbnNlcy52MS5MaXN0SW5zaWdodHNSZXF1ZXN0GiMub3Blbm1lbnNlcy52MS5MaXN0SW5zaWdodHNSZXNwb25zZRJjChBDcmVhdGVEYXRhRXhwb3J0EiYub3Blbm1lbnNlcy52MS5DcmVhdGVEYXRhRXhwb3J0UmVxdWVzdBonLm9wZW5tZW5zZXMudjEuQ3JlYXRlRGF0YUV4cG9ydFJlc3BvbnNlEmMKEENyZWF0ZURhdGFJbXBvcnQSJi5vcGVubWVuc2VzLnYxLkNyZWF0ZURhdGFJbXBvcnRSZXF1ZXN0Gicub3Blbm1lbnNlcy52MS5DcmVhdGVEYXRhSW1wb3J0UmVzcG9uc2VCQVo/Z2l0aHViLmNvbS8yYWpveWNlL29wZW5tZW5zZXMvZ2VuL2dvL29wZW5tZW5zZXMvdjE7b3Blbm1lbnNlc3YxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_empty, file_google_protobuf_field_mask, file_openmenses_v1_model, file_openmenses_v1_types]);
 
 /**
  * @generated from message openmenses.v1.GetUserProfileRequest
@@ -52,9 +54,9 @@ export const GetUserProfileResponseSchema: GenMessage<GetUserProfileResponse> = 
   messageDesc(file_openmenses_v1_service, 1);
 
 /**
- * @generated from message openmenses.v1.UpsertUserProfileRequest
+ * @generated from message openmenses.v1.CreateUserProfileRequest
  */
-export type UpsertUserProfileRequest = Message<"openmenses.v1.UpsertUserProfileRequest"> & {
+export type CreateUserProfileRequest = Message<"openmenses.v1.CreateUserProfileRequest"> & {
   /**
    * @generated from field: openmenses.v1.UserProfile profile = 1;
    */
@@ -62,16 +64,16 @@ export type UpsertUserProfileRequest = Message<"openmenses.v1.UpsertUserProfileR
 };
 
 /**
- * Describes the message openmenses.v1.UpsertUserProfileRequest.
- * Use `create(UpsertUserProfileRequestSchema)` to create a new message.
+ * Describes the message openmenses.v1.CreateUserProfileRequest.
+ * Use `create(CreateUserProfileRequestSchema)` to create a new message.
  */
-export const UpsertUserProfileRequestSchema: GenMessage<UpsertUserProfileRequest> = /*@__PURE__*/
+export const CreateUserProfileRequestSchema: GenMessage<CreateUserProfileRequest> = /*@__PURE__*/
   messageDesc(file_openmenses_v1_service, 2);
 
 /**
- * @generated from message openmenses.v1.UpsertUserProfileResponse
+ * @generated from message openmenses.v1.CreateUserProfileResponse
  */
-export type UpsertUserProfileResponse = Message<"openmenses.v1.UpsertUserProfileResponse"> & {
+export type CreateUserProfileResponse = Message<"openmenses.v1.CreateUserProfileResponse"> & {
   /**
    * @generated from field: openmenses.v1.UserProfile profile = 1;
    */
@@ -79,11 +81,84 @@ export type UpsertUserProfileResponse = Message<"openmenses.v1.UpsertUserProfile
 };
 
 /**
- * Describes the message openmenses.v1.UpsertUserProfileResponse.
- * Use `create(UpsertUserProfileResponseSchema)` to create a new message.
+ * Describes the message openmenses.v1.CreateUserProfileResponse.
+ * Use `create(CreateUserProfileResponseSchema)` to create a new message.
  */
-export const UpsertUserProfileResponseSchema: GenMessage<UpsertUserProfileResponse> = /*@__PURE__*/
+export const CreateUserProfileResponseSchema: GenMessage<CreateUserProfileResponse> = /*@__PURE__*/
   messageDesc(file_openmenses_v1_service, 3);
+
+/**
+ * @generated from message openmenses.v1.UpdateUserProfileRequest
+ */
+export type UpdateUserProfileRequest = Message<"openmenses.v1.UpdateUserProfileRequest"> & {
+  /**
+   * @generated from field: openmenses.v1.UserProfile profile = 1;
+   */
+  profile?: UserProfile;
+
+  /**
+   * @generated from field: google.protobuf.FieldMask update_mask = 2;
+   */
+  updateMask?: FieldMask;
+};
+
+/**
+ * Describes the message openmenses.v1.UpdateUserProfileRequest.
+ * Use `create(UpdateUserProfileRequestSchema)` to create a new message.
+ */
+export const UpdateUserProfileRequestSchema: GenMessage<UpdateUserProfileRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 4);
+
+/**
+ * @generated from message openmenses.v1.UpdateUserProfileResponse
+ */
+export type UpdateUserProfileResponse = Message<"openmenses.v1.UpdateUserProfileResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.UserProfile profile = 1;
+   */
+  profile?: UserProfile;
+};
+
+/**
+ * Describes the message openmenses.v1.UpdateUserProfileResponse.
+ * Use `create(UpdateUserProfileResponseSchema)` to create a new message.
+ */
+export const UpdateUserProfileResponseSchema: GenMessage<UpdateUserProfileResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 5);
+
+/**
+ * @generated from message openmenses.v1.GetBleedingObservationRequest
+ */
+export type GetBleedingObservationRequest = Message<"openmenses.v1.GetBleedingObservationRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message openmenses.v1.GetBleedingObservationRequest.
+ * Use `create(GetBleedingObservationRequestSchema)` to create a new message.
+ */
+export const GetBleedingObservationRequestSchema: GenMessage<GetBleedingObservationRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 6);
+
+/**
+ * @generated from message openmenses.v1.GetBleedingObservationResponse
+ */
+export type GetBleedingObservationResponse = Message<"openmenses.v1.GetBleedingObservationResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.BleedingObservation observation = 1;
+   */
+  observation?: BleedingObservation;
+};
+
+/**
+ * Describes the message openmenses.v1.GetBleedingObservationResponse.
+ * Use `create(GetBleedingObservationResponseSchema)` to create a new message.
+ */
+export const GetBleedingObservationResponseSchema: GenMessage<GetBleedingObservationResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 7);
 
 /**
  * @generated from message openmenses.v1.CreateBleedingObservationRequest
@@ -105,7 +180,7 @@ export type CreateBleedingObservationRequest = Message<"openmenses.v1.CreateBlee
  * Use `create(CreateBleedingObservationRequestSchema)` to create a new message.
  */
 export const CreateBleedingObservationRequestSchema: GenMessage<CreateBleedingObservationRequest> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 4);
+  messageDesc(file_openmenses_v1_service, 8);
 
 /**
  * @generated from message openmenses.v1.CreateBleedingObservationResponse
@@ -122,7 +197,158 @@ export type CreateBleedingObservationResponse = Message<"openmenses.v1.CreateBle
  * Use `create(CreateBleedingObservationResponseSchema)` to create a new message.
  */
 export const CreateBleedingObservationResponseSchema: GenMessage<CreateBleedingObservationResponse> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 5);
+  messageDesc(file_openmenses_v1_service, 9);
+
+/**
+ * @generated from message openmenses.v1.UpdateBleedingObservationRequest
+ */
+export type UpdateBleedingObservationRequest = Message<"openmenses.v1.UpdateBleedingObservationRequest"> & {
+  /**
+   * @generated from field: openmenses.v1.BleedingObservation observation = 1;
+   */
+  observation?: BleedingObservation;
+
+  /**
+   * @generated from field: google.protobuf.FieldMask update_mask = 2;
+   */
+  updateMask?: FieldMask;
+};
+
+/**
+ * Describes the message openmenses.v1.UpdateBleedingObservationRequest.
+ * Use `create(UpdateBleedingObservationRequestSchema)` to create a new message.
+ */
+export const UpdateBleedingObservationRequestSchema: GenMessage<UpdateBleedingObservationRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 10);
+
+/**
+ * @generated from message openmenses.v1.UpdateBleedingObservationResponse
+ */
+export type UpdateBleedingObservationResponse = Message<"openmenses.v1.UpdateBleedingObservationResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.BleedingObservation observation = 1;
+   */
+  observation?: BleedingObservation;
+};
+
+/**
+ * Describes the message openmenses.v1.UpdateBleedingObservationResponse.
+ * Use `create(UpdateBleedingObservationResponseSchema)` to create a new message.
+ */
+export const UpdateBleedingObservationResponseSchema: GenMessage<UpdateBleedingObservationResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 11);
+
+/**
+ * @generated from message openmenses.v1.DeleteBleedingObservationRequest
+ */
+export type DeleteBleedingObservationRequest = Message<"openmenses.v1.DeleteBleedingObservationRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message openmenses.v1.DeleteBleedingObservationRequest.
+ * Use `create(DeleteBleedingObservationRequestSchema)` to create a new message.
+ */
+export const DeleteBleedingObservationRequestSchema: GenMessage<DeleteBleedingObservationRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 12);
+
+/**
+ * @generated from message openmenses.v1.DeleteBleedingObservationResponse
+ */
+export type DeleteBleedingObservationResponse = Message<"openmenses.v1.DeleteBleedingObservationResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.BleedingObservation observation = 1;
+   */
+  observation?: BleedingObservation;
+};
+
+/**
+ * Describes the message openmenses.v1.DeleteBleedingObservationResponse.
+ * Use `create(DeleteBleedingObservationResponseSchema)` to create a new message.
+ */
+export const DeleteBleedingObservationResponseSchema: GenMessage<DeleteBleedingObservationResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 13);
+
+/**
+ * @generated from message openmenses.v1.ListBleedingObservationsRequest
+ */
+export type ListBleedingObservationsRequest = Message<"openmenses.v1.ListBleedingObservationsRequest"> & {
+  /**
+   * @generated from field: string parent = 1;
+   */
+  parent: string;
+
+  /**
+   * @generated from field: openmenses.v1.PaginationRequest pagination = 2;
+   */
+  pagination?: PaginationRequest;
+};
+
+/**
+ * Describes the message openmenses.v1.ListBleedingObservationsRequest.
+ * Use `create(ListBleedingObservationsRequestSchema)` to create a new message.
+ */
+export const ListBleedingObservationsRequestSchema: GenMessage<ListBleedingObservationsRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 14);
+
+/**
+ * @generated from message openmenses.v1.ListBleedingObservationsResponse
+ */
+export type ListBleedingObservationsResponse = Message<"openmenses.v1.ListBleedingObservationsResponse"> & {
+  /**
+   * @generated from field: repeated openmenses.v1.BleedingObservation observations = 1;
+   */
+  observations: BleedingObservation[];
+
+  /**
+   * @generated from field: openmenses.v1.PaginationResponse pagination = 2;
+   */
+  pagination?: PaginationResponse;
+};
+
+/**
+ * Describes the message openmenses.v1.ListBleedingObservationsResponse.
+ * Use `create(ListBleedingObservationsResponseSchema)` to create a new message.
+ */
+export const ListBleedingObservationsResponseSchema: GenMessage<ListBleedingObservationsResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 15);
+
+/**
+ * @generated from message openmenses.v1.GetSymptomObservationRequest
+ */
+export type GetSymptomObservationRequest = Message<"openmenses.v1.GetSymptomObservationRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message openmenses.v1.GetSymptomObservationRequest.
+ * Use `create(GetSymptomObservationRequestSchema)` to create a new message.
+ */
+export const GetSymptomObservationRequestSchema: GenMessage<GetSymptomObservationRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 16);
+
+/**
+ * @generated from message openmenses.v1.GetSymptomObservationResponse
+ */
+export type GetSymptomObservationResponse = Message<"openmenses.v1.GetSymptomObservationResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.SymptomObservation observation = 1;
+   */
+  observation?: SymptomObservation;
+};
+
+/**
+ * Describes the message openmenses.v1.GetSymptomObservationResponse.
+ * Use `create(GetSymptomObservationResponseSchema)` to create a new message.
+ */
+export const GetSymptomObservationResponseSchema: GenMessage<GetSymptomObservationResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 17);
 
 /**
  * @generated from message openmenses.v1.CreateSymptomObservationRequest
@@ -144,7 +370,7 @@ export type CreateSymptomObservationRequest = Message<"openmenses.v1.CreateSympt
  * Use `create(CreateSymptomObservationRequestSchema)` to create a new message.
  */
 export const CreateSymptomObservationRequestSchema: GenMessage<CreateSymptomObservationRequest> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 6);
+  messageDesc(file_openmenses_v1_service, 18);
 
 /**
  * @generated from message openmenses.v1.CreateSymptomObservationResponse
@@ -161,7 +387,158 @@ export type CreateSymptomObservationResponse = Message<"openmenses.v1.CreateSymp
  * Use `create(CreateSymptomObservationResponseSchema)` to create a new message.
  */
 export const CreateSymptomObservationResponseSchema: GenMessage<CreateSymptomObservationResponse> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 7);
+  messageDesc(file_openmenses_v1_service, 19);
+
+/**
+ * @generated from message openmenses.v1.UpdateSymptomObservationRequest
+ */
+export type UpdateSymptomObservationRequest = Message<"openmenses.v1.UpdateSymptomObservationRequest"> & {
+  /**
+   * @generated from field: openmenses.v1.SymptomObservation observation = 1;
+   */
+  observation?: SymptomObservation;
+
+  /**
+   * @generated from field: google.protobuf.FieldMask update_mask = 2;
+   */
+  updateMask?: FieldMask;
+};
+
+/**
+ * Describes the message openmenses.v1.UpdateSymptomObservationRequest.
+ * Use `create(UpdateSymptomObservationRequestSchema)` to create a new message.
+ */
+export const UpdateSymptomObservationRequestSchema: GenMessage<UpdateSymptomObservationRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 20);
+
+/**
+ * @generated from message openmenses.v1.UpdateSymptomObservationResponse
+ */
+export type UpdateSymptomObservationResponse = Message<"openmenses.v1.UpdateSymptomObservationResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.SymptomObservation observation = 1;
+   */
+  observation?: SymptomObservation;
+};
+
+/**
+ * Describes the message openmenses.v1.UpdateSymptomObservationResponse.
+ * Use `create(UpdateSymptomObservationResponseSchema)` to create a new message.
+ */
+export const UpdateSymptomObservationResponseSchema: GenMessage<UpdateSymptomObservationResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 21);
+
+/**
+ * @generated from message openmenses.v1.DeleteSymptomObservationResponse
+ */
+export type DeleteSymptomObservationResponse = Message<"openmenses.v1.DeleteSymptomObservationResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.SymptomObservation observation = 1;
+   */
+  observation?: SymptomObservation;
+};
+
+/**
+ * Describes the message openmenses.v1.DeleteSymptomObservationResponse.
+ * Use `create(DeleteSymptomObservationResponseSchema)` to create a new message.
+ */
+export const DeleteSymptomObservationResponseSchema: GenMessage<DeleteSymptomObservationResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 22);
+
+/**
+ * @generated from message openmenses.v1.DeleteSymptomObservationRequest
+ */
+export type DeleteSymptomObservationRequest = Message<"openmenses.v1.DeleteSymptomObservationRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message openmenses.v1.DeleteSymptomObservationRequest.
+ * Use `create(DeleteSymptomObservationRequestSchema)` to create a new message.
+ */
+export const DeleteSymptomObservationRequestSchema: GenMessage<DeleteSymptomObservationRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 23);
+
+/**
+ * @generated from message openmenses.v1.ListSymptomObservationsRequest
+ */
+export type ListSymptomObservationsRequest = Message<"openmenses.v1.ListSymptomObservationsRequest"> & {
+  /**
+   * @generated from field: string parent = 1;
+   */
+  parent: string;
+
+  /**
+   * @generated from field: openmenses.v1.PaginationRequest pagination = 2;
+   */
+  pagination?: PaginationRequest;
+};
+
+/**
+ * Describes the message openmenses.v1.ListSymptomObservationsRequest.
+ * Use `create(ListSymptomObservationsRequestSchema)` to create a new message.
+ */
+export const ListSymptomObservationsRequestSchema: GenMessage<ListSymptomObservationsRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 24);
+
+/**
+ * @generated from message openmenses.v1.ListSymptomObservationsResponse
+ */
+export type ListSymptomObservationsResponse = Message<"openmenses.v1.ListSymptomObservationsResponse"> & {
+  /**
+   * @generated from field: repeated openmenses.v1.SymptomObservation observations = 1;
+   */
+  observations: SymptomObservation[];
+
+  /**
+   * @generated from field: openmenses.v1.PaginationResponse pagination = 2;
+   */
+  pagination?: PaginationResponse;
+};
+
+/**
+ * Describes the message openmenses.v1.ListSymptomObservationsResponse.
+ * Use `create(ListSymptomObservationsResponseSchema)` to create a new message.
+ */
+export const ListSymptomObservationsResponseSchema: GenMessage<ListSymptomObservationsResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 25);
+
+/**
+ * @generated from message openmenses.v1.GetMoodObservationRequest
+ */
+export type GetMoodObservationRequest = Message<"openmenses.v1.GetMoodObservationRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message openmenses.v1.GetMoodObservationRequest.
+ * Use `create(GetMoodObservationRequestSchema)` to create a new message.
+ */
+export const GetMoodObservationRequestSchema: GenMessage<GetMoodObservationRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 26);
+
+/**
+ * @generated from message openmenses.v1.GetMoodObservationResponse
+ */
+export type GetMoodObservationResponse = Message<"openmenses.v1.GetMoodObservationResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.MoodObservation observation = 1;
+   */
+  observation?: MoodObservation;
+};
+
+/**
+ * Describes the message openmenses.v1.GetMoodObservationResponse.
+ * Use `create(GetMoodObservationResponseSchema)` to create a new message.
+ */
+export const GetMoodObservationResponseSchema: GenMessage<GetMoodObservationResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 27);
 
 /**
  * @generated from message openmenses.v1.CreateMoodObservationRequest
@@ -183,7 +560,7 @@ export type CreateMoodObservationRequest = Message<"openmenses.v1.CreateMoodObse
  * Use `create(CreateMoodObservationRequestSchema)` to create a new message.
  */
 export const CreateMoodObservationRequestSchema: GenMessage<CreateMoodObservationRequest> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 8);
+  messageDesc(file_openmenses_v1_service, 28);
 
 /**
  * @generated from message openmenses.v1.CreateMoodObservationResponse
@@ -200,7 +577,158 @@ export type CreateMoodObservationResponse = Message<"openmenses.v1.CreateMoodObs
  * Use `create(CreateMoodObservationResponseSchema)` to create a new message.
  */
 export const CreateMoodObservationResponseSchema: GenMessage<CreateMoodObservationResponse> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 9);
+  messageDesc(file_openmenses_v1_service, 29);
+
+/**
+ * @generated from message openmenses.v1.UpdateMoodObservationRequest
+ */
+export type UpdateMoodObservationRequest = Message<"openmenses.v1.UpdateMoodObservationRequest"> & {
+  /**
+   * @generated from field: openmenses.v1.MoodObservation observation = 1;
+   */
+  observation?: MoodObservation;
+
+  /**
+   * @generated from field: google.protobuf.FieldMask update_mask = 2;
+   */
+  updateMask?: FieldMask;
+};
+
+/**
+ * Describes the message openmenses.v1.UpdateMoodObservationRequest.
+ * Use `create(UpdateMoodObservationRequestSchema)` to create a new message.
+ */
+export const UpdateMoodObservationRequestSchema: GenMessage<UpdateMoodObservationRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 30);
+
+/**
+ * @generated from message openmenses.v1.UpdateMoodObservationResponse
+ */
+export type UpdateMoodObservationResponse = Message<"openmenses.v1.UpdateMoodObservationResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.MoodObservation observation = 1;
+   */
+  observation?: MoodObservation;
+};
+
+/**
+ * Describes the message openmenses.v1.UpdateMoodObservationResponse.
+ * Use `create(UpdateMoodObservationResponseSchema)` to create a new message.
+ */
+export const UpdateMoodObservationResponseSchema: GenMessage<UpdateMoodObservationResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 31);
+
+/**
+ * @generated from message openmenses.v1.DeleteMoodObservationResponse
+ */
+export type DeleteMoodObservationResponse = Message<"openmenses.v1.DeleteMoodObservationResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.MoodObservation observation = 1;
+   */
+  observation?: MoodObservation;
+};
+
+/**
+ * Describes the message openmenses.v1.DeleteMoodObservationResponse.
+ * Use `create(DeleteMoodObservationResponseSchema)` to create a new message.
+ */
+export const DeleteMoodObservationResponseSchema: GenMessage<DeleteMoodObservationResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 32);
+
+/**
+ * @generated from message openmenses.v1.DeleteMoodObservationRequest
+ */
+export type DeleteMoodObservationRequest = Message<"openmenses.v1.DeleteMoodObservationRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message openmenses.v1.DeleteMoodObservationRequest.
+ * Use `create(DeleteMoodObservationRequestSchema)` to create a new message.
+ */
+export const DeleteMoodObservationRequestSchema: GenMessage<DeleteMoodObservationRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 33);
+
+/**
+ * @generated from message openmenses.v1.ListMoodObservationsRequest
+ */
+export type ListMoodObservationsRequest = Message<"openmenses.v1.ListMoodObservationsRequest"> & {
+  /**
+   * @generated from field: string parent = 1;
+   */
+  parent: string;
+
+  /**
+   * @generated from field: openmenses.v1.PaginationRequest pagination = 2;
+   */
+  pagination?: PaginationRequest;
+};
+
+/**
+ * Describes the message openmenses.v1.ListMoodObservationsRequest.
+ * Use `create(ListMoodObservationsRequestSchema)` to create a new message.
+ */
+export const ListMoodObservationsRequestSchema: GenMessage<ListMoodObservationsRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 34);
+
+/**
+ * @generated from message openmenses.v1.ListMoodObservationsResponse
+ */
+export type ListMoodObservationsResponse = Message<"openmenses.v1.ListMoodObservationsResponse"> & {
+  /**
+   * @generated from field: repeated openmenses.v1.MoodObservation observations = 1;
+   */
+  observations: MoodObservation[];
+
+  /**
+   * @generated from field: openmenses.v1.PaginationResponse pagination = 2;
+   */
+  pagination?: PaginationResponse;
+};
+
+/**
+ * Describes the message openmenses.v1.ListMoodObservationsResponse.
+ * Use `create(ListMoodObservationsResponseSchema)` to create a new message.
+ */
+export const ListMoodObservationsResponseSchema: GenMessage<ListMoodObservationsResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 35);
+
+/**
+ * @generated from message openmenses.v1.GetMedicationRequest
+ */
+export type GetMedicationRequest = Message<"openmenses.v1.GetMedicationRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message openmenses.v1.GetMedicationRequest.
+ * Use `create(GetMedicationRequestSchema)` to create a new message.
+ */
+export const GetMedicationRequestSchema: GenMessage<GetMedicationRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 36);
+
+/**
+ * @generated from message openmenses.v1.GetMedicationResponse
+ */
+export type GetMedicationResponse = Message<"openmenses.v1.GetMedicationResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.Medication medication = 1;
+   */
+  medication?: Medication;
+};
+
+/**
+ * Describes the message openmenses.v1.GetMedicationResponse.
+ * Use `create(GetMedicationResponseSchema)` to create a new message.
+ */
+export const GetMedicationResponseSchema: GenMessage<GetMedicationResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 37);
 
 /**
  * @generated from message openmenses.v1.CreateMedicationRequest
@@ -222,7 +750,7 @@ export type CreateMedicationRequest = Message<"openmenses.v1.CreateMedicationReq
  * Use `create(CreateMedicationRequestSchema)` to create a new message.
  */
 export const CreateMedicationRequestSchema: GenMessage<CreateMedicationRequest> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 10);
+  messageDesc(file_openmenses_v1_service, 38);
 
 /**
  * @generated from message openmenses.v1.CreateMedicationResponse
@@ -239,7 +767,158 @@ export type CreateMedicationResponse = Message<"openmenses.v1.CreateMedicationRe
  * Use `create(CreateMedicationResponseSchema)` to create a new message.
  */
 export const CreateMedicationResponseSchema: GenMessage<CreateMedicationResponse> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 11);
+  messageDesc(file_openmenses_v1_service, 39);
+
+/**
+ * @generated from message openmenses.v1.UpdateMedicationRequest
+ */
+export type UpdateMedicationRequest = Message<"openmenses.v1.UpdateMedicationRequest"> & {
+  /**
+   * @generated from field: openmenses.v1.Medication medication = 1;
+   */
+  medication?: Medication;
+
+  /**
+   * @generated from field: google.protobuf.FieldMask update_mask = 2;
+   */
+  updateMask?: FieldMask;
+};
+
+/**
+ * Describes the message openmenses.v1.UpdateMedicationRequest.
+ * Use `create(UpdateMedicationRequestSchema)` to create a new message.
+ */
+export const UpdateMedicationRequestSchema: GenMessage<UpdateMedicationRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 40);
+
+/**
+ * @generated from message openmenses.v1.DeleteMedicationResponse
+ */
+export type DeleteMedicationResponse = Message<"openmenses.v1.DeleteMedicationResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.Medication medication = 1;
+   */
+  medication?: Medication;
+};
+
+/**
+ * Describes the message openmenses.v1.DeleteMedicationResponse.
+ * Use `create(DeleteMedicationResponseSchema)` to create a new message.
+ */
+export const DeleteMedicationResponseSchema: GenMessage<DeleteMedicationResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 41);
+
+/**
+ * @generated from message openmenses.v1.UpdateMedicationResponse
+ */
+export type UpdateMedicationResponse = Message<"openmenses.v1.UpdateMedicationResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.Medication medication = 1;
+   */
+  medication?: Medication;
+};
+
+/**
+ * Describes the message openmenses.v1.UpdateMedicationResponse.
+ * Use `create(UpdateMedicationResponseSchema)` to create a new message.
+ */
+export const UpdateMedicationResponseSchema: GenMessage<UpdateMedicationResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 42);
+
+/**
+ * @generated from message openmenses.v1.DeleteMedicationRequest
+ */
+export type DeleteMedicationRequest = Message<"openmenses.v1.DeleteMedicationRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message openmenses.v1.DeleteMedicationRequest.
+ * Use `create(DeleteMedicationRequestSchema)` to create a new message.
+ */
+export const DeleteMedicationRequestSchema: GenMessage<DeleteMedicationRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 43);
+
+/**
+ * @generated from message openmenses.v1.ListMedicationsRequest
+ */
+export type ListMedicationsRequest = Message<"openmenses.v1.ListMedicationsRequest"> & {
+  /**
+   * @generated from field: string parent = 1;
+   */
+  parent: string;
+
+  /**
+   * @generated from field: openmenses.v1.PaginationRequest pagination = 2;
+   */
+  pagination?: PaginationRequest;
+};
+
+/**
+ * Describes the message openmenses.v1.ListMedicationsRequest.
+ * Use `create(ListMedicationsRequestSchema)` to create a new message.
+ */
+export const ListMedicationsRequestSchema: GenMessage<ListMedicationsRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 44);
+
+/**
+ * @generated from message openmenses.v1.ListMedicationsResponse
+ */
+export type ListMedicationsResponse = Message<"openmenses.v1.ListMedicationsResponse"> & {
+  /**
+   * @generated from field: repeated openmenses.v1.Medication medications = 1;
+   */
+  medications: Medication[];
+
+  /**
+   * @generated from field: openmenses.v1.PaginationResponse pagination = 2;
+   */
+  pagination?: PaginationResponse;
+};
+
+/**
+ * Describes the message openmenses.v1.ListMedicationsResponse.
+ * Use `create(ListMedicationsResponseSchema)` to create a new message.
+ */
+export const ListMedicationsResponseSchema: GenMessage<ListMedicationsResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 45);
+
+/**
+ * @generated from message openmenses.v1.GetMedicationEventRequest
+ */
+export type GetMedicationEventRequest = Message<"openmenses.v1.GetMedicationEventRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message openmenses.v1.GetMedicationEventRequest.
+ * Use `create(GetMedicationEventRequestSchema)` to create a new message.
+ */
+export const GetMedicationEventRequestSchema: GenMessage<GetMedicationEventRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 46);
+
+/**
+ * @generated from message openmenses.v1.GetMedicationEventResponse
+ */
+export type GetMedicationEventResponse = Message<"openmenses.v1.GetMedicationEventResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.MedicationEvent event = 1;
+   */
+  event?: MedicationEvent;
+};
+
+/**
+ * Describes the message openmenses.v1.GetMedicationEventResponse.
+ * Use `create(GetMedicationEventResponseSchema)` to create a new message.
+ */
+export const GetMedicationEventResponseSchema: GenMessage<GetMedicationEventResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 47);
 
 /**
  * @generated from message openmenses.v1.CreateMedicationEventRequest
@@ -261,7 +940,7 @@ export type CreateMedicationEventRequest = Message<"openmenses.v1.CreateMedicati
  * Use `create(CreateMedicationEventRequestSchema)` to create a new message.
  */
 export const CreateMedicationEventRequestSchema: GenMessage<CreateMedicationEventRequest> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 12);
+  messageDesc(file_openmenses_v1_service, 48);
 
 /**
  * @generated from message openmenses.v1.CreateMedicationEventResponse
@@ -278,7 +957,124 @@ export type CreateMedicationEventResponse = Message<"openmenses.v1.CreateMedicat
  * Use `create(CreateMedicationEventResponseSchema)` to create a new message.
  */
 export const CreateMedicationEventResponseSchema: GenMessage<CreateMedicationEventResponse> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 13);
+  messageDesc(file_openmenses_v1_service, 49);
+
+/**
+ * @generated from message openmenses.v1.UpdateMedicationEventRequest
+ */
+export type UpdateMedicationEventRequest = Message<"openmenses.v1.UpdateMedicationEventRequest"> & {
+  /**
+   * @generated from field: openmenses.v1.MedicationEvent event = 1;
+   */
+  event?: MedicationEvent;
+
+  /**
+   * @generated from field: google.protobuf.FieldMask update_mask = 2;
+   */
+  updateMask?: FieldMask;
+};
+
+/**
+ * Describes the message openmenses.v1.UpdateMedicationEventRequest.
+ * Use `create(UpdateMedicationEventRequestSchema)` to create a new message.
+ */
+export const UpdateMedicationEventRequestSchema: GenMessage<UpdateMedicationEventRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 50);
+
+/**
+ * @generated from message openmenses.v1.DeleteMedicationEventResponse
+ */
+export type DeleteMedicationEventResponse = Message<"openmenses.v1.DeleteMedicationEventResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.MedicationEvent event = 1;
+   */
+  event?: MedicationEvent;
+};
+
+/**
+ * Describes the message openmenses.v1.DeleteMedicationEventResponse.
+ * Use `create(DeleteMedicationEventResponseSchema)` to create a new message.
+ */
+export const DeleteMedicationEventResponseSchema: GenMessage<DeleteMedicationEventResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 51);
+
+/**
+ * @generated from message openmenses.v1.UpdateMedicationEventResponse
+ */
+export type UpdateMedicationEventResponse = Message<"openmenses.v1.UpdateMedicationEventResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.MedicationEvent event = 1;
+   */
+  event?: MedicationEvent;
+};
+
+/**
+ * Describes the message openmenses.v1.UpdateMedicationEventResponse.
+ * Use `create(UpdateMedicationEventResponseSchema)` to create a new message.
+ */
+export const UpdateMedicationEventResponseSchema: GenMessage<UpdateMedicationEventResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 52);
+
+/**
+ * @generated from message openmenses.v1.DeleteMedicationEventRequest
+ */
+export type DeleteMedicationEventRequest = Message<"openmenses.v1.DeleteMedicationEventRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message openmenses.v1.DeleteMedicationEventRequest.
+ * Use `create(DeleteMedicationEventRequestSchema)` to create a new message.
+ */
+export const DeleteMedicationEventRequestSchema: GenMessage<DeleteMedicationEventRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 53);
+
+/**
+ * @generated from message openmenses.v1.ListMedicationEventsRequest
+ */
+export type ListMedicationEventsRequest = Message<"openmenses.v1.ListMedicationEventsRequest"> & {
+  /**
+   * @generated from field: string parent = 1;
+   */
+  parent: string;
+
+  /**
+   * @generated from field: openmenses.v1.PaginationRequest pagination = 2;
+   */
+  pagination?: PaginationRequest;
+};
+
+/**
+ * Describes the message openmenses.v1.ListMedicationEventsRequest.
+ * Use `create(ListMedicationEventsRequestSchema)` to create a new message.
+ */
+export const ListMedicationEventsRequestSchema: GenMessage<ListMedicationEventsRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 54);
+
+/**
+ * @generated from message openmenses.v1.ListMedicationEventsResponse
+ */
+export type ListMedicationEventsResponse = Message<"openmenses.v1.ListMedicationEventsResponse"> & {
+  /**
+   * @generated from field: repeated openmenses.v1.MedicationEvent events = 1;
+   */
+  events: MedicationEvent[];
+
+  /**
+   * @generated from field: openmenses.v1.PaginationResponse pagination = 2;
+   */
+  pagination?: PaginationResponse;
+};
+
+/**
+ * Describes the message openmenses.v1.ListMedicationEventsResponse.
+ * Use `create(ListMedicationEventsResponseSchema)` to create a new message.
+ */
+export const ListMedicationEventsResponseSchema: GenMessage<ListMedicationEventsResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 55);
 
 /**
  * @generated from message openmenses.v1.ListTimelineRequest
@@ -305,7 +1101,7 @@ export type ListTimelineRequest = Message<"openmenses.v1.ListTimelineRequest"> &
  * Use `create(ListTimelineRequestSchema)` to create a new message.
  */
 export const ListTimelineRequestSchema: GenMessage<ListTimelineRequest> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 14);
+  messageDesc(file_openmenses_v1_service, 56);
 
 /**
  * @generated from message openmenses.v1.TimelineRecord
@@ -376,7 +1172,7 @@ export type TimelineRecord = Message<"openmenses.v1.TimelineRecord"> & {
  * Use `create(TimelineRecordSchema)` to create a new message.
  */
 export const TimelineRecordSchema: GenMessage<TimelineRecord> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 15);
+  messageDesc(file_openmenses_v1_service, 57);
 
 /**
  * @generated from message openmenses.v1.ListTimelineResponse
@@ -398,7 +1194,41 @@ export type ListTimelineResponse = Message<"openmenses.v1.ListTimelineResponse">
  * Use `create(ListTimelineResponseSchema)` to create a new message.
  */
 export const ListTimelineResponseSchema: GenMessage<ListTimelineResponse> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 16);
+  messageDesc(file_openmenses_v1_service, 58);
+
+/**
+ * @generated from message openmenses.v1.GetCycleRequest
+ */
+export type GetCycleRequest = Message<"openmenses.v1.GetCycleRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message openmenses.v1.GetCycleRequest.
+ * Use `create(GetCycleRequestSchema)` to create a new message.
+ */
+export const GetCycleRequestSchema: GenMessage<GetCycleRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 59);
+
+/**
+ * @generated from message openmenses.v1.GetCycleResponse
+ */
+export type GetCycleResponse = Message<"openmenses.v1.GetCycleResponse"> & {
+  /**
+   * @generated from field: openmenses.v1.Cycle cycle = 1;
+   */
+  cycle?: Cycle;
+};
+
+/**
+ * Describes the message openmenses.v1.GetCycleResponse.
+ * Use `create(GetCycleResponseSchema)` to create a new message.
+ */
+export const GetCycleResponseSchema: GenMessage<GetCycleResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 60);
 
 /**
  * @generated from message openmenses.v1.ListCyclesRequest
@@ -408,6 +1238,11 @@ export type ListCyclesRequest = Message<"openmenses.v1.ListCyclesRequest"> & {
    * @generated from field: string parent = 1;
    */
   parent: string;
+
+  /**
+   * @generated from field: openmenses.v1.PaginationRequest pagination = 2;
+   */
+  pagination?: PaginationRequest;
 };
 
 /**
@@ -415,7 +1250,7 @@ export type ListCyclesRequest = Message<"openmenses.v1.ListCyclesRequest"> & {
  * Use `create(ListCyclesRequestSchema)` to create a new message.
  */
 export const ListCyclesRequestSchema: GenMessage<ListCyclesRequest> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 17);
+  messageDesc(file_openmenses_v1_service, 61);
 
 /**
  * @generated from message openmenses.v1.ListCyclesResponse
@@ -425,6 +1260,11 @@ export type ListCyclesResponse = Message<"openmenses.v1.ListCyclesResponse"> & {
    * @generated from field: repeated openmenses.v1.Cycle cycles = 1;
    */
   cycles: Cycle[];
+
+  /**
+   * @generated from field: openmenses.v1.PaginationResponse pagination = 2;
+   */
+  pagination?: PaginationResponse;
 };
 
 /**
@@ -432,7 +1272,7 @@ export type ListCyclesResponse = Message<"openmenses.v1.ListCyclesResponse"> & {
  * Use `create(ListCyclesResponseSchema)` to create a new message.
  */
 export const ListCyclesResponseSchema: GenMessage<ListCyclesResponse> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 18);
+  messageDesc(file_openmenses_v1_service, 62);
 
 /**
  * @generated from message openmenses.v1.ListPredictionsRequest
@@ -442,6 +1282,11 @@ export type ListPredictionsRequest = Message<"openmenses.v1.ListPredictionsReque
    * @generated from field: string parent = 1;
    */
   parent: string;
+
+  /**
+   * @generated from field: openmenses.v1.PaginationRequest pagination = 2;
+   */
+  pagination?: PaginationRequest;
 };
 
 /**
@@ -449,7 +1294,7 @@ export type ListPredictionsRequest = Message<"openmenses.v1.ListPredictionsReque
  * Use `create(ListPredictionsRequestSchema)` to create a new message.
  */
 export const ListPredictionsRequestSchema: GenMessage<ListPredictionsRequest> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 19);
+  messageDesc(file_openmenses_v1_service, 63);
 
 /**
  * @generated from message openmenses.v1.ListPredictionsResponse
@@ -459,6 +1304,11 @@ export type ListPredictionsResponse = Message<"openmenses.v1.ListPredictionsResp
    * @generated from field: repeated openmenses.v1.Prediction predictions = 1;
    */
   predictions: Prediction[];
+
+  /**
+   * @generated from field: openmenses.v1.PaginationResponse pagination = 2;
+   */
+  pagination?: PaginationResponse;
 };
 
 /**
@@ -466,7 +1316,7 @@ export type ListPredictionsResponse = Message<"openmenses.v1.ListPredictionsResp
  * Use `create(ListPredictionsResponseSchema)` to create a new message.
  */
 export const ListPredictionsResponseSchema: GenMessage<ListPredictionsResponse> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 20);
+  messageDesc(file_openmenses_v1_service, 64);
 
 /**
  * @generated from message openmenses.v1.ListInsightsRequest
@@ -476,6 +1326,11 @@ export type ListInsightsRequest = Message<"openmenses.v1.ListInsightsRequest"> &
    * @generated from field: string parent = 1;
    */
   parent: string;
+
+  /**
+   * @generated from field: openmenses.v1.PaginationRequest pagination = 2;
+   */
+  pagination?: PaginationRequest;
 };
 
 /**
@@ -483,7 +1338,7 @@ export type ListInsightsRequest = Message<"openmenses.v1.ListInsightsRequest"> &
  * Use `create(ListInsightsRequestSchema)` to create a new message.
  */
 export const ListInsightsRequestSchema: GenMessage<ListInsightsRequest> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 21);
+  messageDesc(file_openmenses_v1_service, 65);
 
 /**
  * @generated from message openmenses.v1.ListInsightsResponse
@@ -493,6 +1348,11 @@ export type ListInsightsResponse = Message<"openmenses.v1.ListInsightsResponse">
    * @generated from field: repeated openmenses.v1.Insight insights = 1;
    */
   insights: Insight[];
+
+  /**
+   * @generated from field: openmenses.v1.PaginationResponse pagination = 2;
+   */
+  pagination?: PaginationResponse;
 };
 
 /**
@@ -500,12 +1360,14 @@ export type ListInsightsResponse = Message<"openmenses.v1.ListInsightsResponse">
  * Use `create(ListInsightsResponseSchema)` to create a new message.
  */
 export const ListInsightsResponseSchema: GenMessage<ListInsightsResponse> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 22);
+  messageDesc(file_openmenses_v1_service, 66);
 
 /**
- * @generated from message openmenses.v1.ExportDataRequest
+ * Resource-oriented versions (preferred)
+ *
+ * @generated from message openmenses.v1.CreateDataExportRequest
  */
-export type ExportDataRequest = Message<"openmenses.v1.ExportDataRequest"> & {
+export type CreateDataExportRequest = Message<"openmenses.v1.CreateDataExportRequest"> & {
   /**
    * @generated from field: string name = 1;
    */
@@ -513,16 +1375,16 @@ export type ExportDataRequest = Message<"openmenses.v1.ExportDataRequest"> & {
 };
 
 /**
- * Describes the message openmenses.v1.ExportDataRequest.
- * Use `create(ExportDataRequestSchema)` to create a new message.
+ * Describes the message openmenses.v1.CreateDataExportRequest.
+ * Use `create(CreateDataExportRequestSchema)` to create a new message.
  */
-export const ExportDataRequestSchema: GenMessage<ExportDataRequest> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 23);
+export const CreateDataExportRequestSchema: GenMessage<CreateDataExportRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 67);
 
 /**
- * @generated from message openmenses.v1.ExportDataResponse
+ * @generated from message openmenses.v1.CreateDataExportResponse
  */
-export type ExportDataResponse = Message<"openmenses.v1.ExportDataResponse"> & {
+export type CreateDataExportResponse = Message<"openmenses.v1.CreateDataExportResponse"> & {
   /**
    * @generated from field: bytes data = 1;
    */
@@ -530,16 +1392,16 @@ export type ExportDataResponse = Message<"openmenses.v1.ExportDataResponse"> & {
 };
 
 /**
- * Describes the message openmenses.v1.ExportDataResponse.
- * Use `create(ExportDataResponseSchema)` to create a new message.
+ * Describes the message openmenses.v1.CreateDataExportResponse.
+ * Use `create(CreateDataExportResponseSchema)` to create a new message.
  */
-export const ExportDataResponseSchema: GenMessage<ExportDataResponse> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 24);
+export const CreateDataExportResponseSchema: GenMessage<CreateDataExportResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 68);
 
 /**
- * @generated from message openmenses.v1.ImportDataRequest
+ * @generated from message openmenses.v1.CreateDataImportRequest
  */
-export type ImportDataRequest = Message<"openmenses.v1.ImportDataRequest"> & {
+export type CreateDataImportRequest = Message<"openmenses.v1.CreateDataImportRequest"> & {
   /**
    * @generated from field: bytes data = 1;
    */
@@ -547,16 +1409,16 @@ export type ImportDataRequest = Message<"openmenses.v1.ImportDataRequest"> & {
 };
 
 /**
- * Describes the message openmenses.v1.ImportDataRequest.
- * Use `create(ImportDataRequestSchema)` to create a new message.
+ * Describes the message openmenses.v1.CreateDataImportRequest.
+ * Use `create(CreateDataImportRequestSchema)` to create a new message.
  */
-export const ImportDataRequestSchema: GenMessage<ImportDataRequest> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 25);
+export const CreateDataImportRequestSchema: GenMessage<CreateDataImportRequest> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 69);
 
 /**
- * @generated from message openmenses.v1.ImportDataResponse
+ * @generated from message openmenses.v1.CreateDataImportResponse
  */
-export type ImportDataResponse = Message<"openmenses.v1.ImportDataResponse"> & {
+export type CreateDataImportResponse = Message<"openmenses.v1.CreateDataImportResponse"> & {
   /**
    * @generated from field: uint32 records_imported = 1;
    */
@@ -564,11 +1426,11 @@ export type ImportDataResponse = Message<"openmenses.v1.ImportDataResponse"> & {
 };
 
 /**
- * Describes the message openmenses.v1.ImportDataResponse.
- * Use `create(ImportDataResponseSchema)` to create a new message.
+ * Describes the message openmenses.v1.CreateDataImportResponse.
+ * Use `create(CreateDataImportResponseSchema)` to create a new message.
  */
-export const ImportDataResponseSchema: GenMessage<ImportDataResponse> = /*@__PURE__*/
-  messageDesc(file_openmenses_v1_service, 26);
+export const CreateDataImportResponseSchema: GenMessage<CreateDataImportResponse> = /*@__PURE__*/
+  messageDesc(file_openmenses_v1_service, 70);
 
 /**
  * @generated from service openmenses.v1.CycleTrackerService
@@ -583,12 +1445,28 @@ export const CycleTrackerService: GenService<{
     output: typeof GetUserProfileResponseSchema;
   },
   /**
-   * @generated from rpc openmenses.v1.CycleTrackerService.UpsertUserProfile
+   * @generated from rpc openmenses.v1.CycleTrackerService.CreateUserProfile
    */
-  upsertUserProfile: {
+  createUserProfile: {
     methodKind: "unary";
-    input: typeof UpsertUserProfileRequestSchema;
-    output: typeof UpsertUserProfileResponseSchema;
+    input: typeof CreateUserProfileRequestSchema;
+    output: typeof CreateUserProfileResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.UpdateUserProfile
+   */
+  updateUserProfile: {
+    methodKind: "unary";
+    input: typeof UpdateUserProfileRequestSchema;
+    output: typeof UpdateUserProfileResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.GetBleedingObservation
+   */
+  getBleedingObservation: {
+    methodKind: "unary";
+    input: typeof GetBleedingObservationRequestSchema;
+    output: typeof GetBleedingObservationResponseSchema;
   },
   /**
    * @generated from rpc openmenses.v1.CycleTrackerService.CreateBleedingObservation
@@ -599,12 +1477,76 @@ export const CycleTrackerService: GenService<{
     output: typeof CreateBleedingObservationResponseSchema;
   },
   /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.UpdateBleedingObservation
+   */
+  updateBleedingObservation: {
+    methodKind: "unary";
+    input: typeof UpdateBleedingObservationRequestSchema;
+    output: typeof UpdateBleedingObservationResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.DeleteBleedingObservation
+   */
+  deleteBleedingObservation: {
+    methodKind: "unary";
+    input: typeof DeleteBleedingObservationRequestSchema;
+    output: typeof DeleteBleedingObservationResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.ListBleedingObservations
+   */
+  listBleedingObservations: {
+    methodKind: "unary";
+    input: typeof ListBleedingObservationsRequestSchema;
+    output: typeof ListBleedingObservationsResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.GetSymptomObservation
+   */
+  getSymptomObservation: {
+    methodKind: "unary";
+    input: typeof GetSymptomObservationRequestSchema;
+    output: typeof GetSymptomObservationResponseSchema;
+  },
+  /**
    * @generated from rpc openmenses.v1.CycleTrackerService.CreateSymptomObservation
    */
   createSymptomObservation: {
     methodKind: "unary";
     input: typeof CreateSymptomObservationRequestSchema;
     output: typeof CreateSymptomObservationResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.UpdateSymptomObservation
+   */
+  updateSymptomObservation: {
+    methodKind: "unary";
+    input: typeof UpdateSymptomObservationRequestSchema;
+    output: typeof UpdateSymptomObservationResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.DeleteSymptomObservation
+   */
+  deleteSymptomObservation: {
+    methodKind: "unary";
+    input: typeof DeleteSymptomObservationRequestSchema;
+    output: typeof DeleteSymptomObservationResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.ListSymptomObservations
+   */
+  listSymptomObservations: {
+    methodKind: "unary";
+    input: typeof ListSymptomObservationsRequestSchema;
+    output: typeof ListSymptomObservationsResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.GetMoodObservation
+   */
+  getMoodObservation: {
+    methodKind: "unary";
+    input: typeof GetMoodObservationRequestSchema;
+    output: typeof GetMoodObservationResponseSchema;
   },
   /**
    * @generated from rpc openmenses.v1.CycleTrackerService.CreateMoodObservation
@@ -615,12 +1557,76 @@ export const CycleTrackerService: GenService<{
     output: typeof CreateMoodObservationResponseSchema;
   },
   /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.UpdateMoodObservation
+   */
+  updateMoodObservation: {
+    methodKind: "unary";
+    input: typeof UpdateMoodObservationRequestSchema;
+    output: typeof UpdateMoodObservationResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.DeleteMoodObservation
+   */
+  deleteMoodObservation: {
+    methodKind: "unary";
+    input: typeof DeleteMoodObservationRequestSchema;
+    output: typeof DeleteMoodObservationResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.ListMoodObservations
+   */
+  listMoodObservations: {
+    methodKind: "unary";
+    input: typeof ListMoodObservationsRequestSchema;
+    output: typeof ListMoodObservationsResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.GetMedication
+   */
+  getMedication: {
+    methodKind: "unary";
+    input: typeof GetMedicationRequestSchema;
+    output: typeof GetMedicationResponseSchema;
+  },
+  /**
    * @generated from rpc openmenses.v1.CycleTrackerService.CreateMedication
    */
   createMedication: {
     methodKind: "unary";
     input: typeof CreateMedicationRequestSchema;
     output: typeof CreateMedicationResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.UpdateMedication
+   */
+  updateMedication: {
+    methodKind: "unary";
+    input: typeof UpdateMedicationRequestSchema;
+    output: typeof UpdateMedicationResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.DeleteMedication
+   */
+  deleteMedication: {
+    methodKind: "unary";
+    input: typeof DeleteMedicationRequestSchema;
+    output: typeof DeleteMedicationResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.ListMedications
+   */
+  listMedications: {
+    methodKind: "unary";
+    input: typeof ListMedicationsRequestSchema;
+    output: typeof ListMedicationsResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.GetMedicationEvent
+   */
+  getMedicationEvent: {
+    methodKind: "unary";
+    input: typeof GetMedicationEventRequestSchema;
+    output: typeof GetMedicationEventResponseSchema;
   },
   /**
    * @generated from rpc openmenses.v1.CycleTrackerService.CreateMedicationEvent
@@ -631,12 +1637,44 @@ export const CycleTrackerService: GenService<{
     output: typeof CreateMedicationEventResponseSchema;
   },
   /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.UpdateMedicationEvent
+   */
+  updateMedicationEvent: {
+    methodKind: "unary";
+    input: typeof UpdateMedicationEventRequestSchema;
+    output: typeof UpdateMedicationEventResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.DeleteMedicationEvent
+   */
+  deleteMedicationEvent: {
+    methodKind: "unary";
+    input: typeof DeleteMedicationEventRequestSchema;
+    output: typeof DeleteMedicationEventResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.ListMedicationEvents
+   */
+  listMedicationEvents: {
+    methodKind: "unary";
+    input: typeof ListMedicationEventsRequestSchema;
+    output: typeof ListMedicationEventsResponseSchema;
+  },
+  /**
    * @generated from rpc openmenses.v1.CycleTrackerService.ListTimeline
    */
   listTimeline: {
     methodKind: "unary";
     input: typeof ListTimelineRequestSchema;
     output: typeof ListTimelineResponseSchema;
+  },
+  /**
+   * @generated from rpc openmenses.v1.CycleTrackerService.GetCycle
+   */
+  getCycle: {
+    methodKind: "unary";
+    input: typeof GetCycleRequestSchema;
+    output: typeof GetCycleResponseSchema;
   },
   /**
    * @generated from rpc openmenses.v1.CycleTrackerService.ListCycles
@@ -663,20 +1701,20 @@ export const CycleTrackerService: GenService<{
     output: typeof ListInsightsResponseSchema;
   },
   /**
-   * @generated from rpc openmenses.v1.CycleTrackerService.ExportData
+   * @generated from rpc openmenses.v1.CycleTrackerService.CreateDataExport
    */
-  exportData: {
+  createDataExport: {
     methodKind: "unary";
-    input: typeof ExportDataRequestSchema;
-    output: typeof ExportDataResponseSchema;
+    input: typeof CreateDataExportRequestSchema;
+    output: typeof CreateDataExportResponseSchema;
   },
   /**
-   * @generated from rpc openmenses.v1.CycleTrackerService.ImportData
+   * @generated from rpc openmenses.v1.CycleTrackerService.CreateDataImport
    */
-  importData: {
+  createDataImport: {
     methodKind: "unary";
-    input: typeof ImportDataRequestSchema;
-    output: typeof ImportDataResponseSchema;
+    input: typeof CreateDataImportRequestSchema;
+    output: typeof CreateDataImportResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_openmenses_v1_service, 0);

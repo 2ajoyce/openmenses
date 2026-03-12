@@ -140,6 +140,47 @@ func (r *userProfileRepo) GetByID(ctx context.Context, id string) (*v1.UserProfi
 	return &p, nil
 }
 
+func (r *userProfileRepo) Create(ctx context.Context, profile *v1.UserProfile) error {
+	if profile.GetName() == "" {
+		return fmt.Errorf("%w: profile name is required", storage.ErrInvalidInput)
+	}
+	data, err := marshal(profile)
+	if err != nil {
+		return err
+	}
+	_, err = r.db.ExecContext(ctx,
+		`INSERT INTO user_profiles (id, data) VALUES (?, ?)`,
+		profile.GetName(), data)
+	if isConflict(err) {
+		return fmt.Errorf("%w: user profile %s", storage.ErrConflict, profile.GetName())
+	}
+	return err
+}
+
+func (r *userProfileRepo) Update(ctx context.Context, profile *v1.UserProfile) error {
+	if profile.GetName() == "" {
+		return fmt.Errorf("%w: profile name is required", storage.ErrInvalidInput)
+	}
+	data, err := marshal(profile)
+	if err != nil {
+		return err
+	}
+	result, err := r.db.ExecContext(ctx,
+		`UPDATE user_profiles SET data = ? WHERE id = ?`,
+		data, profile.GetName())
+	if err != nil {
+		return err
+	}
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rowsAffected == 0 {
+		return storage.ErrNotFound
+	}
+	return nil
+}
+
 func (r *userProfileRepo) Upsert(ctx context.Context, profile *v1.UserProfile) error {
 	if profile.GetName() == "" {
 		return fmt.Errorf("%w: profile name is required", storage.ErrInvalidInput)

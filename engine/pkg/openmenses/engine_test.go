@@ -58,11 +58,11 @@ func TestIntegration_CreateProfileLogObservationListTimeline(t *testing.T) {
 		TrackingFocus:    []v1.TrackingFocus{v1.TrackingFocus_TRACKING_FOCUS_BLEEDING},
 	}
 
-	upsertResp, err := client.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{
+	upsertResp, err := client.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{
 		Profile: profile,
 	}))
 	if err != nil {
-		t.Fatalf("UpsertUserProfile: %v", err)
+		t.Fatalf("CreateUserProfile: %v", err)
 	}
 	if upsertResp.Msg.GetProfile().GetName() != userID {
 		t.Errorf("upserted profile name = %q, want %q", upsertResp.Msg.GetProfile().GetName(), userID)
@@ -156,7 +156,7 @@ func TestIntegration_SQLiteEngine(t *testing.T) {
 	client := openmensesv1connect.NewCycleTrackerServiceClient(srv.Client(), srv.URL)
 
 	const userID = "user-sqlite-test"
-	resp, err := client.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{
+	resp, err := client.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{
 		Profile: &v1.UserProfile{
 			Name:             userID,
 			BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
@@ -167,7 +167,7 @@ func TestIntegration_SQLiteEngine(t *testing.T) {
 		},
 	}))
 	if err != nil {
-		t.Fatalf("UpsertUserProfile (sqlite): %v", err)
+		t.Fatalf("CreateUserProfile (sqlite): %v", err)
 	}
 	if resp.Msg.GetProfile().GetName() != userID {
 		t.Errorf("profile name = %q, want %q", resp.Msg.GetProfile().GetName(), userID)

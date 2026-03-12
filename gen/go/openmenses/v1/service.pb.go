@@ -10,6 +10,8 @@ import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	_ "google.golang.org/protobuf/types/known/emptypb"
+	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -110,27 +112,27 @@ func (x *GetUserProfileResponse) GetProfile() *UserProfile {
 	return nil
 }
 
-type UpsertUserProfileRequest struct {
+type CreateUserProfileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Profile       *UserProfile           `protobuf:"bytes,1,opt,name=profile,proto3" json:"profile,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpsertUserProfileRequest) Reset() {
-	*x = UpsertUserProfileRequest{}
+func (x *CreateUserProfileRequest) Reset() {
+	*x = CreateUserProfileRequest{}
 	mi := &file_openmenses_v1_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpsertUserProfileRequest) String() string {
+func (x *CreateUserProfileRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpsertUserProfileRequest) ProtoMessage() {}
+func (*CreateUserProfileRequest) ProtoMessage() {}
 
-func (x *UpsertUserProfileRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateUserProfileRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_openmenses_v1_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -142,39 +144,39 @@ func (x *UpsertUserProfileRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpsertUserProfileRequest.ProtoReflect.Descriptor instead.
-func (*UpsertUserProfileRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateUserProfileRequest.ProtoReflect.Descriptor instead.
+func (*CreateUserProfileRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *UpsertUserProfileRequest) GetProfile() *UserProfile {
+func (x *CreateUserProfileRequest) GetProfile() *UserProfile {
 	if x != nil {
 		return x.Profile
 	}
 	return nil
 }
 
-type UpsertUserProfileResponse struct {
+type CreateUserProfileResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Profile       *UserProfile           `protobuf:"bytes,1,opt,name=profile,proto3" json:"profile,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpsertUserProfileResponse) Reset() {
-	*x = UpsertUserProfileResponse{}
+func (x *CreateUserProfileResponse) Reset() {
+	*x = CreateUserProfileResponse{}
 	mi := &file_openmenses_v1_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpsertUserProfileResponse) String() string {
+func (x *CreateUserProfileResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpsertUserProfileResponse) ProtoMessage() {}
+func (*CreateUserProfileResponse) ProtoMessage() {}
 
-func (x *UpsertUserProfileResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateUserProfileResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_openmenses_v1_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -186,14 +188,198 @@ func (x *UpsertUserProfileResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpsertUserProfileResponse.ProtoReflect.Descriptor instead.
-func (*UpsertUserProfileResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateUserProfileResponse.ProtoReflect.Descriptor instead.
+func (*CreateUserProfileResponse) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *UpsertUserProfileResponse) GetProfile() *UserProfile {
+func (x *CreateUserProfileResponse) GetProfile() *UserProfile {
 	if x != nil {
 		return x.Profile
+	}
+	return nil
+}
+
+type UpdateUserProfileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Profile       *UserProfile           `protobuf:"bytes,1,opt,name=profile,proto3" json:"profile,omitempty"`
+	UpdateMask    *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateUserProfileRequest) Reset() {
+	*x = UpdateUserProfileRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateUserProfileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateUserProfileRequest) ProtoMessage() {}
+
+func (x *UpdateUserProfileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateUserProfileRequest.ProtoReflect.Descriptor instead.
+func (*UpdateUserProfileRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *UpdateUserProfileRequest) GetProfile() *UserProfile {
+	if x != nil {
+		return x.Profile
+	}
+	return nil
+}
+
+func (x *UpdateUserProfileRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.UpdateMask
+	}
+	return nil
+}
+
+type UpdateUserProfileResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Profile       *UserProfile           `protobuf:"bytes,1,opt,name=profile,proto3" json:"profile,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateUserProfileResponse) Reset() {
+	*x = UpdateUserProfileResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateUserProfileResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateUserProfileResponse) ProtoMessage() {}
+
+func (x *UpdateUserProfileResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateUserProfileResponse.ProtoReflect.Descriptor instead.
+func (*UpdateUserProfileResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *UpdateUserProfileResponse) GetProfile() *UserProfile {
+	if x != nil {
+		return x.Profile
+	}
+	return nil
+}
+
+type GetBleedingObservationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetBleedingObservationRequest) Reset() {
+	*x = GetBleedingObservationRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBleedingObservationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBleedingObservationRequest) ProtoMessage() {}
+
+func (x *GetBleedingObservationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBleedingObservationRequest.ProtoReflect.Descriptor instead.
+func (*GetBleedingObservationRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetBleedingObservationRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type GetBleedingObservationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observation   *BleedingObservation   `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetBleedingObservationResponse) Reset() {
+	*x = GetBleedingObservationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBleedingObservationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBleedingObservationResponse) ProtoMessage() {}
+
+func (x *GetBleedingObservationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBleedingObservationResponse.ProtoReflect.Descriptor instead.
+func (*GetBleedingObservationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *GetBleedingObservationResponse) GetObservation() *BleedingObservation {
+	if x != nil {
+		return x.Observation
 	}
 	return nil
 }
@@ -208,7 +394,7 @@ type CreateBleedingObservationRequest struct {
 
 func (x *CreateBleedingObservationRequest) Reset() {
 	*x = CreateBleedingObservationRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[4]
+	mi := &file_openmenses_v1_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -220,7 +406,7 @@ func (x *CreateBleedingObservationRequest) String() string {
 func (*CreateBleedingObservationRequest) ProtoMessage() {}
 
 func (x *CreateBleedingObservationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[4]
+	mi := &file_openmenses_v1_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -233,7 +419,7 @@ func (x *CreateBleedingObservationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateBleedingObservationRequest.ProtoReflect.Descriptor instead.
 func (*CreateBleedingObservationRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{4}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *CreateBleedingObservationRequest) GetParent() string {
@@ -259,7 +445,7 @@ type CreateBleedingObservationResponse struct {
 
 func (x *CreateBleedingObservationResponse) Reset() {
 	*x = CreateBleedingObservationResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[5]
+	mi := &file_openmenses_v1_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -271,7 +457,7 @@ func (x *CreateBleedingObservationResponse) String() string {
 func (*CreateBleedingObservationResponse) ProtoMessage() {}
 
 func (x *CreateBleedingObservationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[5]
+	mi := &file_openmenses_v1_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -284,10 +470,386 @@ func (x *CreateBleedingObservationResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use CreateBleedingObservationResponse.ProtoReflect.Descriptor instead.
 func (*CreateBleedingObservationResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{5}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CreateBleedingObservationResponse) GetObservation() *BleedingObservation {
+	if x != nil {
+		return x.Observation
+	}
+	return nil
+}
+
+type UpdateBleedingObservationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observation   *BleedingObservation   `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	UpdateMask    *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateBleedingObservationRequest) Reset() {
+	*x = UpdateBleedingObservationRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateBleedingObservationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateBleedingObservationRequest) ProtoMessage() {}
+
+func (x *UpdateBleedingObservationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateBleedingObservationRequest.ProtoReflect.Descriptor instead.
+func (*UpdateBleedingObservationRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *UpdateBleedingObservationRequest) GetObservation() *BleedingObservation {
+	if x != nil {
+		return x.Observation
+	}
+	return nil
+}
+
+func (x *UpdateBleedingObservationRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.UpdateMask
+	}
+	return nil
+}
+
+type UpdateBleedingObservationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observation   *BleedingObservation   `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateBleedingObservationResponse) Reset() {
+	*x = UpdateBleedingObservationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateBleedingObservationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateBleedingObservationResponse) ProtoMessage() {}
+
+func (x *UpdateBleedingObservationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateBleedingObservationResponse.ProtoReflect.Descriptor instead.
+func (*UpdateBleedingObservationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *UpdateBleedingObservationResponse) GetObservation() *BleedingObservation {
+	if x != nil {
+		return x.Observation
+	}
+	return nil
+}
+
+type DeleteBleedingObservationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteBleedingObservationRequest) Reset() {
+	*x = DeleteBleedingObservationRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteBleedingObservationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBleedingObservationRequest) ProtoMessage() {}
+
+func (x *DeleteBleedingObservationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBleedingObservationRequest.ProtoReflect.Descriptor instead.
+func (*DeleteBleedingObservationRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *DeleteBleedingObservationRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type DeleteBleedingObservationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observation   *BleedingObservation   `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteBleedingObservationResponse) Reset() {
+	*x = DeleteBleedingObservationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteBleedingObservationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBleedingObservationResponse) ProtoMessage() {}
+
+func (x *DeleteBleedingObservationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBleedingObservationResponse.ProtoReflect.Descriptor instead.
+func (*DeleteBleedingObservationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *DeleteBleedingObservationResponse) GetObservation() *BleedingObservation {
+	if x != nil {
+		return x.Observation
+	}
+	return nil
+}
+
+type ListBleedingObservationsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Pagination    *PaginationRequest     `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBleedingObservationsRequest) Reset() {
+	*x = ListBleedingObservationsRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBleedingObservationsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBleedingObservationsRequest) ProtoMessage() {}
+
+func (x *ListBleedingObservationsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBleedingObservationsRequest.ProtoReflect.Descriptor instead.
+func (*ListBleedingObservationsRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *ListBleedingObservationsRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
+}
+
+func (x *ListBleedingObservationsRequest) GetPagination() *PaginationRequest {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type ListBleedingObservationsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observations  []*BleedingObservation `protobuf:"bytes,1,rep,name=observations,proto3" json:"observations,omitempty"`
+	Pagination    *PaginationResponse    `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBleedingObservationsResponse) Reset() {
+	*x = ListBleedingObservationsResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBleedingObservationsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBleedingObservationsResponse) ProtoMessage() {}
+
+func (x *ListBleedingObservationsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBleedingObservationsResponse.ProtoReflect.Descriptor instead.
+func (*ListBleedingObservationsResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *ListBleedingObservationsResponse) GetObservations() []*BleedingObservation {
+	if x != nil {
+		return x.Observations
+	}
+	return nil
+}
+
+func (x *ListBleedingObservationsResponse) GetPagination() *PaginationResponse {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type GetSymptomObservationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSymptomObservationRequest) Reset() {
+	*x = GetSymptomObservationRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSymptomObservationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSymptomObservationRequest) ProtoMessage() {}
+
+func (x *GetSymptomObservationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSymptomObservationRequest.ProtoReflect.Descriptor instead.
+func (*GetSymptomObservationRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *GetSymptomObservationRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type GetSymptomObservationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observation   *SymptomObservation    `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSymptomObservationResponse) Reset() {
+	*x = GetSymptomObservationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSymptomObservationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSymptomObservationResponse) ProtoMessage() {}
+
+func (x *GetSymptomObservationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSymptomObservationResponse.ProtoReflect.Descriptor instead.
+func (*GetSymptomObservationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *GetSymptomObservationResponse) GetObservation() *SymptomObservation {
 	if x != nil {
 		return x.Observation
 	}
@@ -304,7 +866,7 @@ type CreateSymptomObservationRequest struct {
 
 func (x *CreateSymptomObservationRequest) Reset() {
 	*x = CreateSymptomObservationRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[6]
+	mi := &file_openmenses_v1_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -316,7 +878,7 @@ func (x *CreateSymptomObservationRequest) String() string {
 func (*CreateSymptomObservationRequest) ProtoMessage() {}
 
 func (x *CreateSymptomObservationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[6]
+	mi := &file_openmenses_v1_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -329,7 +891,7 @@ func (x *CreateSymptomObservationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSymptomObservationRequest.ProtoReflect.Descriptor instead.
 func (*CreateSymptomObservationRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{6}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *CreateSymptomObservationRequest) GetParent() string {
@@ -355,7 +917,7 @@ type CreateSymptomObservationResponse struct {
 
 func (x *CreateSymptomObservationResponse) Reset() {
 	*x = CreateSymptomObservationResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[7]
+	mi := &file_openmenses_v1_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -367,7 +929,7 @@ func (x *CreateSymptomObservationResponse) String() string {
 func (*CreateSymptomObservationResponse) ProtoMessage() {}
 
 func (x *CreateSymptomObservationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[7]
+	mi := &file_openmenses_v1_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -380,10 +942,386 @@ func (x *CreateSymptomObservationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSymptomObservationResponse.ProtoReflect.Descriptor instead.
 func (*CreateSymptomObservationResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{7}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *CreateSymptomObservationResponse) GetObservation() *SymptomObservation {
+	if x != nil {
+		return x.Observation
+	}
+	return nil
+}
+
+type UpdateSymptomObservationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observation   *SymptomObservation    `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	UpdateMask    *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateSymptomObservationRequest) Reset() {
+	*x = UpdateSymptomObservationRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateSymptomObservationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateSymptomObservationRequest) ProtoMessage() {}
+
+func (x *UpdateSymptomObservationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateSymptomObservationRequest.ProtoReflect.Descriptor instead.
+func (*UpdateSymptomObservationRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *UpdateSymptomObservationRequest) GetObservation() *SymptomObservation {
+	if x != nil {
+		return x.Observation
+	}
+	return nil
+}
+
+func (x *UpdateSymptomObservationRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.UpdateMask
+	}
+	return nil
+}
+
+type UpdateSymptomObservationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observation   *SymptomObservation    `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateSymptomObservationResponse) Reset() {
+	*x = UpdateSymptomObservationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateSymptomObservationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateSymptomObservationResponse) ProtoMessage() {}
+
+func (x *UpdateSymptomObservationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateSymptomObservationResponse.ProtoReflect.Descriptor instead.
+func (*UpdateSymptomObservationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *UpdateSymptomObservationResponse) GetObservation() *SymptomObservation {
+	if x != nil {
+		return x.Observation
+	}
+	return nil
+}
+
+type DeleteSymptomObservationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observation   *SymptomObservation    `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteSymptomObservationResponse) Reset() {
+	*x = DeleteSymptomObservationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteSymptomObservationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteSymptomObservationResponse) ProtoMessage() {}
+
+func (x *DeleteSymptomObservationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteSymptomObservationResponse.ProtoReflect.Descriptor instead.
+func (*DeleteSymptomObservationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *DeleteSymptomObservationResponse) GetObservation() *SymptomObservation {
+	if x != nil {
+		return x.Observation
+	}
+	return nil
+}
+
+type DeleteSymptomObservationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteSymptomObservationRequest) Reset() {
+	*x = DeleteSymptomObservationRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteSymptomObservationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteSymptomObservationRequest) ProtoMessage() {}
+
+func (x *DeleteSymptomObservationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteSymptomObservationRequest.ProtoReflect.Descriptor instead.
+func (*DeleteSymptomObservationRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *DeleteSymptomObservationRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type ListSymptomObservationsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Pagination    *PaginationRequest     `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSymptomObservationsRequest) Reset() {
+	*x = ListSymptomObservationsRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSymptomObservationsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSymptomObservationsRequest) ProtoMessage() {}
+
+func (x *ListSymptomObservationsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSymptomObservationsRequest.ProtoReflect.Descriptor instead.
+func (*ListSymptomObservationsRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *ListSymptomObservationsRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
+}
+
+func (x *ListSymptomObservationsRequest) GetPagination() *PaginationRequest {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type ListSymptomObservationsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observations  []*SymptomObservation  `protobuf:"bytes,1,rep,name=observations,proto3" json:"observations,omitempty"`
+	Pagination    *PaginationResponse    `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSymptomObservationsResponse) Reset() {
+	*x = ListSymptomObservationsResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSymptomObservationsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSymptomObservationsResponse) ProtoMessage() {}
+
+func (x *ListSymptomObservationsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSymptomObservationsResponse.ProtoReflect.Descriptor instead.
+func (*ListSymptomObservationsResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *ListSymptomObservationsResponse) GetObservations() []*SymptomObservation {
+	if x != nil {
+		return x.Observations
+	}
+	return nil
+}
+
+func (x *ListSymptomObservationsResponse) GetPagination() *PaginationResponse {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type GetMoodObservationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMoodObservationRequest) Reset() {
+	*x = GetMoodObservationRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMoodObservationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMoodObservationRequest) ProtoMessage() {}
+
+func (x *GetMoodObservationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMoodObservationRequest.ProtoReflect.Descriptor instead.
+func (*GetMoodObservationRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *GetMoodObservationRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type GetMoodObservationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observation   *MoodObservation       `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMoodObservationResponse) Reset() {
+	*x = GetMoodObservationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMoodObservationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMoodObservationResponse) ProtoMessage() {}
+
+func (x *GetMoodObservationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMoodObservationResponse.ProtoReflect.Descriptor instead.
+func (*GetMoodObservationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *GetMoodObservationResponse) GetObservation() *MoodObservation {
 	if x != nil {
 		return x.Observation
 	}
@@ -400,7 +1338,7 @@ type CreateMoodObservationRequest struct {
 
 func (x *CreateMoodObservationRequest) Reset() {
 	*x = CreateMoodObservationRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[8]
+	mi := &file_openmenses_v1_service_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -412,7 +1350,7 @@ func (x *CreateMoodObservationRequest) String() string {
 func (*CreateMoodObservationRequest) ProtoMessage() {}
 
 func (x *CreateMoodObservationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[8]
+	mi := &file_openmenses_v1_service_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -425,7 +1363,7 @@ func (x *CreateMoodObservationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMoodObservationRequest.ProtoReflect.Descriptor instead.
 func (*CreateMoodObservationRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{8}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *CreateMoodObservationRequest) GetParent() string {
@@ -451,7 +1389,7 @@ type CreateMoodObservationResponse struct {
 
 func (x *CreateMoodObservationResponse) Reset() {
 	*x = CreateMoodObservationResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[9]
+	mi := &file_openmenses_v1_service_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -463,7 +1401,7 @@ func (x *CreateMoodObservationResponse) String() string {
 func (*CreateMoodObservationResponse) ProtoMessage() {}
 
 func (x *CreateMoodObservationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[9]
+	mi := &file_openmenses_v1_service_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -476,12 +1414,388 @@ func (x *CreateMoodObservationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMoodObservationResponse.ProtoReflect.Descriptor instead.
 func (*CreateMoodObservationResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{9}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *CreateMoodObservationResponse) GetObservation() *MoodObservation {
 	if x != nil {
 		return x.Observation
+	}
+	return nil
+}
+
+type UpdateMoodObservationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observation   *MoodObservation       `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	UpdateMask    *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateMoodObservationRequest) Reset() {
+	*x = UpdateMoodObservationRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateMoodObservationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMoodObservationRequest) ProtoMessage() {}
+
+func (x *UpdateMoodObservationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMoodObservationRequest.ProtoReflect.Descriptor instead.
+func (*UpdateMoodObservationRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *UpdateMoodObservationRequest) GetObservation() *MoodObservation {
+	if x != nil {
+		return x.Observation
+	}
+	return nil
+}
+
+func (x *UpdateMoodObservationRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.UpdateMask
+	}
+	return nil
+}
+
+type UpdateMoodObservationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observation   *MoodObservation       `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateMoodObservationResponse) Reset() {
+	*x = UpdateMoodObservationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateMoodObservationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMoodObservationResponse) ProtoMessage() {}
+
+func (x *UpdateMoodObservationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMoodObservationResponse.ProtoReflect.Descriptor instead.
+func (*UpdateMoodObservationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *UpdateMoodObservationResponse) GetObservation() *MoodObservation {
+	if x != nil {
+		return x.Observation
+	}
+	return nil
+}
+
+type DeleteMoodObservationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observation   *MoodObservation       `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMoodObservationResponse) Reset() {
+	*x = DeleteMoodObservationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMoodObservationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMoodObservationResponse) ProtoMessage() {}
+
+func (x *DeleteMoodObservationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMoodObservationResponse.ProtoReflect.Descriptor instead.
+func (*DeleteMoodObservationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *DeleteMoodObservationResponse) GetObservation() *MoodObservation {
+	if x != nil {
+		return x.Observation
+	}
+	return nil
+}
+
+type DeleteMoodObservationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMoodObservationRequest) Reset() {
+	*x = DeleteMoodObservationRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMoodObservationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMoodObservationRequest) ProtoMessage() {}
+
+func (x *DeleteMoodObservationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMoodObservationRequest.ProtoReflect.Descriptor instead.
+func (*DeleteMoodObservationRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *DeleteMoodObservationRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type ListMoodObservationsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Pagination    *PaginationRequest     `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMoodObservationsRequest) Reset() {
+	*x = ListMoodObservationsRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMoodObservationsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMoodObservationsRequest) ProtoMessage() {}
+
+func (x *ListMoodObservationsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMoodObservationsRequest.ProtoReflect.Descriptor instead.
+func (*ListMoodObservationsRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *ListMoodObservationsRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
+}
+
+func (x *ListMoodObservationsRequest) GetPagination() *PaginationRequest {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type ListMoodObservationsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Observations  []*MoodObservation     `protobuf:"bytes,1,rep,name=observations,proto3" json:"observations,omitempty"`
+	Pagination    *PaginationResponse    `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMoodObservationsResponse) Reset() {
+	*x = ListMoodObservationsResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMoodObservationsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMoodObservationsResponse) ProtoMessage() {}
+
+func (x *ListMoodObservationsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMoodObservationsResponse.ProtoReflect.Descriptor instead.
+func (*ListMoodObservationsResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *ListMoodObservationsResponse) GetObservations() []*MoodObservation {
+	if x != nil {
+		return x.Observations
+	}
+	return nil
+}
+
+func (x *ListMoodObservationsResponse) GetPagination() *PaginationResponse {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type GetMedicationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMedicationRequest) Reset() {
+	*x = GetMedicationRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMedicationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMedicationRequest) ProtoMessage() {}
+
+func (x *GetMedicationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMedicationRequest.ProtoReflect.Descriptor instead.
+func (*GetMedicationRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *GetMedicationRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type GetMedicationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Medication    *Medication            `protobuf:"bytes,1,opt,name=medication,proto3" json:"medication,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMedicationResponse) Reset() {
+	*x = GetMedicationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMedicationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMedicationResponse) ProtoMessage() {}
+
+func (x *GetMedicationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMedicationResponse.ProtoReflect.Descriptor instead.
+func (*GetMedicationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *GetMedicationResponse) GetMedication() *Medication {
+	if x != nil {
+		return x.Medication
 	}
 	return nil
 }
@@ -496,7 +1810,7 @@ type CreateMedicationRequest struct {
 
 func (x *CreateMedicationRequest) Reset() {
 	*x = CreateMedicationRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[10]
+	mi := &file_openmenses_v1_service_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -508,7 +1822,7 @@ func (x *CreateMedicationRequest) String() string {
 func (*CreateMedicationRequest) ProtoMessage() {}
 
 func (x *CreateMedicationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[10]
+	mi := &file_openmenses_v1_service_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -521,7 +1835,7 @@ func (x *CreateMedicationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMedicationRequest.ProtoReflect.Descriptor instead.
 func (*CreateMedicationRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{10}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *CreateMedicationRequest) GetParent() string {
@@ -547,7 +1861,7 @@ type CreateMedicationResponse struct {
 
 func (x *CreateMedicationResponse) Reset() {
 	*x = CreateMedicationResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[11]
+	mi := &file_openmenses_v1_service_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -559,7 +1873,7 @@ func (x *CreateMedicationResponse) String() string {
 func (*CreateMedicationResponse) ProtoMessage() {}
 
 func (x *CreateMedicationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[11]
+	mi := &file_openmenses_v1_service_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -572,12 +1886,388 @@ func (x *CreateMedicationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMedicationResponse.ProtoReflect.Descriptor instead.
 func (*CreateMedicationResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{11}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *CreateMedicationResponse) GetMedication() *Medication {
 	if x != nil {
 		return x.Medication
+	}
+	return nil
+}
+
+type UpdateMedicationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Medication    *Medication            `protobuf:"bytes,1,opt,name=medication,proto3" json:"medication,omitempty"`
+	UpdateMask    *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateMedicationRequest) Reset() {
+	*x = UpdateMedicationRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateMedicationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMedicationRequest) ProtoMessage() {}
+
+func (x *UpdateMedicationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMedicationRequest.ProtoReflect.Descriptor instead.
+func (*UpdateMedicationRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *UpdateMedicationRequest) GetMedication() *Medication {
+	if x != nil {
+		return x.Medication
+	}
+	return nil
+}
+
+func (x *UpdateMedicationRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.UpdateMask
+	}
+	return nil
+}
+
+type DeleteMedicationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Medication    *Medication            `protobuf:"bytes,1,opt,name=medication,proto3" json:"medication,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMedicationResponse) Reset() {
+	*x = DeleteMedicationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMedicationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMedicationResponse) ProtoMessage() {}
+
+func (x *DeleteMedicationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMedicationResponse.ProtoReflect.Descriptor instead.
+func (*DeleteMedicationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *DeleteMedicationResponse) GetMedication() *Medication {
+	if x != nil {
+		return x.Medication
+	}
+	return nil
+}
+
+type UpdateMedicationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Medication    *Medication            `protobuf:"bytes,1,opt,name=medication,proto3" json:"medication,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateMedicationResponse) Reset() {
+	*x = UpdateMedicationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateMedicationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMedicationResponse) ProtoMessage() {}
+
+func (x *UpdateMedicationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMedicationResponse.ProtoReflect.Descriptor instead.
+func (*UpdateMedicationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *UpdateMedicationResponse) GetMedication() *Medication {
+	if x != nil {
+		return x.Medication
+	}
+	return nil
+}
+
+type DeleteMedicationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMedicationRequest) Reset() {
+	*x = DeleteMedicationRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMedicationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMedicationRequest) ProtoMessage() {}
+
+func (x *DeleteMedicationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMedicationRequest.ProtoReflect.Descriptor instead.
+func (*DeleteMedicationRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *DeleteMedicationRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type ListMedicationsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Pagination    *PaginationRequest     `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMedicationsRequest) Reset() {
+	*x = ListMedicationsRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMedicationsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMedicationsRequest) ProtoMessage() {}
+
+func (x *ListMedicationsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMedicationsRequest.ProtoReflect.Descriptor instead.
+func (*ListMedicationsRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *ListMedicationsRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
+}
+
+func (x *ListMedicationsRequest) GetPagination() *PaginationRequest {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type ListMedicationsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Medications   []*Medication          `protobuf:"bytes,1,rep,name=medications,proto3" json:"medications,omitempty"`
+	Pagination    *PaginationResponse    `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMedicationsResponse) Reset() {
+	*x = ListMedicationsResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[45]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMedicationsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMedicationsResponse) ProtoMessage() {}
+
+func (x *ListMedicationsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[45]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMedicationsResponse.ProtoReflect.Descriptor instead.
+func (*ListMedicationsResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *ListMedicationsResponse) GetMedications() []*Medication {
+	if x != nil {
+		return x.Medications
+	}
+	return nil
+}
+
+func (x *ListMedicationsResponse) GetPagination() *PaginationResponse {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type GetMedicationEventRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMedicationEventRequest) Reset() {
+	*x = GetMedicationEventRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[46]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMedicationEventRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMedicationEventRequest) ProtoMessage() {}
+
+func (x *GetMedicationEventRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[46]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMedicationEventRequest.ProtoReflect.Descriptor instead.
+func (*GetMedicationEventRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{46}
+}
+
+func (x *GetMedicationEventRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type GetMedicationEventResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Event         *MedicationEvent       `protobuf:"bytes,1,opt,name=event,proto3" json:"event,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMedicationEventResponse) Reset() {
+	*x = GetMedicationEventResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMedicationEventResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMedicationEventResponse) ProtoMessage() {}
+
+func (x *GetMedicationEventResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMedicationEventResponse.ProtoReflect.Descriptor instead.
+func (*GetMedicationEventResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *GetMedicationEventResponse) GetEvent() *MedicationEvent {
+	if x != nil {
+		return x.Event
 	}
 	return nil
 }
@@ -592,7 +2282,7 @@ type CreateMedicationEventRequest struct {
 
 func (x *CreateMedicationEventRequest) Reset() {
 	*x = CreateMedicationEventRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[12]
+	mi := &file_openmenses_v1_service_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -604,7 +2294,7 @@ func (x *CreateMedicationEventRequest) String() string {
 func (*CreateMedicationEventRequest) ProtoMessage() {}
 
 func (x *CreateMedicationEventRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[12]
+	mi := &file_openmenses_v1_service_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -617,7 +2307,7 @@ func (x *CreateMedicationEventRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMedicationEventRequest.ProtoReflect.Descriptor instead.
 func (*CreateMedicationEventRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{12}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *CreateMedicationEventRequest) GetParent() string {
@@ -643,7 +2333,7 @@ type CreateMedicationEventResponse struct {
 
 func (x *CreateMedicationEventResponse) Reset() {
 	*x = CreateMedicationEventResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[13]
+	mi := &file_openmenses_v1_service_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -655,7 +2345,7 @@ func (x *CreateMedicationEventResponse) String() string {
 func (*CreateMedicationEventResponse) ProtoMessage() {}
 
 func (x *CreateMedicationEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[13]
+	mi := &file_openmenses_v1_service_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -668,12 +2358,300 @@ func (x *CreateMedicationEventResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMedicationEventResponse.ProtoReflect.Descriptor instead.
 func (*CreateMedicationEventResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{13}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *CreateMedicationEventResponse) GetEvent() *MedicationEvent {
 	if x != nil {
 		return x.Event
+	}
+	return nil
+}
+
+type UpdateMedicationEventRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Event         *MedicationEvent       `protobuf:"bytes,1,opt,name=event,proto3" json:"event,omitempty"`
+	UpdateMask    *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateMedicationEventRequest) Reset() {
+	*x = UpdateMedicationEventRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[50]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateMedicationEventRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMedicationEventRequest) ProtoMessage() {}
+
+func (x *UpdateMedicationEventRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[50]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMedicationEventRequest.ProtoReflect.Descriptor instead.
+func (*UpdateMedicationEventRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{50}
+}
+
+func (x *UpdateMedicationEventRequest) GetEvent() *MedicationEvent {
+	if x != nil {
+		return x.Event
+	}
+	return nil
+}
+
+func (x *UpdateMedicationEventRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.UpdateMask
+	}
+	return nil
+}
+
+type DeleteMedicationEventResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Event         *MedicationEvent       `protobuf:"bytes,1,opt,name=event,proto3" json:"event,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMedicationEventResponse) Reset() {
+	*x = DeleteMedicationEventResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMedicationEventResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMedicationEventResponse) ProtoMessage() {}
+
+func (x *DeleteMedicationEventResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMedicationEventResponse.ProtoReflect.Descriptor instead.
+func (*DeleteMedicationEventResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *DeleteMedicationEventResponse) GetEvent() *MedicationEvent {
+	if x != nil {
+		return x.Event
+	}
+	return nil
+}
+
+type UpdateMedicationEventResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Event         *MedicationEvent       `protobuf:"bytes,1,opt,name=event,proto3" json:"event,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateMedicationEventResponse) Reset() {
+	*x = UpdateMedicationEventResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateMedicationEventResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMedicationEventResponse) ProtoMessage() {}
+
+func (x *UpdateMedicationEventResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMedicationEventResponse.ProtoReflect.Descriptor instead.
+func (*UpdateMedicationEventResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{52}
+}
+
+func (x *UpdateMedicationEventResponse) GetEvent() *MedicationEvent {
+	if x != nil {
+		return x.Event
+	}
+	return nil
+}
+
+type DeleteMedicationEventRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMedicationEventRequest) Reset() {
+	*x = DeleteMedicationEventRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMedicationEventRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMedicationEventRequest) ProtoMessage() {}
+
+func (x *DeleteMedicationEventRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMedicationEventRequest.ProtoReflect.Descriptor instead.
+func (*DeleteMedicationEventRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{53}
+}
+
+func (x *DeleteMedicationEventRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type ListMedicationEventsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Pagination    *PaginationRequest     `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMedicationEventsRequest) Reset() {
+	*x = ListMedicationEventsRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[54]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMedicationEventsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMedicationEventsRequest) ProtoMessage() {}
+
+func (x *ListMedicationEventsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[54]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMedicationEventsRequest.ProtoReflect.Descriptor instead.
+func (*ListMedicationEventsRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{54}
+}
+
+func (x *ListMedicationEventsRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
+}
+
+func (x *ListMedicationEventsRequest) GetPagination() *PaginationRequest {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type ListMedicationEventsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Events        []*MedicationEvent     `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
+	Pagination    *PaginationResponse    `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMedicationEventsResponse) Reset() {
+	*x = ListMedicationEventsResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[55]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMedicationEventsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMedicationEventsResponse) ProtoMessage() {}
+
+func (x *ListMedicationEventsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[55]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMedicationEventsResponse.ProtoReflect.Descriptor instead.
+func (*ListMedicationEventsResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{55}
+}
+
+func (x *ListMedicationEventsResponse) GetEvents() []*MedicationEvent {
+	if x != nil {
+		return x.Events
+	}
+	return nil
+}
+
+func (x *ListMedicationEventsResponse) GetPagination() *PaginationResponse {
+	if x != nil {
+		return x.Pagination
 	}
 	return nil
 }
@@ -689,7 +2667,7 @@ type ListTimelineRequest struct {
 
 func (x *ListTimelineRequest) Reset() {
 	*x = ListTimelineRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[14]
+	mi := &file_openmenses_v1_service_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -701,7 +2679,7 @@ func (x *ListTimelineRequest) String() string {
 func (*ListTimelineRequest) ProtoMessage() {}
 
 func (x *ListTimelineRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[14]
+	mi := &file_openmenses_v1_service_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -714,7 +2692,7 @@ func (x *ListTimelineRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTimelineRequest.ProtoReflect.Descriptor instead.
 func (*ListTimelineRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{14}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *ListTimelineRequest) GetParent() string {
@@ -758,7 +2736,7 @@ type TimelineRecord struct {
 
 func (x *TimelineRecord) Reset() {
 	*x = TimelineRecord{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[15]
+	mi := &file_openmenses_v1_service_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -770,7 +2748,7 @@ func (x *TimelineRecord) String() string {
 func (*TimelineRecord) ProtoMessage() {}
 
 func (x *TimelineRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[15]
+	mi := &file_openmenses_v1_service_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -783,7 +2761,7 @@ func (x *TimelineRecord) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TimelineRecord.ProtoReflect.Descriptor instead.
 func (*TimelineRecord) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{15}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *TimelineRecord) GetRecord() isTimelineRecord_Record {
@@ -942,7 +2920,7 @@ type ListTimelineResponse struct {
 
 func (x *ListTimelineResponse) Reset() {
 	*x = ListTimelineResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[16]
+	mi := &file_openmenses_v1_service_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -954,7 +2932,7 @@ func (x *ListTimelineResponse) String() string {
 func (*ListTimelineResponse) ProtoMessage() {}
 
 func (x *ListTimelineResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[16]
+	mi := &file_openmenses_v1_service_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -967,7 +2945,7 @@ func (x *ListTimelineResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTimelineResponse.ProtoReflect.Descriptor instead.
 func (*ListTimelineResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{16}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *ListTimelineResponse) GetRecords() []*TimelineRecord {
@@ -984,16 +2962,105 @@ func (x *ListTimelineResponse) GetPagination() *PaginationResponse {
 	return nil
 }
 
+type GetCycleRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCycleRequest) Reset() {
+	*x = GetCycleRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[59]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCycleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCycleRequest) ProtoMessage() {}
+
+func (x *GetCycleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[59]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCycleRequest.ProtoReflect.Descriptor instead.
+func (*GetCycleRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{59}
+}
+
+func (x *GetCycleRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type GetCycleResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Cycle         *Cycle                 `protobuf:"bytes,1,opt,name=cycle,proto3" json:"cycle,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCycleResponse) Reset() {
+	*x = GetCycleResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[60]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCycleResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCycleResponse) ProtoMessage() {}
+
+func (x *GetCycleResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[60]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCycleResponse.ProtoReflect.Descriptor instead.
+func (*GetCycleResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{60}
+}
+
+func (x *GetCycleResponse) GetCycle() *Cycle {
+	if x != nil {
+		return x.Cycle
+	}
+	return nil
+}
+
 type ListCyclesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Pagination    *PaginationRequest     `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListCyclesRequest) Reset() {
 	*x = ListCyclesRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[17]
+	mi := &file_openmenses_v1_service_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1005,7 +3072,7 @@ func (x *ListCyclesRequest) String() string {
 func (*ListCyclesRequest) ProtoMessage() {}
 
 func (x *ListCyclesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[17]
+	mi := &file_openmenses_v1_service_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1018,7 +3085,7 @@ func (x *ListCyclesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCyclesRequest.ProtoReflect.Descriptor instead.
 func (*ListCyclesRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{17}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *ListCyclesRequest) GetParent() string {
@@ -1028,16 +3095,24 @@ func (x *ListCyclesRequest) GetParent() string {
 	return ""
 }
 
+func (x *ListCyclesRequest) GetPagination() *PaginationRequest {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
 type ListCyclesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Cycles        []*Cycle               `protobuf:"bytes,1,rep,name=cycles,proto3" json:"cycles,omitempty"`
+	Pagination    *PaginationResponse    `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListCyclesResponse) Reset() {
 	*x = ListCyclesResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[18]
+	mi := &file_openmenses_v1_service_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1049,7 +3124,7 @@ func (x *ListCyclesResponse) String() string {
 func (*ListCyclesResponse) ProtoMessage() {}
 
 func (x *ListCyclesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[18]
+	mi := &file_openmenses_v1_service_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1062,7 +3137,7 @@ func (x *ListCyclesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCyclesResponse.ProtoReflect.Descriptor instead.
 func (*ListCyclesResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{18}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *ListCyclesResponse) GetCycles() []*Cycle {
@@ -1072,16 +3147,24 @@ func (x *ListCyclesResponse) GetCycles() []*Cycle {
 	return nil
 }
 
+func (x *ListCyclesResponse) GetPagination() *PaginationResponse {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
 type ListPredictionsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Pagination    *PaginationRequest     `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListPredictionsRequest) Reset() {
 	*x = ListPredictionsRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[19]
+	mi := &file_openmenses_v1_service_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1093,7 +3176,7 @@ func (x *ListPredictionsRequest) String() string {
 func (*ListPredictionsRequest) ProtoMessage() {}
 
 func (x *ListPredictionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[19]
+	mi := &file_openmenses_v1_service_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1106,7 +3189,7 @@ func (x *ListPredictionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPredictionsRequest.ProtoReflect.Descriptor instead.
 func (*ListPredictionsRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{19}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *ListPredictionsRequest) GetParent() string {
@@ -1116,16 +3199,24 @@ func (x *ListPredictionsRequest) GetParent() string {
 	return ""
 }
 
+func (x *ListPredictionsRequest) GetPagination() *PaginationRequest {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
 type ListPredictionsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Predictions   []*Prediction          `protobuf:"bytes,1,rep,name=predictions,proto3" json:"predictions,omitempty"`
+	Pagination    *PaginationResponse    `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListPredictionsResponse) Reset() {
 	*x = ListPredictionsResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[20]
+	mi := &file_openmenses_v1_service_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1137,7 +3228,7 @@ func (x *ListPredictionsResponse) String() string {
 func (*ListPredictionsResponse) ProtoMessage() {}
 
 func (x *ListPredictionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[20]
+	mi := &file_openmenses_v1_service_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1150,7 +3241,7 @@ func (x *ListPredictionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPredictionsResponse.ProtoReflect.Descriptor instead.
 func (*ListPredictionsResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{20}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *ListPredictionsResponse) GetPredictions() []*Prediction {
@@ -1160,16 +3251,24 @@ func (x *ListPredictionsResponse) GetPredictions() []*Prediction {
 	return nil
 }
 
+func (x *ListPredictionsResponse) GetPagination() *PaginationResponse {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
 type ListInsightsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Pagination    *PaginationRequest     `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListInsightsRequest) Reset() {
 	*x = ListInsightsRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[21]
+	mi := &file_openmenses_v1_service_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1181,7 +3280,7 @@ func (x *ListInsightsRequest) String() string {
 func (*ListInsightsRequest) ProtoMessage() {}
 
 func (x *ListInsightsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[21]
+	mi := &file_openmenses_v1_service_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1194,7 +3293,7 @@ func (x *ListInsightsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInsightsRequest.ProtoReflect.Descriptor instead.
 func (*ListInsightsRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{21}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *ListInsightsRequest) GetParent() string {
@@ -1204,16 +3303,24 @@ func (x *ListInsightsRequest) GetParent() string {
 	return ""
 }
 
+func (x *ListInsightsRequest) GetPagination() *PaginationRequest {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
 type ListInsightsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Insights      []*Insight             `protobuf:"bytes,1,rep,name=insights,proto3" json:"insights,omitempty"`
+	Pagination    *PaginationResponse    `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListInsightsResponse) Reset() {
 	*x = ListInsightsResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[22]
+	mi := &file_openmenses_v1_service_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1225,7 +3332,7 @@ func (x *ListInsightsResponse) String() string {
 func (*ListInsightsResponse) ProtoMessage() {}
 
 func (x *ListInsightsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[22]
+	mi := &file_openmenses_v1_service_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1238,7 +3345,7 @@ func (x *ListInsightsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInsightsResponse.ProtoReflect.Descriptor instead.
 func (*ListInsightsResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{22}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *ListInsightsResponse) GetInsights() []*Insight {
@@ -1248,28 +3355,36 @@ func (x *ListInsightsResponse) GetInsights() []*Insight {
 	return nil
 }
 
-type ExportDataRequest struct {
+func (x *ListInsightsResponse) GetPagination() *PaginationResponse {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+// Resource-oriented versions (preferred)
+type CreateDataExportRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ExportDataRequest) Reset() {
-	*x = ExportDataRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[23]
+func (x *CreateDataExportRequest) Reset() {
+	*x = CreateDataExportRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExportDataRequest) String() string {
+func (x *CreateDataExportRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExportDataRequest) ProtoMessage() {}
+func (*CreateDataExportRequest) ProtoMessage() {}
 
-func (x *ExportDataRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[23]
+func (x *CreateDataExportRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1280,40 +3395,40 @@ func (x *ExportDataRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExportDataRequest.ProtoReflect.Descriptor instead.
-func (*ExportDataRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{23}
+// Deprecated: Use CreateDataExportRequest.ProtoReflect.Descriptor instead.
+func (*CreateDataExportRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{67}
 }
 
-func (x *ExportDataRequest) GetName() string {
+func (x *CreateDataExportRequest) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-type ExportDataResponse struct {
+type CreateDataExportResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Data          []byte                 `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ExportDataResponse) Reset() {
-	*x = ExportDataResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[24]
+func (x *CreateDataExportResponse) Reset() {
+	*x = CreateDataExportResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ExportDataResponse) String() string {
+func (x *CreateDataExportResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExportDataResponse) ProtoMessage() {}
+func (*CreateDataExportResponse) ProtoMessage() {}
 
-func (x *ExportDataResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[24]
+func (x *CreateDataExportResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1324,40 +3439,40 @@ func (x *ExportDataResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ExportDataResponse.ProtoReflect.Descriptor instead.
-func (*ExportDataResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{24}
+// Deprecated: Use CreateDataExportResponse.ProtoReflect.Descriptor instead.
+func (*CreateDataExportResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{68}
 }
 
-func (x *ExportDataResponse) GetData() []byte {
+func (x *CreateDataExportResponse) GetData() []byte {
 	if x != nil {
 		return x.Data
 	}
 	return nil
 }
 
-type ImportDataRequest struct {
+type CreateDataImportRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Data          []byte                 `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ImportDataRequest) Reset() {
-	*x = ImportDataRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[25]
+func (x *CreateDataImportRequest) Reset() {
+	*x = CreateDataImportRequest{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ImportDataRequest) String() string {
+func (x *CreateDataImportRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ImportDataRequest) ProtoMessage() {}
+func (*CreateDataImportRequest) ProtoMessage() {}
 
-func (x *ImportDataRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[25]
+func (x *CreateDataImportRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1368,40 +3483,40 @@ func (x *ImportDataRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ImportDataRequest.ProtoReflect.Descriptor instead.
-func (*ImportDataRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{25}
+// Deprecated: Use CreateDataImportRequest.ProtoReflect.Descriptor instead.
+func (*CreateDataImportRequest) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{69}
 }
 
-func (x *ImportDataRequest) GetData() []byte {
+func (x *CreateDataImportRequest) GetData() []byte {
 	if x != nil {
 		return x.Data
 	}
 	return nil
 }
 
-type ImportDataResponse struct {
+type CreateDataImportResponse struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	RecordsImported uint32                 `protobuf:"varint,1,opt,name=records_imported,json=recordsImported,proto3" json:"records_imported,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *ImportDataResponse) Reset() {
-	*x = ImportDataResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[26]
+func (x *CreateDataImportResponse) Reset() {
+	*x = CreateDataImportResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ImportDataResponse) String() string {
+func (x *CreateDataImportResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ImportDataResponse) ProtoMessage() {}
+func (*CreateDataImportResponse) ProtoMessage() {}
 
-func (x *ImportDataResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[26]
+func (x *CreateDataImportResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1412,12 +3527,12 @@ func (x *ImportDataResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ImportDataResponse.ProtoReflect.Descriptor instead.
-func (*ImportDataResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{26}
+// Deprecated: Use CreateDataImportResponse.ProtoReflect.Descriptor instead.
+func (*CreateDataImportResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{70}
 }
 
-func (x *ImportDataResponse) GetRecordsImported() uint32 {
+func (x *CreateDataImportResponse) GetRecordsImported() uint32 {
 	if x != nil {
 		return x.RecordsImported
 	}
@@ -1428,30 +3543,114 @@ var File_openmenses_v1_service_proto protoreflect.FileDescriptor
 
 const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1bopenmenses/v1/service.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19openmenses/v1/model.proto\x1a\x19openmenses/v1/types.proto\"4\n" +
+	"\x1bopenmenses/v1/service.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x19openmenses/v1/model.proto\x1a\x19openmenses/v1/types.proto\"4\n" +
 	"\x15GetUserProfileRequest\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"N\n" +
 	"\x16GetUserProfileResponse\x124\n" +
 	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\"P\n" +
-	"\x18UpsertUserProfileRequest\x124\n" +
+	"\x18CreateUserProfileRequest\x124\n" +
 	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\"Q\n" +
-	"\x19UpsertUserProfileResponse\x124\n" +
-	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\"\x89\x01\n" +
+	"\x19CreateUserProfileResponse\x124\n" +
+	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\"\x8d\x01\n" +
+	"\x18UpdateUserProfileRequest\x124\n" +
+	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\x12;\n" +
+	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
+	"updateMask\"Q\n" +
+	"\x19UpdateUserProfileResponse\x124\n" +
+	"\aprofile\x18\x01 \x01(\v2\x1a.openmenses.v1.UserProfileR\aprofile\"<\n" +
+	"\x1dGetBleedingObservationRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"f\n" +
+	"\x1eGetBleedingObservationResponse\x12D\n" +
+	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"\x89\x01\n" +
 	" CreateBleedingObservationRequest\x12\x1f\n" +
 	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12D\n" +
 	"\vobservation\x18\x02 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"i\n" +
 	"!CreateBleedingObservationResponse\x12D\n" +
-	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"\x87\x01\n" +
+	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"\xa5\x01\n" +
+	" UpdateBleedingObservationRequest\x12D\n" +
+	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\x12;\n" +
+	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
+	"updateMask\"i\n" +
+	"!UpdateBleedingObservationResponse\x12D\n" +
+	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"?\n" +
+	" DeleteBleedingObservationRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"i\n" +
+	"!DeleteBleedingObservationResponse\x12D\n" +
+	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"\x84\x01\n" +
+	"\x1fListBleedingObservationsRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2 .openmenses.v1.PaginationRequestR\n" +
+	"pagination\"\xad\x01\n" +
+	" ListBleedingObservationsResponse\x12F\n" +
+	"\fobservations\x18\x01 \x03(\v2\".openmenses.v1.BleedingObservationR\fobservations\x12A\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2!.openmenses.v1.PaginationResponseR\n" +
+	"pagination\";\n" +
+	"\x1cGetSymptomObservationRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"d\n" +
+	"\x1dGetSymptomObservationResponse\x12C\n" +
+	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\"\x87\x01\n" +
 	"\x1fCreateSymptomObservationRequest\x12\x1f\n" +
 	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12C\n" +
 	"\vobservation\x18\x02 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\"g\n" +
 	" CreateSymptomObservationResponse\x12C\n" +
-	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\"\x81\x01\n" +
+	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\"\xa3\x01\n" +
+	"\x1fUpdateSymptomObservationRequest\x12C\n" +
+	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\x12;\n" +
+	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
+	"updateMask\"g\n" +
+	" UpdateSymptomObservationResponse\x12C\n" +
+	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\"g\n" +
+	" DeleteSymptomObservationResponse\x12C\n" +
+	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\">\n" +
+	"\x1fDeleteSymptomObservationRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"\x83\x01\n" +
+	"\x1eListSymptomObservationsRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2 .openmenses.v1.PaginationRequestR\n" +
+	"pagination\"\xab\x01\n" +
+	"\x1fListSymptomObservationsResponse\x12E\n" +
+	"\fobservations\x18\x01 \x03(\v2!.openmenses.v1.SymptomObservationR\fobservations\x12A\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2!.openmenses.v1.PaginationResponseR\n" +
+	"pagination\"8\n" +
+	"\x19GetMoodObservationRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"^\n" +
+	"\x1aGetMoodObservationResponse\x12@\n" +
+	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\"\x81\x01\n" +
 	"\x1cCreateMoodObservationRequest\x12\x1f\n" +
 	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
 	"\vobservation\x18\x02 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\"a\n" +
 	"\x1dCreateMoodObservationResponse\x12@\n" +
-	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\"u\n" +
+	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\"\x9d\x01\n" +
+	"\x1cUpdateMoodObservationRequest\x12@\n" +
+	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\x12;\n" +
+	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
+	"updateMask\"a\n" +
+	"\x1dUpdateMoodObservationResponse\x12@\n" +
+	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\"a\n" +
+	"\x1dDeleteMoodObservationResponse\x12@\n" +
+	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\";\n" +
+	"\x1cDeleteMoodObservationRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"\x80\x01\n" +
+	"\x1bListMoodObservationsRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2 .openmenses.v1.PaginationRequestR\n" +
+	"pagination\"\xa5\x01\n" +
+	"\x1cListMoodObservationsResponse\x12B\n" +
+	"\fobservations\x18\x01 \x03(\v2\x1e.openmenses.v1.MoodObservationR\fobservations\x12A\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2!.openmenses.v1.PaginationResponseR\n" +
+	"pagination\"3\n" +
+	"\x14GetMedicationRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"R\n" +
+	"\x15GetMedicationResponse\x129\n" +
+	"\n" +
+	"medication\x18\x01 \x01(\v2\x19.openmenses.v1.MedicationR\n" +
+	"medication\"u\n" +
 	"\x17CreateMedicationRequest\x12\x1f\n" +
 	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x129\n" +
 	"\n" +
@@ -1460,12 +3659,62 @@ const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\x18CreateMedicationResponse\x129\n" +
 	"\n" +
 	"medication\x18\x01 \x01(\v2\x19.openmenses.v1.MedicationR\n" +
-	"medication\"u\n" +
+	"medication\"\x91\x01\n" +
+	"\x17UpdateMedicationRequest\x129\n" +
+	"\n" +
+	"medication\x18\x01 \x01(\v2\x19.openmenses.v1.MedicationR\n" +
+	"medication\x12;\n" +
+	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
+	"updateMask\"U\n" +
+	"\x18DeleteMedicationResponse\x129\n" +
+	"\n" +
+	"medication\x18\x01 \x01(\v2\x19.openmenses.v1.MedicationR\n" +
+	"medication\"U\n" +
+	"\x18UpdateMedicationResponse\x129\n" +
+	"\n" +
+	"medication\x18\x01 \x01(\v2\x19.openmenses.v1.MedicationR\n" +
+	"medication\"6\n" +
+	"\x17DeleteMedicationRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"{\n" +
+	"\x16ListMedicationsRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2 .openmenses.v1.PaginationRequestR\n" +
+	"pagination\"\x99\x01\n" +
+	"\x17ListMedicationsResponse\x12;\n" +
+	"\vmedications\x18\x01 \x03(\v2\x19.openmenses.v1.MedicationR\vmedications\x12A\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2!.openmenses.v1.PaginationResponseR\n" +
+	"pagination\"8\n" +
+	"\x19GetMedicationEventRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"R\n" +
+	"\x1aGetMedicationEventResponse\x124\n" +
+	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\"u\n" +
 	"\x1cCreateMedicationEventRequest\x12\x1f\n" +
 	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x124\n" +
 	"\x05event\x18\x02 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\"U\n" +
 	"\x1dCreateMedicationEventResponse\x124\n" +
-	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\"\xa8\x01\n" +
+	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\"\x91\x01\n" +
+	"\x1cUpdateMedicationEventRequest\x124\n" +
+	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\x12;\n" +
+	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
+	"updateMask\"U\n" +
+	"\x1dDeleteMedicationEventResponse\x124\n" +
+	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\"U\n" +
+	"\x1dUpdateMedicationEventResponse\x124\n" +
+	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\";\n" +
+	"\x1cDeleteMedicationEventRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"\x80\x01\n" +
+	"\x1bListMedicationEventsRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2 .openmenses.v1.PaginationRequestR\n" +
+	"pagination\"\x99\x01\n" +
+	"\x1cListMedicationEventsResponse\x126\n" +
+	"\x06events\x18\x01 \x03(\v2\x1e.openmenses.v1.MedicationEventR\x06events\x12A\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2!.openmenses.v1.PaginationResponseR\n" +
+	"pagination\"\xa8\x01\n" +
 	"\x13ListTimelineRequest\x12\x1f\n" +
 	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12.\n" +
 	"\x05range\x18\x02 \x01(\v2\x18.openmenses.v1.DateRangeR\x05range\x12@\n" +
@@ -1491,45 +3740,86 @@ const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\arecords\x18\x01 \x03(\v2\x1d.openmenses.v1.TimelineRecordR\arecords\x12A\n" +
 	"\n" +
 	"pagination\x18\x02 \x01(\v2!.openmenses.v1.PaginationResponseR\n" +
-	"pagination\"4\n" +
+	"pagination\".\n" +
+	"\x0fGetCycleRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\">\n" +
+	"\x10GetCycleResponse\x12*\n" +
+	"\x05cycle\x18\x01 \x01(\v2\x14.openmenses.v1.CycleR\x05cycle\"v\n" +
 	"\x11ListCyclesRequest\x12\x1f\n" +
-	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\"B\n" +
-	"\x12ListCyclesResponse\x12,\n" +
-	"\x06cycles\x18\x01 \x03(\v2\x14.openmenses.v1.CycleR\x06cycles\"9\n" +
-	"\x16ListPredictionsRequest\x12\x1f\n" +
-	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\"V\n" +
-	"\x17ListPredictionsResponse\x12;\n" +
-	"\vpredictions\x18\x01 \x03(\v2\x19.openmenses.v1.PredictionR\vpredictions\"6\n" +
-	"\x13ListInsightsRequest\x12\x1f\n" +
-	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\"J\n" +
-	"\x14ListInsightsResponse\x122\n" +
-	"\binsights\x18\x01 \x03(\v2\x16.openmenses.v1.InsightR\binsights\"0\n" +
-	"\x11ExportDataRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"(\n" +
-	"\x12ExportDataResponse\x12\x12\n" +
-	"\x04data\x18\x01 \x01(\fR\x04data\"'\n" +
-	"\x11ImportDataRequest\x12\x12\n" +
-	"\x04data\x18\x01 \x01(\fR\x04data\"?\n" +
-	"\x12ImportDataResponse\x12)\n" +
-	"\x10records_imported\x18\x01 \x01(\rR\x0frecordsImported2\xb3\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
 	"\n" +
+	"pagination\x18\x02 \x01(\v2 .openmenses.v1.PaginationRequestR\n" +
+	"pagination\"\x85\x01\n" +
+	"\x12ListCyclesResponse\x12,\n" +
+	"\x06cycles\x18\x01 \x03(\v2\x14.openmenses.v1.CycleR\x06cycles\x12A\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2!.openmenses.v1.PaginationResponseR\n" +
+	"pagination\"{\n" +
+	"\x16ListPredictionsRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2 .openmenses.v1.PaginationRequestR\n" +
+	"pagination\"\x99\x01\n" +
+	"\x17ListPredictionsResponse\x12;\n" +
+	"\vpredictions\x18\x01 \x03(\v2\x19.openmenses.v1.PredictionR\vpredictions\x12A\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2!.openmenses.v1.PaginationResponseR\n" +
+	"pagination\"x\n" +
+	"\x13ListInsightsRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2 .openmenses.v1.PaginationRequestR\n" +
+	"pagination\"\x8d\x01\n" +
+	"\x14ListInsightsResponse\x122\n" +
+	"\binsights\x18\x01 \x03(\v2\x16.openmenses.v1.InsightR\binsights\x12A\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2!.openmenses.v1.PaginationResponseR\n" +
+	"pagination\"6\n" +
+	"\x17CreateDataExportRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\".\n" +
+	"\x18CreateDataExportResponse\x12\x12\n" +
+	"\x04data\x18\x01 \x01(\fR\x04data\"-\n" +
+	"\x17CreateDataImportRequest\x12\x12\n" +
+	"\x04data\x18\x01 \x01(\fR\x04data\"E\n" +
+	"\x18CreateDataImportResponse\x12)\n" +
+	"\x10records_imported\x18\x01 \x01(\rR\x0frecordsImported2\xf8\x1d\n" +
 	"\x13CycleTrackerService\x12]\n" +
 	"\x0eGetUserProfile\x12$.openmenses.v1.GetUserProfileRequest\x1a%.openmenses.v1.GetUserProfileResponse\x12f\n" +
-	"\x11UpsertUserProfile\x12'.openmenses.v1.UpsertUserProfileRequest\x1a(.openmenses.v1.UpsertUserProfileResponse\x12~\n" +
-	"\x19CreateBleedingObservation\x12/.openmenses.v1.CreateBleedingObservationRequest\x1a0.openmenses.v1.CreateBleedingObservationResponse\x12{\n" +
-	"\x18CreateSymptomObservation\x12..openmenses.v1.CreateSymptomObservationRequest\x1a/.openmenses.v1.CreateSymptomObservationResponse\x12r\n" +
-	"\x15CreateMoodObservation\x12+.openmenses.v1.CreateMoodObservationRequest\x1a,.openmenses.v1.CreateMoodObservationResponse\x12c\n" +
-	"\x10CreateMedication\x12&.openmenses.v1.CreateMedicationRequest\x1a'.openmenses.v1.CreateMedicationResponse\x12r\n" +
-	"\x15CreateMedicationEvent\x12+.openmenses.v1.CreateMedicationEventRequest\x1a,.openmenses.v1.CreateMedicationEventResponse\x12W\n" +
-	"\fListTimeline\x12\".openmenses.v1.ListTimelineRequest\x1a#.openmenses.v1.ListTimelineResponse\x12Q\n" +
+	"\x11CreateUserProfile\x12'.openmenses.v1.CreateUserProfileRequest\x1a(.openmenses.v1.CreateUserProfileResponse\x12f\n" +
+	"\x11UpdateUserProfile\x12'.openmenses.v1.UpdateUserProfileRequest\x1a(.openmenses.v1.UpdateUserProfileResponse\x12u\n" +
+	"\x16GetBleedingObservation\x12,.openmenses.v1.GetBleedingObservationRequest\x1a-.openmenses.v1.GetBleedingObservationResponse\x12~\n" +
+	"\x19CreateBleedingObservation\x12/.openmenses.v1.CreateBleedingObservationRequest\x1a0.openmenses.v1.CreateBleedingObservationResponse\x12~\n" +
+	"\x19UpdateBleedingObservation\x12/.openmenses.v1.UpdateBleedingObservationRequest\x1a0.openmenses.v1.UpdateBleedingObservationResponse\x12~\n" +
+	"\x19DeleteBleedingObservation\x12/.openmenses.v1.DeleteBleedingObservationRequest\x1a0.openmenses.v1.DeleteBleedingObservationResponse\x12{\n" +
+	"\x18ListBleedingObservations\x12..openmenses.v1.ListBleedingObservationsRequest\x1a/.openmenses.v1.ListBleedingObservationsResponse\x12r\n" +
+	"\x15GetSymptomObservation\x12+.openmenses.v1.GetSymptomObservationRequest\x1a,.openmenses.v1.GetSymptomObservationResponse\x12{\n" +
+	"\x18CreateSymptomObservation\x12..openmenses.v1.CreateSymptomObservationRequest\x1a/.openmenses.v1.CreateSymptomObservationResponse\x12{\n" +
+	"\x18UpdateSymptomObservation\x12..openmenses.v1.UpdateSymptomObservationRequest\x1a/.openmenses.v1.UpdateSymptomObservationResponse\x12{\n" +
+	"\x18DeleteSymptomObservation\x12..openmenses.v1.DeleteSymptomObservationRequest\x1a/.openmenses.v1.DeleteSymptomObservationResponse\x12x\n" +
+	"\x17ListSymptomObservations\x12-.openmenses.v1.ListSymptomObservationsRequest\x1a..openmenses.v1.ListSymptomObservationsResponse\x12i\n" +
+	"\x12GetMoodObservation\x12(.openmenses.v1.GetMoodObservationRequest\x1a).openmenses.v1.GetMoodObservationResponse\x12r\n" +
+	"\x15CreateMoodObservation\x12+.openmenses.v1.CreateMoodObservationRequest\x1a,.openmenses.v1.CreateMoodObservationResponse\x12r\n" +
+	"\x15UpdateMoodObservation\x12+.openmenses.v1.UpdateMoodObservationRequest\x1a,.openmenses.v1.UpdateMoodObservationResponse\x12r\n" +
+	"\x15DeleteMoodObservation\x12+.openmenses.v1.DeleteMoodObservationRequest\x1a,.openmenses.v1.DeleteMoodObservationResponse\x12o\n" +
+	"\x14ListMoodObservations\x12*.openmenses.v1.ListMoodObservationsRequest\x1a+.openmenses.v1.ListMoodObservationsResponse\x12Z\n" +
+	"\rGetMedication\x12#.openmenses.v1.GetMedicationRequest\x1a$.openmenses.v1.GetMedicationResponse\x12c\n" +
+	"\x10CreateMedication\x12&.openmenses.v1.CreateMedicationRequest\x1a'.openmenses.v1.CreateMedicationResponse\x12c\n" +
+	"\x10UpdateMedication\x12&.openmenses.v1.UpdateMedicationRequest\x1a'.openmenses.v1.UpdateMedicationResponse\x12c\n" +
+	"\x10DeleteMedication\x12&.openmenses.v1.DeleteMedicationRequest\x1a'.openmenses.v1.DeleteMedicationResponse\x12`\n" +
+	"\x0fListMedications\x12%.openmenses.v1.ListMedicationsRequest\x1a&.openmenses.v1.ListMedicationsResponse\x12i\n" +
+	"\x12GetMedicationEvent\x12(.openmenses.v1.GetMedicationEventRequest\x1a).openmenses.v1.GetMedicationEventResponse\x12r\n" +
+	"\x15CreateMedicationEvent\x12+.openmenses.v1.CreateMedicationEventRequest\x1a,.openmenses.v1.CreateMedicationEventResponse\x12r\n" +
+	"\x15UpdateMedicationEvent\x12+.openmenses.v1.UpdateMedicationEventRequest\x1a,.openmenses.v1.UpdateMedicationEventResponse\x12r\n" +
+	"\x15DeleteMedicationEvent\x12+.openmenses.v1.DeleteMedicationEventRequest\x1a,.openmenses.v1.DeleteMedicationEventResponse\x12o\n" +
+	"\x14ListMedicationEvents\x12*.openmenses.v1.ListMedicationEventsRequest\x1a+.openmenses.v1.ListMedicationEventsResponse\x12W\n" +
+	"\fListTimeline\x12\".openmenses.v1.ListTimelineRequest\x1a#.openmenses.v1.ListTimelineResponse\x12K\n" +
+	"\bGetCycle\x12\x1e.openmenses.v1.GetCycleRequest\x1a\x1f.openmenses.v1.GetCycleResponse\x12Q\n" +
 	"\n" +
 	"ListCycles\x12 .openmenses.v1.ListCyclesRequest\x1a!.openmenses.v1.ListCyclesResponse\x12`\n" +
 	"\x0fListPredictions\x12%.openmenses.v1.ListPredictionsRequest\x1a&.openmenses.v1.ListPredictionsResponse\x12W\n" +
-	"\fListInsights\x12\".openmenses.v1.ListInsightsRequest\x1a#.openmenses.v1.ListInsightsResponse\x12Q\n" +
-	"\n" +
-	"ExportData\x12 .openmenses.v1.ExportDataRequest\x1a!.openmenses.v1.ExportDataResponse\x12Q\n" +
-	"\n" +
-	"ImportData\x12 .openmenses.v1.ImportDataRequest\x1a!.openmenses.v1.ImportDataResponseBAZ?github.com/2ajoyce/openmenses/gen/go/openmenses/v1;openmensesv1b\x06proto3"
+	"\fListInsights\x12\".openmenses.v1.ListInsightsRequest\x1a#.openmenses.v1.ListInsightsResponse\x12c\n" +
+	"\x10CreateDataExport\x12&.openmenses.v1.CreateDataExportRequest\x1a'.openmenses.v1.CreateDataExportResponse\x12c\n" +
+	"\x10CreateDataImport\x12&.openmenses.v1.CreateDataImportRequest\x1a'.openmenses.v1.CreateDataImportResponseBAZ?github.com/2ajoyce/openmenses/gen/go/openmenses/v1;openmensesv1b\x06proto3"
 
 var (
 	file_openmenses_v1_service_proto_rawDescOnce sync.Once
@@ -1543,110 +3833,249 @@ func file_openmenses_v1_service_proto_rawDescGZIP() []byte {
 	return file_openmenses_v1_service_proto_rawDescData
 }
 
-var file_openmenses_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_openmenses_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 71)
 var file_openmenses_v1_service_proto_goTypes = []any{
 	(*GetUserProfileRequest)(nil),             // 0: openmenses.v1.GetUserProfileRequest
 	(*GetUserProfileResponse)(nil),            // 1: openmenses.v1.GetUserProfileResponse
-	(*UpsertUserProfileRequest)(nil),          // 2: openmenses.v1.UpsertUserProfileRequest
-	(*UpsertUserProfileResponse)(nil),         // 3: openmenses.v1.UpsertUserProfileResponse
-	(*CreateBleedingObservationRequest)(nil),  // 4: openmenses.v1.CreateBleedingObservationRequest
-	(*CreateBleedingObservationResponse)(nil), // 5: openmenses.v1.CreateBleedingObservationResponse
-	(*CreateSymptomObservationRequest)(nil),   // 6: openmenses.v1.CreateSymptomObservationRequest
-	(*CreateSymptomObservationResponse)(nil),  // 7: openmenses.v1.CreateSymptomObservationResponse
-	(*CreateMoodObservationRequest)(nil),      // 8: openmenses.v1.CreateMoodObservationRequest
-	(*CreateMoodObservationResponse)(nil),     // 9: openmenses.v1.CreateMoodObservationResponse
-	(*CreateMedicationRequest)(nil),           // 10: openmenses.v1.CreateMedicationRequest
-	(*CreateMedicationResponse)(nil),          // 11: openmenses.v1.CreateMedicationResponse
-	(*CreateMedicationEventRequest)(nil),      // 12: openmenses.v1.CreateMedicationEventRequest
-	(*CreateMedicationEventResponse)(nil),     // 13: openmenses.v1.CreateMedicationEventResponse
-	(*ListTimelineRequest)(nil),               // 14: openmenses.v1.ListTimelineRequest
-	(*TimelineRecord)(nil),                    // 15: openmenses.v1.TimelineRecord
-	(*ListTimelineResponse)(nil),              // 16: openmenses.v1.ListTimelineResponse
-	(*ListCyclesRequest)(nil),                 // 17: openmenses.v1.ListCyclesRequest
-	(*ListCyclesResponse)(nil),                // 18: openmenses.v1.ListCyclesResponse
-	(*ListPredictionsRequest)(nil),            // 19: openmenses.v1.ListPredictionsRequest
-	(*ListPredictionsResponse)(nil),           // 20: openmenses.v1.ListPredictionsResponse
-	(*ListInsightsRequest)(nil),               // 21: openmenses.v1.ListInsightsRequest
-	(*ListInsightsResponse)(nil),              // 22: openmenses.v1.ListInsightsResponse
-	(*ExportDataRequest)(nil),                 // 23: openmenses.v1.ExportDataRequest
-	(*ExportDataResponse)(nil),                // 24: openmenses.v1.ExportDataResponse
-	(*ImportDataRequest)(nil),                 // 25: openmenses.v1.ImportDataRequest
-	(*ImportDataResponse)(nil),                // 26: openmenses.v1.ImportDataResponse
-	(*UserProfile)(nil),                       // 27: openmenses.v1.UserProfile
-	(*BleedingObservation)(nil),               // 28: openmenses.v1.BleedingObservation
-	(*SymptomObservation)(nil),                // 29: openmenses.v1.SymptomObservation
-	(*MoodObservation)(nil),                   // 30: openmenses.v1.MoodObservation
-	(*Medication)(nil),                        // 31: openmenses.v1.Medication
-	(*MedicationEvent)(nil),                   // 32: openmenses.v1.MedicationEvent
-	(*DateRange)(nil),                         // 33: openmenses.v1.DateRange
-	(*PaginationRequest)(nil),                 // 34: openmenses.v1.PaginationRequest
-	(*Cycle)(nil),                             // 35: openmenses.v1.Cycle
-	(*PhaseEstimate)(nil),                     // 36: openmenses.v1.PhaseEstimate
-	(*Prediction)(nil),                        // 37: openmenses.v1.Prediction
-	(*Insight)(nil),                           // 38: openmenses.v1.Insight
-	(*PaginationResponse)(nil),                // 39: openmenses.v1.PaginationResponse
+	(*CreateUserProfileRequest)(nil),          // 2: openmenses.v1.CreateUserProfileRequest
+	(*CreateUserProfileResponse)(nil),         // 3: openmenses.v1.CreateUserProfileResponse
+	(*UpdateUserProfileRequest)(nil),          // 4: openmenses.v1.UpdateUserProfileRequest
+	(*UpdateUserProfileResponse)(nil),         // 5: openmenses.v1.UpdateUserProfileResponse
+	(*GetBleedingObservationRequest)(nil),     // 6: openmenses.v1.GetBleedingObservationRequest
+	(*GetBleedingObservationResponse)(nil),    // 7: openmenses.v1.GetBleedingObservationResponse
+	(*CreateBleedingObservationRequest)(nil),  // 8: openmenses.v1.CreateBleedingObservationRequest
+	(*CreateBleedingObservationResponse)(nil), // 9: openmenses.v1.CreateBleedingObservationResponse
+	(*UpdateBleedingObservationRequest)(nil),  // 10: openmenses.v1.UpdateBleedingObservationRequest
+	(*UpdateBleedingObservationResponse)(nil), // 11: openmenses.v1.UpdateBleedingObservationResponse
+	(*DeleteBleedingObservationRequest)(nil),  // 12: openmenses.v1.DeleteBleedingObservationRequest
+	(*DeleteBleedingObservationResponse)(nil), // 13: openmenses.v1.DeleteBleedingObservationResponse
+	(*ListBleedingObservationsRequest)(nil),   // 14: openmenses.v1.ListBleedingObservationsRequest
+	(*ListBleedingObservationsResponse)(nil),  // 15: openmenses.v1.ListBleedingObservationsResponse
+	(*GetSymptomObservationRequest)(nil),      // 16: openmenses.v1.GetSymptomObservationRequest
+	(*GetSymptomObservationResponse)(nil),     // 17: openmenses.v1.GetSymptomObservationResponse
+	(*CreateSymptomObservationRequest)(nil),   // 18: openmenses.v1.CreateSymptomObservationRequest
+	(*CreateSymptomObservationResponse)(nil),  // 19: openmenses.v1.CreateSymptomObservationResponse
+	(*UpdateSymptomObservationRequest)(nil),   // 20: openmenses.v1.UpdateSymptomObservationRequest
+	(*UpdateSymptomObservationResponse)(nil),  // 21: openmenses.v1.UpdateSymptomObservationResponse
+	(*DeleteSymptomObservationResponse)(nil),  // 22: openmenses.v1.DeleteSymptomObservationResponse
+	(*DeleteSymptomObservationRequest)(nil),   // 23: openmenses.v1.DeleteSymptomObservationRequest
+	(*ListSymptomObservationsRequest)(nil),    // 24: openmenses.v1.ListSymptomObservationsRequest
+	(*ListSymptomObservationsResponse)(nil),   // 25: openmenses.v1.ListSymptomObservationsResponse
+	(*GetMoodObservationRequest)(nil),         // 26: openmenses.v1.GetMoodObservationRequest
+	(*GetMoodObservationResponse)(nil),        // 27: openmenses.v1.GetMoodObservationResponse
+	(*CreateMoodObservationRequest)(nil),      // 28: openmenses.v1.CreateMoodObservationRequest
+	(*CreateMoodObservationResponse)(nil),     // 29: openmenses.v1.CreateMoodObservationResponse
+	(*UpdateMoodObservationRequest)(nil),      // 30: openmenses.v1.UpdateMoodObservationRequest
+	(*UpdateMoodObservationResponse)(nil),     // 31: openmenses.v1.UpdateMoodObservationResponse
+	(*DeleteMoodObservationResponse)(nil),     // 32: openmenses.v1.DeleteMoodObservationResponse
+	(*DeleteMoodObservationRequest)(nil),      // 33: openmenses.v1.DeleteMoodObservationRequest
+	(*ListMoodObservationsRequest)(nil),       // 34: openmenses.v1.ListMoodObservationsRequest
+	(*ListMoodObservationsResponse)(nil),      // 35: openmenses.v1.ListMoodObservationsResponse
+	(*GetMedicationRequest)(nil),              // 36: openmenses.v1.GetMedicationRequest
+	(*GetMedicationResponse)(nil),             // 37: openmenses.v1.GetMedicationResponse
+	(*CreateMedicationRequest)(nil),           // 38: openmenses.v1.CreateMedicationRequest
+	(*CreateMedicationResponse)(nil),          // 39: openmenses.v1.CreateMedicationResponse
+	(*UpdateMedicationRequest)(nil),           // 40: openmenses.v1.UpdateMedicationRequest
+	(*DeleteMedicationResponse)(nil),          // 41: openmenses.v1.DeleteMedicationResponse
+	(*UpdateMedicationResponse)(nil),          // 42: openmenses.v1.UpdateMedicationResponse
+	(*DeleteMedicationRequest)(nil),           // 43: openmenses.v1.DeleteMedicationRequest
+	(*ListMedicationsRequest)(nil),            // 44: openmenses.v1.ListMedicationsRequest
+	(*ListMedicationsResponse)(nil),           // 45: openmenses.v1.ListMedicationsResponse
+	(*GetMedicationEventRequest)(nil),         // 46: openmenses.v1.GetMedicationEventRequest
+	(*GetMedicationEventResponse)(nil),        // 47: openmenses.v1.GetMedicationEventResponse
+	(*CreateMedicationEventRequest)(nil),      // 48: openmenses.v1.CreateMedicationEventRequest
+	(*CreateMedicationEventResponse)(nil),     // 49: openmenses.v1.CreateMedicationEventResponse
+	(*UpdateMedicationEventRequest)(nil),      // 50: openmenses.v1.UpdateMedicationEventRequest
+	(*DeleteMedicationEventResponse)(nil),     // 51: openmenses.v1.DeleteMedicationEventResponse
+	(*UpdateMedicationEventResponse)(nil),     // 52: openmenses.v1.UpdateMedicationEventResponse
+	(*DeleteMedicationEventRequest)(nil),      // 53: openmenses.v1.DeleteMedicationEventRequest
+	(*ListMedicationEventsRequest)(nil),       // 54: openmenses.v1.ListMedicationEventsRequest
+	(*ListMedicationEventsResponse)(nil),      // 55: openmenses.v1.ListMedicationEventsResponse
+	(*ListTimelineRequest)(nil),               // 56: openmenses.v1.ListTimelineRequest
+	(*TimelineRecord)(nil),                    // 57: openmenses.v1.TimelineRecord
+	(*ListTimelineResponse)(nil),              // 58: openmenses.v1.ListTimelineResponse
+	(*GetCycleRequest)(nil),                   // 59: openmenses.v1.GetCycleRequest
+	(*GetCycleResponse)(nil),                  // 60: openmenses.v1.GetCycleResponse
+	(*ListCyclesRequest)(nil),                 // 61: openmenses.v1.ListCyclesRequest
+	(*ListCyclesResponse)(nil),                // 62: openmenses.v1.ListCyclesResponse
+	(*ListPredictionsRequest)(nil),            // 63: openmenses.v1.ListPredictionsRequest
+	(*ListPredictionsResponse)(nil),           // 64: openmenses.v1.ListPredictionsResponse
+	(*ListInsightsRequest)(nil),               // 65: openmenses.v1.ListInsightsRequest
+	(*ListInsightsResponse)(nil),              // 66: openmenses.v1.ListInsightsResponse
+	(*CreateDataExportRequest)(nil),           // 67: openmenses.v1.CreateDataExportRequest
+	(*CreateDataExportResponse)(nil),          // 68: openmenses.v1.CreateDataExportResponse
+	(*CreateDataImportRequest)(nil),           // 69: openmenses.v1.CreateDataImportRequest
+	(*CreateDataImportResponse)(nil),          // 70: openmenses.v1.CreateDataImportResponse
+	(*UserProfile)(nil),                       // 71: openmenses.v1.UserProfile
+	(*fieldmaskpb.FieldMask)(nil),             // 72: google.protobuf.FieldMask
+	(*BleedingObservation)(nil),               // 73: openmenses.v1.BleedingObservation
+	(*PaginationRequest)(nil),                 // 74: openmenses.v1.PaginationRequest
+	(*PaginationResponse)(nil),                // 75: openmenses.v1.PaginationResponse
+	(*SymptomObservation)(nil),                // 76: openmenses.v1.SymptomObservation
+	(*MoodObservation)(nil),                   // 77: openmenses.v1.MoodObservation
+	(*Medication)(nil),                        // 78: openmenses.v1.Medication
+	(*MedicationEvent)(nil),                   // 79: openmenses.v1.MedicationEvent
+	(*DateRange)(nil),                         // 80: openmenses.v1.DateRange
+	(*Cycle)(nil),                             // 81: openmenses.v1.Cycle
+	(*PhaseEstimate)(nil),                     // 82: openmenses.v1.PhaseEstimate
+	(*Prediction)(nil),                        // 83: openmenses.v1.Prediction
+	(*Insight)(nil),                           // 84: openmenses.v1.Insight
 }
 var file_openmenses_v1_service_proto_depIdxs = []int32{
-	27, // 0: openmenses.v1.GetUserProfileResponse.profile:type_name -> openmenses.v1.UserProfile
-	27, // 1: openmenses.v1.UpsertUserProfileRequest.profile:type_name -> openmenses.v1.UserProfile
-	27, // 2: openmenses.v1.UpsertUserProfileResponse.profile:type_name -> openmenses.v1.UserProfile
-	28, // 3: openmenses.v1.CreateBleedingObservationRequest.observation:type_name -> openmenses.v1.BleedingObservation
-	28, // 4: openmenses.v1.CreateBleedingObservationResponse.observation:type_name -> openmenses.v1.BleedingObservation
-	29, // 5: openmenses.v1.CreateSymptomObservationRequest.observation:type_name -> openmenses.v1.SymptomObservation
-	29, // 6: openmenses.v1.CreateSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
-	30, // 7: openmenses.v1.CreateMoodObservationRequest.observation:type_name -> openmenses.v1.MoodObservation
-	30, // 8: openmenses.v1.CreateMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
-	31, // 9: openmenses.v1.CreateMedicationRequest.medication:type_name -> openmenses.v1.Medication
-	31, // 10: openmenses.v1.CreateMedicationResponse.medication:type_name -> openmenses.v1.Medication
-	32, // 11: openmenses.v1.CreateMedicationEventRequest.event:type_name -> openmenses.v1.MedicationEvent
-	32, // 12: openmenses.v1.CreateMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
-	33, // 13: openmenses.v1.ListTimelineRequest.range:type_name -> openmenses.v1.DateRange
-	34, // 14: openmenses.v1.ListTimelineRequest.pagination:type_name -> openmenses.v1.PaginationRequest
-	28, // 15: openmenses.v1.TimelineRecord.bleeding_observation:type_name -> openmenses.v1.BleedingObservation
-	29, // 16: openmenses.v1.TimelineRecord.symptom_observation:type_name -> openmenses.v1.SymptomObservation
-	30, // 17: openmenses.v1.TimelineRecord.mood_observation:type_name -> openmenses.v1.MoodObservation
-	31, // 18: openmenses.v1.TimelineRecord.medication:type_name -> openmenses.v1.Medication
-	32, // 19: openmenses.v1.TimelineRecord.medication_event:type_name -> openmenses.v1.MedicationEvent
-	35, // 20: openmenses.v1.TimelineRecord.cycle:type_name -> openmenses.v1.Cycle
-	36, // 21: openmenses.v1.TimelineRecord.phase_estimate:type_name -> openmenses.v1.PhaseEstimate
-	37, // 22: openmenses.v1.TimelineRecord.prediction:type_name -> openmenses.v1.Prediction
-	38, // 23: openmenses.v1.TimelineRecord.insight:type_name -> openmenses.v1.Insight
-	15, // 24: openmenses.v1.ListTimelineResponse.records:type_name -> openmenses.v1.TimelineRecord
-	39, // 25: openmenses.v1.ListTimelineResponse.pagination:type_name -> openmenses.v1.PaginationResponse
-	35, // 26: openmenses.v1.ListCyclesResponse.cycles:type_name -> openmenses.v1.Cycle
-	37, // 27: openmenses.v1.ListPredictionsResponse.predictions:type_name -> openmenses.v1.Prediction
-	38, // 28: openmenses.v1.ListInsightsResponse.insights:type_name -> openmenses.v1.Insight
-	0,  // 29: openmenses.v1.CycleTrackerService.GetUserProfile:input_type -> openmenses.v1.GetUserProfileRequest
-	2,  // 30: openmenses.v1.CycleTrackerService.UpsertUserProfile:input_type -> openmenses.v1.UpsertUserProfileRequest
-	4,  // 31: openmenses.v1.CycleTrackerService.CreateBleedingObservation:input_type -> openmenses.v1.CreateBleedingObservationRequest
-	6,  // 32: openmenses.v1.CycleTrackerService.CreateSymptomObservation:input_type -> openmenses.v1.CreateSymptomObservationRequest
-	8,  // 33: openmenses.v1.CycleTrackerService.CreateMoodObservation:input_type -> openmenses.v1.CreateMoodObservationRequest
-	10, // 34: openmenses.v1.CycleTrackerService.CreateMedication:input_type -> openmenses.v1.CreateMedicationRequest
-	12, // 35: openmenses.v1.CycleTrackerService.CreateMedicationEvent:input_type -> openmenses.v1.CreateMedicationEventRequest
-	14, // 36: openmenses.v1.CycleTrackerService.ListTimeline:input_type -> openmenses.v1.ListTimelineRequest
-	17, // 37: openmenses.v1.CycleTrackerService.ListCycles:input_type -> openmenses.v1.ListCyclesRequest
-	19, // 38: openmenses.v1.CycleTrackerService.ListPredictions:input_type -> openmenses.v1.ListPredictionsRequest
-	21, // 39: openmenses.v1.CycleTrackerService.ListInsights:input_type -> openmenses.v1.ListInsightsRequest
-	23, // 40: openmenses.v1.CycleTrackerService.ExportData:input_type -> openmenses.v1.ExportDataRequest
-	25, // 41: openmenses.v1.CycleTrackerService.ImportData:input_type -> openmenses.v1.ImportDataRequest
-	1,  // 42: openmenses.v1.CycleTrackerService.GetUserProfile:output_type -> openmenses.v1.GetUserProfileResponse
-	3,  // 43: openmenses.v1.CycleTrackerService.UpsertUserProfile:output_type -> openmenses.v1.UpsertUserProfileResponse
-	5,  // 44: openmenses.v1.CycleTrackerService.CreateBleedingObservation:output_type -> openmenses.v1.CreateBleedingObservationResponse
-	7,  // 45: openmenses.v1.CycleTrackerService.CreateSymptomObservation:output_type -> openmenses.v1.CreateSymptomObservationResponse
-	9,  // 46: openmenses.v1.CycleTrackerService.CreateMoodObservation:output_type -> openmenses.v1.CreateMoodObservationResponse
-	11, // 47: openmenses.v1.CycleTrackerService.CreateMedication:output_type -> openmenses.v1.CreateMedicationResponse
-	13, // 48: openmenses.v1.CycleTrackerService.CreateMedicationEvent:output_type -> openmenses.v1.CreateMedicationEventResponse
-	16, // 49: openmenses.v1.CycleTrackerService.ListTimeline:output_type -> openmenses.v1.ListTimelineResponse
-	18, // 50: openmenses.v1.CycleTrackerService.ListCycles:output_type -> openmenses.v1.ListCyclesResponse
-	20, // 51: openmenses.v1.CycleTrackerService.ListPredictions:output_type -> openmenses.v1.ListPredictionsResponse
-	22, // 52: openmenses.v1.CycleTrackerService.ListInsights:output_type -> openmenses.v1.ListInsightsResponse
-	24, // 53: openmenses.v1.CycleTrackerService.ExportData:output_type -> openmenses.v1.ExportDataResponse
-	26, // 54: openmenses.v1.CycleTrackerService.ImportData:output_type -> openmenses.v1.ImportDataResponse
-	42, // [42:55] is the sub-list for method output_type
-	29, // [29:42] is the sub-list for method input_type
-	29, // [29:29] is the sub-list for extension type_name
-	29, // [29:29] is the sub-list for extension extendee
-	0,  // [0:29] is the sub-list for field type_name
+	71,  // 0: openmenses.v1.GetUserProfileResponse.profile:type_name -> openmenses.v1.UserProfile
+	71,  // 1: openmenses.v1.CreateUserProfileRequest.profile:type_name -> openmenses.v1.UserProfile
+	71,  // 2: openmenses.v1.CreateUserProfileResponse.profile:type_name -> openmenses.v1.UserProfile
+	71,  // 3: openmenses.v1.UpdateUserProfileRequest.profile:type_name -> openmenses.v1.UserProfile
+	72,  // 4: openmenses.v1.UpdateUserProfileRequest.update_mask:type_name -> google.protobuf.FieldMask
+	71,  // 5: openmenses.v1.UpdateUserProfileResponse.profile:type_name -> openmenses.v1.UserProfile
+	73,  // 6: openmenses.v1.GetBleedingObservationResponse.observation:type_name -> openmenses.v1.BleedingObservation
+	73,  // 7: openmenses.v1.CreateBleedingObservationRequest.observation:type_name -> openmenses.v1.BleedingObservation
+	73,  // 8: openmenses.v1.CreateBleedingObservationResponse.observation:type_name -> openmenses.v1.BleedingObservation
+	73,  // 9: openmenses.v1.UpdateBleedingObservationRequest.observation:type_name -> openmenses.v1.BleedingObservation
+	72,  // 10: openmenses.v1.UpdateBleedingObservationRequest.update_mask:type_name -> google.protobuf.FieldMask
+	73,  // 11: openmenses.v1.UpdateBleedingObservationResponse.observation:type_name -> openmenses.v1.BleedingObservation
+	73,  // 12: openmenses.v1.DeleteBleedingObservationResponse.observation:type_name -> openmenses.v1.BleedingObservation
+	74,  // 13: openmenses.v1.ListBleedingObservationsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	73,  // 14: openmenses.v1.ListBleedingObservationsResponse.observations:type_name -> openmenses.v1.BleedingObservation
+	75,  // 15: openmenses.v1.ListBleedingObservationsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	76,  // 16: openmenses.v1.GetSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
+	76,  // 17: openmenses.v1.CreateSymptomObservationRequest.observation:type_name -> openmenses.v1.SymptomObservation
+	76,  // 18: openmenses.v1.CreateSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
+	76,  // 19: openmenses.v1.UpdateSymptomObservationRequest.observation:type_name -> openmenses.v1.SymptomObservation
+	72,  // 20: openmenses.v1.UpdateSymptomObservationRequest.update_mask:type_name -> google.protobuf.FieldMask
+	76,  // 21: openmenses.v1.UpdateSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
+	76,  // 22: openmenses.v1.DeleteSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
+	74,  // 23: openmenses.v1.ListSymptomObservationsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	76,  // 24: openmenses.v1.ListSymptomObservationsResponse.observations:type_name -> openmenses.v1.SymptomObservation
+	75,  // 25: openmenses.v1.ListSymptomObservationsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	77,  // 26: openmenses.v1.GetMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
+	77,  // 27: openmenses.v1.CreateMoodObservationRequest.observation:type_name -> openmenses.v1.MoodObservation
+	77,  // 28: openmenses.v1.CreateMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
+	77,  // 29: openmenses.v1.UpdateMoodObservationRequest.observation:type_name -> openmenses.v1.MoodObservation
+	72,  // 30: openmenses.v1.UpdateMoodObservationRequest.update_mask:type_name -> google.protobuf.FieldMask
+	77,  // 31: openmenses.v1.UpdateMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
+	77,  // 32: openmenses.v1.DeleteMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
+	74,  // 33: openmenses.v1.ListMoodObservationsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	77,  // 34: openmenses.v1.ListMoodObservationsResponse.observations:type_name -> openmenses.v1.MoodObservation
+	75,  // 35: openmenses.v1.ListMoodObservationsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	78,  // 36: openmenses.v1.GetMedicationResponse.medication:type_name -> openmenses.v1.Medication
+	78,  // 37: openmenses.v1.CreateMedicationRequest.medication:type_name -> openmenses.v1.Medication
+	78,  // 38: openmenses.v1.CreateMedicationResponse.medication:type_name -> openmenses.v1.Medication
+	78,  // 39: openmenses.v1.UpdateMedicationRequest.medication:type_name -> openmenses.v1.Medication
+	72,  // 40: openmenses.v1.UpdateMedicationRequest.update_mask:type_name -> google.protobuf.FieldMask
+	78,  // 41: openmenses.v1.DeleteMedicationResponse.medication:type_name -> openmenses.v1.Medication
+	78,  // 42: openmenses.v1.UpdateMedicationResponse.medication:type_name -> openmenses.v1.Medication
+	74,  // 43: openmenses.v1.ListMedicationsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	78,  // 44: openmenses.v1.ListMedicationsResponse.medications:type_name -> openmenses.v1.Medication
+	75,  // 45: openmenses.v1.ListMedicationsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	79,  // 46: openmenses.v1.GetMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
+	79,  // 47: openmenses.v1.CreateMedicationEventRequest.event:type_name -> openmenses.v1.MedicationEvent
+	79,  // 48: openmenses.v1.CreateMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
+	79,  // 49: openmenses.v1.UpdateMedicationEventRequest.event:type_name -> openmenses.v1.MedicationEvent
+	72,  // 50: openmenses.v1.UpdateMedicationEventRequest.update_mask:type_name -> google.protobuf.FieldMask
+	79,  // 51: openmenses.v1.DeleteMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
+	79,  // 52: openmenses.v1.UpdateMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
+	74,  // 53: openmenses.v1.ListMedicationEventsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	79,  // 54: openmenses.v1.ListMedicationEventsResponse.events:type_name -> openmenses.v1.MedicationEvent
+	75,  // 55: openmenses.v1.ListMedicationEventsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	80,  // 56: openmenses.v1.ListTimelineRequest.range:type_name -> openmenses.v1.DateRange
+	74,  // 57: openmenses.v1.ListTimelineRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	73,  // 58: openmenses.v1.TimelineRecord.bleeding_observation:type_name -> openmenses.v1.BleedingObservation
+	76,  // 59: openmenses.v1.TimelineRecord.symptom_observation:type_name -> openmenses.v1.SymptomObservation
+	77,  // 60: openmenses.v1.TimelineRecord.mood_observation:type_name -> openmenses.v1.MoodObservation
+	78,  // 61: openmenses.v1.TimelineRecord.medication:type_name -> openmenses.v1.Medication
+	79,  // 62: openmenses.v1.TimelineRecord.medication_event:type_name -> openmenses.v1.MedicationEvent
+	81,  // 63: openmenses.v1.TimelineRecord.cycle:type_name -> openmenses.v1.Cycle
+	82,  // 64: openmenses.v1.TimelineRecord.phase_estimate:type_name -> openmenses.v1.PhaseEstimate
+	83,  // 65: openmenses.v1.TimelineRecord.prediction:type_name -> openmenses.v1.Prediction
+	84,  // 66: openmenses.v1.TimelineRecord.insight:type_name -> openmenses.v1.Insight
+	57,  // 67: openmenses.v1.ListTimelineResponse.records:type_name -> openmenses.v1.TimelineRecord
+	75,  // 68: openmenses.v1.ListTimelineResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	81,  // 69: openmenses.v1.GetCycleResponse.cycle:type_name -> openmenses.v1.Cycle
+	74,  // 70: openmenses.v1.ListCyclesRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	81,  // 71: openmenses.v1.ListCyclesResponse.cycles:type_name -> openmenses.v1.Cycle
+	75,  // 72: openmenses.v1.ListCyclesResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	74,  // 73: openmenses.v1.ListPredictionsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	83,  // 74: openmenses.v1.ListPredictionsResponse.predictions:type_name -> openmenses.v1.Prediction
+	75,  // 75: openmenses.v1.ListPredictionsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	74,  // 76: openmenses.v1.ListInsightsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	84,  // 77: openmenses.v1.ListInsightsResponse.insights:type_name -> openmenses.v1.Insight
+	75,  // 78: openmenses.v1.ListInsightsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	0,   // 79: openmenses.v1.CycleTrackerService.GetUserProfile:input_type -> openmenses.v1.GetUserProfileRequest
+	2,   // 80: openmenses.v1.CycleTrackerService.CreateUserProfile:input_type -> openmenses.v1.CreateUserProfileRequest
+	4,   // 81: openmenses.v1.CycleTrackerService.UpdateUserProfile:input_type -> openmenses.v1.UpdateUserProfileRequest
+	6,   // 82: openmenses.v1.CycleTrackerService.GetBleedingObservation:input_type -> openmenses.v1.GetBleedingObservationRequest
+	8,   // 83: openmenses.v1.CycleTrackerService.CreateBleedingObservation:input_type -> openmenses.v1.CreateBleedingObservationRequest
+	10,  // 84: openmenses.v1.CycleTrackerService.UpdateBleedingObservation:input_type -> openmenses.v1.UpdateBleedingObservationRequest
+	12,  // 85: openmenses.v1.CycleTrackerService.DeleteBleedingObservation:input_type -> openmenses.v1.DeleteBleedingObservationRequest
+	14,  // 86: openmenses.v1.CycleTrackerService.ListBleedingObservations:input_type -> openmenses.v1.ListBleedingObservationsRequest
+	16,  // 87: openmenses.v1.CycleTrackerService.GetSymptomObservation:input_type -> openmenses.v1.GetSymptomObservationRequest
+	18,  // 88: openmenses.v1.CycleTrackerService.CreateSymptomObservation:input_type -> openmenses.v1.CreateSymptomObservationRequest
+	20,  // 89: openmenses.v1.CycleTrackerService.UpdateSymptomObservation:input_type -> openmenses.v1.UpdateSymptomObservationRequest
+	23,  // 90: openmenses.v1.CycleTrackerService.DeleteSymptomObservation:input_type -> openmenses.v1.DeleteSymptomObservationRequest
+	24,  // 91: openmenses.v1.CycleTrackerService.ListSymptomObservations:input_type -> openmenses.v1.ListSymptomObservationsRequest
+	26,  // 92: openmenses.v1.CycleTrackerService.GetMoodObservation:input_type -> openmenses.v1.GetMoodObservationRequest
+	28,  // 93: openmenses.v1.CycleTrackerService.CreateMoodObservation:input_type -> openmenses.v1.CreateMoodObservationRequest
+	30,  // 94: openmenses.v1.CycleTrackerService.UpdateMoodObservation:input_type -> openmenses.v1.UpdateMoodObservationRequest
+	33,  // 95: openmenses.v1.CycleTrackerService.DeleteMoodObservation:input_type -> openmenses.v1.DeleteMoodObservationRequest
+	34,  // 96: openmenses.v1.CycleTrackerService.ListMoodObservations:input_type -> openmenses.v1.ListMoodObservationsRequest
+	36,  // 97: openmenses.v1.CycleTrackerService.GetMedication:input_type -> openmenses.v1.GetMedicationRequest
+	38,  // 98: openmenses.v1.CycleTrackerService.CreateMedication:input_type -> openmenses.v1.CreateMedicationRequest
+	40,  // 99: openmenses.v1.CycleTrackerService.UpdateMedication:input_type -> openmenses.v1.UpdateMedicationRequest
+	43,  // 100: openmenses.v1.CycleTrackerService.DeleteMedication:input_type -> openmenses.v1.DeleteMedicationRequest
+	44,  // 101: openmenses.v1.CycleTrackerService.ListMedications:input_type -> openmenses.v1.ListMedicationsRequest
+	46,  // 102: openmenses.v1.CycleTrackerService.GetMedicationEvent:input_type -> openmenses.v1.GetMedicationEventRequest
+	48,  // 103: openmenses.v1.CycleTrackerService.CreateMedicationEvent:input_type -> openmenses.v1.CreateMedicationEventRequest
+	50,  // 104: openmenses.v1.CycleTrackerService.UpdateMedicationEvent:input_type -> openmenses.v1.UpdateMedicationEventRequest
+	53,  // 105: openmenses.v1.CycleTrackerService.DeleteMedicationEvent:input_type -> openmenses.v1.DeleteMedicationEventRequest
+	54,  // 106: openmenses.v1.CycleTrackerService.ListMedicationEvents:input_type -> openmenses.v1.ListMedicationEventsRequest
+	56,  // 107: openmenses.v1.CycleTrackerService.ListTimeline:input_type -> openmenses.v1.ListTimelineRequest
+	59,  // 108: openmenses.v1.CycleTrackerService.GetCycle:input_type -> openmenses.v1.GetCycleRequest
+	61,  // 109: openmenses.v1.CycleTrackerService.ListCycles:input_type -> openmenses.v1.ListCyclesRequest
+	63,  // 110: openmenses.v1.CycleTrackerService.ListPredictions:input_type -> openmenses.v1.ListPredictionsRequest
+	65,  // 111: openmenses.v1.CycleTrackerService.ListInsights:input_type -> openmenses.v1.ListInsightsRequest
+	67,  // 112: openmenses.v1.CycleTrackerService.CreateDataExport:input_type -> openmenses.v1.CreateDataExportRequest
+	69,  // 113: openmenses.v1.CycleTrackerService.CreateDataImport:input_type -> openmenses.v1.CreateDataImportRequest
+	1,   // 114: openmenses.v1.CycleTrackerService.GetUserProfile:output_type -> openmenses.v1.GetUserProfileResponse
+	3,   // 115: openmenses.v1.CycleTrackerService.CreateUserProfile:output_type -> openmenses.v1.CreateUserProfileResponse
+	5,   // 116: openmenses.v1.CycleTrackerService.UpdateUserProfile:output_type -> openmenses.v1.UpdateUserProfileResponse
+	7,   // 117: openmenses.v1.CycleTrackerService.GetBleedingObservation:output_type -> openmenses.v1.GetBleedingObservationResponse
+	9,   // 118: openmenses.v1.CycleTrackerService.CreateBleedingObservation:output_type -> openmenses.v1.CreateBleedingObservationResponse
+	11,  // 119: openmenses.v1.CycleTrackerService.UpdateBleedingObservation:output_type -> openmenses.v1.UpdateBleedingObservationResponse
+	13,  // 120: openmenses.v1.CycleTrackerService.DeleteBleedingObservation:output_type -> openmenses.v1.DeleteBleedingObservationResponse
+	15,  // 121: openmenses.v1.CycleTrackerService.ListBleedingObservations:output_type -> openmenses.v1.ListBleedingObservationsResponse
+	17,  // 122: openmenses.v1.CycleTrackerService.GetSymptomObservation:output_type -> openmenses.v1.GetSymptomObservationResponse
+	19,  // 123: openmenses.v1.CycleTrackerService.CreateSymptomObservation:output_type -> openmenses.v1.CreateSymptomObservationResponse
+	21,  // 124: openmenses.v1.CycleTrackerService.UpdateSymptomObservation:output_type -> openmenses.v1.UpdateSymptomObservationResponse
+	22,  // 125: openmenses.v1.CycleTrackerService.DeleteSymptomObservation:output_type -> openmenses.v1.DeleteSymptomObservationResponse
+	25,  // 126: openmenses.v1.CycleTrackerService.ListSymptomObservations:output_type -> openmenses.v1.ListSymptomObservationsResponse
+	27,  // 127: openmenses.v1.CycleTrackerService.GetMoodObservation:output_type -> openmenses.v1.GetMoodObservationResponse
+	29,  // 128: openmenses.v1.CycleTrackerService.CreateMoodObservation:output_type -> openmenses.v1.CreateMoodObservationResponse
+	31,  // 129: openmenses.v1.CycleTrackerService.UpdateMoodObservation:output_type -> openmenses.v1.UpdateMoodObservationResponse
+	32,  // 130: openmenses.v1.CycleTrackerService.DeleteMoodObservation:output_type -> openmenses.v1.DeleteMoodObservationResponse
+	35,  // 131: openmenses.v1.CycleTrackerService.ListMoodObservations:output_type -> openmenses.v1.ListMoodObservationsResponse
+	37,  // 132: openmenses.v1.CycleTrackerService.GetMedication:output_type -> openmenses.v1.GetMedicationResponse
+	39,  // 133: openmenses.v1.CycleTrackerService.CreateMedication:output_type -> openmenses.v1.CreateMedicationResponse
+	42,  // 134: openmenses.v1.CycleTrackerService.UpdateMedication:output_type -> openmenses.v1.UpdateMedicationResponse
+	41,  // 135: openmenses.v1.CycleTrackerService.DeleteMedication:output_type -> openmenses.v1.DeleteMedicationResponse
+	45,  // 136: openmenses.v1.CycleTrackerService.ListMedications:output_type -> openmenses.v1.ListMedicationsResponse
+	47,  // 137: openmenses.v1.CycleTrackerService.GetMedicationEvent:output_type -> openmenses.v1.GetMedicationEventResponse
+	49,  // 138: openmenses.v1.CycleTrackerService.CreateMedicationEvent:output_type -> openmenses.v1.CreateMedicationEventResponse
+	52,  // 139: openmenses.v1.CycleTrackerService.UpdateMedicationEvent:output_type -> openmenses.v1.UpdateMedicationEventResponse
+	51,  // 140: openmenses.v1.CycleTrackerService.DeleteMedicationEvent:output_type -> openmenses.v1.DeleteMedicationEventResponse
+	55,  // 141: openmenses.v1.CycleTrackerService.ListMedicationEvents:output_type -> openmenses.v1.ListMedicationEventsResponse
+	58,  // 142: openmenses.v1.CycleTrackerService.ListTimeline:output_type -> openmenses.v1.ListTimelineResponse
+	60,  // 143: openmenses.v1.CycleTrackerService.GetCycle:output_type -> openmenses.v1.GetCycleResponse
+	62,  // 144: openmenses.v1.CycleTrackerService.ListCycles:output_type -> openmenses.v1.ListCyclesResponse
+	64,  // 145: openmenses.v1.CycleTrackerService.ListPredictions:output_type -> openmenses.v1.ListPredictionsResponse
+	66,  // 146: openmenses.v1.CycleTrackerService.ListInsights:output_type -> openmenses.v1.ListInsightsResponse
+	68,  // 147: openmenses.v1.CycleTrackerService.CreateDataExport:output_type -> openmenses.v1.CreateDataExportResponse
+	70,  // 148: openmenses.v1.CycleTrackerService.CreateDataImport:output_type -> openmenses.v1.CreateDataImportResponse
+	114, // [114:149] is the sub-list for method output_type
+	79,  // [79:114] is the sub-list for method input_type
+	79,  // [79:79] is the sub-list for extension type_name
+	79,  // [79:79] is the sub-list for extension extendee
+	0,   // [0:79] is the sub-list for field type_name
 }
 
 func init() { file_openmenses_v1_service_proto_init() }
@@ -1656,7 +4085,7 @@ func file_openmenses_v1_service_proto_init() {
 	}
 	file_openmenses_v1_model_proto_init()
 	file_openmenses_v1_types_proto_init()
-	file_openmenses_v1_service_proto_msgTypes[15].OneofWrappers = []any{
+	file_openmenses_v1_service_proto_msgTypes[57].OneofWrappers = []any{
 		(*TimelineRecord_BleedingObservation)(nil),
 		(*TimelineRecord_SymptomObservation)(nil),
 		(*TimelineRecord_MoodObservation)(nil),
@@ -1673,7 +4102,7 @@ func file_openmenses_v1_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_openmenses_v1_service_proto_rawDesc), len(file_openmenses_v1_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   27,
+			NumMessages:   71,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

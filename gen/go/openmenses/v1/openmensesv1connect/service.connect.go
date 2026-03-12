@@ -36,27 +36,93 @@ const (
 	// CycleTrackerServiceGetUserProfileProcedure is the fully-qualified name of the
 	// CycleTrackerService's GetUserProfile RPC.
 	CycleTrackerServiceGetUserProfileProcedure = "/openmenses.v1.CycleTrackerService/GetUserProfile"
-	// CycleTrackerServiceUpsertUserProfileProcedure is the fully-qualified name of the
-	// CycleTrackerService's UpsertUserProfile RPC.
-	CycleTrackerServiceUpsertUserProfileProcedure = "/openmenses.v1.CycleTrackerService/UpsertUserProfile"
+	// CycleTrackerServiceCreateUserProfileProcedure is the fully-qualified name of the
+	// CycleTrackerService's CreateUserProfile RPC.
+	CycleTrackerServiceCreateUserProfileProcedure = "/openmenses.v1.CycleTrackerService/CreateUserProfile"
+	// CycleTrackerServiceUpdateUserProfileProcedure is the fully-qualified name of the
+	// CycleTrackerService's UpdateUserProfile RPC.
+	CycleTrackerServiceUpdateUserProfileProcedure = "/openmenses.v1.CycleTrackerService/UpdateUserProfile"
+	// CycleTrackerServiceGetBleedingObservationProcedure is the fully-qualified name of the
+	// CycleTrackerService's GetBleedingObservation RPC.
+	CycleTrackerServiceGetBleedingObservationProcedure = "/openmenses.v1.CycleTrackerService/GetBleedingObservation"
 	// CycleTrackerServiceCreateBleedingObservationProcedure is the fully-qualified name of the
 	// CycleTrackerService's CreateBleedingObservation RPC.
 	CycleTrackerServiceCreateBleedingObservationProcedure = "/openmenses.v1.CycleTrackerService/CreateBleedingObservation"
+	// CycleTrackerServiceUpdateBleedingObservationProcedure is the fully-qualified name of the
+	// CycleTrackerService's UpdateBleedingObservation RPC.
+	CycleTrackerServiceUpdateBleedingObservationProcedure = "/openmenses.v1.CycleTrackerService/UpdateBleedingObservation"
+	// CycleTrackerServiceDeleteBleedingObservationProcedure is the fully-qualified name of the
+	// CycleTrackerService's DeleteBleedingObservation RPC.
+	CycleTrackerServiceDeleteBleedingObservationProcedure = "/openmenses.v1.CycleTrackerService/DeleteBleedingObservation"
+	// CycleTrackerServiceListBleedingObservationsProcedure is the fully-qualified name of the
+	// CycleTrackerService's ListBleedingObservations RPC.
+	CycleTrackerServiceListBleedingObservationsProcedure = "/openmenses.v1.CycleTrackerService/ListBleedingObservations"
+	// CycleTrackerServiceGetSymptomObservationProcedure is the fully-qualified name of the
+	// CycleTrackerService's GetSymptomObservation RPC.
+	CycleTrackerServiceGetSymptomObservationProcedure = "/openmenses.v1.CycleTrackerService/GetSymptomObservation"
 	// CycleTrackerServiceCreateSymptomObservationProcedure is the fully-qualified name of the
 	// CycleTrackerService's CreateSymptomObservation RPC.
 	CycleTrackerServiceCreateSymptomObservationProcedure = "/openmenses.v1.CycleTrackerService/CreateSymptomObservation"
+	// CycleTrackerServiceUpdateSymptomObservationProcedure is the fully-qualified name of the
+	// CycleTrackerService's UpdateSymptomObservation RPC.
+	CycleTrackerServiceUpdateSymptomObservationProcedure = "/openmenses.v1.CycleTrackerService/UpdateSymptomObservation"
+	// CycleTrackerServiceDeleteSymptomObservationProcedure is the fully-qualified name of the
+	// CycleTrackerService's DeleteSymptomObservation RPC.
+	CycleTrackerServiceDeleteSymptomObservationProcedure = "/openmenses.v1.CycleTrackerService/DeleteSymptomObservation"
+	// CycleTrackerServiceListSymptomObservationsProcedure is the fully-qualified name of the
+	// CycleTrackerService's ListSymptomObservations RPC.
+	CycleTrackerServiceListSymptomObservationsProcedure = "/openmenses.v1.CycleTrackerService/ListSymptomObservations"
+	// CycleTrackerServiceGetMoodObservationProcedure is the fully-qualified name of the
+	// CycleTrackerService's GetMoodObservation RPC.
+	CycleTrackerServiceGetMoodObservationProcedure = "/openmenses.v1.CycleTrackerService/GetMoodObservation"
 	// CycleTrackerServiceCreateMoodObservationProcedure is the fully-qualified name of the
 	// CycleTrackerService's CreateMoodObservation RPC.
 	CycleTrackerServiceCreateMoodObservationProcedure = "/openmenses.v1.CycleTrackerService/CreateMoodObservation"
+	// CycleTrackerServiceUpdateMoodObservationProcedure is the fully-qualified name of the
+	// CycleTrackerService's UpdateMoodObservation RPC.
+	CycleTrackerServiceUpdateMoodObservationProcedure = "/openmenses.v1.CycleTrackerService/UpdateMoodObservation"
+	// CycleTrackerServiceDeleteMoodObservationProcedure is the fully-qualified name of the
+	// CycleTrackerService's DeleteMoodObservation RPC.
+	CycleTrackerServiceDeleteMoodObservationProcedure = "/openmenses.v1.CycleTrackerService/DeleteMoodObservation"
+	// CycleTrackerServiceListMoodObservationsProcedure is the fully-qualified name of the
+	// CycleTrackerService's ListMoodObservations RPC.
+	CycleTrackerServiceListMoodObservationsProcedure = "/openmenses.v1.CycleTrackerService/ListMoodObservations"
+	// CycleTrackerServiceGetMedicationProcedure is the fully-qualified name of the
+	// CycleTrackerService's GetMedication RPC.
+	CycleTrackerServiceGetMedicationProcedure = "/openmenses.v1.CycleTrackerService/GetMedication"
 	// CycleTrackerServiceCreateMedicationProcedure is the fully-qualified name of the
 	// CycleTrackerService's CreateMedication RPC.
 	CycleTrackerServiceCreateMedicationProcedure = "/openmenses.v1.CycleTrackerService/CreateMedication"
+	// CycleTrackerServiceUpdateMedicationProcedure is the fully-qualified name of the
+	// CycleTrackerService's UpdateMedication RPC.
+	CycleTrackerServiceUpdateMedicationProcedure = "/openmenses.v1.CycleTrackerService/UpdateMedication"
+	// CycleTrackerServiceDeleteMedicationProcedure is the fully-qualified name of the
+	// CycleTrackerService's DeleteMedication RPC.
+	CycleTrackerServiceDeleteMedicationProcedure = "/openmenses.v1.CycleTrackerService/DeleteMedication"
+	// CycleTrackerServiceListMedicationsProcedure is the fully-qualified name of the
+	// CycleTrackerService's ListMedications RPC.
+	CycleTrackerServiceListMedicationsProcedure = "/openmenses.v1.CycleTrackerService/ListMedications"
+	// CycleTrackerServiceGetMedicationEventProcedure is the fully-qualified name of the
+	// CycleTrackerService's GetMedicationEvent RPC.
+	CycleTrackerServiceGetMedicationEventProcedure = "/openmenses.v1.CycleTrackerService/GetMedicationEvent"
 	// CycleTrackerServiceCreateMedicationEventProcedure is the fully-qualified name of the
 	// CycleTrackerService's CreateMedicationEvent RPC.
 	CycleTrackerServiceCreateMedicationEventProcedure = "/openmenses.v1.CycleTrackerService/CreateMedicationEvent"
+	// CycleTrackerServiceUpdateMedicationEventProcedure is the fully-qualified name of the
+	// CycleTrackerService's UpdateMedicationEvent RPC.
+	CycleTrackerServiceUpdateMedicationEventProcedure = "/openmenses.v1.CycleTrackerService/UpdateMedicationEvent"
+	// CycleTrackerServiceDeleteMedicationEventProcedure is the fully-qualified name of the
+	// CycleTrackerService's DeleteMedicationEvent RPC.
+	CycleTrackerServiceDeleteMedicationEventProcedure = "/openmenses.v1.CycleTrackerService/DeleteMedicationEvent"
+	// CycleTrackerServiceListMedicationEventsProcedure is the fully-qualified name of the
+	// CycleTrackerService's ListMedicationEvents RPC.
+	CycleTrackerServiceListMedicationEventsProcedure = "/openmenses.v1.CycleTrackerService/ListMedicationEvents"
 	// CycleTrackerServiceListTimelineProcedure is the fully-qualified name of the CycleTrackerService's
 	// ListTimeline RPC.
 	CycleTrackerServiceListTimelineProcedure = "/openmenses.v1.CycleTrackerService/ListTimeline"
+	// CycleTrackerServiceGetCycleProcedure is the fully-qualified name of the CycleTrackerService's
+	// GetCycle RPC.
+	CycleTrackerServiceGetCycleProcedure = "/openmenses.v1.CycleTrackerService/GetCycle"
 	// CycleTrackerServiceListCyclesProcedure is the fully-qualified name of the CycleTrackerService's
 	// ListCycles RPC.
 	CycleTrackerServiceListCyclesProcedure = "/openmenses.v1.CycleTrackerService/ListCycles"
@@ -66,29 +132,51 @@ const (
 	// CycleTrackerServiceListInsightsProcedure is the fully-qualified name of the CycleTrackerService's
 	// ListInsights RPC.
 	CycleTrackerServiceListInsightsProcedure = "/openmenses.v1.CycleTrackerService/ListInsights"
-	// CycleTrackerServiceExportDataProcedure is the fully-qualified name of the CycleTrackerService's
-	// ExportData RPC.
-	CycleTrackerServiceExportDataProcedure = "/openmenses.v1.CycleTrackerService/ExportData"
-	// CycleTrackerServiceImportDataProcedure is the fully-qualified name of the CycleTrackerService's
-	// ImportData RPC.
-	CycleTrackerServiceImportDataProcedure = "/openmenses.v1.CycleTrackerService/ImportData"
+	// CycleTrackerServiceCreateDataExportProcedure is the fully-qualified name of the
+	// CycleTrackerService's CreateDataExport RPC.
+	CycleTrackerServiceCreateDataExportProcedure = "/openmenses.v1.CycleTrackerService/CreateDataExport"
+	// CycleTrackerServiceCreateDataImportProcedure is the fully-qualified name of the
+	// CycleTrackerService's CreateDataImport RPC.
+	CycleTrackerServiceCreateDataImportProcedure = "/openmenses.v1.CycleTrackerService/CreateDataImport"
 )
 
 // CycleTrackerServiceClient is a client for the openmenses.v1.CycleTrackerService service.
 type CycleTrackerServiceClient interface {
 	GetUserProfile(context.Context, *connect.Request[v1.GetUserProfileRequest]) (*connect.Response[v1.GetUserProfileResponse], error)
-	UpsertUserProfile(context.Context, *connect.Request[v1.UpsertUserProfileRequest]) (*connect.Response[v1.UpsertUserProfileResponse], error)
+	CreateUserProfile(context.Context, *connect.Request[v1.CreateUserProfileRequest]) (*connect.Response[v1.CreateUserProfileResponse], error)
+	UpdateUserProfile(context.Context, *connect.Request[v1.UpdateUserProfileRequest]) (*connect.Response[v1.UpdateUserProfileResponse], error)
+	GetBleedingObservation(context.Context, *connect.Request[v1.GetBleedingObservationRequest]) (*connect.Response[v1.GetBleedingObservationResponse], error)
 	CreateBleedingObservation(context.Context, *connect.Request[v1.CreateBleedingObservationRequest]) (*connect.Response[v1.CreateBleedingObservationResponse], error)
+	UpdateBleedingObservation(context.Context, *connect.Request[v1.UpdateBleedingObservationRequest]) (*connect.Response[v1.UpdateBleedingObservationResponse], error)
+	DeleteBleedingObservation(context.Context, *connect.Request[v1.DeleteBleedingObservationRequest]) (*connect.Response[v1.DeleteBleedingObservationResponse], error)
+	ListBleedingObservations(context.Context, *connect.Request[v1.ListBleedingObservationsRequest]) (*connect.Response[v1.ListBleedingObservationsResponse], error)
+	GetSymptomObservation(context.Context, *connect.Request[v1.GetSymptomObservationRequest]) (*connect.Response[v1.GetSymptomObservationResponse], error)
 	CreateSymptomObservation(context.Context, *connect.Request[v1.CreateSymptomObservationRequest]) (*connect.Response[v1.CreateSymptomObservationResponse], error)
+	UpdateSymptomObservation(context.Context, *connect.Request[v1.UpdateSymptomObservationRequest]) (*connect.Response[v1.UpdateSymptomObservationResponse], error)
+	DeleteSymptomObservation(context.Context, *connect.Request[v1.DeleteSymptomObservationRequest]) (*connect.Response[v1.DeleteSymptomObservationResponse], error)
+	ListSymptomObservations(context.Context, *connect.Request[v1.ListSymptomObservationsRequest]) (*connect.Response[v1.ListSymptomObservationsResponse], error)
+	GetMoodObservation(context.Context, *connect.Request[v1.GetMoodObservationRequest]) (*connect.Response[v1.GetMoodObservationResponse], error)
 	CreateMoodObservation(context.Context, *connect.Request[v1.CreateMoodObservationRequest]) (*connect.Response[v1.CreateMoodObservationResponse], error)
+	UpdateMoodObservation(context.Context, *connect.Request[v1.UpdateMoodObservationRequest]) (*connect.Response[v1.UpdateMoodObservationResponse], error)
+	DeleteMoodObservation(context.Context, *connect.Request[v1.DeleteMoodObservationRequest]) (*connect.Response[v1.DeleteMoodObservationResponse], error)
+	ListMoodObservations(context.Context, *connect.Request[v1.ListMoodObservationsRequest]) (*connect.Response[v1.ListMoodObservationsResponse], error)
+	GetMedication(context.Context, *connect.Request[v1.GetMedicationRequest]) (*connect.Response[v1.GetMedicationResponse], error)
 	CreateMedication(context.Context, *connect.Request[v1.CreateMedicationRequest]) (*connect.Response[v1.CreateMedicationResponse], error)
+	UpdateMedication(context.Context, *connect.Request[v1.UpdateMedicationRequest]) (*connect.Response[v1.UpdateMedicationResponse], error)
+	DeleteMedication(context.Context, *connect.Request[v1.DeleteMedicationRequest]) (*connect.Response[v1.DeleteMedicationResponse], error)
+	ListMedications(context.Context, *connect.Request[v1.ListMedicationsRequest]) (*connect.Response[v1.ListMedicationsResponse], error)
+	GetMedicationEvent(context.Context, *connect.Request[v1.GetMedicationEventRequest]) (*connect.Response[v1.GetMedicationEventResponse], error)
 	CreateMedicationEvent(context.Context, *connect.Request[v1.CreateMedicationEventRequest]) (*connect.Response[v1.CreateMedicationEventResponse], error)
+	UpdateMedicationEvent(context.Context, *connect.Request[v1.UpdateMedicationEventRequest]) (*connect.Response[v1.UpdateMedicationEventResponse], error)
+	DeleteMedicationEvent(context.Context, *connect.Request[v1.DeleteMedicationEventRequest]) (*connect.Response[v1.DeleteMedicationEventResponse], error)
+	ListMedicationEvents(context.Context, *connect.Request[v1.ListMedicationEventsRequest]) (*connect.Response[v1.ListMedicationEventsResponse], error)
 	ListTimeline(context.Context, *connect.Request[v1.ListTimelineRequest]) (*connect.Response[v1.ListTimelineResponse], error)
+	GetCycle(context.Context, *connect.Request[v1.GetCycleRequest]) (*connect.Response[v1.GetCycleResponse], error)
 	ListCycles(context.Context, *connect.Request[v1.ListCyclesRequest]) (*connect.Response[v1.ListCyclesResponse], error)
 	ListPredictions(context.Context, *connect.Request[v1.ListPredictionsRequest]) (*connect.Response[v1.ListPredictionsResponse], error)
 	ListInsights(context.Context, *connect.Request[v1.ListInsightsRequest]) (*connect.Response[v1.ListInsightsResponse], error)
-	ExportData(context.Context, *connect.Request[v1.ExportDataRequest]) (*connect.Response[v1.ExportDataResponse], error)
-	ImportData(context.Context, *connect.Request[v1.ImportDataRequest]) (*connect.Response[v1.ImportDataResponse], error)
+	CreateDataExport(context.Context, *connect.Request[v1.CreateDataExportRequest]) (*connect.Response[v1.CreateDataExportResponse], error)
+	CreateDataImport(context.Context, *connect.Request[v1.CreateDataImportRequest]) (*connect.Response[v1.CreateDataImportResponse], error)
 }
 
 // NewCycleTrackerServiceClient constructs a client for the openmenses.v1.CycleTrackerService
@@ -108,10 +196,22 @@ func NewCycleTrackerServiceClient(httpClient connect.HTTPClient, baseURL string,
 			connect.WithSchema(cycleTrackerServiceMethods.ByName("GetUserProfile")),
 			connect.WithClientOptions(opts...),
 		),
-		upsertUserProfile: connect.NewClient[v1.UpsertUserProfileRequest, v1.UpsertUserProfileResponse](
+		createUserProfile: connect.NewClient[v1.CreateUserProfileRequest, v1.CreateUserProfileResponse](
 			httpClient,
-			baseURL+CycleTrackerServiceUpsertUserProfileProcedure,
-			connect.WithSchema(cycleTrackerServiceMethods.ByName("UpsertUserProfile")),
+			baseURL+CycleTrackerServiceCreateUserProfileProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateUserProfile")),
+			connect.WithClientOptions(opts...),
+		),
+		updateUserProfile: connect.NewClient[v1.UpdateUserProfileRequest, v1.UpdateUserProfileResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceUpdateUserProfileProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateUserProfile")),
+			connect.WithClientOptions(opts...),
+		),
+		getBleedingObservation: connect.NewClient[v1.GetBleedingObservationRequest, v1.GetBleedingObservationResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceGetBleedingObservationProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("GetBleedingObservation")),
 			connect.WithClientOptions(opts...),
 		),
 		createBleedingObservation: connect.NewClient[v1.CreateBleedingObservationRequest, v1.CreateBleedingObservationResponse](
@@ -120,10 +220,58 @@ func NewCycleTrackerServiceClient(httpClient connect.HTTPClient, baseURL string,
 			connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateBleedingObservation")),
 			connect.WithClientOptions(opts...),
 		),
+		updateBleedingObservation: connect.NewClient[v1.UpdateBleedingObservationRequest, v1.UpdateBleedingObservationResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceUpdateBleedingObservationProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateBleedingObservation")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteBleedingObservation: connect.NewClient[v1.DeleteBleedingObservationRequest, v1.DeleteBleedingObservationResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceDeleteBleedingObservationProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("DeleteBleedingObservation")),
+			connect.WithClientOptions(opts...),
+		),
+		listBleedingObservations: connect.NewClient[v1.ListBleedingObservationsRequest, v1.ListBleedingObservationsResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceListBleedingObservationsProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("ListBleedingObservations")),
+			connect.WithClientOptions(opts...),
+		),
+		getSymptomObservation: connect.NewClient[v1.GetSymptomObservationRequest, v1.GetSymptomObservationResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceGetSymptomObservationProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("GetSymptomObservation")),
+			connect.WithClientOptions(opts...),
+		),
 		createSymptomObservation: connect.NewClient[v1.CreateSymptomObservationRequest, v1.CreateSymptomObservationResponse](
 			httpClient,
 			baseURL+CycleTrackerServiceCreateSymptomObservationProcedure,
 			connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateSymptomObservation")),
+			connect.WithClientOptions(opts...),
+		),
+		updateSymptomObservation: connect.NewClient[v1.UpdateSymptomObservationRequest, v1.UpdateSymptomObservationResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceUpdateSymptomObservationProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateSymptomObservation")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteSymptomObservation: connect.NewClient[v1.DeleteSymptomObservationRequest, v1.DeleteSymptomObservationResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceDeleteSymptomObservationProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("DeleteSymptomObservation")),
+			connect.WithClientOptions(opts...),
+		),
+		listSymptomObservations: connect.NewClient[v1.ListSymptomObservationsRequest, v1.ListSymptomObservationsResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceListSymptomObservationsProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("ListSymptomObservations")),
+			connect.WithClientOptions(opts...),
+		),
+		getMoodObservation: connect.NewClient[v1.GetMoodObservationRequest, v1.GetMoodObservationResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceGetMoodObservationProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("GetMoodObservation")),
 			connect.WithClientOptions(opts...),
 		),
 		createMoodObservation: connect.NewClient[v1.CreateMoodObservationRequest, v1.CreateMoodObservationResponse](
@@ -132,10 +280,58 @@ func NewCycleTrackerServiceClient(httpClient connect.HTTPClient, baseURL string,
 			connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateMoodObservation")),
 			connect.WithClientOptions(opts...),
 		),
+		updateMoodObservation: connect.NewClient[v1.UpdateMoodObservationRequest, v1.UpdateMoodObservationResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceUpdateMoodObservationProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateMoodObservation")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteMoodObservation: connect.NewClient[v1.DeleteMoodObservationRequest, v1.DeleteMoodObservationResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceDeleteMoodObservationProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("DeleteMoodObservation")),
+			connect.WithClientOptions(opts...),
+		),
+		listMoodObservations: connect.NewClient[v1.ListMoodObservationsRequest, v1.ListMoodObservationsResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceListMoodObservationsProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("ListMoodObservations")),
+			connect.WithClientOptions(opts...),
+		),
+		getMedication: connect.NewClient[v1.GetMedicationRequest, v1.GetMedicationResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceGetMedicationProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("GetMedication")),
+			connect.WithClientOptions(opts...),
+		),
 		createMedication: connect.NewClient[v1.CreateMedicationRequest, v1.CreateMedicationResponse](
 			httpClient,
 			baseURL+CycleTrackerServiceCreateMedicationProcedure,
 			connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateMedication")),
+			connect.WithClientOptions(opts...),
+		),
+		updateMedication: connect.NewClient[v1.UpdateMedicationRequest, v1.UpdateMedicationResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceUpdateMedicationProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateMedication")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteMedication: connect.NewClient[v1.DeleteMedicationRequest, v1.DeleteMedicationResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceDeleteMedicationProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("DeleteMedication")),
+			connect.WithClientOptions(opts...),
+		),
+		listMedications: connect.NewClient[v1.ListMedicationsRequest, v1.ListMedicationsResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceListMedicationsProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("ListMedications")),
+			connect.WithClientOptions(opts...),
+		),
+		getMedicationEvent: connect.NewClient[v1.GetMedicationEventRequest, v1.GetMedicationEventResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceGetMedicationEventProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("GetMedicationEvent")),
 			connect.WithClientOptions(opts...),
 		),
 		createMedicationEvent: connect.NewClient[v1.CreateMedicationEventRequest, v1.CreateMedicationEventResponse](
@@ -144,10 +340,34 @@ func NewCycleTrackerServiceClient(httpClient connect.HTTPClient, baseURL string,
 			connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateMedicationEvent")),
 			connect.WithClientOptions(opts...),
 		),
+		updateMedicationEvent: connect.NewClient[v1.UpdateMedicationEventRequest, v1.UpdateMedicationEventResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceUpdateMedicationEventProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateMedicationEvent")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteMedicationEvent: connect.NewClient[v1.DeleteMedicationEventRequest, v1.DeleteMedicationEventResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceDeleteMedicationEventProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("DeleteMedicationEvent")),
+			connect.WithClientOptions(opts...),
+		),
+		listMedicationEvents: connect.NewClient[v1.ListMedicationEventsRequest, v1.ListMedicationEventsResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceListMedicationEventsProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("ListMedicationEvents")),
+			connect.WithClientOptions(opts...),
+		),
 		listTimeline: connect.NewClient[v1.ListTimelineRequest, v1.ListTimelineResponse](
 			httpClient,
 			baseURL+CycleTrackerServiceListTimelineProcedure,
 			connect.WithSchema(cycleTrackerServiceMethods.ByName("ListTimeline")),
+			connect.WithClientOptions(opts...),
+		),
+		getCycle: connect.NewClient[v1.GetCycleRequest, v1.GetCycleResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceGetCycleProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("GetCycle")),
 			connect.WithClientOptions(opts...),
 		),
 		listCycles: connect.NewClient[v1.ListCyclesRequest, v1.ListCyclesResponse](
@@ -168,16 +388,16 @@ func NewCycleTrackerServiceClient(httpClient connect.HTTPClient, baseURL string,
 			connect.WithSchema(cycleTrackerServiceMethods.ByName("ListInsights")),
 			connect.WithClientOptions(opts...),
 		),
-		exportData: connect.NewClient[v1.ExportDataRequest, v1.ExportDataResponse](
+		createDataExport: connect.NewClient[v1.CreateDataExportRequest, v1.CreateDataExportResponse](
 			httpClient,
-			baseURL+CycleTrackerServiceExportDataProcedure,
-			connect.WithSchema(cycleTrackerServiceMethods.ByName("ExportData")),
+			baseURL+CycleTrackerServiceCreateDataExportProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateDataExport")),
 			connect.WithClientOptions(opts...),
 		),
-		importData: connect.NewClient[v1.ImportDataRequest, v1.ImportDataResponse](
+		createDataImport: connect.NewClient[v1.CreateDataImportRequest, v1.CreateDataImportResponse](
 			httpClient,
-			baseURL+CycleTrackerServiceImportDataProcedure,
-			connect.WithSchema(cycleTrackerServiceMethods.ByName("ImportData")),
+			baseURL+CycleTrackerServiceCreateDataImportProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateDataImport")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -186,18 +406,40 @@ func NewCycleTrackerServiceClient(httpClient connect.HTTPClient, baseURL string,
 // cycleTrackerServiceClient implements CycleTrackerServiceClient.
 type cycleTrackerServiceClient struct {
 	getUserProfile            *connect.Client[v1.GetUserProfileRequest, v1.GetUserProfileResponse]
-	upsertUserProfile         *connect.Client[v1.UpsertUserProfileRequest, v1.UpsertUserProfileResponse]
+	createUserProfile         *connect.Client[v1.CreateUserProfileRequest, v1.CreateUserProfileResponse]
+	updateUserProfile         *connect.Client[v1.UpdateUserProfileRequest, v1.UpdateUserProfileResponse]
+	getBleedingObservation    *connect.Client[v1.GetBleedingObservationRequest, v1.GetBleedingObservationResponse]
 	createBleedingObservation *connect.Client[v1.CreateBleedingObservationRequest, v1.CreateBleedingObservationResponse]
+	updateBleedingObservation *connect.Client[v1.UpdateBleedingObservationRequest, v1.UpdateBleedingObservationResponse]
+	deleteBleedingObservation *connect.Client[v1.DeleteBleedingObservationRequest, v1.DeleteBleedingObservationResponse]
+	listBleedingObservations  *connect.Client[v1.ListBleedingObservationsRequest, v1.ListBleedingObservationsResponse]
+	getSymptomObservation     *connect.Client[v1.GetSymptomObservationRequest, v1.GetSymptomObservationResponse]
 	createSymptomObservation  *connect.Client[v1.CreateSymptomObservationRequest, v1.CreateSymptomObservationResponse]
+	updateSymptomObservation  *connect.Client[v1.UpdateSymptomObservationRequest, v1.UpdateSymptomObservationResponse]
+	deleteSymptomObservation  *connect.Client[v1.DeleteSymptomObservationRequest, v1.DeleteSymptomObservationResponse]
+	listSymptomObservations   *connect.Client[v1.ListSymptomObservationsRequest, v1.ListSymptomObservationsResponse]
+	getMoodObservation        *connect.Client[v1.GetMoodObservationRequest, v1.GetMoodObservationResponse]
 	createMoodObservation     *connect.Client[v1.CreateMoodObservationRequest, v1.CreateMoodObservationResponse]
+	updateMoodObservation     *connect.Client[v1.UpdateMoodObservationRequest, v1.UpdateMoodObservationResponse]
+	deleteMoodObservation     *connect.Client[v1.DeleteMoodObservationRequest, v1.DeleteMoodObservationResponse]
+	listMoodObservations      *connect.Client[v1.ListMoodObservationsRequest, v1.ListMoodObservationsResponse]
+	getMedication             *connect.Client[v1.GetMedicationRequest, v1.GetMedicationResponse]
 	createMedication          *connect.Client[v1.CreateMedicationRequest, v1.CreateMedicationResponse]
+	updateMedication          *connect.Client[v1.UpdateMedicationRequest, v1.UpdateMedicationResponse]
+	deleteMedication          *connect.Client[v1.DeleteMedicationRequest, v1.DeleteMedicationResponse]
+	listMedications           *connect.Client[v1.ListMedicationsRequest, v1.ListMedicationsResponse]
+	getMedicationEvent        *connect.Client[v1.GetMedicationEventRequest, v1.GetMedicationEventResponse]
 	createMedicationEvent     *connect.Client[v1.CreateMedicationEventRequest, v1.CreateMedicationEventResponse]
+	updateMedicationEvent     *connect.Client[v1.UpdateMedicationEventRequest, v1.UpdateMedicationEventResponse]
+	deleteMedicationEvent     *connect.Client[v1.DeleteMedicationEventRequest, v1.DeleteMedicationEventResponse]
+	listMedicationEvents      *connect.Client[v1.ListMedicationEventsRequest, v1.ListMedicationEventsResponse]
 	listTimeline              *connect.Client[v1.ListTimelineRequest, v1.ListTimelineResponse]
+	getCycle                  *connect.Client[v1.GetCycleRequest, v1.GetCycleResponse]
 	listCycles                *connect.Client[v1.ListCyclesRequest, v1.ListCyclesResponse]
 	listPredictions           *connect.Client[v1.ListPredictionsRequest, v1.ListPredictionsResponse]
 	listInsights              *connect.Client[v1.ListInsightsRequest, v1.ListInsightsResponse]
-	exportData                *connect.Client[v1.ExportDataRequest, v1.ExportDataResponse]
-	importData                *connect.Client[v1.ImportDataRequest, v1.ImportDataResponse]
+	createDataExport          *connect.Client[v1.CreateDataExportRequest, v1.CreateDataExportResponse]
+	createDataImport          *connect.Client[v1.CreateDataImportRequest, v1.CreateDataImportResponse]
 }
 
 // GetUserProfile calls openmenses.v1.CycleTrackerService.GetUserProfile.
@@ -205,9 +447,19 @@ func (c *cycleTrackerServiceClient) GetUserProfile(ctx context.Context, req *con
 	return c.getUserProfile.CallUnary(ctx, req)
 }
 
-// UpsertUserProfile calls openmenses.v1.CycleTrackerService.UpsertUserProfile.
-func (c *cycleTrackerServiceClient) UpsertUserProfile(ctx context.Context, req *connect.Request[v1.UpsertUserProfileRequest]) (*connect.Response[v1.UpsertUserProfileResponse], error) {
-	return c.upsertUserProfile.CallUnary(ctx, req)
+// CreateUserProfile calls openmenses.v1.CycleTrackerService.CreateUserProfile.
+func (c *cycleTrackerServiceClient) CreateUserProfile(ctx context.Context, req *connect.Request[v1.CreateUserProfileRequest]) (*connect.Response[v1.CreateUserProfileResponse], error) {
+	return c.createUserProfile.CallUnary(ctx, req)
+}
+
+// UpdateUserProfile calls openmenses.v1.CycleTrackerService.UpdateUserProfile.
+func (c *cycleTrackerServiceClient) UpdateUserProfile(ctx context.Context, req *connect.Request[v1.UpdateUserProfileRequest]) (*connect.Response[v1.UpdateUserProfileResponse], error) {
+	return c.updateUserProfile.CallUnary(ctx, req)
+}
+
+// GetBleedingObservation calls openmenses.v1.CycleTrackerService.GetBleedingObservation.
+func (c *cycleTrackerServiceClient) GetBleedingObservation(ctx context.Context, req *connect.Request[v1.GetBleedingObservationRequest]) (*connect.Response[v1.GetBleedingObservationResponse], error) {
+	return c.getBleedingObservation.CallUnary(ctx, req)
 }
 
 // CreateBleedingObservation calls openmenses.v1.CycleTrackerService.CreateBleedingObservation.
@@ -215,9 +467,49 @@ func (c *cycleTrackerServiceClient) CreateBleedingObservation(ctx context.Contex
 	return c.createBleedingObservation.CallUnary(ctx, req)
 }
 
+// UpdateBleedingObservation calls openmenses.v1.CycleTrackerService.UpdateBleedingObservation.
+func (c *cycleTrackerServiceClient) UpdateBleedingObservation(ctx context.Context, req *connect.Request[v1.UpdateBleedingObservationRequest]) (*connect.Response[v1.UpdateBleedingObservationResponse], error) {
+	return c.updateBleedingObservation.CallUnary(ctx, req)
+}
+
+// DeleteBleedingObservation calls openmenses.v1.CycleTrackerService.DeleteBleedingObservation.
+func (c *cycleTrackerServiceClient) DeleteBleedingObservation(ctx context.Context, req *connect.Request[v1.DeleteBleedingObservationRequest]) (*connect.Response[v1.DeleteBleedingObservationResponse], error) {
+	return c.deleteBleedingObservation.CallUnary(ctx, req)
+}
+
+// ListBleedingObservations calls openmenses.v1.CycleTrackerService.ListBleedingObservations.
+func (c *cycleTrackerServiceClient) ListBleedingObservations(ctx context.Context, req *connect.Request[v1.ListBleedingObservationsRequest]) (*connect.Response[v1.ListBleedingObservationsResponse], error) {
+	return c.listBleedingObservations.CallUnary(ctx, req)
+}
+
+// GetSymptomObservation calls openmenses.v1.CycleTrackerService.GetSymptomObservation.
+func (c *cycleTrackerServiceClient) GetSymptomObservation(ctx context.Context, req *connect.Request[v1.GetSymptomObservationRequest]) (*connect.Response[v1.GetSymptomObservationResponse], error) {
+	return c.getSymptomObservation.CallUnary(ctx, req)
+}
+
 // CreateSymptomObservation calls openmenses.v1.CycleTrackerService.CreateSymptomObservation.
 func (c *cycleTrackerServiceClient) CreateSymptomObservation(ctx context.Context, req *connect.Request[v1.CreateSymptomObservationRequest]) (*connect.Response[v1.CreateSymptomObservationResponse], error) {
 	return c.createSymptomObservation.CallUnary(ctx, req)
+}
+
+// UpdateSymptomObservation calls openmenses.v1.CycleTrackerService.UpdateSymptomObservation.
+func (c *cycleTrackerServiceClient) UpdateSymptomObservation(ctx context.Context, req *connect.Request[v1.UpdateSymptomObservationRequest]) (*connect.Response[v1.UpdateSymptomObservationResponse], error) {
+	return c.updateSymptomObservation.CallUnary(ctx, req)
+}
+
+// DeleteSymptomObservation calls openmenses.v1.CycleTrackerService.DeleteSymptomObservation.
+func (c *cycleTrackerServiceClient) DeleteSymptomObservation(ctx context.Context, req *connect.Request[v1.DeleteSymptomObservationRequest]) (*connect.Response[v1.DeleteSymptomObservationResponse], error) {
+	return c.deleteSymptomObservation.CallUnary(ctx, req)
+}
+
+// ListSymptomObservations calls openmenses.v1.CycleTrackerService.ListSymptomObservations.
+func (c *cycleTrackerServiceClient) ListSymptomObservations(ctx context.Context, req *connect.Request[v1.ListSymptomObservationsRequest]) (*connect.Response[v1.ListSymptomObservationsResponse], error) {
+	return c.listSymptomObservations.CallUnary(ctx, req)
+}
+
+// GetMoodObservation calls openmenses.v1.CycleTrackerService.GetMoodObservation.
+func (c *cycleTrackerServiceClient) GetMoodObservation(ctx context.Context, req *connect.Request[v1.GetMoodObservationRequest]) (*connect.Response[v1.GetMoodObservationResponse], error) {
+	return c.getMoodObservation.CallUnary(ctx, req)
 }
 
 // CreateMoodObservation calls openmenses.v1.CycleTrackerService.CreateMoodObservation.
@@ -225,9 +517,49 @@ func (c *cycleTrackerServiceClient) CreateMoodObservation(ctx context.Context, r
 	return c.createMoodObservation.CallUnary(ctx, req)
 }
 
+// UpdateMoodObservation calls openmenses.v1.CycleTrackerService.UpdateMoodObservation.
+func (c *cycleTrackerServiceClient) UpdateMoodObservation(ctx context.Context, req *connect.Request[v1.UpdateMoodObservationRequest]) (*connect.Response[v1.UpdateMoodObservationResponse], error) {
+	return c.updateMoodObservation.CallUnary(ctx, req)
+}
+
+// DeleteMoodObservation calls openmenses.v1.CycleTrackerService.DeleteMoodObservation.
+func (c *cycleTrackerServiceClient) DeleteMoodObservation(ctx context.Context, req *connect.Request[v1.DeleteMoodObservationRequest]) (*connect.Response[v1.DeleteMoodObservationResponse], error) {
+	return c.deleteMoodObservation.CallUnary(ctx, req)
+}
+
+// ListMoodObservations calls openmenses.v1.CycleTrackerService.ListMoodObservations.
+func (c *cycleTrackerServiceClient) ListMoodObservations(ctx context.Context, req *connect.Request[v1.ListMoodObservationsRequest]) (*connect.Response[v1.ListMoodObservationsResponse], error) {
+	return c.listMoodObservations.CallUnary(ctx, req)
+}
+
+// GetMedication calls openmenses.v1.CycleTrackerService.GetMedication.
+func (c *cycleTrackerServiceClient) GetMedication(ctx context.Context, req *connect.Request[v1.GetMedicationRequest]) (*connect.Response[v1.GetMedicationResponse], error) {
+	return c.getMedication.CallUnary(ctx, req)
+}
+
 // CreateMedication calls openmenses.v1.CycleTrackerService.CreateMedication.
 func (c *cycleTrackerServiceClient) CreateMedication(ctx context.Context, req *connect.Request[v1.CreateMedicationRequest]) (*connect.Response[v1.CreateMedicationResponse], error) {
 	return c.createMedication.CallUnary(ctx, req)
+}
+
+// UpdateMedication calls openmenses.v1.CycleTrackerService.UpdateMedication.
+func (c *cycleTrackerServiceClient) UpdateMedication(ctx context.Context, req *connect.Request[v1.UpdateMedicationRequest]) (*connect.Response[v1.UpdateMedicationResponse], error) {
+	return c.updateMedication.CallUnary(ctx, req)
+}
+
+// DeleteMedication calls openmenses.v1.CycleTrackerService.DeleteMedication.
+func (c *cycleTrackerServiceClient) DeleteMedication(ctx context.Context, req *connect.Request[v1.DeleteMedicationRequest]) (*connect.Response[v1.DeleteMedicationResponse], error) {
+	return c.deleteMedication.CallUnary(ctx, req)
+}
+
+// ListMedications calls openmenses.v1.CycleTrackerService.ListMedications.
+func (c *cycleTrackerServiceClient) ListMedications(ctx context.Context, req *connect.Request[v1.ListMedicationsRequest]) (*connect.Response[v1.ListMedicationsResponse], error) {
+	return c.listMedications.CallUnary(ctx, req)
+}
+
+// GetMedicationEvent calls openmenses.v1.CycleTrackerService.GetMedicationEvent.
+func (c *cycleTrackerServiceClient) GetMedicationEvent(ctx context.Context, req *connect.Request[v1.GetMedicationEventRequest]) (*connect.Response[v1.GetMedicationEventResponse], error) {
+	return c.getMedicationEvent.CallUnary(ctx, req)
 }
 
 // CreateMedicationEvent calls openmenses.v1.CycleTrackerService.CreateMedicationEvent.
@@ -235,9 +567,29 @@ func (c *cycleTrackerServiceClient) CreateMedicationEvent(ctx context.Context, r
 	return c.createMedicationEvent.CallUnary(ctx, req)
 }
 
+// UpdateMedicationEvent calls openmenses.v1.CycleTrackerService.UpdateMedicationEvent.
+func (c *cycleTrackerServiceClient) UpdateMedicationEvent(ctx context.Context, req *connect.Request[v1.UpdateMedicationEventRequest]) (*connect.Response[v1.UpdateMedicationEventResponse], error) {
+	return c.updateMedicationEvent.CallUnary(ctx, req)
+}
+
+// DeleteMedicationEvent calls openmenses.v1.CycleTrackerService.DeleteMedicationEvent.
+func (c *cycleTrackerServiceClient) DeleteMedicationEvent(ctx context.Context, req *connect.Request[v1.DeleteMedicationEventRequest]) (*connect.Response[v1.DeleteMedicationEventResponse], error) {
+	return c.deleteMedicationEvent.CallUnary(ctx, req)
+}
+
+// ListMedicationEvents calls openmenses.v1.CycleTrackerService.ListMedicationEvents.
+func (c *cycleTrackerServiceClient) ListMedicationEvents(ctx context.Context, req *connect.Request[v1.ListMedicationEventsRequest]) (*connect.Response[v1.ListMedicationEventsResponse], error) {
+	return c.listMedicationEvents.CallUnary(ctx, req)
+}
+
 // ListTimeline calls openmenses.v1.CycleTrackerService.ListTimeline.
 func (c *cycleTrackerServiceClient) ListTimeline(ctx context.Context, req *connect.Request[v1.ListTimelineRequest]) (*connect.Response[v1.ListTimelineResponse], error) {
 	return c.listTimeline.CallUnary(ctx, req)
+}
+
+// GetCycle calls openmenses.v1.CycleTrackerService.GetCycle.
+func (c *cycleTrackerServiceClient) GetCycle(ctx context.Context, req *connect.Request[v1.GetCycleRequest]) (*connect.Response[v1.GetCycleResponse], error) {
+	return c.getCycle.CallUnary(ctx, req)
 }
 
 // ListCycles calls openmenses.v1.CycleTrackerService.ListCycles.
@@ -255,31 +607,53 @@ func (c *cycleTrackerServiceClient) ListInsights(ctx context.Context, req *conne
 	return c.listInsights.CallUnary(ctx, req)
 }
 
-// ExportData calls openmenses.v1.CycleTrackerService.ExportData.
-func (c *cycleTrackerServiceClient) ExportData(ctx context.Context, req *connect.Request[v1.ExportDataRequest]) (*connect.Response[v1.ExportDataResponse], error) {
-	return c.exportData.CallUnary(ctx, req)
+// CreateDataExport calls openmenses.v1.CycleTrackerService.CreateDataExport.
+func (c *cycleTrackerServiceClient) CreateDataExport(ctx context.Context, req *connect.Request[v1.CreateDataExportRequest]) (*connect.Response[v1.CreateDataExportResponse], error) {
+	return c.createDataExport.CallUnary(ctx, req)
 }
 
-// ImportData calls openmenses.v1.CycleTrackerService.ImportData.
-func (c *cycleTrackerServiceClient) ImportData(ctx context.Context, req *connect.Request[v1.ImportDataRequest]) (*connect.Response[v1.ImportDataResponse], error) {
-	return c.importData.CallUnary(ctx, req)
+// CreateDataImport calls openmenses.v1.CycleTrackerService.CreateDataImport.
+func (c *cycleTrackerServiceClient) CreateDataImport(ctx context.Context, req *connect.Request[v1.CreateDataImportRequest]) (*connect.Response[v1.CreateDataImportResponse], error) {
+	return c.createDataImport.CallUnary(ctx, req)
 }
 
 // CycleTrackerServiceHandler is an implementation of the openmenses.v1.CycleTrackerService service.
 type CycleTrackerServiceHandler interface {
 	GetUserProfile(context.Context, *connect.Request[v1.GetUserProfileRequest]) (*connect.Response[v1.GetUserProfileResponse], error)
-	UpsertUserProfile(context.Context, *connect.Request[v1.UpsertUserProfileRequest]) (*connect.Response[v1.UpsertUserProfileResponse], error)
+	CreateUserProfile(context.Context, *connect.Request[v1.CreateUserProfileRequest]) (*connect.Response[v1.CreateUserProfileResponse], error)
+	UpdateUserProfile(context.Context, *connect.Request[v1.UpdateUserProfileRequest]) (*connect.Response[v1.UpdateUserProfileResponse], error)
+	GetBleedingObservation(context.Context, *connect.Request[v1.GetBleedingObservationRequest]) (*connect.Response[v1.GetBleedingObservationResponse], error)
 	CreateBleedingObservation(context.Context, *connect.Request[v1.CreateBleedingObservationRequest]) (*connect.Response[v1.CreateBleedingObservationResponse], error)
+	UpdateBleedingObservation(context.Context, *connect.Request[v1.UpdateBleedingObservationRequest]) (*connect.Response[v1.UpdateBleedingObservationResponse], error)
+	DeleteBleedingObservation(context.Context, *connect.Request[v1.DeleteBleedingObservationRequest]) (*connect.Response[v1.DeleteBleedingObservationResponse], error)
+	ListBleedingObservations(context.Context, *connect.Request[v1.ListBleedingObservationsRequest]) (*connect.Response[v1.ListBleedingObservationsResponse], error)
+	GetSymptomObservation(context.Context, *connect.Request[v1.GetSymptomObservationRequest]) (*connect.Response[v1.GetSymptomObservationResponse], error)
 	CreateSymptomObservation(context.Context, *connect.Request[v1.CreateSymptomObservationRequest]) (*connect.Response[v1.CreateSymptomObservationResponse], error)
+	UpdateSymptomObservation(context.Context, *connect.Request[v1.UpdateSymptomObservationRequest]) (*connect.Response[v1.UpdateSymptomObservationResponse], error)
+	DeleteSymptomObservation(context.Context, *connect.Request[v1.DeleteSymptomObservationRequest]) (*connect.Response[v1.DeleteSymptomObservationResponse], error)
+	ListSymptomObservations(context.Context, *connect.Request[v1.ListSymptomObservationsRequest]) (*connect.Response[v1.ListSymptomObservationsResponse], error)
+	GetMoodObservation(context.Context, *connect.Request[v1.GetMoodObservationRequest]) (*connect.Response[v1.GetMoodObservationResponse], error)
 	CreateMoodObservation(context.Context, *connect.Request[v1.CreateMoodObservationRequest]) (*connect.Response[v1.CreateMoodObservationResponse], error)
+	UpdateMoodObservation(context.Context, *connect.Request[v1.UpdateMoodObservationRequest]) (*connect.Response[v1.UpdateMoodObservationResponse], error)
+	DeleteMoodObservation(context.Context, *connect.Request[v1.DeleteMoodObservationRequest]) (*connect.Response[v1.DeleteMoodObservationResponse], error)
+	ListMoodObservations(context.Context, *connect.Request[v1.ListMoodObservationsRequest]) (*connect.Response[v1.ListMoodObservationsResponse], error)
+	GetMedication(context.Context, *connect.Request[v1.GetMedicationRequest]) (*connect.Response[v1.GetMedicationResponse], error)
 	CreateMedication(context.Context, *connect.Request[v1.CreateMedicationRequest]) (*connect.Response[v1.CreateMedicationResponse], error)
+	UpdateMedication(context.Context, *connect.Request[v1.UpdateMedicationRequest]) (*connect.Response[v1.UpdateMedicationResponse], error)
+	DeleteMedication(context.Context, *connect.Request[v1.DeleteMedicationRequest]) (*connect.Response[v1.DeleteMedicationResponse], error)
+	ListMedications(context.Context, *connect.Request[v1.ListMedicationsRequest]) (*connect.Response[v1.ListMedicationsResponse], error)
+	GetMedicationEvent(context.Context, *connect.Request[v1.GetMedicationEventRequest]) (*connect.Response[v1.GetMedicationEventResponse], error)
 	CreateMedicationEvent(context.Context, *connect.Request[v1.CreateMedicationEventRequest]) (*connect.Response[v1.CreateMedicationEventResponse], error)
+	UpdateMedicationEvent(context.Context, *connect.Request[v1.UpdateMedicationEventRequest]) (*connect.Response[v1.UpdateMedicationEventResponse], error)
+	DeleteMedicationEvent(context.Context, *connect.Request[v1.DeleteMedicationEventRequest]) (*connect.Response[v1.DeleteMedicationEventResponse], error)
+	ListMedicationEvents(context.Context, *connect.Request[v1.ListMedicationEventsRequest]) (*connect.Response[v1.ListMedicationEventsResponse], error)
 	ListTimeline(context.Context, *connect.Request[v1.ListTimelineRequest]) (*connect.Response[v1.ListTimelineResponse], error)
+	GetCycle(context.Context, *connect.Request[v1.GetCycleRequest]) (*connect.Response[v1.GetCycleResponse], error)
 	ListCycles(context.Context, *connect.Request[v1.ListCyclesRequest]) (*connect.Response[v1.ListCyclesResponse], error)
 	ListPredictions(context.Context, *connect.Request[v1.ListPredictionsRequest]) (*connect.Response[v1.ListPredictionsResponse], error)
 	ListInsights(context.Context, *connect.Request[v1.ListInsightsRequest]) (*connect.Response[v1.ListInsightsResponse], error)
-	ExportData(context.Context, *connect.Request[v1.ExportDataRequest]) (*connect.Response[v1.ExportDataResponse], error)
-	ImportData(context.Context, *connect.Request[v1.ImportDataRequest]) (*connect.Response[v1.ImportDataResponse], error)
+	CreateDataExport(context.Context, *connect.Request[v1.CreateDataExportRequest]) (*connect.Response[v1.CreateDataExportResponse], error)
+	CreateDataImport(context.Context, *connect.Request[v1.CreateDataImportRequest]) (*connect.Response[v1.CreateDataImportResponse], error)
 }
 
 // NewCycleTrackerServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -295,10 +669,22 @@ func NewCycleTrackerServiceHandler(svc CycleTrackerServiceHandler, opts ...conne
 		connect.WithSchema(cycleTrackerServiceMethods.ByName("GetUserProfile")),
 		connect.WithHandlerOptions(opts...),
 	)
-	cycleTrackerServiceUpsertUserProfileHandler := connect.NewUnaryHandler(
-		CycleTrackerServiceUpsertUserProfileProcedure,
-		svc.UpsertUserProfile,
-		connect.WithSchema(cycleTrackerServiceMethods.ByName("UpsertUserProfile")),
+	cycleTrackerServiceCreateUserProfileHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceCreateUserProfileProcedure,
+		svc.CreateUserProfile,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateUserProfile")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceUpdateUserProfileHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceUpdateUserProfileProcedure,
+		svc.UpdateUserProfile,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateUserProfile")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceGetBleedingObservationHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceGetBleedingObservationProcedure,
+		svc.GetBleedingObservation,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("GetBleedingObservation")),
 		connect.WithHandlerOptions(opts...),
 	)
 	cycleTrackerServiceCreateBleedingObservationHandler := connect.NewUnaryHandler(
@@ -307,10 +693,58 @@ func NewCycleTrackerServiceHandler(svc CycleTrackerServiceHandler, opts ...conne
 		connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateBleedingObservation")),
 		connect.WithHandlerOptions(opts...),
 	)
+	cycleTrackerServiceUpdateBleedingObservationHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceUpdateBleedingObservationProcedure,
+		svc.UpdateBleedingObservation,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateBleedingObservation")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceDeleteBleedingObservationHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceDeleteBleedingObservationProcedure,
+		svc.DeleteBleedingObservation,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("DeleteBleedingObservation")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceListBleedingObservationsHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceListBleedingObservationsProcedure,
+		svc.ListBleedingObservations,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("ListBleedingObservations")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceGetSymptomObservationHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceGetSymptomObservationProcedure,
+		svc.GetSymptomObservation,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("GetSymptomObservation")),
+		connect.WithHandlerOptions(opts...),
+	)
 	cycleTrackerServiceCreateSymptomObservationHandler := connect.NewUnaryHandler(
 		CycleTrackerServiceCreateSymptomObservationProcedure,
 		svc.CreateSymptomObservation,
 		connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateSymptomObservation")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceUpdateSymptomObservationHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceUpdateSymptomObservationProcedure,
+		svc.UpdateSymptomObservation,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateSymptomObservation")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceDeleteSymptomObservationHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceDeleteSymptomObservationProcedure,
+		svc.DeleteSymptomObservation,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("DeleteSymptomObservation")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceListSymptomObservationsHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceListSymptomObservationsProcedure,
+		svc.ListSymptomObservations,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("ListSymptomObservations")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceGetMoodObservationHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceGetMoodObservationProcedure,
+		svc.GetMoodObservation,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("GetMoodObservation")),
 		connect.WithHandlerOptions(opts...),
 	)
 	cycleTrackerServiceCreateMoodObservationHandler := connect.NewUnaryHandler(
@@ -319,10 +753,58 @@ func NewCycleTrackerServiceHandler(svc CycleTrackerServiceHandler, opts ...conne
 		connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateMoodObservation")),
 		connect.WithHandlerOptions(opts...),
 	)
+	cycleTrackerServiceUpdateMoodObservationHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceUpdateMoodObservationProcedure,
+		svc.UpdateMoodObservation,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateMoodObservation")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceDeleteMoodObservationHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceDeleteMoodObservationProcedure,
+		svc.DeleteMoodObservation,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("DeleteMoodObservation")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceListMoodObservationsHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceListMoodObservationsProcedure,
+		svc.ListMoodObservations,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("ListMoodObservations")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceGetMedicationHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceGetMedicationProcedure,
+		svc.GetMedication,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("GetMedication")),
+		connect.WithHandlerOptions(opts...),
+	)
 	cycleTrackerServiceCreateMedicationHandler := connect.NewUnaryHandler(
 		CycleTrackerServiceCreateMedicationProcedure,
 		svc.CreateMedication,
 		connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateMedication")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceUpdateMedicationHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceUpdateMedicationProcedure,
+		svc.UpdateMedication,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateMedication")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceDeleteMedicationHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceDeleteMedicationProcedure,
+		svc.DeleteMedication,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("DeleteMedication")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceListMedicationsHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceListMedicationsProcedure,
+		svc.ListMedications,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("ListMedications")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceGetMedicationEventHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceGetMedicationEventProcedure,
+		svc.GetMedicationEvent,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("GetMedicationEvent")),
 		connect.WithHandlerOptions(opts...),
 	)
 	cycleTrackerServiceCreateMedicationEventHandler := connect.NewUnaryHandler(
@@ -331,10 +813,34 @@ func NewCycleTrackerServiceHandler(svc CycleTrackerServiceHandler, opts ...conne
 		connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateMedicationEvent")),
 		connect.WithHandlerOptions(opts...),
 	)
+	cycleTrackerServiceUpdateMedicationEventHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceUpdateMedicationEventProcedure,
+		svc.UpdateMedicationEvent,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateMedicationEvent")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceDeleteMedicationEventHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceDeleteMedicationEventProcedure,
+		svc.DeleteMedicationEvent,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("DeleteMedicationEvent")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceListMedicationEventsHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceListMedicationEventsProcedure,
+		svc.ListMedicationEvents,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("ListMedicationEvents")),
+		connect.WithHandlerOptions(opts...),
+	)
 	cycleTrackerServiceListTimelineHandler := connect.NewUnaryHandler(
 		CycleTrackerServiceListTimelineProcedure,
 		svc.ListTimeline,
 		connect.WithSchema(cycleTrackerServiceMethods.ByName("ListTimeline")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceGetCycleHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceGetCycleProcedure,
+		svc.GetCycle,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("GetCycle")),
 		connect.WithHandlerOptions(opts...),
 	)
 	cycleTrackerServiceListCyclesHandler := connect.NewUnaryHandler(
@@ -355,46 +861,90 @@ func NewCycleTrackerServiceHandler(svc CycleTrackerServiceHandler, opts ...conne
 		connect.WithSchema(cycleTrackerServiceMethods.ByName("ListInsights")),
 		connect.WithHandlerOptions(opts...),
 	)
-	cycleTrackerServiceExportDataHandler := connect.NewUnaryHandler(
-		CycleTrackerServiceExportDataProcedure,
-		svc.ExportData,
-		connect.WithSchema(cycleTrackerServiceMethods.ByName("ExportData")),
+	cycleTrackerServiceCreateDataExportHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceCreateDataExportProcedure,
+		svc.CreateDataExport,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateDataExport")),
 		connect.WithHandlerOptions(opts...),
 	)
-	cycleTrackerServiceImportDataHandler := connect.NewUnaryHandler(
-		CycleTrackerServiceImportDataProcedure,
-		svc.ImportData,
-		connect.WithSchema(cycleTrackerServiceMethods.ByName("ImportData")),
+	cycleTrackerServiceCreateDataImportHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceCreateDataImportProcedure,
+		svc.CreateDataImport,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("CreateDataImport")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/openmenses.v1.CycleTrackerService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case CycleTrackerServiceGetUserProfileProcedure:
 			cycleTrackerServiceGetUserProfileHandler.ServeHTTP(w, r)
-		case CycleTrackerServiceUpsertUserProfileProcedure:
-			cycleTrackerServiceUpsertUserProfileHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceCreateUserProfileProcedure:
+			cycleTrackerServiceCreateUserProfileHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceUpdateUserProfileProcedure:
+			cycleTrackerServiceUpdateUserProfileHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceGetBleedingObservationProcedure:
+			cycleTrackerServiceGetBleedingObservationHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceCreateBleedingObservationProcedure:
 			cycleTrackerServiceCreateBleedingObservationHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceUpdateBleedingObservationProcedure:
+			cycleTrackerServiceUpdateBleedingObservationHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceDeleteBleedingObservationProcedure:
+			cycleTrackerServiceDeleteBleedingObservationHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceListBleedingObservationsProcedure:
+			cycleTrackerServiceListBleedingObservationsHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceGetSymptomObservationProcedure:
+			cycleTrackerServiceGetSymptomObservationHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceCreateSymptomObservationProcedure:
 			cycleTrackerServiceCreateSymptomObservationHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceUpdateSymptomObservationProcedure:
+			cycleTrackerServiceUpdateSymptomObservationHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceDeleteSymptomObservationProcedure:
+			cycleTrackerServiceDeleteSymptomObservationHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceListSymptomObservationsProcedure:
+			cycleTrackerServiceListSymptomObservationsHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceGetMoodObservationProcedure:
+			cycleTrackerServiceGetMoodObservationHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceCreateMoodObservationProcedure:
 			cycleTrackerServiceCreateMoodObservationHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceUpdateMoodObservationProcedure:
+			cycleTrackerServiceUpdateMoodObservationHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceDeleteMoodObservationProcedure:
+			cycleTrackerServiceDeleteMoodObservationHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceListMoodObservationsProcedure:
+			cycleTrackerServiceListMoodObservationsHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceGetMedicationProcedure:
+			cycleTrackerServiceGetMedicationHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceCreateMedicationProcedure:
 			cycleTrackerServiceCreateMedicationHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceUpdateMedicationProcedure:
+			cycleTrackerServiceUpdateMedicationHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceDeleteMedicationProcedure:
+			cycleTrackerServiceDeleteMedicationHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceListMedicationsProcedure:
+			cycleTrackerServiceListMedicationsHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceGetMedicationEventProcedure:
+			cycleTrackerServiceGetMedicationEventHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceCreateMedicationEventProcedure:
 			cycleTrackerServiceCreateMedicationEventHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceUpdateMedicationEventProcedure:
+			cycleTrackerServiceUpdateMedicationEventHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceDeleteMedicationEventProcedure:
+			cycleTrackerServiceDeleteMedicationEventHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceListMedicationEventsProcedure:
+			cycleTrackerServiceListMedicationEventsHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceListTimelineProcedure:
 			cycleTrackerServiceListTimelineHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceGetCycleProcedure:
+			cycleTrackerServiceGetCycleHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceListCyclesProcedure:
 			cycleTrackerServiceListCyclesHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceListPredictionsProcedure:
 			cycleTrackerServiceListPredictionsHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceListInsightsProcedure:
 			cycleTrackerServiceListInsightsHandler.ServeHTTP(w, r)
-		case CycleTrackerServiceExportDataProcedure:
-			cycleTrackerServiceExportDataHandler.ServeHTTP(w, r)
-		case CycleTrackerServiceImportDataProcedure:
-			cycleTrackerServiceImportDataHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceCreateDataExportProcedure:
+			cycleTrackerServiceCreateDataExportHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceCreateDataImportProcedure:
+			cycleTrackerServiceCreateDataImportHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -408,32 +958,120 @@ func (UnimplementedCycleTrackerServiceHandler) GetUserProfile(context.Context, *
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.GetUserProfile is not implemented"))
 }
 
-func (UnimplementedCycleTrackerServiceHandler) UpsertUserProfile(context.Context, *connect.Request[v1.UpsertUserProfileRequest]) (*connect.Response[v1.UpsertUserProfileResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.UpsertUserProfile is not implemented"))
+func (UnimplementedCycleTrackerServiceHandler) CreateUserProfile(context.Context, *connect.Request[v1.CreateUserProfileRequest]) (*connect.Response[v1.CreateUserProfileResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.CreateUserProfile is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) UpdateUserProfile(context.Context, *connect.Request[v1.UpdateUserProfileRequest]) (*connect.Response[v1.UpdateUserProfileResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.UpdateUserProfile is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) GetBleedingObservation(context.Context, *connect.Request[v1.GetBleedingObservationRequest]) (*connect.Response[v1.GetBleedingObservationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.GetBleedingObservation is not implemented"))
 }
 
 func (UnimplementedCycleTrackerServiceHandler) CreateBleedingObservation(context.Context, *connect.Request[v1.CreateBleedingObservationRequest]) (*connect.Response[v1.CreateBleedingObservationResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.CreateBleedingObservation is not implemented"))
 }
 
+func (UnimplementedCycleTrackerServiceHandler) UpdateBleedingObservation(context.Context, *connect.Request[v1.UpdateBleedingObservationRequest]) (*connect.Response[v1.UpdateBleedingObservationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.UpdateBleedingObservation is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) DeleteBleedingObservation(context.Context, *connect.Request[v1.DeleteBleedingObservationRequest]) (*connect.Response[v1.DeleteBleedingObservationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.DeleteBleedingObservation is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) ListBleedingObservations(context.Context, *connect.Request[v1.ListBleedingObservationsRequest]) (*connect.Response[v1.ListBleedingObservationsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.ListBleedingObservations is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) GetSymptomObservation(context.Context, *connect.Request[v1.GetSymptomObservationRequest]) (*connect.Response[v1.GetSymptomObservationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.GetSymptomObservation is not implemented"))
+}
+
 func (UnimplementedCycleTrackerServiceHandler) CreateSymptomObservation(context.Context, *connect.Request[v1.CreateSymptomObservationRequest]) (*connect.Response[v1.CreateSymptomObservationResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.CreateSymptomObservation is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) UpdateSymptomObservation(context.Context, *connect.Request[v1.UpdateSymptomObservationRequest]) (*connect.Response[v1.UpdateSymptomObservationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.UpdateSymptomObservation is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) DeleteSymptomObservation(context.Context, *connect.Request[v1.DeleteSymptomObservationRequest]) (*connect.Response[v1.DeleteSymptomObservationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.DeleteSymptomObservation is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) ListSymptomObservations(context.Context, *connect.Request[v1.ListSymptomObservationsRequest]) (*connect.Response[v1.ListSymptomObservationsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.ListSymptomObservations is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) GetMoodObservation(context.Context, *connect.Request[v1.GetMoodObservationRequest]) (*connect.Response[v1.GetMoodObservationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.GetMoodObservation is not implemented"))
 }
 
 func (UnimplementedCycleTrackerServiceHandler) CreateMoodObservation(context.Context, *connect.Request[v1.CreateMoodObservationRequest]) (*connect.Response[v1.CreateMoodObservationResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.CreateMoodObservation is not implemented"))
 }
 
+func (UnimplementedCycleTrackerServiceHandler) UpdateMoodObservation(context.Context, *connect.Request[v1.UpdateMoodObservationRequest]) (*connect.Response[v1.UpdateMoodObservationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.UpdateMoodObservation is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) DeleteMoodObservation(context.Context, *connect.Request[v1.DeleteMoodObservationRequest]) (*connect.Response[v1.DeleteMoodObservationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.DeleteMoodObservation is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) ListMoodObservations(context.Context, *connect.Request[v1.ListMoodObservationsRequest]) (*connect.Response[v1.ListMoodObservationsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.ListMoodObservations is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) GetMedication(context.Context, *connect.Request[v1.GetMedicationRequest]) (*connect.Response[v1.GetMedicationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.GetMedication is not implemented"))
+}
+
 func (UnimplementedCycleTrackerServiceHandler) CreateMedication(context.Context, *connect.Request[v1.CreateMedicationRequest]) (*connect.Response[v1.CreateMedicationResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.CreateMedication is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) UpdateMedication(context.Context, *connect.Request[v1.UpdateMedicationRequest]) (*connect.Response[v1.UpdateMedicationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.UpdateMedication is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) DeleteMedication(context.Context, *connect.Request[v1.DeleteMedicationRequest]) (*connect.Response[v1.DeleteMedicationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.DeleteMedication is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) ListMedications(context.Context, *connect.Request[v1.ListMedicationsRequest]) (*connect.Response[v1.ListMedicationsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.ListMedications is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) GetMedicationEvent(context.Context, *connect.Request[v1.GetMedicationEventRequest]) (*connect.Response[v1.GetMedicationEventResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.GetMedicationEvent is not implemented"))
 }
 
 func (UnimplementedCycleTrackerServiceHandler) CreateMedicationEvent(context.Context, *connect.Request[v1.CreateMedicationEventRequest]) (*connect.Response[v1.CreateMedicationEventResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.CreateMedicationEvent is not implemented"))
 }
 
+func (UnimplementedCycleTrackerServiceHandler) UpdateMedicationEvent(context.Context, *connect.Request[v1.UpdateMedicationEventRequest]) (*connect.Response[v1.UpdateMedicationEventResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.UpdateMedicationEvent is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) DeleteMedicationEvent(context.Context, *connect.Request[v1.DeleteMedicationEventRequest]) (*connect.Response[v1.DeleteMedicationEventResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.DeleteMedicationEvent is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) ListMedicationEvents(context.Context, *connect.Request[v1.ListMedicationEventsRequest]) (*connect.Response[v1.ListMedicationEventsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.ListMedicationEvents is not implemented"))
+}
+
 func (UnimplementedCycleTrackerServiceHandler) ListTimeline(context.Context, *connect.Request[v1.ListTimelineRequest]) (*connect.Response[v1.ListTimelineResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.ListTimeline is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) GetCycle(context.Context, *connect.Request[v1.GetCycleRequest]) (*connect.Response[v1.GetCycleResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.GetCycle is not implemented"))
 }
 
 func (UnimplementedCycleTrackerServiceHandler) ListCycles(context.Context, *connect.Request[v1.ListCyclesRequest]) (*connect.Response[v1.ListCyclesResponse], error) {
@@ -448,10 +1086,10 @@ func (UnimplementedCycleTrackerServiceHandler) ListInsights(context.Context, *co
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.ListInsights is not implemented"))
 }
 
-func (UnimplementedCycleTrackerServiceHandler) ExportData(context.Context, *connect.Request[v1.ExportDataRequest]) (*connect.Response[v1.ExportDataResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.ExportData is not implemented"))
+func (UnimplementedCycleTrackerServiceHandler) CreateDataExport(context.Context, *connect.Request[v1.CreateDataExportRequest]) (*connect.Response[v1.CreateDataExportResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.CreateDataExport is not implemented"))
 }
 
-func (UnimplementedCycleTrackerServiceHandler) ImportData(context.Context, *connect.Request[v1.ImportDataRequest]) (*connect.Response[v1.ImportDataResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.ImportData is not implemented"))
+func (UnimplementedCycleTrackerServiceHandler) CreateDataImport(context.Context, *connect.Request[v1.CreateDataImportRequest]) (*connect.Response[v1.CreateDataImportResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.CreateDataImport is not implemented"))
 }

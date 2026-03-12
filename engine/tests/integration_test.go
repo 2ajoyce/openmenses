@@ -43,7 +43,7 @@ func engineClient(t *testing.T, opts ...openmenses.Option) openmensesv1connect.C
 	return openmensesv1connect.NewCycleTrackerServiceClient(srv.Client(), srv.URL)
 }
 
-// importFixture loads a fixture file by name and calls ImportData on the given
+// importFixture loads a fixture file by name and calls CreateDataImport on the given
 // client.  Returns the number of records imported.
 func importFixture(t *testing.T, client openmensesv1connect.CycleTrackerServiceClient, fixtureName string) uint32 {
 	t.Helper()
@@ -51,9 +51,9 @@ func importFixture(t *testing.T, client openmensesv1connect.CycleTrackerServiceC
 	if err != nil {
 		t.Fatalf("LoadFixtureBytes(%q): %v", fixtureName, err)
 	}
-	resp, err := client.ImportData(context.Background(), connect.NewRequest(&v1.ImportDataRequest{Data: data}))
+	resp, err := client.CreateDataImport(context.Background(), connect.NewRequest(&v1.CreateDataImportRequest{Data: data}))
 	if err != nil {
-		t.Fatalf("ImportData(%q): %v", fixtureName, err)
+		t.Fatalf("CreateDataImport(%q): %v", fixtureName, err)
 	}
 	return resp.Msg.GetRecordsImported()
 }
@@ -101,7 +101,7 @@ func TestFixture_AllFixturesImportCleanly(t *testing.T) {
 
 					count := importFixture(t, client, fixtureName)
 					if count == 0 {
-						t.Errorf("ImportData(%q): expected > 0 records, got 0", fixtureName)
+						t.Errorf("CreateDataImport(%q): expected > 0 records, got 0", fixtureName)
 					}
 
 					// Load the raw fixture to extract user_id (structure is always
@@ -326,23 +326,23 @@ func TestIntegration_ImportExportRoundTrip(t *testing.T) {
 			}
 
 			// Export from A.
-			exportResp, err := clientA.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{Name: userID}))
+			exportResp, err := clientA.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Name: userID}))
 			if err != nil {
-				t.Fatalf("ExportData: %v", err)
+				t.Fatalf("CreateDataExport: %v", err)
 			}
 			exportedData := exportResp.Msg.GetData()
 			if len(exportedData) == 0 {
-				t.Fatal("ExportData returned empty bytes")
+				t.Fatal("CreateDataExport returned empty bytes")
 			}
 
 			// Engine B: import the export.
 			clientB := engineClient(t, v.opts...)
-			importResp, err := clientB.ImportData(ctx, connect.NewRequest(&v1.ImportDataRequest{Data: exportedData}))
+			importResp, err := clientB.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Data: exportedData}))
 			if err != nil {
-				t.Fatalf("B ImportData (round-trip): %v", err)
+				t.Fatalf("B CreateDataImport (round-trip): %v", err)
 			}
 			if importResp.Msg.GetRecordsImported() == 0 {
-				t.Error("B ImportData: expected > 0 records")
+				t.Error("B CreateDataImport: expected > 0 records")
 			}
 
 			// Profile must be present in B.
@@ -435,13 +435,13 @@ func TestIntegration_EmptyDatabase(t *testing.T) {
 				t.Errorf("expected 0 timeline records, got %d", len(tlResp.Msg.GetRecords()))
 			}
 
-			// ExportData on missing user → valid (empty) payload.
-			exportResp, err := client.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{Name: userID}))
+			// CreateDataExport on missing user → valid (empty) payload.
+			exportResp, err := client.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Name: userID}))
 			if err != nil {
-				t.Fatalf("ExportData on empty DB: %v", err)
+				t.Fatalf("CreateDataExport on empty DB: %v", err)
 			}
 			if len(exportResp.Msg.GetData()) == 0 {
-				t.Error("ExportData returned empty bytes; expected a valid (empty) JSON payload")
+				t.Error("CreateDataExport returned empty bytes; expected a valid (empty) JSON payload")
 			}
 		})
 	}
@@ -510,7 +510,7 @@ func TestIntegration_EdgeCase_SingleObservation(t *testing.T) {
 			client := engineClient(t, v.opts...)
 
 			const userID = "user-single-obs"
-			_, err := client.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{
+			_, err := client.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{
 				Profile: &v1.UserProfile{
 					Name:             userID,
 					BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
@@ -521,7 +521,7 @@ func TestIntegration_EdgeCase_SingleObservation(t *testing.T) {
 				},
 			}))
 			if err != nil {
-				t.Fatalf("UpsertUserProfile: %v", err)
+				t.Fatalf("CreateUserProfile: %v", err)
 			}
 
 			// Create exactly one bleeding observation.
@@ -634,7 +634,7 @@ func TestIntegration_ConcurrentAccess(t *testing.T) {
 			const goroutines = 10
 
 			// First, create the profile (serial).
-			_, err := client.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{
+			_, err := client.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{
 				Profile: &v1.UserProfile{
 					Name:             userID,
 					BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
@@ -645,7 +645,7 @@ func TestIntegration_ConcurrentAccess(t *testing.T) {
 				},
 			}))
 			if err != nil {
-				t.Fatalf("UpsertUserProfile: %v", err)
+				t.Fatalf("CreateUserProfile: %v", err)
 			}
 
 			// Log observations concurrently from different goroutines.
@@ -707,7 +707,7 @@ func TestIntegration_CycleRedetection(t *testing.T) {
 			client := engineClient(t, v.opts...)
 
 			const userID = "user-redetect"
-			_, err := client.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{
+			_, err := client.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{
 				Profile: &v1.UserProfile{
 					Name:             userID,
 					BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
@@ -718,7 +718,7 @@ func TestIntegration_CycleRedetection(t *testing.T) {
 				},
 			}))
 			if err != nil {
-				t.Fatalf("UpsertUserProfile: %v", err)
+				t.Fatalf("CreateUserProfile: %v", err)
 			}
 
 			// Cycle 1: days 2025-06-01..05
@@ -904,12 +904,12 @@ func TestSampleExport_ImportAndVerify(t *testing.T) {
 			if err != nil {
 				t.Fatalf("LoadSampleExportBytes: %v", err)
 			}
-			importResp, err := client.ImportData(ctx, connect.NewRequest(&v1.ImportDataRequest{Data: data}))
+			importResp, err := client.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Data: data}))
 			if err != nil {
-				t.Fatalf("ImportData(sample export): %v", err)
+				t.Fatalf("CreateDataImport(sample export): %v", err)
 			}
 			if importResp.Msg.GetRecordsImported() == 0 {
-				t.Error("ImportData: expected > 0 records, got 0")
+				t.Error("CreateDataImport: expected > 0 records, got 0")
 			}
 
 			const userID = "user-full"
