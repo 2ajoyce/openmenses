@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"connectrpc.com/connect"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"github.com/2ajoyce/openmenses/engine/internal/service"
 	"github.com/2ajoyce/openmenses/engine/internal/storage"
@@ -200,6 +201,48 @@ func TestUpdateUserProfile_NotFound(t *testing.T) {
 	_, err := svc.UpdateUserProfile(ctx, connect.NewRequest(&v1.UpdateUserProfileRequest{Profile: profile}))
 	if codeOf(err) != connect.CodeNotFound {
 		t.Fatalf("want CodeNotFound, got %v", err)
+	}
+}
+
+func TestUpdateUserProfile_PartialUpdateWithFieldMask(t *testing.T) {
+	store := memory.New()
+	// Create an initial profile with specific values
+	initial := validProfile("u1")
+	initial.CycleRegularity = v1.CycleRegularity_CYCLE_REGULARITY_REGULAR
+	initial.ReproductiveGoal = v1.ReproductiveGoal_REPRODUCTIVE_GOAL_AVOID_PREGNANCY
+	if err := store.UserProfiles().Create(ctx, initial); err != nil {
+		t.Fatal(err)
+	}
+
+	svc := newSvcWithStore(t, store)
+
+	// Update only the CycleRegularity field with a FieldMask
+	updates := validProfile("u1")
+	updates.CycleRegularity = v1.CycleRegularity_CYCLE_REGULARITY_SOMEWHAT_IRREGULAR
+	updates.ReproductiveGoal = v1.ReproductiveGoal_REPRODUCTIVE_GOAL_TRYING_TO_CONCEIVE // Should NOT be applied
+
+	updateMask := &fieldmaskpb.FieldMask{
+		Paths: []string{"cycle_regularity"}, // Only update this field
+	}
+
+	resp, err := svc.UpdateUserProfile(ctx, connect.NewRequest(&v1.UpdateUserProfileRequest{
+		Profile:    updates,
+		UpdateMask: updateMask,
+	}))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	profile := resp.Msg.GetProfile()
+
+	// Check that only cycle_regularity was updated
+	if profile.GetCycleRegularity() != v1.CycleRegularity_CYCLE_REGULARITY_SOMEWHAT_IRREGULAR {
+		t.Error("cycle_regularity was not updated")
+	}
+
+	// Check that reproductive_goal was NOT updated (remained the original value)
+	if profile.GetReproductiveGoal() != v1.ReproductiveGoal_REPRODUCTIVE_GOAL_AVOID_PREGNANCY {
+		t.Errorf("reproductive_goal was unexpectedly changed to %v", profile.GetReproductiveGoal())
 	}
 }
 
