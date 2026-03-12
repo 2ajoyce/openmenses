@@ -3,7 +3,6 @@ syntax = "proto3";
 package openmenses.v1;
 
 import "buf/validate/validate.proto";
-import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "openmenses/v1/model.proto";
 import "openmenses/v1/types.proto";
@@ -18,28 +17,28 @@ service CycleTrackerService {
   rpc GetBleedingObservation(GetBleedingObservationRequest) returns (GetBleedingObservationResponse);
   rpc CreateBleedingObservation(CreateBleedingObservationRequest) returns (CreateBleedingObservationResponse);
   rpc UpdateBleedingObservation(UpdateBleedingObservationRequest) returns (UpdateBleedingObservationResponse);
-  rpc DeleteBleedingObservation(DeleteBleedingObservationRequest) returns (google.protobuf.Empty);
+  rpc DeleteBleedingObservation(DeleteBleedingObservationRequest) returns (DeleteBleedingObservationResponse);
   rpc ListBleedingObservations(ListBleedingObservationsRequest) returns (ListBleedingObservationsResponse);
   rpc GetSymptomObservation(GetSymptomObservationRequest) returns (GetSymptomObservationResponse);
   rpc CreateSymptomObservation(CreateSymptomObservationRequest) returns (CreateSymptomObservationResponse);
   rpc UpdateSymptomObservation(UpdateSymptomObservationRequest) returns (UpdateSymptomObservationResponse);
-  rpc DeleteSymptomObservation(DeleteSymptomObservationRequest) returns (google.protobuf.Empty);
+  rpc DeleteSymptomObservation(DeleteSymptomObservationRequest) returns (DeleteSymptomObservationResponse);
   rpc ListSymptomObservations(ListSymptomObservationsRequest) returns (ListSymptomObservationsResponse);
   rpc GetMoodObservation(GetMoodObservationRequest) returns (GetMoodObservationResponse);
   rpc CreateMoodObservation(CreateMoodObservationRequest) returns (CreateMoodObservationResponse);
   rpc UpdateMoodObservation(UpdateMoodObservationRequest) returns (UpdateMoodObservationResponse);
-  rpc DeleteMoodObservation(DeleteMoodObservationRequest) returns (google.protobuf.Empty);
+  rpc DeleteMoodObservation(DeleteMoodObservationRequest) returns (DeleteMoodObservationResponse);
   rpc ListMoodObservations(ListMoodObservationsRequest) returns (ListMoodObservationsResponse);
 
   rpc GetMedication(GetMedicationRequest) returns (GetMedicationResponse);
   rpc CreateMedication(CreateMedicationRequest) returns (CreateMedicationResponse);
   rpc UpdateMedication(UpdateMedicationRequest) returns (UpdateMedicationResponse);
-  rpc DeleteMedication(DeleteMedicationRequest) returns (google.protobuf.Empty);
+  rpc DeleteMedication(DeleteMedicationRequest) returns (DeleteMedicationResponse);
   rpc ListMedications(ListMedicationsRequest) returns (ListMedicationsResponse);
   rpc GetMedicationEvent(GetMedicationEventRequest) returns (GetMedicationEventResponse);
   rpc CreateMedicationEvent(CreateMedicationEventRequest) returns (CreateMedicationEventResponse);
   rpc UpdateMedicationEvent(UpdateMedicationEventRequest) returns (UpdateMedicationEventResponse);
-  rpc DeleteMedicationEvent(DeleteMedicationEventRequest) returns (google.protobuf.Empty);
+  rpc DeleteMedicationEvent(DeleteMedicationEventRequest) returns (DeleteMedicationEventResponse);
   rpc ListMedicationEvents(ListMedicationEventsRequest) returns (ListMedicationEventsResponse);
 
   rpc ListTimeline(ListTimelineRequest) returns (ListTimelineResponse);
@@ -104,6 +103,7 @@ message UpdateBleedingObservationResponse {
 message DeleteBleedingObservationRequest {
   string name = 1 [(buf.validate.field).string.min_len = 1];
 }
+message DeleteBleedingObservationResponse {}
 
 message ListBleedingObservationsRequest {
   string parent = 1 [(buf.validate.field).string.min_len = 1];
@@ -140,6 +140,7 @@ message UpdateSymptomObservationResponse {
 message DeleteSymptomObservationRequest {
   string name = 1 [(buf.validate.field).string.min_len = 1];
 }
+message DeleteSymptomObservationResponse {}
 
 message ListSymptomObservationsRequest {
   string parent = 1 [(buf.validate.field).string.min_len = 1];
@@ -176,6 +177,7 @@ message UpdateMoodObservationResponse {
 message DeleteMoodObservationRequest {
   string name = 1 [(buf.validate.field).string.min_len = 1];
 }
+message DeleteMoodObservationResponse {}
 
 message ListMoodObservationsRequest {
   string parent = 1 [(buf.validate.field).string.min_len = 1];
@@ -212,6 +214,7 @@ message UpdateMedicationResponse {
 message DeleteMedicationRequest {
   string name = 1 [(buf.validate.field).string.min_len = 1];
 }
+message DeleteMedicationResponse {}
 
 message ListMedicationsRequest {
   string parent = 1 [(buf.validate.field).string.min_len = 1];
@@ -248,6 +251,7 @@ message UpdateMedicationEventResponse {
 message DeleteMedicationEventRequest {
   string name = 1 [(buf.validate.field).string.min_len = 1];
 }
+message DeleteMedicationEventResponse {}
 
 message ListMedicationEventsRequest {
   string parent = 1 [(buf.validate.field).string.min_len = 1];
