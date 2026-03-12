@@ -14,7 +14,6 @@ import (
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/oklog/ulid/v2"
 
@@ -445,14 +444,14 @@ func (s *CycleTrackerService) UpdateBleedingObservation(
 func (s *CycleTrackerService) DeleteBleedingObservation(
 	ctx context.Context,
 	req *connect.Request[v1.DeleteBleedingObservationRequest],
-) (*connect.Response[emptypb.Empty], error) {
+) (*connect.Response[v1.DeleteBleedingObservationResponse], error) {
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
 	if err := s.store.BleedingObservations().DeleteByID(ctx, req.Msg.GetName()); err != nil {
 		return nil, toConnectErr(err)
 	}
-	return connect.NewResponse(&emptypb.Empty{}), nil
+	return connect.NewResponse(&v1.DeleteBleedingObservationResponse{}), nil
 }
 
 // ListBleedingObservations returns all bleeding observations for the given user
@@ -527,14 +526,14 @@ func (s *CycleTrackerService) UpdateSymptomObservation(
 func (s *CycleTrackerService) DeleteSymptomObservation(
 	ctx context.Context,
 	req *connect.Request[v1.DeleteSymptomObservationRequest],
-) (*connect.Response[emptypb.Empty], error) {
+) (*connect.Response[v1.DeleteSymptomObservationResponse], error) {
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
 	if err := s.store.SymptomObservations().DeleteByID(ctx, req.Msg.GetName()); err != nil {
 		return nil, toConnectErr(err)
 	}
-	return connect.NewResponse(&emptypb.Empty{}), nil
+	return connect.NewResponse(&v1.DeleteSymptomObservationResponse{}), nil
 }
 
 // ListSymptomObservations returns all symptom observations for the given user
@@ -609,14 +608,14 @@ func (s *CycleTrackerService) UpdateMoodObservation(
 func (s *CycleTrackerService) DeleteMoodObservation(
 	ctx context.Context,
 	req *connect.Request[v1.DeleteMoodObservationRequest],
-) (*connect.Response[emptypb.Empty], error) {
+) (*connect.Response[v1.DeleteMoodObservationResponse], error) {
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
 	if err := s.store.MoodObservations().DeleteByID(ctx, req.Msg.GetName()); err != nil {
 		return nil, toConnectErr(err)
 	}
-	return connect.NewResponse(&emptypb.Empty{}), nil
+	return connect.NewResponse(&v1.DeleteMoodObservationResponse{}), nil
 }
 
 // ListMoodObservations returns all mood observations for the given user
@@ -686,14 +685,14 @@ func (s *CycleTrackerService) UpdateMedication(
 func (s *CycleTrackerService) DeleteMedication(
 	ctx context.Context,
 	req *connect.Request[v1.DeleteMedicationRequest],
-) (*connect.Response[emptypb.Empty], error) {
+) (*connect.Response[v1.DeleteMedicationResponse], error) {
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
 	if err := s.store.Medications().DeleteByID(ctx, req.Msg.GetName()); err != nil {
 		return nil, toConnectErr(err)
 	}
-	return connect.NewResponse(&emptypb.Empty{}), nil
+	return connect.NewResponse(&v1.DeleteMedicationResponse{}), nil
 }
 
 // ListMedications returns all medications for the given user, with offset-based pagination.
@@ -764,14 +763,14 @@ func (s *CycleTrackerService) UpdateMedicationEvent(
 func (s *CycleTrackerService) DeleteMedicationEvent(
 	ctx context.Context,
 	req *connect.Request[v1.DeleteMedicationEventRequest],
-) (*connect.Response[emptypb.Empty], error) {
+) (*connect.Response[v1.DeleteMedicationEventResponse], error) {
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
 	if err := s.store.MedicationEvents().DeleteByID(ctx, req.Msg.GetName()); err != nil {
 		return nil, toConnectErr(err)
 	}
-	return connect.NewResponse(&emptypb.Empty{}), nil
+	return connect.NewResponse(&v1.DeleteMedicationEventResponse{}), nil
 }
 
 // ListMedicationEvents returns all medication events for the given user

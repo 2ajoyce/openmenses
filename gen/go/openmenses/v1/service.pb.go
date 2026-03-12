@@ -10,7 +10,6 @@ import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	_ "google.golang.org/protobuf/types/known/emptypb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	reflect "reflect"
 	sync "sync"
@@ -622,7 +621,6 @@ func (x *DeleteBleedingObservationRequest) GetName() string {
 
 type DeleteBleedingObservationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Observation   *BleedingObservation   `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -655,13 +653,6 @@ func (x *DeleteBleedingObservationResponse) ProtoReflect() protoreflect.Message 
 // Deprecated: Use DeleteBleedingObservationResponse.ProtoReflect.Descriptor instead.
 func (*DeleteBleedingObservationResponse) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{13}
-}
-
-func (x *DeleteBleedingObservationResponse) GetObservation() *BleedingObservation {
-	if x != nil {
-		return x.Observation
-	}
-	return nil
 }
 
 type ListBleedingObservationsRequest struct {
@@ -1048,50 +1039,6 @@ func (x *UpdateSymptomObservationResponse) GetObservation() *SymptomObservation 
 	return nil
 }
 
-type DeleteSymptomObservationResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Observation   *SymptomObservation    `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteSymptomObservationResponse) Reset() {
-	*x = DeleteSymptomObservationResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteSymptomObservationResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteSymptomObservationResponse) ProtoMessage() {}
-
-func (x *DeleteSymptomObservationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteSymptomObservationResponse.ProtoReflect.Descriptor instead.
-func (*DeleteSymptomObservationResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{22}
-}
-
-func (x *DeleteSymptomObservationResponse) GetObservation() *SymptomObservation {
-	if x != nil {
-		return x.Observation
-	}
-	return nil
-}
-
 type DeleteSymptomObservationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -1101,7 +1048,7 @@ type DeleteSymptomObservationRequest struct {
 
 func (x *DeleteSymptomObservationRequest) Reset() {
 	*x = DeleteSymptomObservationRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[23]
+	mi := &file_openmenses_v1_service_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1113,7 +1060,7 @@ func (x *DeleteSymptomObservationRequest) String() string {
 func (*DeleteSymptomObservationRequest) ProtoMessage() {}
 
 func (x *DeleteSymptomObservationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[23]
+	mi := &file_openmenses_v1_service_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1126,7 +1073,7 @@ func (x *DeleteSymptomObservationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSymptomObservationRequest.ProtoReflect.Descriptor instead.
 func (*DeleteSymptomObservationRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{23}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *DeleteSymptomObservationRequest) GetName() string {
@@ -1134,6 +1081,42 @@ func (x *DeleteSymptomObservationRequest) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+type DeleteSymptomObservationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteSymptomObservationResponse) Reset() {
+	*x = DeleteSymptomObservationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteSymptomObservationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteSymptomObservationResponse) ProtoMessage() {}
+
+func (x *DeleteSymptomObservationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteSymptomObservationResponse.ProtoReflect.Descriptor instead.
+func (*DeleteSymptomObservationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{23}
 }
 
 type ListSymptomObservationsRequest struct {
@@ -1520,50 +1503,6 @@ func (x *UpdateMoodObservationResponse) GetObservation() *MoodObservation {
 	return nil
 }
 
-type DeleteMoodObservationResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Observation   *MoodObservation       `protobuf:"bytes,1,opt,name=observation,proto3" json:"observation,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteMoodObservationResponse) Reset() {
-	*x = DeleteMoodObservationResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[32]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteMoodObservationResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteMoodObservationResponse) ProtoMessage() {}
-
-func (x *DeleteMoodObservationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[32]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteMoodObservationResponse.ProtoReflect.Descriptor instead.
-func (*DeleteMoodObservationResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{32}
-}
-
-func (x *DeleteMoodObservationResponse) GetObservation() *MoodObservation {
-	if x != nil {
-		return x.Observation
-	}
-	return nil
-}
-
 type DeleteMoodObservationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -1573,7 +1512,7 @@ type DeleteMoodObservationRequest struct {
 
 func (x *DeleteMoodObservationRequest) Reset() {
 	*x = DeleteMoodObservationRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[33]
+	mi := &file_openmenses_v1_service_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1585,7 +1524,7 @@ func (x *DeleteMoodObservationRequest) String() string {
 func (*DeleteMoodObservationRequest) ProtoMessage() {}
 
 func (x *DeleteMoodObservationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[33]
+	mi := &file_openmenses_v1_service_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1598,7 +1537,7 @@ func (x *DeleteMoodObservationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMoodObservationRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMoodObservationRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{33}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *DeleteMoodObservationRequest) GetName() string {
@@ -1606,6 +1545,42 @@ func (x *DeleteMoodObservationRequest) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+type DeleteMoodObservationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMoodObservationResponse) Reset() {
+	*x = DeleteMoodObservationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMoodObservationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMoodObservationResponse) ProtoMessage() {}
+
+func (x *DeleteMoodObservationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMoodObservationResponse.ProtoReflect.Descriptor instead.
+func (*DeleteMoodObservationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{33}
 }
 
 type ListMoodObservationsRequest struct {
@@ -1948,50 +1923,6 @@ func (x *UpdateMedicationRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
 	return nil
 }
 
-type DeleteMedicationResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Medication    *Medication            `protobuf:"bytes,1,opt,name=medication,proto3" json:"medication,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteMedicationResponse) Reset() {
-	*x = DeleteMedicationResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[41]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteMedicationResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteMedicationResponse) ProtoMessage() {}
-
-func (x *DeleteMedicationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[41]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteMedicationResponse.ProtoReflect.Descriptor instead.
-func (*DeleteMedicationResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{41}
-}
-
-func (x *DeleteMedicationResponse) GetMedication() *Medication {
-	if x != nil {
-		return x.Medication
-	}
-	return nil
-}
-
 type UpdateMedicationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Medication    *Medication            `protobuf:"bytes,1,opt,name=medication,proto3" json:"medication,omitempty"`
@@ -2001,7 +1932,7 @@ type UpdateMedicationResponse struct {
 
 func (x *UpdateMedicationResponse) Reset() {
 	*x = UpdateMedicationResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[42]
+	mi := &file_openmenses_v1_service_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2013,7 +1944,7 @@ func (x *UpdateMedicationResponse) String() string {
 func (*UpdateMedicationResponse) ProtoMessage() {}
 
 func (x *UpdateMedicationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[42]
+	mi := &file_openmenses_v1_service_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2026,7 +1957,7 @@ func (x *UpdateMedicationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMedicationResponse.ProtoReflect.Descriptor instead.
 func (*UpdateMedicationResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{42}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *UpdateMedicationResponse) GetMedication() *Medication {
@@ -2045,7 +1976,7 @@ type DeleteMedicationRequest struct {
 
 func (x *DeleteMedicationRequest) Reset() {
 	*x = DeleteMedicationRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[43]
+	mi := &file_openmenses_v1_service_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2057,7 +1988,7 @@ func (x *DeleteMedicationRequest) String() string {
 func (*DeleteMedicationRequest) ProtoMessage() {}
 
 func (x *DeleteMedicationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[43]
+	mi := &file_openmenses_v1_service_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2070,7 +2001,7 @@ func (x *DeleteMedicationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMedicationRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMedicationRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{43}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *DeleteMedicationRequest) GetName() string {
@@ -2078,6 +2009,42 @@ func (x *DeleteMedicationRequest) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+type DeleteMedicationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMedicationResponse) Reset() {
+	*x = DeleteMedicationResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMedicationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMedicationResponse) ProtoMessage() {}
+
+func (x *DeleteMedicationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMedicationResponse.ProtoReflect.Descriptor instead.
+func (*DeleteMedicationResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{43}
 }
 
 type ListMedicationsRequest struct {
@@ -2420,50 +2387,6 @@ func (x *UpdateMedicationEventRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
 	return nil
 }
 
-type DeleteMedicationEventResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Event         *MedicationEvent       `protobuf:"bytes,1,opt,name=event,proto3" json:"event,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteMedicationEventResponse) Reset() {
-	*x = DeleteMedicationEventResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[51]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteMedicationEventResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteMedicationEventResponse) ProtoMessage() {}
-
-func (x *DeleteMedicationEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[51]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteMedicationEventResponse.ProtoReflect.Descriptor instead.
-func (*DeleteMedicationEventResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{51}
-}
-
-func (x *DeleteMedicationEventResponse) GetEvent() *MedicationEvent {
-	if x != nil {
-		return x.Event
-	}
-	return nil
-}
-
 type UpdateMedicationEventResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Event         *MedicationEvent       `protobuf:"bytes,1,opt,name=event,proto3" json:"event,omitempty"`
@@ -2473,7 +2396,7 @@ type UpdateMedicationEventResponse struct {
 
 func (x *UpdateMedicationEventResponse) Reset() {
 	*x = UpdateMedicationEventResponse{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[52]
+	mi := &file_openmenses_v1_service_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2485,7 +2408,7 @@ func (x *UpdateMedicationEventResponse) String() string {
 func (*UpdateMedicationEventResponse) ProtoMessage() {}
 
 func (x *UpdateMedicationEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[52]
+	mi := &file_openmenses_v1_service_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2498,7 +2421,7 @@ func (x *UpdateMedicationEventResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMedicationEventResponse.ProtoReflect.Descriptor instead.
 func (*UpdateMedicationEventResponse) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{52}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *UpdateMedicationEventResponse) GetEvent() *MedicationEvent {
@@ -2517,7 +2440,7 @@ type DeleteMedicationEventRequest struct {
 
 func (x *DeleteMedicationEventRequest) Reset() {
 	*x = DeleteMedicationEventRequest{}
-	mi := &file_openmenses_v1_service_proto_msgTypes[53]
+	mi := &file_openmenses_v1_service_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2529,7 +2452,7 @@ func (x *DeleteMedicationEventRequest) String() string {
 func (*DeleteMedicationEventRequest) ProtoMessage() {}
 
 func (x *DeleteMedicationEventRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_service_proto_msgTypes[53]
+	mi := &file_openmenses_v1_service_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2542,7 +2465,7 @@ func (x *DeleteMedicationEventRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMedicationEventRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMedicationEventRequest) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{53}
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *DeleteMedicationEventRequest) GetName() string {
@@ -2550,6 +2473,42 @@ func (x *DeleteMedicationEventRequest) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+type DeleteMedicationEventResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMedicationEventResponse) Reset() {
+	*x = DeleteMedicationEventResponse{}
+	mi := &file_openmenses_v1_service_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMedicationEventResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMedicationEventResponse) ProtoMessage() {}
+
+func (x *DeleteMedicationEventResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_service_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMedicationEventResponse.ProtoReflect.Descriptor instead.
+func (*DeleteMedicationEventResponse) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{53}
 }
 
 type ListMedicationEventsRequest struct {
@@ -3543,7 +3502,7 @@ var File_openmenses_v1_service_proto protoreflect.FileDescriptor
 
 const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1bopenmenses/v1/service.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x19openmenses/v1/model.proto\x1a\x19openmenses/v1/types.proto\"4\n" +
+	"\x1bopenmenses/v1/service.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/field_mask.proto\x1a\x19openmenses/v1/model.proto\x1a\x19openmenses/v1/types.proto\"4\n" +
 	"\x15GetUserProfileRequest\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"N\n" +
 	"\x16GetUserProfileResponse\x124\n" +
@@ -3574,9 +3533,8 @@ const file_openmenses_v1_service_proto_rawDesc = "" +
 	"!UpdateBleedingObservationResponse\x12D\n" +
 	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"?\n" +
 	" DeleteBleedingObservationRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"i\n" +
-	"!DeleteBleedingObservationResponse\x12D\n" +
-	"\vobservation\x18\x01 \x01(\v2\".openmenses.v1.BleedingObservationR\vobservation\"\x84\x01\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"#\n" +
+	"!DeleteBleedingObservationResponse\"\x84\x01\n" +
 	"\x1fListBleedingObservationsRequest\x12\x1f\n" +
 	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
 	"\n" +
@@ -3601,11 +3559,10 @@ const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
 	"updateMask\"g\n" +
 	" UpdateSymptomObservationResponse\x12C\n" +
-	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\"g\n" +
-	" DeleteSymptomObservationResponse\x12C\n" +
 	"\vobservation\x18\x01 \x01(\v2!.openmenses.v1.SymptomObservationR\vobservation\">\n" +
 	"\x1fDeleteSymptomObservationRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"\x83\x01\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"\"\n" +
+	" DeleteSymptomObservationResponse\"\x83\x01\n" +
 	"\x1eListSymptomObservationsRequest\x12\x1f\n" +
 	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
 	"\n" +
@@ -3630,11 +3587,10 @@ const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
 	"updateMask\"a\n" +
 	"\x1dUpdateMoodObservationResponse\x12@\n" +
-	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\"a\n" +
-	"\x1dDeleteMoodObservationResponse\x12@\n" +
 	"\vobservation\x18\x01 \x01(\v2\x1e.openmenses.v1.MoodObservationR\vobservation\";\n" +
 	"\x1cDeleteMoodObservationRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"\x80\x01\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"\x1f\n" +
+	"\x1dDeleteMoodObservationResponse\"\x80\x01\n" +
 	"\x1bListMoodObservationsRequest\x12\x1f\n" +
 	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
 	"\n" +
@@ -3666,16 +3622,13 @@ const file_openmenses_v1_service_proto_rawDesc = "" +
 	"medication\x12;\n" +
 	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
 	"updateMask\"U\n" +
-	"\x18DeleteMedicationResponse\x129\n" +
-	"\n" +
-	"medication\x18\x01 \x01(\v2\x19.openmenses.v1.MedicationR\n" +
-	"medication\"U\n" +
 	"\x18UpdateMedicationResponse\x129\n" +
 	"\n" +
 	"medication\x18\x01 \x01(\v2\x19.openmenses.v1.MedicationR\n" +
 	"medication\"6\n" +
 	"\x17DeleteMedicationRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"{\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"\x1a\n" +
+	"\x18DeleteMedicationResponse\"{\n" +
 	"\x16ListMedicationsRequest\x12\x1f\n" +
 	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
 	"\n" +
@@ -3699,12 +3652,11 @@ const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\x12;\n" +
 	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
 	"updateMask\"U\n" +
-	"\x1dDeleteMedicationEventResponse\x124\n" +
-	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\"U\n" +
 	"\x1dUpdateMedicationEventResponse\x124\n" +
 	"\x05event\x18\x01 \x01(\v2\x1e.openmenses.v1.MedicationEventR\x05event\";\n" +
 	"\x1cDeleteMedicationEventRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"\x80\x01\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"\x1f\n" +
+	"\x1dDeleteMedicationEventResponse\"\x80\x01\n" +
 	"\x1bListMedicationEventsRequest\x12\x1f\n" +
 	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12@\n" +
 	"\n" +
@@ -3857,8 +3809,8 @@ var file_openmenses_v1_service_proto_goTypes = []any{
 	(*CreateSymptomObservationResponse)(nil),  // 19: openmenses.v1.CreateSymptomObservationResponse
 	(*UpdateSymptomObservationRequest)(nil),   // 20: openmenses.v1.UpdateSymptomObservationRequest
 	(*UpdateSymptomObservationResponse)(nil),  // 21: openmenses.v1.UpdateSymptomObservationResponse
-	(*DeleteSymptomObservationResponse)(nil),  // 22: openmenses.v1.DeleteSymptomObservationResponse
-	(*DeleteSymptomObservationRequest)(nil),   // 23: openmenses.v1.DeleteSymptomObservationRequest
+	(*DeleteSymptomObservationRequest)(nil),   // 22: openmenses.v1.DeleteSymptomObservationRequest
+	(*DeleteSymptomObservationResponse)(nil),  // 23: openmenses.v1.DeleteSymptomObservationResponse
 	(*ListSymptomObservationsRequest)(nil),    // 24: openmenses.v1.ListSymptomObservationsRequest
 	(*ListSymptomObservationsResponse)(nil),   // 25: openmenses.v1.ListSymptomObservationsResponse
 	(*GetMoodObservationRequest)(nil),         // 26: openmenses.v1.GetMoodObservationRequest
@@ -3867,8 +3819,8 @@ var file_openmenses_v1_service_proto_goTypes = []any{
 	(*CreateMoodObservationResponse)(nil),     // 29: openmenses.v1.CreateMoodObservationResponse
 	(*UpdateMoodObservationRequest)(nil),      // 30: openmenses.v1.UpdateMoodObservationRequest
 	(*UpdateMoodObservationResponse)(nil),     // 31: openmenses.v1.UpdateMoodObservationResponse
-	(*DeleteMoodObservationResponse)(nil),     // 32: openmenses.v1.DeleteMoodObservationResponse
-	(*DeleteMoodObservationRequest)(nil),      // 33: openmenses.v1.DeleteMoodObservationRequest
+	(*DeleteMoodObservationRequest)(nil),      // 32: openmenses.v1.DeleteMoodObservationRequest
+	(*DeleteMoodObservationResponse)(nil),     // 33: openmenses.v1.DeleteMoodObservationResponse
 	(*ListMoodObservationsRequest)(nil),       // 34: openmenses.v1.ListMoodObservationsRequest
 	(*ListMoodObservationsResponse)(nil),      // 35: openmenses.v1.ListMoodObservationsResponse
 	(*GetMedicationRequest)(nil),              // 36: openmenses.v1.GetMedicationRequest
@@ -3876,9 +3828,9 @@ var file_openmenses_v1_service_proto_goTypes = []any{
 	(*CreateMedicationRequest)(nil),           // 38: openmenses.v1.CreateMedicationRequest
 	(*CreateMedicationResponse)(nil),          // 39: openmenses.v1.CreateMedicationResponse
 	(*UpdateMedicationRequest)(nil),           // 40: openmenses.v1.UpdateMedicationRequest
-	(*DeleteMedicationResponse)(nil),          // 41: openmenses.v1.DeleteMedicationResponse
-	(*UpdateMedicationResponse)(nil),          // 42: openmenses.v1.UpdateMedicationResponse
-	(*DeleteMedicationRequest)(nil),           // 43: openmenses.v1.DeleteMedicationRequest
+	(*UpdateMedicationResponse)(nil),          // 41: openmenses.v1.UpdateMedicationResponse
+	(*DeleteMedicationRequest)(nil),           // 42: openmenses.v1.DeleteMedicationRequest
+	(*DeleteMedicationResponse)(nil),          // 43: openmenses.v1.DeleteMedicationResponse
 	(*ListMedicationsRequest)(nil),            // 44: openmenses.v1.ListMedicationsRequest
 	(*ListMedicationsResponse)(nil),           // 45: openmenses.v1.ListMedicationsResponse
 	(*GetMedicationEventRequest)(nil),         // 46: openmenses.v1.GetMedicationEventRequest
@@ -3886,9 +3838,9 @@ var file_openmenses_v1_service_proto_goTypes = []any{
 	(*CreateMedicationEventRequest)(nil),      // 48: openmenses.v1.CreateMedicationEventRequest
 	(*CreateMedicationEventResponse)(nil),     // 49: openmenses.v1.CreateMedicationEventResponse
 	(*UpdateMedicationEventRequest)(nil),      // 50: openmenses.v1.UpdateMedicationEventRequest
-	(*DeleteMedicationEventResponse)(nil),     // 51: openmenses.v1.DeleteMedicationEventResponse
-	(*UpdateMedicationEventResponse)(nil),     // 52: openmenses.v1.UpdateMedicationEventResponse
-	(*DeleteMedicationEventRequest)(nil),      // 53: openmenses.v1.DeleteMedicationEventRequest
+	(*UpdateMedicationEventResponse)(nil),     // 51: openmenses.v1.UpdateMedicationEventResponse
+	(*DeleteMedicationEventRequest)(nil),      // 52: openmenses.v1.DeleteMedicationEventRequest
+	(*DeleteMedicationEventResponse)(nil),     // 53: openmenses.v1.DeleteMedicationEventResponse
 	(*ListMedicationEventsRequest)(nil),       // 54: openmenses.v1.ListMedicationEventsRequest
 	(*ListMedicationEventsResponse)(nil),      // 55: openmenses.v1.ListMedicationEventsResponse
 	(*ListTimelineRequest)(nil),               // 56: openmenses.v1.ListTimelineRequest
@@ -3934,148 +3886,143 @@ var file_openmenses_v1_service_proto_depIdxs = []int32{
 	73,  // 9: openmenses.v1.UpdateBleedingObservationRequest.observation:type_name -> openmenses.v1.BleedingObservation
 	72,  // 10: openmenses.v1.UpdateBleedingObservationRequest.update_mask:type_name -> google.protobuf.FieldMask
 	73,  // 11: openmenses.v1.UpdateBleedingObservationResponse.observation:type_name -> openmenses.v1.BleedingObservation
-	73,  // 12: openmenses.v1.DeleteBleedingObservationResponse.observation:type_name -> openmenses.v1.BleedingObservation
-	74,  // 13: openmenses.v1.ListBleedingObservationsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
-	73,  // 14: openmenses.v1.ListBleedingObservationsResponse.observations:type_name -> openmenses.v1.BleedingObservation
-	75,  // 15: openmenses.v1.ListBleedingObservationsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
-	76,  // 16: openmenses.v1.GetSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
-	76,  // 17: openmenses.v1.CreateSymptomObservationRequest.observation:type_name -> openmenses.v1.SymptomObservation
-	76,  // 18: openmenses.v1.CreateSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
-	76,  // 19: openmenses.v1.UpdateSymptomObservationRequest.observation:type_name -> openmenses.v1.SymptomObservation
-	72,  // 20: openmenses.v1.UpdateSymptomObservationRequest.update_mask:type_name -> google.protobuf.FieldMask
-	76,  // 21: openmenses.v1.UpdateSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
-	76,  // 22: openmenses.v1.DeleteSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
-	74,  // 23: openmenses.v1.ListSymptomObservationsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
-	76,  // 24: openmenses.v1.ListSymptomObservationsResponse.observations:type_name -> openmenses.v1.SymptomObservation
-	75,  // 25: openmenses.v1.ListSymptomObservationsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
-	77,  // 26: openmenses.v1.GetMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
-	77,  // 27: openmenses.v1.CreateMoodObservationRequest.observation:type_name -> openmenses.v1.MoodObservation
-	77,  // 28: openmenses.v1.CreateMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
-	77,  // 29: openmenses.v1.UpdateMoodObservationRequest.observation:type_name -> openmenses.v1.MoodObservation
-	72,  // 30: openmenses.v1.UpdateMoodObservationRequest.update_mask:type_name -> google.protobuf.FieldMask
-	77,  // 31: openmenses.v1.UpdateMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
-	77,  // 32: openmenses.v1.DeleteMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
-	74,  // 33: openmenses.v1.ListMoodObservationsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
-	77,  // 34: openmenses.v1.ListMoodObservationsResponse.observations:type_name -> openmenses.v1.MoodObservation
-	75,  // 35: openmenses.v1.ListMoodObservationsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
-	78,  // 36: openmenses.v1.GetMedicationResponse.medication:type_name -> openmenses.v1.Medication
-	78,  // 37: openmenses.v1.CreateMedicationRequest.medication:type_name -> openmenses.v1.Medication
-	78,  // 38: openmenses.v1.CreateMedicationResponse.medication:type_name -> openmenses.v1.Medication
-	78,  // 39: openmenses.v1.UpdateMedicationRequest.medication:type_name -> openmenses.v1.Medication
-	72,  // 40: openmenses.v1.UpdateMedicationRequest.update_mask:type_name -> google.protobuf.FieldMask
-	78,  // 41: openmenses.v1.DeleteMedicationResponse.medication:type_name -> openmenses.v1.Medication
-	78,  // 42: openmenses.v1.UpdateMedicationResponse.medication:type_name -> openmenses.v1.Medication
-	74,  // 43: openmenses.v1.ListMedicationsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
-	78,  // 44: openmenses.v1.ListMedicationsResponse.medications:type_name -> openmenses.v1.Medication
-	75,  // 45: openmenses.v1.ListMedicationsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
-	79,  // 46: openmenses.v1.GetMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
-	79,  // 47: openmenses.v1.CreateMedicationEventRequest.event:type_name -> openmenses.v1.MedicationEvent
-	79,  // 48: openmenses.v1.CreateMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
-	79,  // 49: openmenses.v1.UpdateMedicationEventRequest.event:type_name -> openmenses.v1.MedicationEvent
-	72,  // 50: openmenses.v1.UpdateMedicationEventRequest.update_mask:type_name -> google.protobuf.FieldMask
-	79,  // 51: openmenses.v1.DeleteMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
-	79,  // 52: openmenses.v1.UpdateMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
-	74,  // 53: openmenses.v1.ListMedicationEventsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
-	79,  // 54: openmenses.v1.ListMedicationEventsResponse.events:type_name -> openmenses.v1.MedicationEvent
-	75,  // 55: openmenses.v1.ListMedicationEventsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
-	80,  // 56: openmenses.v1.ListTimelineRequest.range:type_name -> openmenses.v1.DateRange
-	74,  // 57: openmenses.v1.ListTimelineRequest.pagination:type_name -> openmenses.v1.PaginationRequest
-	73,  // 58: openmenses.v1.TimelineRecord.bleeding_observation:type_name -> openmenses.v1.BleedingObservation
-	76,  // 59: openmenses.v1.TimelineRecord.symptom_observation:type_name -> openmenses.v1.SymptomObservation
-	77,  // 60: openmenses.v1.TimelineRecord.mood_observation:type_name -> openmenses.v1.MoodObservation
-	78,  // 61: openmenses.v1.TimelineRecord.medication:type_name -> openmenses.v1.Medication
-	79,  // 62: openmenses.v1.TimelineRecord.medication_event:type_name -> openmenses.v1.MedicationEvent
-	81,  // 63: openmenses.v1.TimelineRecord.cycle:type_name -> openmenses.v1.Cycle
-	82,  // 64: openmenses.v1.TimelineRecord.phase_estimate:type_name -> openmenses.v1.PhaseEstimate
-	83,  // 65: openmenses.v1.TimelineRecord.prediction:type_name -> openmenses.v1.Prediction
-	84,  // 66: openmenses.v1.TimelineRecord.insight:type_name -> openmenses.v1.Insight
-	57,  // 67: openmenses.v1.ListTimelineResponse.records:type_name -> openmenses.v1.TimelineRecord
-	75,  // 68: openmenses.v1.ListTimelineResponse.pagination:type_name -> openmenses.v1.PaginationResponse
-	81,  // 69: openmenses.v1.GetCycleResponse.cycle:type_name -> openmenses.v1.Cycle
-	74,  // 70: openmenses.v1.ListCyclesRequest.pagination:type_name -> openmenses.v1.PaginationRequest
-	81,  // 71: openmenses.v1.ListCyclesResponse.cycles:type_name -> openmenses.v1.Cycle
-	75,  // 72: openmenses.v1.ListCyclesResponse.pagination:type_name -> openmenses.v1.PaginationResponse
-	74,  // 73: openmenses.v1.ListPredictionsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
-	83,  // 74: openmenses.v1.ListPredictionsResponse.predictions:type_name -> openmenses.v1.Prediction
-	75,  // 75: openmenses.v1.ListPredictionsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
-	74,  // 76: openmenses.v1.ListInsightsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
-	84,  // 77: openmenses.v1.ListInsightsResponse.insights:type_name -> openmenses.v1.Insight
-	75,  // 78: openmenses.v1.ListInsightsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
-	0,   // 79: openmenses.v1.CycleTrackerService.GetUserProfile:input_type -> openmenses.v1.GetUserProfileRequest
-	2,   // 80: openmenses.v1.CycleTrackerService.CreateUserProfile:input_type -> openmenses.v1.CreateUserProfileRequest
-	4,   // 81: openmenses.v1.CycleTrackerService.UpdateUserProfile:input_type -> openmenses.v1.UpdateUserProfileRequest
-	6,   // 82: openmenses.v1.CycleTrackerService.GetBleedingObservation:input_type -> openmenses.v1.GetBleedingObservationRequest
-	8,   // 83: openmenses.v1.CycleTrackerService.CreateBleedingObservation:input_type -> openmenses.v1.CreateBleedingObservationRequest
-	10,  // 84: openmenses.v1.CycleTrackerService.UpdateBleedingObservation:input_type -> openmenses.v1.UpdateBleedingObservationRequest
-	12,  // 85: openmenses.v1.CycleTrackerService.DeleteBleedingObservation:input_type -> openmenses.v1.DeleteBleedingObservationRequest
-	14,  // 86: openmenses.v1.CycleTrackerService.ListBleedingObservations:input_type -> openmenses.v1.ListBleedingObservationsRequest
-	16,  // 87: openmenses.v1.CycleTrackerService.GetSymptomObservation:input_type -> openmenses.v1.GetSymptomObservationRequest
-	18,  // 88: openmenses.v1.CycleTrackerService.CreateSymptomObservation:input_type -> openmenses.v1.CreateSymptomObservationRequest
-	20,  // 89: openmenses.v1.CycleTrackerService.UpdateSymptomObservation:input_type -> openmenses.v1.UpdateSymptomObservationRequest
-	23,  // 90: openmenses.v1.CycleTrackerService.DeleteSymptomObservation:input_type -> openmenses.v1.DeleteSymptomObservationRequest
-	24,  // 91: openmenses.v1.CycleTrackerService.ListSymptomObservations:input_type -> openmenses.v1.ListSymptomObservationsRequest
-	26,  // 92: openmenses.v1.CycleTrackerService.GetMoodObservation:input_type -> openmenses.v1.GetMoodObservationRequest
-	28,  // 93: openmenses.v1.CycleTrackerService.CreateMoodObservation:input_type -> openmenses.v1.CreateMoodObservationRequest
-	30,  // 94: openmenses.v1.CycleTrackerService.UpdateMoodObservation:input_type -> openmenses.v1.UpdateMoodObservationRequest
-	33,  // 95: openmenses.v1.CycleTrackerService.DeleteMoodObservation:input_type -> openmenses.v1.DeleteMoodObservationRequest
-	34,  // 96: openmenses.v1.CycleTrackerService.ListMoodObservations:input_type -> openmenses.v1.ListMoodObservationsRequest
-	36,  // 97: openmenses.v1.CycleTrackerService.GetMedication:input_type -> openmenses.v1.GetMedicationRequest
-	38,  // 98: openmenses.v1.CycleTrackerService.CreateMedication:input_type -> openmenses.v1.CreateMedicationRequest
-	40,  // 99: openmenses.v1.CycleTrackerService.UpdateMedication:input_type -> openmenses.v1.UpdateMedicationRequest
-	43,  // 100: openmenses.v1.CycleTrackerService.DeleteMedication:input_type -> openmenses.v1.DeleteMedicationRequest
-	44,  // 101: openmenses.v1.CycleTrackerService.ListMedications:input_type -> openmenses.v1.ListMedicationsRequest
-	46,  // 102: openmenses.v1.CycleTrackerService.GetMedicationEvent:input_type -> openmenses.v1.GetMedicationEventRequest
-	48,  // 103: openmenses.v1.CycleTrackerService.CreateMedicationEvent:input_type -> openmenses.v1.CreateMedicationEventRequest
-	50,  // 104: openmenses.v1.CycleTrackerService.UpdateMedicationEvent:input_type -> openmenses.v1.UpdateMedicationEventRequest
-	53,  // 105: openmenses.v1.CycleTrackerService.DeleteMedicationEvent:input_type -> openmenses.v1.DeleteMedicationEventRequest
-	54,  // 106: openmenses.v1.CycleTrackerService.ListMedicationEvents:input_type -> openmenses.v1.ListMedicationEventsRequest
-	56,  // 107: openmenses.v1.CycleTrackerService.ListTimeline:input_type -> openmenses.v1.ListTimelineRequest
-	59,  // 108: openmenses.v1.CycleTrackerService.GetCycle:input_type -> openmenses.v1.GetCycleRequest
-	61,  // 109: openmenses.v1.CycleTrackerService.ListCycles:input_type -> openmenses.v1.ListCyclesRequest
-	63,  // 110: openmenses.v1.CycleTrackerService.ListPredictions:input_type -> openmenses.v1.ListPredictionsRequest
-	65,  // 111: openmenses.v1.CycleTrackerService.ListInsights:input_type -> openmenses.v1.ListInsightsRequest
-	67,  // 112: openmenses.v1.CycleTrackerService.CreateDataExport:input_type -> openmenses.v1.CreateDataExportRequest
-	69,  // 113: openmenses.v1.CycleTrackerService.CreateDataImport:input_type -> openmenses.v1.CreateDataImportRequest
-	1,   // 114: openmenses.v1.CycleTrackerService.GetUserProfile:output_type -> openmenses.v1.GetUserProfileResponse
-	3,   // 115: openmenses.v1.CycleTrackerService.CreateUserProfile:output_type -> openmenses.v1.CreateUserProfileResponse
-	5,   // 116: openmenses.v1.CycleTrackerService.UpdateUserProfile:output_type -> openmenses.v1.UpdateUserProfileResponse
-	7,   // 117: openmenses.v1.CycleTrackerService.GetBleedingObservation:output_type -> openmenses.v1.GetBleedingObservationResponse
-	9,   // 118: openmenses.v1.CycleTrackerService.CreateBleedingObservation:output_type -> openmenses.v1.CreateBleedingObservationResponse
-	11,  // 119: openmenses.v1.CycleTrackerService.UpdateBleedingObservation:output_type -> openmenses.v1.UpdateBleedingObservationResponse
-	13,  // 120: openmenses.v1.CycleTrackerService.DeleteBleedingObservation:output_type -> openmenses.v1.DeleteBleedingObservationResponse
-	15,  // 121: openmenses.v1.CycleTrackerService.ListBleedingObservations:output_type -> openmenses.v1.ListBleedingObservationsResponse
-	17,  // 122: openmenses.v1.CycleTrackerService.GetSymptomObservation:output_type -> openmenses.v1.GetSymptomObservationResponse
-	19,  // 123: openmenses.v1.CycleTrackerService.CreateSymptomObservation:output_type -> openmenses.v1.CreateSymptomObservationResponse
-	21,  // 124: openmenses.v1.CycleTrackerService.UpdateSymptomObservation:output_type -> openmenses.v1.UpdateSymptomObservationResponse
-	22,  // 125: openmenses.v1.CycleTrackerService.DeleteSymptomObservation:output_type -> openmenses.v1.DeleteSymptomObservationResponse
-	25,  // 126: openmenses.v1.CycleTrackerService.ListSymptomObservations:output_type -> openmenses.v1.ListSymptomObservationsResponse
-	27,  // 127: openmenses.v1.CycleTrackerService.GetMoodObservation:output_type -> openmenses.v1.GetMoodObservationResponse
-	29,  // 128: openmenses.v1.CycleTrackerService.CreateMoodObservation:output_type -> openmenses.v1.CreateMoodObservationResponse
-	31,  // 129: openmenses.v1.CycleTrackerService.UpdateMoodObservation:output_type -> openmenses.v1.UpdateMoodObservationResponse
-	32,  // 130: openmenses.v1.CycleTrackerService.DeleteMoodObservation:output_type -> openmenses.v1.DeleteMoodObservationResponse
-	35,  // 131: openmenses.v1.CycleTrackerService.ListMoodObservations:output_type -> openmenses.v1.ListMoodObservationsResponse
-	37,  // 132: openmenses.v1.CycleTrackerService.GetMedication:output_type -> openmenses.v1.GetMedicationResponse
-	39,  // 133: openmenses.v1.CycleTrackerService.CreateMedication:output_type -> openmenses.v1.CreateMedicationResponse
-	42,  // 134: openmenses.v1.CycleTrackerService.UpdateMedication:output_type -> openmenses.v1.UpdateMedicationResponse
-	41,  // 135: openmenses.v1.CycleTrackerService.DeleteMedication:output_type -> openmenses.v1.DeleteMedicationResponse
-	45,  // 136: openmenses.v1.CycleTrackerService.ListMedications:output_type -> openmenses.v1.ListMedicationsResponse
-	47,  // 137: openmenses.v1.CycleTrackerService.GetMedicationEvent:output_type -> openmenses.v1.GetMedicationEventResponse
-	49,  // 138: openmenses.v1.CycleTrackerService.CreateMedicationEvent:output_type -> openmenses.v1.CreateMedicationEventResponse
-	52,  // 139: openmenses.v1.CycleTrackerService.UpdateMedicationEvent:output_type -> openmenses.v1.UpdateMedicationEventResponse
-	51,  // 140: openmenses.v1.CycleTrackerService.DeleteMedicationEvent:output_type -> openmenses.v1.DeleteMedicationEventResponse
-	55,  // 141: openmenses.v1.CycleTrackerService.ListMedicationEvents:output_type -> openmenses.v1.ListMedicationEventsResponse
-	58,  // 142: openmenses.v1.CycleTrackerService.ListTimeline:output_type -> openmenses.v1.ListTimelineResponse
-	60,  // 143: openmenses.v1.CycleTrackerService.GetCycle:output_type -> openmenses.v1.GetCycleResponse
-	62,  // 144: openmenses.v1.CycleTrackerService.ListCycles:output_type -> openmenses.v1.ListCyclesResponse
-	64,  // 145: openmenses.v1.CycleTrackerService.ListPredictions:output_type -> openmenses.v1.ListPredictionsResponse
-	66,  // 146: openmenses.v1.CycleTrackerService.ListInsights:output_type -> openmenses.v1.ListInsightsResponse
-	68,  // 147: openmenses.v1.CycleTrackerService.CreateDataExport:output_type -> openmenses.v1.CreateDataExportResponse
-	70,  // 148: openmenses.v1.CycleTrackerService.CreateDataImport:output_type -> openmenses.v1.CreateDataImportResponse
-	114, // [114:149] is the sub-list for method output_type
-	79,  // [79:114] is the sub-list for method input_type
-	79,  // [79:79] is the sub-list for extension type_name
-	79,  // [79:79] is the sub-list for extension extendee
-	0,   // [0:79] is the sub-list for field type_name
+	74,  // 12: openmenses.v1.ListBleedingObservationsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	73,  // 13: openmenses.v1.ListBleedingObservationsResponse.observations:type_name -> openmenses.v1.BleedingObservation
+	75,  // 14: openmenses.v1.ListBleedingObservationsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	76,  // 15: openmenses.v1.GetSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
+	76,  // 16: openmenses.v1.CreateSymptomObservationRequest.observation:type_name -> openmenses.v1.SymptomObservation
+	76,  // 17: openmenses.v1.CreateSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
+	76,  // 18: openmenses.v1.UpdateSymptomObservationRequest.observation:type_name -> openmenses.v1.SymptomObservation
+	72,  // 19: openmenses.v1.UpdateSymptomObservationRequest.update_mask:type_name -> google.protobuf.FieldMask
+	76,  // 20: openmenses.v1.UpdateSymptomObservationResponse.observation:type_name -> openmenses.v1.SymptomObservation
+	74,  // 21: openmenses.v1.ListSymptomObservationsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	76,  // 22: openmenses.v1.ListSymptomObservationsResponse.observations:type_name -> openmenses.v1.SymptomObservation
+	75,  // 23: openmenses.v1.ListSymptomObservationsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	77,  // 24: openmenses.v1.GetMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
+	77,  // 25: openmenses.v1.CreateMoodObservationRequest.observation:type_name -> openmenses.v1.MoodObservation
+	77,  // 26: openmenses.v1.CreateMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
+	77,  // 27: openmenses.v1.UpdateMoodObservationRequest.observation:type_name -> openmenses.v1.MoodObservation
+	72,  // 28: openmenses.v1.UpdateMoodObservationRequest.update_mask:type_name -> google.protobuf.FieldMask
+	77,  // 29: openmenses.v1.UpdateMoodObservationResponse.observation:type_name -> openmenses.v1.MoodObservation
+	74,  // 30: openmenses.v1.ListMoodObservationsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	77,  // 31: openmenses.v1.ListMoodObservationsResponse.observations:type_name -> openmenses.v1.MoodObservation
+	75,  // 32: openmenses.v1.ListMoodObservationsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	78,  // 33: openmenses.v1.GetMedicationResponse.medication:type_name -> openmenses.v1.Medication
+	78,  // 34: openmenses.v1.CreateMedicationRequest.medication:type_name -> openmenses.v1.Medication
+	78,  // 35: openmenses.v1.CreateMedicationResponse.medication:type_name -> openmenses.v1.Medication
+	78,  // 36: openmenses.v1.UpdateMedicationRequest.medication:type_name -> openmenses.v1.Medication
+	72,  // 37: openmenses.v1.UpdateMedicationRequest.update_mask:type_name -> google.protobuf.FieldMask
+	78,  // 38: openmenses.v1.UpdateMedicationResponse.medication:type_name -> openmenses.v1.Medication
+	74,  // 39: openmenses.v1.ListMedicationsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	78,  // 40: openmenses.v1.ListMedicationsResponse.medications:type_name -> openmenses.v1.Medication
+	75,  // 41: openmenses.v1.ListMedicationsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	79,  // 42: openmenses.v1.GetMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
+	79,  // 43: openmenses.v1.CreateMedicationEventRequest.event:type_name -> openmenses.v1.MedicationEvent
+	79,  // 44: openmenses.v1.CreateMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
+	79,  // 45: openmenses.v1.UpdateMedicationEventRequest.event:type_name -> openmenses.v1.MedicationEvent
+	72,  // 46: openmenses.v1.UpdateMedicationEventRequest.update_mask:type_name -> google.protobuf.FieldMask
+	79,  // 47: openmenses.v1.UpdateMedicationEventResponse.event:type_name -> openmenses.v1.MedicationEvent
+	74,  // 48: openmenses.v1.ListMedicationEventsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	79,  // 49: openmenses.v1.ListMedicationEventsResponse.events:type_name -> openmenses.v1.MedicationEvent
+	75,  // 50: openmenses.v1.ListMedicationEventsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	80,  // 51: openmenses.v1.ListTimelineRequest.range:type_name -> openmenses.v1.DateRange
+	74,  // 52: openmenses.v1.ListTimelineRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	73,  // 53: openmenses.v1.TimelineRecord.bleeding_observation:type_name -> openmenses.v1.BleedingObservation
+	76,  // 54: openmenses.v1.TimelineRecord.symptom_observation:type_name -> openmenses.v1.SymptomObservation
+	77,  // 55: openmenses.v1.TimelineRecord.mood_observation:type_name -> openmenses.v1.MoodObservation
+	78,  // 56: openmenses.v1.TimelineRecord.medication:type_name -> openmenses.v1.Medication
+	79,  // 57: openmenses.v1.TimelineRecord.medication_event:type_name -> openmenses.v1.MedicationEvent
+	81,  // 58: openmenses.v1.TimelineRecord.cycle:type_name -> openmenses.v1.Cycle
+	82,  // 59: openmenses.v1.TimelineRecord.phase_estimate:type_name -> openmenses.v1.PhaseEstimate
+	83,  // 60: openmenses.v1.TimelineRecord.prediction:type_name -> openmenses.v1.Prediction
+	84,  // 61: openmenses.v1.TimelineRecord.insight:type_name -> openmenses.v1.Insight
+	57,  // 62: openmenses.v1.ListTimelineResponse.records:type_name -> openmenses.v1.TimelineRecord
+	75,  // 63: openmenses.v1.ListTimelineResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	81,  // 64: openmenses.v1.GetCycleResponse.cycle:type_name -> openmenses.v1.Cycle
+	74,  // 65: openmenses.v1.ListCyclesRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	81,  // 66: openmenses.v1.ListCyclesResponse.cycles:type_name -> openmenses.v1.Cycle
+	75,  // 67: openmenses.v1.ListCyclesResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	74,  // 68: openmenses.v1.ListPredictionsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	83,  // 69: openmenses.v1.ListPredictionsResponse.predictions:type_name -> openmenses.v1.Prediction
+	75,  // 70: openmenses.v1.ListPredictionsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	74,  // 71: openmenses.v1.ListInsightsRequest.pagination:type_name -> openmenses.v1.PaginationRequest
+	84,  // 72: openmenses.v1.ListInsightsResponse.insights:type_name -> openmenses.v1.Insight
+	75,  // 73: openmenses.v1.ListInsightsResponse.pagination:type_name -> openmenses.v1.PaginationResponse
+	0,   // 74: openmenses.v1.CycleTrackerService.GetUserProfile:input_type -> openmenses.v1.GetUserProfileRequest
+	2,   // 75: openmenses.v1.CycleTrackerService.CreateUserProfile:input_type -> openmenses.v1.CreateUserProfileRequest
+	4,   // 76: openmenses.v1.CycleTrackerService.UpdateUserProfile:input_type -> openmenses.v1.UpdateUserProfileRequest
+	6,   // 77: openmenses.v1.CycleTrackerService.GetBleedingObservation:input_type -> openmenses.v1.GetBleedingObservationRequest
+	8,   // 78: openmenses.v1.CycleTrackerService.CreateBleedingObservation:input_type -> openmenses.v1.CreateBleedingObservationRequest
+	10,  // 79: openmenses.v1.CycleTrackerService.UpdateBleedingObservation:input_type -> openmenses.v1.UpdateBleedingObservationRequest
+	12,  // 80: openmenses.v1.CycleTrackerService.DeleteBleedingObservation:input_type -> openmenses.v1.DeleteBleedingObservationRequest
+	14,  // 81: openmenses.v1.CycleTrackerService.ListBleedingObservations:input_type -> openmenses.v1.ListBleedingObservationsRequest
+	16,  // 82: openmenses.v1.CycleTrackerService.GetSymptomObservation:input_type -> openmenses.v1.GetSymptomObservationRequest
+	18,  // 83: openmenses.v1.CycleTrackerService.CreateSymptomObservation:input_type -> openmenses.v1.CreateSymptomObservationRequest
+	20,  // 84: openmenses.v1.CycleTrackerService.UpdateSymptomObservation:input_type -> openmenses.v1.UpdateSymptomObservationRequest
+	22,  // 85: openmenses.v1.CycleTrackerService.DeleteSymptomObservation:input_type -> openmenses.v1.DeleteSymptomObservationRequest
+	24,  // 86: openmenses.v1.CycleTrackerService.ListSymptomObservations:input_type -> openmenses.v1.ListSymptomObservationsRequest
+	26,  // 87: openmenses.v1.CycleTrackerService.GetMoodObservation:input_type -> openmenses.v1.GetMoodObservationRequest
+	28,  // 88: openmenses.v1.CycleTrackerService.CreateMoodObservation:input_type -> openmenses.v1.CreateMoodObservationRequest
+	30,  // 89: openmenses.v1.CycleTrackerService.UpdateMoodObservation:input_type -> openmenses.v1.UpdateMoodObservationRequest
+	32,  // 90: openmenses.v1.CycleTrackerService.DeleteMoodObservation:input_type -> openmenses.v1.DeleteMoodObservationRequest
+	34,  // 91: openmenses.v1.CycleTrackerService.ListMoodObservations:input_type -> openmenses.v1.ListMoodObservationsRequest
+	36,  // 92: openmenses.v1.CycleTrackerService.GetMedication:input_type -> openmenses.v1.GetMedicationRequest
+	38,  // 93: openmenses.v1.CycleTrackerService.CreateMedication:input_type -> openmenses.v1.CreateMedicationRequest
+	40,  // 94: openmenses.v1.CycleTrackerService.UpdateMedication:input_type -> openmenses.v1.UpdateMedicationRequest
+	42,  // 95: openmenses.v1.CycleTrackerService.DeleteMedication:input_type -> openmenses.v1.DeleteMedicationRequest
+	44,  // 96: openmenses.v1.CycleTrackerService.ListMedications:input_type -> openmenses.v1.ListMedicationsRequest
+	46,  // 97: openmenses.v1.CycleTrackerService.GetMedicationEvent:input_type -> openmenses.v1.GetMedicationEventRequest
+	48,  // 98: openmenses.v1.CycleTrackerService.CreateMedicationEvent:input_type -> openmenses.v1.CreateMedicationEventRequest
+	50,  // 99: openmenses.v1.CycleTrackerService.UpdateMedicationEvent:input_type -> openmenses.v1.UpdateMedicationEventRequest
+	52,  // 100: openmenses.v1.CycleTrackerService.DeleteMedicationEvent:input_type -> openmenses.v1.DeleteMedicationEventRequest
+	54,  // 101: openmenses.v1.CycleTrackerService.ListMedicationEvents:input_type -> openmenses.v1.ListMedicationEventsRequest
+	56,  // 102: openmenses.v1.CycleTrackerService.ListTimeline:input_type -> openmenses.v1.ListTimelineRequest
+	59,  // 103: openmenses.v1.CycleTrackerService.GetCycle:input_type -> openmenses.v1.GetCycleRequest
+	61,  // 104: openmenses.v1.CycleTrackerService.ListCycles:input_type -> openmenses.v1.ListCyclesRequest
+	63,  // 105: openmenses.v1.CycleTrackerService.ListPredictions:input_type -> openmenses.v1.ListPredictionsRequest
+	65,  // 106: openmenses.v1.CycleTrackerService.ListInsights:input_type -> openmenses.v1.ListInsightsRequest
+	67,  // 107: openmenses.v1.CycleTrackerService.CreateDataExport:input_type -> openmenses.v1.CreateDataExportRequest
+	69,  // 108: openmenses.v1.CycleTrackerService.CreateDataImport:input_type -> openmenses.v1.CreateDataImportRequest
+	1,   // 109: openmenses.v1.CycleTrackerService.GetUserProfile:output_type -> openmenses.v1.GetUserProfileResponse
+	3,   // 110: openmenses.v1.CycleTrackerService.CreateUserProfile:output_type -> openmenses.v1.CreateUserProfileResponse
+	5,   // 111: openmenses.v1.CycleTrackerService.UpdateUserProfile:output_type -> openmenses.v1.UpdateUserProfileResponse
+	7,   // 112: openmenses.v1.CycleTrackerService.GetBleedingObservation:output_type -> openmenses.v1.GetBleedingObservationResponse
+	9,   // 113: openmenses.v1.CycleTrackerService.CreateBleedingObservation:output_type -> openmenses.v1.CreateBleedingObservationResponse
+	11,  // 114: openmenses.v1.CycleTrackerService.UpdateBleedingObservation:output_type -> openmenses.v1.UpdateBleedingObservationResponse
+	13,  // 115: openmenses.v1.CycleTrackerService.DeleteBleedingObservation:output_type -> openmenses.v1.DeleteBleedingObservationResponse
+	15,  // 116: openmenses.v1.CycleTrackerService.ListBleedingObservations:output_type -> openmenses.v1.ListBleedingObservationsResponse
+	17,  // 117: openmenses.v1.CycleTrackerService.GetSymptomObservation:output_type -> openmenses.v1.GetSymptomObservationResponse
+	19,  // 118: openmenses.v1.CycleTrackerService.CreateSymptomObservation:output_type -> openmenses.v1.CreateSymptomObservationResponse
+	21,  // 119: openmenses.v1.CycleTrackerService.UpdateSymptomObservation:output_type -> openmenses.v1.UpdateSymptomObservationResponse
+	23,  // 120: openmenses.v1.CycleTrackerService.DeleteSymptomObservation:output_type -> openmenses.v1.DeleteSymptomObservationResponse
+	25,  // 121: openmenses.v1.CycleTrackerService.ListSymptomObservations:output_type -> openmenses.v1.ListSymptomObservationsResponse
+	27,  // 122: openmenses.v1.CycleTrackerService.GetMoodObservation:output_type -> openmenses.v1.GetMoodObservationResponse
+	29,  // 123: openmenses.v1.CycleTrackerService.CreateMoodObservation:output_type -> openmenses.v1.CreateMoodObservationResponse
+	31,  // 124: openmenses.v1.CycleTrackerService.UpdateMoodObservation:output_type -> openmenses.v1.UpdateMoodObservationResponse
+	33,  // 125: openmenses.v1.CycleTrackerService.DeleteMoodObservation:output_type -> openmenses.v1.DeleteMoodObservationResponse
+	35,  // 126: openmenses.v1.CycleTrackerService.ListMoodObservations:output_type -> openmenses.v1.ListMoodObservationsResponse
+	37,  // 127: openmenses.v1.CycleTrackerService.GetMedication:output_type -> openmenses.v1.GetMedicationResponse
+	39,  // 128: openmenses.v1.CycleTrackerService.CreateMedication:output_type -> openmenses.v1.CreateMedicationResponse
+	41,  // 129: openmenses.v1.CycleTrackerService.UpdateMedication:output_type -> openmenses.v1.UpdateMedicationResponse
+	43,  // 130: openmenses.v1.CycleTrackerService.DeleteMedication:output_type -> openmenses.v1.DeleteMedicationResponse
+	45,  // 131: openmenses.v1.CycleTrackerService.ListMedications:output_type -> openmenses.v1.ListMedicationsResponse
+	47,  // 132: openmenses.v1.CycleTrackerService.GetMedicationEvent:output_type -> openmenses.v1.GetMedicationEventResponse
+	49,  // 133: openmenses.v1.CycleTrackerService.CreateMedicationEvent:output_type -> openmenses.v1.CreateMedicationEventResponse
+	51,  // 134: openmenses.v1.CycleTrackerService.UpdateMedicationEvent:output_type -> openmenses.v1.UpdateMedicationEventResponse
+	53,  // 135: openmenses.v1.CycleTrackerService.DeleteMedicationEvent:output_type -> openmenses.v1.DeleteMedicationEventResponse
+	55,  // 136: openmenses.v1.CycleTrackerService.ListMedicationEvents:output_type -> openmenses.v1.ListMedicationEventsResponse
+	58,  // 137: openmenses.v1.CycleTrackerService.ListTimeline:output_type -> openmenses.v1.ListTimelineResponse
+	60,  // 138: openmenses.v1.CycleTrackerService.GetCycle:output_type -> openmenses.v1.GetCycleResponse
+	62,  // 139: openmenses.v1.CycleTrackerService.ListCycles:output_type -> openmenses.v1.ListCyclesResponse
+	64,  // 140: openmenses.v1.CycleTrackerService.ListPredictions:output_type -> openmenses.v1.ListPredictionsResponse
+	66,  // 141: openmenses.v1.CycleTrackerService.ListInsights:output_type -> openmenses.v1.ListInsightsResponse
+	68,  // 142: openmenses.v1.CycleTrackerService.CreateDataExport:output_type -> openmenses.v1.CreateDataExportResponse
+	70,  // 143: openmenses.v1.CycleTrackerService.CreateDataImport:output_type -> openmenses.v1.CreateDataImportResponse
+	109, // [109:144] is the sub-list for method output_type
+	74,  // [74:109] is the sub-list for method input_type
+	74,  // [74:74] is the sub-list for extension type_name
+	74,  // [74:74] is the sub-list for extension extendee
+	0,   // [0:74] is the sub-list for field type_name
 }
 
 func init() { file_openmenses_v1_service_proto_init() }
