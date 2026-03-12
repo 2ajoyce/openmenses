@@ -3,6 +3,8 @@ syntax = "proto3";
 package openmenses.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
 import "openmenses/v1/model.proto";
 import "openmenses/v1/types.proto";
 
@@ -10,23 +12,45 @@ option go_package = "github.com/2ajoyce/openmenses/gen/go/openmenses/v1;openmens
 
 service CycleTrackerService {
   rpc GetUserProfile(GetUserProfileRequest) returns (GetUserProfileResponse);
-  rpc UpsertUserProfile(UpsertUserProfileRequest) returns (UpsertUserProfileResponse);
+  rpc CreateUserProfile(CreateUserProfileRequest) returns (CreateUserProfileResponse);
+  rpc UpdateUserProfile(UpdateUserProfileRequest) returns (UpdateUserProfileResponse);
 
+  rpc GetBleedingObservation(GetBleedingObservationRequest) returns (GetBleedingObservationResponse);
   rpc CreateBleedingObservation(CreateBleedingObservationRequest) returns (CreateBleedingObservationResponse);
+  rpc UpdateBleedingObservation(UpdateBleedingObservationRequest) returns (UpdateBleedingObservationResponse);
+  rpc DeleteBleedingObservation(DeleteBleedingObservationRequest) returns (google.protobuf.Empty);
+  rpc ListBleedingObservations(ListBleedingObservationsRequest) returns (ListBleedingObservationsResponse);
+  rpc GetSymptomObservation(GetSymptomObservationRequest) returns (GetSymptomObservationResponse);
   rpc CreateSymptomObservation(CreateSymptomObservationRequest) returns (CreateSymptomObservationResponse);
+  rpc UpdateSymptomObservation(UpdateSymptomObservationRequest) returns (UpdateSymptomObservationResponse);
+  rpc DeleteSymptomObservation(DeleteSymptomObservationRequest) returns (google.protobuf.Empty);
+  rpc ListSymptomObservations(ListSymptomObservationsRequest) returns (ListSymptomObservationsResponse);
+  rpc GetMoodObservation(GetMoodObservationRequest) returns (GetMoodObservationResponse);
   rpc CreateMoodObservation(CreateMoodObservationRequest) returns (CreateMoodObservationResponse);
+  rpc UpdateMoodObservation(UpdateMoodObservationRequest) returns (UpdateMoodObservationResponse);
+  rpc DeleteMoodObservation(DeleteMoodObservationRequest) returns (google.protobuf.Empty);
+  rpc ListMoodObservations(ListMoodObservationsRequest) returns (ListMoodObservationsResponse);
 
+  rpc GetMedication(GetMedicationRequest) returns (GetMedicationResponse);
   rpc CreateMedication(CreateMedicationRequest) returns (CreateMedicationResponse);
+  rpc UpdateMedication(UpdateMedicationRequest) returns (UpdateMedicationResponse);
+  rpc DeleteMedication(DeleteMedicationRequest) returns (google.protobuf.Empty);
+  rpc ListMedications(ListMedicationsRequest) returns (ListMedicationsResponse);
+  rpc GetMedicationEvent(GetMedicationEventRequest) returns (GetMedicationEventResponse);
   rpc CreateMedicationEvent(CreateMedicationEventRequest) returns (CreateMedicationEventResponse);
+  rpc UpdateMedicationEvent(UpdateMedicationEventRequest) returns (UpdateMedicationEventResponse);
+  rpc DeleteMedicationEvent(DeleteMedicationEventRequest) returns (google.protobuf.Empty);
+  rpc ListMedicationEvents(ListMedicationEventsRequest) returns (ListMedicationEventsResponse);
 
   rpc ListTimeline(ListTimelineRequest) returns (ListTimelineResponse);
 
+  rpc GetCycle(GetCycleRequest) returns (GetCycleResponse);
   rpc ListCycles(ListCyclesRequest) returns (ListCyclesResponse);
   rpc ListPredictions(ListPredictionsRequest) returns (ListPredictionsResponse);
   rpc ListInsights(ListInsightsRequest) returns (ListInsightsResponse);
 
-  rpc ExportData(ExportDataRequest) returns (ExportDataResponse);
-  rpc ImportData(ImportDataRequest) returns (ImportDataResponse);
+  rpc CreateDataExport(CreateDataExportRequest) returns (CreateDataExportResponse);
+  rpc CreateDataImport(CreateDataImportRequest) returns (CreateDataImportResponse);
 }
 
 message GetUserProfileRequest {
@@ -37,12 +61,28 @@ message GetUserProfileResponse {
   UserProfile profile = 1;
 }
 
-message UpsertUserProfileRequest {
+message CreateUserProfileRequest {
   UserProfile profile = 1;
 }
 
-message UpsertUserProfileResponse {
+message CreateUserProfileResponse {
   UserProfile profile = 1;
+}
+
+message UpdateUserProfileRequest {
+  UserProfile profile = 1;
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message UpdateUserProfileResponse {
+  UserProfile profile = 1;
+}
+
+message GetBleedingObservationRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+message GetBleedingObservationResponse {
+  BleedingObservation observation = 1;
 }
 
 message CreateBleedingObservationRequest {
@@ -53,12 +93,68 @@ message CreateBleedingObservationResponse {
   BleedingObservation observation = 1;
 }
 
+message UpdateBleedingObservationRequest {
+  BleedingObservation observation = 1;
+  google.protobuf.FieldMask update_mask = 2;
+}
+message UpdateBleedingObservationResponse {
+  BleedingObservation observation = 1;
+}
+
+message DeleteBleedingObservationRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+message ListBleedingObservationsRequest {
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
+  PaginationRequest pagination = 2;
+}
+message ListBleedingObservationsResponse {
+  repeated BleedingObservation observations = 1;
+  PaginationResponse pagination = 2;
+}
+
+message GetSymptomObservationRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+message GetSymptomObservationResponse {
+  SymptomObservation observation = 1;
+}
+
 message CreateSymptomObservationRequest {
   string parent = 1 [(buf.validate.field).string.min_len = 1];
   SymptomObservation observation = 2;
 }
 message CreateSymptomObservationResponse {
   SymptomObservation observation = 1;
+}
+
+message UpdateSymptomObservationRequest {
+  SymptomObservation observation = 1;
+  google.protobuf.FieldMask update_mask = 2;
+}
+message UpdateSymptomObservationResponse {
+  SymptomObservation observation = 1;
+}
+
+message DeleteSymptomObservationRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+message ListSymptomObservationsRequest {
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
+  PaginationRequest pagination = 2;
+}
+message ListSymptomObservationsResponse {
+  repeated SymptomObservation observations = 1;
+  PaginationResponse pagination = 2;
+}
+
+message GetMoodObservationRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+message GetMoodObservationResponse {
+  MoodObservation observation = 1;
 }
 
 message CreateMoodObservationRequest {
@@ -69,6 +165,34 @@ message CreateMoodObservationResponse {
   MoodObservation observation = 1;
 }
 
+message UpdateMoodObservationRequest {
+  MoodObservation observation = 1;
+  google.protobuf.FieldMask update_mask = 2;
+}
+message UpdateMoodObservationResponse {
+  MoodObservation observation = 1;
+}
+
+message DeleteMoodObservationRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+message ListMoodObservationsRequest {
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
+  PaginationRequest pagination = 2;
+}
+message ListMoodObservationsResponse {
+  repeated MoodObservation observations = 1;
+  PaginationResponse pagination = 2;
+}
+
+message GetMedicationRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+message GetMedicationResponse {
+  Medication medication = 1;
+}
+
 message CreateMedicationRequest {
   string parent = 1 [(buf.validate.field).string.min_len = 1];
   Medication medication = 2;
@@ -77,12 +201,61 @@ message CreateMedicationResponse {
   Medication medication = 1;
 }
 
+message UpdateMedicationRequest {
+  Medication medication = 1;
+  google.protobuf.FieldMask update_mask = 2;
+}
+message UpdateMedicationResponse {
+  Medication medication = 1;
+}
+
+message DeleteMedicationRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+message ListMedicationsRequest {
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
+  PaginationRequest pagination = 2;
+}
+message ListMedicationsResponse {
+  repeated Medication medications = 1;
+  PaginationResponse pagination = 2;
+}
+
+message GetMedicationEventRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+message GetMedicationEventResponse {
+  MedicationEvent event = 1;
+}
+
 message CreateMedicationEventRequest {
   string parent = 1 [(buf.validate.field).string.min_len = 1];
   MedicationEvent event = 2;
 }
 message CreateMedicationEventResponse {
   MedicationEvent event = 1;
+}
+
+message UpdateMedicationEventRequest {
+  MedicationEvent event = 1;
+  google.protobuf.FieldMask update_mask = 2;
+}
+message UpdateMedicationEventResponse {
+  MedicationEvent event = 1;
+}
+
+message DeleteMedicationEventRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+message ListMedicationEventsRequest {
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
+  PaginationRequest pagination = 2;
+}
+message ListMedicationEventsResponse {
+  repeated MedicationEvent events = 1;
+  PaginationResponse pagination = 2;
 }
 
 message ListTimelineRequest {
@@ -110,37 +283,51 @@ message ListTimelineResponse {
   PaginationResponse pagination = 2;
 }
 
+message GetCycleRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+message GetCycleResponse {
+  Cycle cycle = 1;
+}
+
 message ListCyclesRequest {
   string parent = 1 [(buf.validate.field).string.min_len = 1];
+  PaginationRequest pagination = 2;
 }
 message ListCyclesResponse {
   repeated Cycle cycles = 1;
+  PaginationResponse pagination = 2;
 }
 
 message ListPredictionsRequest {
   string parent = 1 [(buf.validate.field).string.min_len = 1];
+  PaginationRequest pagination = 2;
 }
 message ListPredictionsResponse {
   repeated Prediction predictions = 1;
+  PaginationResponse pagination = 2;
 }
 
 message ListInsightsRequest {
   string parent = 1 [(buf.validate.field).string.min_len = 1];
+  PaginationRequest pagination = 2;
 }
 message ListInsightsResponse {
   repeated Insight insights = 1;
+  PaginationResponse pagination = 2;
 }
 
-message ExportDataRequest {
+// Resource-oriented versions (preferred)
+message CreateDataExportRequest {
   string name = 1 [(buf.validate.field).string.min_len = 1];
 }
-message ExportDataResponse {
+message CreateDataExportResponse {
   bytes data = 1;
 }
 
-message ImportDataRequest {
+message CreateDataImportRequest {
   bytes data = 1;
 }
-message ImportDataResponse {
+message CreateDataImportResponse {
   uint32 records_imported = 1;
 }

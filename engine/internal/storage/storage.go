@@ -57,6 +57,8 @@ type Repository interface {
 // UserProfileRepository manages UserProfile records.
 type UserProfileRepository interface {
 	GetByID(ctx context.Context, id string) (*v1.UserProfile, error)
+	Create(ctx context.Context, profile *v1.UserProfile) error
+	Update(ctx context.Context, profile *v1.UserProfile) error
 	Upsert(ctx context.Context, profile *v1.UserProfile) error
 }
 

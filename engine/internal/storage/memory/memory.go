@@ -137,6 +137,32 @@ func (s *userProfileStore) GetByID(_ context.Context, id string) (*v1.UserProfil
 	return proto.Clone(p).(*v1.UserProfile), nil
 }
 
+func (s *userProfileStore) Create(_ context.Context, profile *v1.UserProfile) error {
+	if profile.GetName() == "" {
+		return fmt.Errorf("%w: profile name is required", storage.ErrInvalidInput)
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if _, exists := s.data[profile.GetName()]; exists {
+		return storage.ErrConflict
+	}
+	s.data[profile.GetName()] = proto.Clone(profile).(*v1.UserProfile)
+	return nil
+}
+
+func (s *userProfileStore) Update(_ context.Context, profile *v1.UserProfile) error {
+	if profile.GetName() == "" {
+		return fmt.Errorf("%w: profile name is required", storage.ErrInvalidInput)
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if _, exists := s.data[profile.GetName()]; !exists {
+		return storage.ErrNotFound
+	}
+	s.data[profile.GetName()] = proto.Clone(profile).(*v1.UserProfile)
+	return nil
+}
+
 func (s *userProfileStore) Upsert(_ context.Context, profile *v1.UserProfile) error {
 	if profile.GetName() == "" {
 		return fmt.Errorf("%w: profile name is required", storage.ErrInvalidInput)

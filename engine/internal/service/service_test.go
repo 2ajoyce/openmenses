@@ -131,12 +131,12 @@ func TestGetUserProfile_Found(t *testing.T) {
 	}
 }
 
-// ─── UpsertUserProfile ────────────────────────────────────────────────────────
+// ─── CreateUserProfile ───────────────────────────────────────────────────────
 
-func TestUpsertUserProfile_HappyPath(t *testing.T) {
+func TestCreateUserProfile_HappyPath(t *testing.T) {
 	svc := newSvc(t)
 	profile := validProfile("u1")
-	resp, err := svc.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{Profile: profile}))
+	resp, err := svc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: profile}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -145,7 +145,7 @@ func TestUpsertUserProfile_HappyPath(t *testing.T) {
 	}
 }
 
-func TestUpsertUserProfile_ValidationFailure(t *testing.T) {
+func TestCreateUserProfile_ValidationFailure(t *testing.T) {
 	svc := newSvc(t)
 	// Missing required fields (no tracking_focus).
 	bad := &v1.UserProfile{
@@ -156,27 +156,50 @@ func TestUpsertUserProfile_ValidationFailure(t *testing.T) {
 		ReproductiveGoal: v1.ReproductiveGoal_REPRODUCTIVE_GOAL_PREGNANCY_IRRELEVANT,
 		// TrackingFocus intentionally left empty → schema violation
 	}
-	_, err := svc.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{Profile: bad}))
+	_, err := svc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: bad}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
 	}
 }
 
-func TestUpsertUserProfile_Update(t *testing.T) {
+func TestCreateUserProfile_Conflict(t *testing.T) {
 	svc := newSvc(t)
 	profile := validProfile("u1")
-	if _, err := svc.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{Profile: profile})); err != nil {
+	if _, err := svc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: profile})); err != nil {
 		t.Fatal(err)
 	}
-	// Update the profile.
+	// Attempt to create another with the same name.
+	_, err := svc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: profile}))
+	if codeOf(err) != connect.CodeAlreadyExists {
+		t.Fatalf("want CodeAlreadyExists, got %v", err)
+	}
+}
+
+// ─── UpdateUserProfile ───────────────────────────────────────────────────────
+
+func TestUpdateUserProfile_HappyPath(t *testing.T) {
+	store := memory.New()
+	if err := store.UserProfiles().Create(ctx, validProfile("u1")); err != nil {
+		t.Fatal(err)
+	}
+	svc := newSvcWithStore(t, store)
 	updated := validProfile("u1")
 	updated.CycleRegularity = v1.CycleRegularity_CYCLE_REGULARITY_SOMEWHAT_IRREGULAR
-	resp, err := svc.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{Profile: updated}))
+	resp, err := svc.UpdateUserProfile(ctx, connect.NewRequest(&v1.UpdateUserProfileRequest{Profile: updated}))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if resp.Msg.GetProfile().GetCycleRegularity() != v1.CycleRegularity_CYCLE_REGULARITY_SOMEWHAT_IRREGULAR {
 		t.Error("profile was not updated")
+	}
+}
+
+func TestUpdateUserProfile_NotFound(t *testing.T) {
+	svc := newSvc(t)
+	profile := validProfile("u1")
+	_, err := svc.UpdateUserProfile(ctx, connect.NewRequest(&v1.UpdateUserProfileRequest{Profile: profile}))
+	if codeOf(err) != connect.CodeNotFound {
+		t.Fatalf("want CodeNotFound, got %v", err)
 	}
 }
 
@@ -613,11 +636,11 @@ func TestListInsights_ReturnsEmpty(t *testing.T) {
 	}
 }
 
-// ─── ExportData ───────────────────────────────────────────────────────────────
+// ─── CreateDataExport ─────────────────────────────────────────────────────────
 
-func TestExportData_EmptyUser(t *testing.T) {
+func TestCreateDataExport_EmptyUser(t *testing.T) {
 	svc := newSvc(t)
-	resp, err := svc.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{Name: "u1"}))
+	resp, err := svc.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Name: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -631,17 +654,17 @@ func TestExportData_EmptyUser(t *testing.T) {
 	}
 }
 
-func TestExportData_WithRecords(t *testing.T) {
+func TestCreateDataExport_WithRecords(t *testing.T) {
 	svc := newSvc(t)
 	profile := validProfile("u1")
-	if _, err := svc.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{Profile: profile})); err != nil {
+	if _, err := svc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: profile})); err != nil {
 		t.Fatal(err)
 	}
 	obs := validBleeding("b1", "u1", "2026-01-15")
 	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
 		t.Fatal(err)
 	}
-	resp, err := svc.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{Name: "u1"}))
+	resp, err := svc.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Name: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -669,30 +692,30 @@ func TestExportData_WithRecords(t *testing.T) {
 	}
 }
 
-// ─── ImportData ───────────────────────────────────────────────────────────────
+// ─── CreateDataImport ─────────────────────────────────────────────────────────
 
-func TestImportData_InvalidJSON(t *testing.T) {
+func TestCreateDataImport_InvalidJSON(t *testing.T) {
 	svc := newSvc(t)
-	_, err := svc.ImportData(ctx, connect.NewRequest(&v1.ImportDataRequest{Data: []byte("not json")}))
+	_, err := svc.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Data: []byte("not json")}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument, got %v", err)
 	}
 }
 
-func TestImportData_WrongVersion(t *testing.T) {
+func TestCreateDataImport_WrongVersion(t *testing.T) {
 	svc := newSvc(t)
 	data, _ := json.Marshal(map[string]string{"version": "99", "user_id": "u1"})
-	_, err := svc.ImportData(ctx, connect.NewRequest(&v1.ImportDataRequest{Data: data}))
+	_, err := svc.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Data: data}))
 	if codeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("want CodeInvalidArgument for version mismatch, got %v", err)
 	}
 }
 
-func TestImportData_RoundTrip(t *testing.T) {
+func TestCreateDataImport_RoundTrip(t *testing.T) {
 	// Create a source service with some data.
 	srcSvc := newSvc(t)
 	profile := validProfile("u1")
-	if _, err := srcSvc.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{Profile: profile})); err != nil {
+	if _, err := srcSvc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: profile})); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := srcSvc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
@@ -708,13 +731,13 @@ func TestImportData_RoundTrip(t *testing.T) {
 		t.Fatal(err)
 	}
 	// Export from source.
-	exportResp, err := srcSvc.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{Name: "u1"}))
+	exportResp, err := srcSvc.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Name: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
 	// Import into a fresh service.
 	dstSvc := newSvc(t)
-	importResp, err := dstSvc.ImportData(ctx, connect.NewRequest(&v1.ImportDataRequest{Data: exportResp.Msg.GetData()}))
+	importResp, err := dstSvc.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Data: exportResp.Msg.GetData()}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -732,10 +755,10 @@ func TestImportData_RoundTrip(t *testing.T) {
 	}
 }
 
-func TestImportData_IdempotentReImport(t *testing.T) {
+func TestCreateDataImport_IdempotentReImport(t *testing.T) {
 	svc := newSvc(t)
 	profile := validProfile("u1")
-	if _, err := svc.UpsertUserProfile(ctx, connect.NewRequest(&v1.UpsertUserProfileRequest{Profile: profile})); err != nil {
+	if _, err := svc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: profile})); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
@@ -744,16 +767,16 @@ func TestImportData_IdempotentReImport(t *testing.T) {
 	})); err != nil {
 		t.Fatal(err)
 	}
-	exportResp, err := svc.ExportData(ctx, connect.NewRequest(&v1.ExportDataRequest{Name: "u1"}))
+	exportResp, err := svc.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Name: "u1"}))
 	if err != nil {
 		t.Fatal(err)
 	}
 	// Import into the SAME service twice; second import should find all
 	// records already present and return 0 newly created.
-	if _, err := svc.ImportData(ctx, connect.NewRequest(&v1.ImportDataRequest{Data: exportResp.Msg.GetData()})); err != nil {
+	if _, err := svc.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Data: exportResp.Msg.GetData()})); err != nil {
 		t.Fatal(err)
 	}
-	resp2, err := svc.ImportData(ctx, connect.NewRequest(&v1.ImportDataRequest{Data: exportResp.Msg.GetData()}))
+	resp2, err := svc.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Data: exportResp.Msg.GetData()}))
 	if err != nil {
 		t.Fatal(err)
 	}

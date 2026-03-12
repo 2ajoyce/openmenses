@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateBleedingObservationRequest, CreateBleedingObservationResponse, CreateMedicationEventRequest, CreateMedicationEventResponse, CreateMedicationRequest, CreateMedicationResponse, CreateMoodObservationRequest, CreateMoodObservationResponse, CreateSymptomObservationRequest, CreateSymptomObservationResponse, ExportDataRequest, ExportDataResponse, GetUserProfileRequest, GetUserProfileResponse, ImportDataRequest, ImportDataResponse, ListCyclesRequest, ListCyclesResponse, ListInsightsRequest, ListInsightsResponse, ListPredictionsRequest, ListPredictionsResponse, ListTimelineRequest, ListTimelineResponse, UpsertUserProfileRequest, UpsertUserProfileResponse } from "./service_pb.js";
+import { CreateBleedingObservationRequest, CreateBleedingObservationResponse, CreateDataExportRequest, CreateDataExportResponse, CreateDataImportRequest, CreateDataImportResponse, CreateMedicationEventRequest, CreateMedicationEventResponse, CreateMedicationRequest, CreateMedicationResponse, CreateMoodObservationRequest, CreateMoodObservationResponse, CreateSymptomObservationRequest, CreateSymptomObservationResponse, CreateUserProfileRequest, CreateUserProfileResponse, DeleteBleedingObservationRequest, DeleteBleedingObservationResponse, DeleteMedicationEventRequest, DeleteMedicationEventResponse, DeleteMedicationRequest, DeleteMedicationResponse, DeleteMoodObservationRequest, DeleteMoodObservationResponse, DeleteSymptomObservationRequest, DeleteSymptomObservationResponse, GetBleedingObservationRequest, GetBleedingObservationResponse, GetCycleRequest, GetCycleResponse, GetMedicationEventRequest, GetMedicationEventResponse, GetMedicationRequest, GetMedicationResponse, GetMoodObservationRequest, GetMoodObservationResponse, GetSymptomObservationRequest, GetSymptomObservationResponse, GetUserProfileRequest, GetUserProfileResponse, ListBleedingObservationsRequest, ListBleedingObservationsResponse, ListCyclesRequest, ListCyclesResponse, ListInsightsRequest, ListInsightsResponse, ListMedicationEventsRequest, ListMedicationEventsResponse, ListMedicationsRequest, ListMedicationsResponse, ListMoodObservationsRequest, ListMoodObservationsResponse, ListPredictionsRequest, ListPredictionsResponse, ListSymptomObservationsRequest, ListSymptomObservationsResponse, ListTimelineRequest, ListTimelineResponse, UpdateBleedingObservationRequest, UpdateBleedingObservationResponse, UpdateMedicationEventRequest, UpdateMedicationEventResponse, UpdateMedicationRequest, UpdateMedicationResponse, UpdateMoodObservationRequest, UpdateMoodObservationResponse, UpdateSymptomObservationRequest, UpdateSymptomObservationResponse, UpdateUserProfileRequest, UpdateUserProfileResponse } from "./service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -22,12 +22,30 @@ export const CycleTrackerService = {
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc openmenses.v1.CycleTrackerService.UpsertUserProfile
+     * @generated from rpc openmenses.v1.CycleTrackerService.CreateUserProfile
      */
-    upsertUserProfile: {
-      name: "UpsertUserProfile",
-      I: UpsertUserProfileRequest,
-      O: UpsertUserProfileResponse,
+    createUserProfile: {
+      name: "CreateUserProfile",
+      I: CreateUserProfileRequest,
+      O: CreateUserProfileResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.UpdateUserProfile
+     */
+    updateUserProfile: {
+      name: "UpdateUserProfile",
+      I: UpdateUserProfileRequest,
+      O: UpdateUserProfileResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.GetBleedingObservation
+     */
+    getBleedingObservation: {
+      name: "GetBleedingObservation",
+      I: GetBleedingObservationRequest,
+      O: GetBleedingObservationResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -40,12 +58,84 @@ export const CycleTrackerService = {
       kind: MethodKind.Unary,
     },
     /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.UpdateBleedingObservation
+     */
+    updateBleedingObservation: {
+      name: "UpdateBleedingObservation",
+      I: UpdateBleedingObservationRequest,
+      O: UpdateBleedingObservationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.DeleteBleedingObservation
+     */
+    deleteBleedingObservation: {
+      name: "DeleteBleedingObservation",
+      I: DeleteBleedingObservationRequest,
+      O: DeleteBleedingObservationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.ListBleedingObservations
+     */
+    listBleedingObservations: {
+      name: "ListBleedingObservations",
+      I: ListBleedingObservationsRequest,
+      O: ListBleedingObservationsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.GetSymptomObservation
+     */
+    getSymptomObservation: {
+      name: "GetSymptomObservation",
+      I: GetSymptomObservationRequest,
+      O: GetSymptomObservationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
      * @generated from rpc openmenses.v1.CycleTrackerService.CreateSymptomObservation
      */
     createSymptomObservation: {
       name: "CreateSymptomObservation",
       I: CreateSymptomObservationRequest,
       O: CreateSymptomObservationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.UpdateSymptomObservation
+     */
+    updateSymptomObservation: {
+      name: "UpdateSymptomObservation",
+      I: UpdateSymptomObservationRequest,
+      O: UpdateSymptomObservationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.DeleteSymptomObservation
+     */
+    deleteSymptomObservation: {
+      name: "DeleteSymptomObservation",
+      I: DeleteSymptomObservationRequest,
+      O: DeleteSymptomObservationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.ListSymptomObservations
+     */
+    listSymptomObservations: {
+      name: "ListSymptomObservations",
+      I: ListSymptomObservationsRequest,
+      O: ListSymptomObservationsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.GetMoodObservation
+     */
+    getMoodObservation: {
+      name: "GetMoodObservation",
+      I: GetMoodObservationRequest,
+      O: GetMoodObservationResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -58,12 +148,84 @@ export const CycleTrackerService = {
       kind: MethodKind.Unary,
     },
     /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.UpdateMoodObservation
+     */
+    updateMoodObservation: {
+      name: "UpdateMoodObservation",
+      I: UpdateMoodObservationRequest,
+      O: UpdateMoodObservationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.DeleteMoodObservation
+     */
+    deleteMoodObservation: {
+      name: "DeleteMoodObservation",
+      I: DeleteMoodObservationRequest,
+      O: DeleteMoodObservationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.ListMoodObservations
+     */
+    listMoodObservations: {
+      name: "ListMoodObservations",
+      I: ListMoodObservationsRequest,
+      O: ListMoodObservationsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.GetMedication
+     */
+    getMedication: {
+      name: "GetMedication",
+      I: GetMedicationRequest,
+      O: GetMedicationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
      * @generated from rpc openmenses.v1.CycleTrackerService.CreateMedication
      */
     createMedication: {
       name: "CreateMedication",
       I: CreateMedicationRequest,
       O: CreateMedicationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.UpdateMedication
+     */
+    updateMedication: {
+      name: "UpdateMedication",
+      I: UpdateMedicationRequest,
+      O: UpdateMedicationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.DeleteMedication
+     */
+    deleteMedication: {
+      name: "DeleteMedication",
+      I: DeleteMedicationRequest,
+      O: DeleteMedicationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.ListMedications
+     */
+    listMedications: {
+      name: "ListMedications",
+      I: ListMedicationsRequest,
+      O: ListMedicationsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.GetMedicationEvent
+     */
+    getMedicationEvent: {
+      name: "GetMedicationEvent",
+      I: GetMedicationEventRequest,
+      O: GetMedicationEventResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -76,12 +238,48 @@ export const CycleTrackerService = {
       kind: MethodKind.Unary,
     },
     /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.UpdateMedicationEvent
+     */
+    updateMedicationEvent: {
+      name: "UpdateMedicationEvent",
+      I: UpdateMedicationEventRequest,
+      O: UpdateMedicationEventResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.DeleteMedicationEvent
+     */
+    deleteMedicationEvent: {
+      name: "DeleteMedicationEvent",
+      I: DeleteMedicationEventRequest,
+      O: DeleteMedicationEventResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.ListMedicationEvents
+     */
+    listMedicationEvents: {
+      name: "ListMedicationEvents",
+      I: ListMedicationEventsRequest,
+      O: ListMedicationEventsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
      * @generated from rpc openmenses.v1.CycleTrackerService.ListTimeline
      */
     listTimeline: {
       name: "ListTimeline",
       I: ListTimelineRequest,
       O: ListTimelineResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.GetCycle
+     */
+    getCycle: {
+      name: "GetCycle",
+      I: GetCycleRequest,
+      O: GetCycleResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -112,21 +310,21 @@ export const CycleTrackerService = {
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc openmenses.v1.CycleTrackerService.ExportData
+     * @generated from rpc openmenses.v1.CycleTrackerService.CreateDataExport
      */
-    exportData: {
-      name: "ExportData",
-      I: ExportDataRequest,
-      O: ExportDataResponse,
+    createDataExport: {
+      name: "CreateDataExport",
+      I: CreateDataExportRequest,
+      O: CreateDataExportResponse,
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc openmenses.v1.CycleTrackerService.ImportData
+     * @generated from rpc openmenses.v1.CycleTrackerService.CreateDataImport
      */
-    importData: {
-      name: "ImportData",
-      I: ImportDataRequest,
-      O: ImportDataResponse,
+    createDataImport: {
+      name: "CreateDataImport",
+      I: CreateDataImportRequest,
+      O: CreateDataImportResponse,
       kind: MethodKind.Unary,
     },
   }
