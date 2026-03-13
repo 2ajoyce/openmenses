@@ -26,38 +26,79 @@ var ctx = context.Background()
 func localDate(v string) *v1.LocalDate { return &v1.LocalDate{Value: v} }
 func dateTime(v string) *v1.DateTime   { return &v1.DateTime{Value: v} }
 
-// ---- UserProfile ------------------------------------------------------------
-
-func TestUserProfile_UpsertAndGet(t *testing.T) {
-	s := newStore(t)
-	p := &v1.UserProfile{Name: "u1"}
-	if err := s.UserProfiles().Upsert(ctx, p); err != nil {
-		t.Fatal(err)
-	}
-	got, err := s.UserProfiles().GetByID(ctx, "u1")
+func mustNoErr(t *testing.T, err error) {
+	t.Helper()
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got.GetName() != "u1" {
-		t.Fatalf("got %q", got.GetName())
-	}
 }
 
-func TestUserProfile_GetNotFound(t *testing.T) {
-	s := newStore(t)
-	_, err := s.UserProfiles().GetByID(ctx, "missing")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatalf("want ErrNotFound, got %v", err)
-	}
-}
+// ---- UserProfile ------------------------------------------------------------
 
-func TestUserProfile_UpsertOverwrite(t *testing.T) {
-	s := newStore(t)
-	s.UserProfiles().Upsert(ctx, &v1.UserProfile{Name: "u1", CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_REGULAR})        //nolint:errcheck
-	s.UserProfiles().Upsert(ctx, &v1.UserProfile{Name: "u1", CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR}) //nolint:errcheck
-	got, _ := s.UserProfiles().GetByID(ctx, "u1")
-	if got.GetCycleRegularity() != v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR {
-		t.Fatal("upsert did not overwrite")
+func TestUserProfile_CRUD(t *testing.T) {
+	tests := []struct {
+		name    string
+		setup   func(*sqlite.Store) error
+		verify  func(*testing.T, *sqlite.Store)
+		wantErr error
+	}{
+		{
+			name: "upsert and get",
+			setup: func(s *sqlite.Store) error {
+				return s.UserProfiles().Upsert(ctx, &v1.UserProfile{Name: "u1"})
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				got, err := s.UserProfiles().GetByID(ctx, "u1")
+				mustNoErr(t, err)
+				if got.GetName() != "u1" {
+					t.Fatalf("got %q", got.GetName())
+				}
+			},
+		},
+		{
+			name: "get not found",
+			setup: func(s *sqlite.Store) error {
+				return nil
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				_, err := s.UserProfiles().GetByID(ctx, "missing")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatalf("want ErrNotFound, got %v", err)
+				}
+			},
+		},
+		{
+			name: "upsert overwrites",
+			setup: func(s *sqlite.Store) error {
+				if err := s.UserProfiles().Upsert(ctx, &v1.UserProfile{Name: "u1", CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_REGULAR}); err != nil {
+					return err
+				}
+				return s.UserProfiles().Upsert(ctx, &v1.UserProfile{Name: "u1", CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR})
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				got, _ := s.UserProfiles().GetByID(ctx, "u1")
+				if got.GetCycleRegularity() != v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR {
+					t.Fatal("upsert did not overwrite")
+				}
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := newStore(t)
+			err := tt.setup(s)
+			if tt.wantErr != nil {
+				if !errors.Is(err, tt.wantErr) {
+					t.Fatalf("want %v, got %v", tt.wantErr, err)
+				}
+				return
+			}
+			mustNoErr(t, err)
+			if tt.verify != nil {
+				tt.verify(t, s)
+			}
+		})
 	}
 }
 
@@ -72,55 +113,88 @@ func bleeding(id, userID, ts string) *v1.BleedingObservation {
 	}
 }
 
-func TestBleeding_CreateAndGet(t *testing.T) {
-	s := newStore(t)
-	if err := s.BleedingObservations().Create(ctx, bleeding("b1", "u1", "2026-01-01T08:00:00Z")); err != nil {
-		t.Fatal(err)
+func TestBleeding_CRUD(t *testing.T) {
+	tests := []struct {
+		name    string
+		setup   func(*sqlite.Store) error
+		verify  func(*testing.T, *sqlite.Store)
+		wantErr error
+	}{
+		{
+			name: "create and get",
+			setup: func(s *sqlite.Store) error {
+				return s.BleedingObservations().Create(ctx, bleeding("b1", "u1", "2026-01-01T08:00:00Z"))
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				got, err := s.BleedingObservations().GetByID(ctx, "b1")
+				mustNoErr(t, err)
+				if got.GetName() != "b1" {
+					t.Fatalf("got %q", got.GetName())
+				}
+			},
+		},
+		{
+			name: "get not found",
+			setup: func(s *sqlite.Store) error {
+				return nil
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				_, err := s.BleedingObservations().GetByID(ctx, "nope")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatalf("want ErrNotFound, got %v", err)
+				}
+			},
+		},
+		{
+			name: "duplicate ID rejected",
+			setup: func(s *sqlite.Store) error {
+				obs := bleeding("b1", "u1", "2026-01-01T08:00:00Z")
+				if err := s.BleedingObservations().Create(ctx, obs); err != nil {
+					return err
+				}
+				return s.BleedingObservations().Create(ctx, obs)
+			},
+			wantErr: storage.ErrConflict,
+		},
+		{
+			name: "delete",
+			setup: func(s *sqlite.Store) error {
+				if err := s.BleedingObservations().Create(ctx, bleeding("b1", "u1", "2026-01-01T08:00:00Z")); err != nil {
+					return err
+				}
+				return s.BleedingObservations().DeleteByID(ctx, "b1")
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				_, err := s.BleedingObservations().GetByID(ctx, "b1")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatal("expected not found after delete")
+				}
+			},
+		},
+		{
+			name: "delete not found",
+			setup: func(s *sqlite.Store) error {
+				return s.BleedingObservations().DeleteByID(ctx, "nope")
+			},
+			wantErr: storage.ErrNotFound,
+		},
 	}
-	got, err := s.BleedingObservations().GetByID(ctx, "b1")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if got.GetName() != "b1" {
-		t.Fatalf("got %q", got.GetName())
-	}
-}
 
-func TestBleeding_DuplicateIDRejected(t *testing.T) {
-	s := newStore(t)
-	obs := bleeding("b1", "u1", "2026-01-01T08:00:00Z")
-	s.BleedingObservations().Create(ctx, obs) //nolint:errcheck
-	err := s.BleedingObservations().Create(ctx, obs)
-	if !errors.Is(err, storage.ErrConflict) {
-		t.Fatalf("want ErrConflict, got %v", err)
-	}
-}
-
-func TestBleeding_GetNotFound(t *testing.T) {
-	s := newStore(t)
-	_, err := s.BleedingObservations().GetByID(ctx, "nope")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatalf("want ErrNotFound, got %v", err)
-	}
-}
-
-func TestBleeding_Delete(t *testing.T) {
-	s := newStore(t)
-	s.BleedingObservations().Create(ctx, bleeding("b1", "u1", "2026-01-01T08:00:00Z")) //nolint:errcheck
-	if err := s.BleedingObservations().DeleteByID(ctx, "b1"); err != nil {
-		t.Fatal(err)
-	}
-	_, err := s.BleedingObservations().GetByID(ctx, "b1")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatal("expected not found after delete")
-	}
-}
-
-func TestBleeding_DeleteNotFound(t *testing.T) {
-	s := newStore(t)
-	err := s.BleedingObservations().DeleteByID(ctx, "nope")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatalf("want ErrNotFound, got %v", err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := newStore(t)
+			err := tt.setup(s)
+			if tt.wantErr != nil {
+				if !errors.Is(err, tt.wantErr) {
+					t.Fatalf("want %v, got %v", tt.wantErr, err)
+				}
+				return
+			}
+			mustNoErr(t, err)
+			if tt.verify != nil {
+				tt.verify(t, s)
+			}
+		})
 	}
 }
 
@@ -204,56 +278,88 @@ func cycleRecord(id, userID, start, end string) *v1.Cycle {
 	return c
 }
 
-func TestCycle_CreateGetDelete(t *testing.T) {
-	s := newStore(t)
-	c := cycleRecord("cy1", "u1", "2026-01-01", "2026-01-28")
-	if err := s.Cycles().Create(ctx, c); err != nil {
-		t.Fatal(err)
+func TestCycle_CRUD(t *testing.T) {
+	tests := []struct {
+		name    string
+		setup   func(*sqlite.Store) error
+		verify  func(*testing.T, *sqlite.Store)
+		wantErr error
+	}{
+		{
+			name: "create, get, and delete",
+			setup: func(s *sqlite.Store) error {
+				c := cycleRecord("cy1", "u1", "2026-01-01", "2026-01-28")
+				if err := s.Cycles().Create(ctx, c); err != nil {
+					return err
+				}
+				got, err := s.Cycles().GetByID(ctx, "cy1")
+				if err != nil {
+					return err
+				}
+				if got.GetStartDate().GetValue() != "2026-01-01" {
+					return errors.New("start date mismatch")
+				}
+				return s.Cycles().DeleteByID(ctx, "cy1")
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				_, err := s.Cycles().GetByID(ctx, "cy1")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatal("expected not found after delete")
+				}
+			},
+		},
+		{
+			name: "duplicate rejected",
+			setup: func(s *sqlite.Store) error {
+				c := cycleRecord("cy1", "u1", "2026-01-01", "2026-01-28")
+				if err := s.Cycles().Create(ctx, c); err != nil {
+					return err
+				}
+				return s.Cycles().Create(ctx, c)
+			},
+			wantErr: storage.ErrConflict,
+		},
+		{
+			name: "update",
+			setup: func(s *sqlite.Store) error {
+				c := cycleRecord("cy1", "u1", "2026-01-01", "2026-01-28")
+				if err := s.Cycles().Create(ctx, c); err != nil {
+					return err
+				}
+				c.EndDate = localDate("2026-01-30")
+				return s.Cycles().Update(ctx, c)
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				got, _ := s.Cycles().GetByID(ctx, "cy1")
+				if got.GetEndDate().GetValue() != "2026-01-30" {
+					t.Fatal("update did not persist")
+				}
+			},
+		},
+		{
+			name: "update not found",
+			setup: func(s *sqlite.Store) error {
+				return s.Cycles().Update(ctx, cycleRecord("cy99", "u1", "2026-01-01", ""))
+			},
+			wantErr: storage.ErrNotFound,
+		},
 	}
-	got, err := s.Cycles().GetByID(ctx, "cy1")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if got.GetStartDate().GetValue() != "2026-01-01" {
-		t.Fatal("start date mismatch")
-	}
-	if err = s.Cycles().DeleteByID(ctx, "cy1"); err != nil {
-		t.Fatal(err)
-	}
-	_, err = s.Cycles().GetByID(ctx, "cy1")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatal("expected not found after delete")
-	}
-}
 
-func TestCycle_DuplicateRejected(t *testing.T) {
-	s := newStore(t)
-	c := cycleRecord("cy1", "u1", "2026-01-01", "2026-01-28")
-	s.Cycles().Create(ctx, c) //nolint:errcheck
-	if err := s.Cycles().Create(ctx, c); !errors.Is(err, storage.ErrConflict) {
-		t.Fatalf("want ErrConflict, got %v", err)
-	}
-}
-
-func TestCycle_Update(t *testing.T) {
-	s := newStore(t)
-	c := cycleRecord("cy1", "u1", "2026-01-01", "2026-01-28")
-	s.Cycles().Create(ctx, c) //nolint:errcheck
-	c.EndDate = localDate("2026-01-30")
-	if err := s.Cycles().Update(ctx, c); err != nil {
-		t.Fatal(err)
-	}
-	got, _ := s.Cycles().GetByID(ctx, "cy1")
-	if got.GetEndDate().GetValue() != "2026-01-30" {
-		t.Fatal("update did not persist")
-	}
-}
-
-func TestCycle_UpdateNotFound(t *testing.T) {
-	s := newStore(t)
-	err := s.Cycles().Update(ctx, cycleRecord("cy99", "u1", "2026-01-01", ""))
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatalf("want ErrNotFound, got %v", err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := newStore(t)
+			err := tt.setup(s)
+			if tt.wantErr != nil {
+				if !errors.Is(err, tt.wantErr) {
+					t.Fatalf("want %v, got %v", tt.wantErr, err)
+				}
+				return
+			}
+			mustNoErr(t, err)
+			if tt.verify != nil {
+				tt.verify(t, s)
+			}
+		})
 	}
 }
 
@@ -330,55 +436,88 @@ func symptom(id, userID, ts string) *v1.SymptomObservation {
 	}
 }
 
-func TestSymptom_CreateAndGet(t *testing.T) {
-	s := newStore(t)
-	obs := symptom("s1", "u1", "2026-01-01T08:00:00Z")
-	if err := s.SymptomObservations().Create(ctx, obs); err != nil {
-		t.Fatal(err)
+func TestSymptom_CRUD(t *testing.T) {
+	tests := []struct {
+		name    string
+		setup   func(*sqlite.Store) error
+		verify  func(*testing.T, *sqlite.Store)
+		wantErr error
+	}{
+		{
+			name: "create and get",
+			setup: func(s *sqlite.Store) error {
+				return s.SymptomObservations().Create(ctx, symptom("s1", "u1", "2026-01-01T08:00:00Z"))
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				got, err := s.SymptomObservations().GetByID(ctx, "s1")
+				mustNoErr(t, err)
+				if got.GetName() != "s1" {
+					t.Fatalf("got %q", got.GetName())
+				}
+			},
+		},
+		{
+			name: "get not found",
+			setup: func(s *sqlite.Store) error {
+				return nil
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				_, err := s.SymptomObservations().GetByID(ctx, "nope")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatalf("want ErrNotFound, got %v", err)
+				}
+			},
+		},
+		{
+			name: "duplicate ID rejected",
+			setup: func(s *sqlite.Store) error {
+				obs := symptom("s1", "u1", "2026-01-01T08:00:00Z")
+				if err := s.SymptomObservations().Create(ctx, obs); err != nil {
+					return err
+				}
+				return s.SymptomObservations().Create(ctx, obs)
+			},
+			wantErr: storage.ErrConflict,
+		},
+		{
+			name: "delete",
+			setup: func(s *sqlite.Store) error {
+				if err := s.SymptomObservations().Create(ctx, symptom("s1", "u1", "2026-01-01T08:00:00Z")); err != nil {
+					return err
+				}
+				return s.SymptomObservations().DeleteByID(ctx, "s1")
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				_, err := s.SymptomObservations().GetByID(ctx, "s1")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatal("expected not found after delete")
+				}
+			},
+		},
+		{
+			name: "delete not found",
+			setup: func(s *sqlite.Store) error {
+				return s.SymptomObservations().DeleteByID(ctx, "nope")
+			},
+			wantErr: storage.ErrNotFound,
+		},
 	}
-	got, err := s.SymptomObservations().GetByID(ctx, "s1")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if got.GetName() != "s1" {
-		t.Fatalf("got %q", got.GetName())
-	}
-}
 
-func TestSymptom_DuplicateIDRejected(t *testing.T) {
-	s := newStore(t)
-	s.SymptomObservations().Create(ctx, symptom("s1", "u1", "2026-01-01T08:00:00Z")) //nolint:errcheck
-	err := s.SymptomObservations().Create(ctx, symptom("s1", "u1", "2026-01-01T08:00:00Z"))
-	if !errors.Is(err, storage.ErrConflict) {
-		t.Fatalf("want ErrConflict, got %v", err)
-	}
-}
-
-func TestSymptom_GetNotFound(t *testing.T) {
-	s := newStore(t)
-	_, err := s.SymptomObservations().GetByID(ctx, "nope")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatalf("want ErrNotFound, got %v", err)
-	}
-}
-
-func TestSymptom_Delete(t *testing.T) {
-	s := newStore(t)
-	s.SymptomObservations().Create(ctx, symptom("s1", "u1", "2026-01-01T08:00:00Z")) //nolint:errcheck
-	if err := s.SymptomObservations().DeleteByID(ctx, "s1"); err != nil {
-		t.Fatal(err)
-	}
-	_, err := s.SymptomObservations().GetByID(ctx, "s1")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatal("expected not found after delete")
-	}
-}
-
-func TestSymptom_DeleteNotFound(t *testing.T) {
-	s := newStore(t)
-	err := s.SymptomObservations().DeleteByID(ctx, "nope")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatalf("want ErrNotFound, got %v", err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := newStore(t)
+			err := tt.setup(s)
+			if tt.wantErr != nil {
+				if !errors.Is(err, tt.wantErr) {
+					t.Fatalf("want %v, got %v", tt.wantErr, err)
+				}
+				return
+			}
+			mustNoErr(t, err)
+			if tt.verify != nil {
+				tt.verify(t, s)
+			}
+		})
 	}
 }
 
@@ -431,55 +570,88 @@ func mood(id, userID, ts string) *v1.MoodObservation {
 	}
 }
 
-func TestMood_CreateAndGet(t *testing.T) {
-	s := newStore(t)
-	obs := mood("mo1", "u1", "2026-01-01T08:00:00Z")
-	if err := s.MoodObservations().Create(ctx, obs); err != nil {
-		t.Fatal(err)
+func TestMood_CRUD(t *testing.T) {
+	tests := []struct {
+		name    string
+		setup   func(*sqlite.Store) error
+		verify  func(*testing.T, *sqlite.Store)
+		wantErr error
+	}{
+		{
+			name: "create and get",
+			setup: func(s *sqlite.Store) error {
+				return s.MoodObservations().Create(ctx, mood("mo1", "u1", "2026-01-01T08:00:00Z"))
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				got, err := s.MoodObservations().GetByID(ctx, "mo1")
+				mustNoErr(t, err)
+				if got.GetName() != "mo1" {
+					t.Fatalf("got %q", got.GetName())
+				}
+			},
+		},
+		{
+			name: "get not found",
+			setup: func(s *sqlite.Store) error {
+				return nil
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				_, err := s.MoodObservations().GetByID(ctx, "nope")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatalf("want ErrNotFound, got %v", err)
+				}
+			},
+		},
+		{
+			name: "duplicate ID rejected",
+			setup: func(s *sqlite.Store) error {
+				obs := mood("mo1", "u1", "2026-01-01T08:00:00Z")
+				if err := s.MoodObservations().Create(ctx, obs); err != nil {
+					return err
+				}
+				return s.MoodObservations().Create(ctx, obs)
+			},
+			wantErr: storage.ErrConflict,
+		},
+		{
+			name: "delete",
+			setup: func(s *sqlite.Store) error {
+				if err := s.MoodObservations().Create(ctx, mood("mo1", "u1", "2026-01-01T08:00:00Z")); err != nil {
+					return err
+				}
+				return s.MoodObservations().DeleteByID(ctx, "mo1")
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				_, err := s.MoodObservations().GetByID(ctx, "mo1")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatal("expected not found after delete")
+				}
+			},
+		},
+		{
+			name: "delete not found",
+			setup: func(s *sqlite.Store) error {
+				return s.MoodObservations().DeleteByID(ctx, "nope")
+			},
+			wantErr: storage.ErrNotFound,
+		},
 	}
-	got, err := s.MoodObservations().GetByID(ctx, "mo1")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if got.GetName() != "mo1" {
-		t.Fatalf("got %q", got.GetName())
-	}
-}
 
-func TestMood_DuplicateIDRejected(t *testing.T) {
-	s := newStore(t)
-	s.MoodObservations().Create(ctx, mood("mo1", "u1", "2026-01-01T08:00:00Z")) //nolint:errcheck
-	err := s.MoodObservations().Create(ctx, mood("mo1", "u1", "2026-01-01T08:00:00Z"))
-	if !errors.Is(err, storage.ErrConflict) {
-		t.Fatalf("want ErrConflict, got %v", err)
-	}
-}
-
-func TestMood_GetNotFound(t *testing.T) {
-	s := newStore(t)
-	_, err := s.MoodObservations().GetByID(ctx, "nope")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatalf("want ErrNotFound, got %v", err)
-	}
-}
-
-func TestMood_Delete(t *testing.T) {
-	s := newStore(t)
-	s.MoodObservations().Create(ctx, mood("mo1", "u1", "2026-01-01T08:00:00Z")) //nolint:errcheck
-	if err := s.MoodObservations().DeleteByID(ctx, "mo1"); err != nil {
-		t.Fatal(err)
-	}
-	_, err := s.MoodObservations().GetByID(ctx, "mo1")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatal("expected not found after delete")
-	}
-}
-
-func TestMood_DeleteNotFound(t *testing.T) {
-	s := newStore(t)
-	err := s.MoodObservations().DeleteByID(ctx, "nope")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatalf("want ErrNotFound, got %v", err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := newStore(t)
+			err := tt.setup(s)
+			if tt.wantErr != nil {
+				if !errors.Is(err, tt.wantErr) {
+					t.Fatalf("want %v, got %v", tt.wantErr, err)
+				}
+				return
+			}
+			mustNoErr(t, err)
+			if tt.verify != nil {
+				tt.verify(t, s)
+			}
+		})
 	}
 }
 
@@ -532,55 +704,88 @@ func medEvent(id, userID, medID, ts string) *v1.MedicationEvent {
 	}
 }
 
-func TestMedicationEvent_CreateAndGet(t *testing.T) {
-	s := newStore(t)
-	ev := medEvent("e1", "u1", "m1", "2026-01-01T08:00:00Z")
-	if err := s.MedicationEvents().Create(ctx, ev); err != nil {
-		t.Fatal(err)
+func TestMedicationEvent_CRUD(t *testing.T) {
+	tests := []struct {
+		name    string
+		setup   func(*sqlite.Store) error
+		verify  func(*testing.T, *sqlite.Store)
+		wantErr error
+	}{
+		{
+			name: "create and get",
+			setup: func(s *sqlite.Store) error {
+				return s.MedicationEvents().Create(ctx, medEvent("e1", "u1", "m1", "2026-01-01T08:00:00Z"))
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				got, err := s.MedicationEvents().GetByID(ctx, "e1")
+				mustNoErr(t, err)
+				if got.GetName() != "e1" {
+					t.Fatalf("got %q", got.GetName())
+				}
+			},
+		},
+		{
+			name: "get not found",
+			setup: func(s *sqlite.Store) error {
+				return nil
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				_, err := s.MedicationEvents().GetByID(ctx, "nope")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatalf("want ErrNotFound, got %v", err)
+				}
+			},
+		},
+		{
+			name: "duplicate ID rejected",
+			setup: func(s *sqlite.Store) error {
+				ev := medEvent("e1", "u1", "m1", "2026-01-01T08:00:00Z")
+				if err := s.MedicationEvents().Create(ctx, ev); err != nil {
+					return err
+				}
+				return s.MedicationEvents().Create(ctx, ev)
+			},
+			wantErr: storage.ErrConflict,
+		},
+		{
+			name: "delete",
+			setup: func(s *sqlite.Store) error {
+				if err := s.MedicationEvents().Create(ctx, medEvent("e1", "u1", "m1", "2026-01-01T08:00:00Z")); err != nil {
+					return err
+				}
+				return s.MedicationEvents().DeleteByID(ctx, "e1")
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				_, err := s.MedicationEvents().GetByID(ctx, "e1")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatal("expected not found after delete")
+				}
+			},
+		},
+		{
+			name: "delete not found",
+			setup: func(s *sqlite.Store) error {
+				return s.MedicationEvents().DeleteByID(ctx, "nope")
+			},
+			wantErr: storage.ErrNotFound,
+		},
 	}
-	got, err := s.MedicationEvents().GetByID(ctx, "e1")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if got.GetName() != "e1" {
-		t.Fatalf("got %q", got.GetName())
-	}
-}
 
-func TestMedicationEvent_DuplicateIDRejected(t *testing.T) {
-	s := newStore(t)
-	s.MedicationEvents().Create(ctx, medEvent("e1", "u1", "m1", "2026-01-01T08:00:00Z")) //nolint:errcheck
-	err := s.MedicationEvents().Create(ctx, medEvent("e1", "u1", "m1", "2026-01-01T08:00:00Z"))
-	if !errors.Is(err, storage.ErrConflict) {
-		t.Fatalf("want ErrConflict, got %v", err)
-	}
-}
-
-func TestMedicationEvent_GetNotFound(t *testing.T) {
-	s := newStore(t)
-	_, err := s.MedicationEvents().GetByID(ctx, "nope")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatalf("want ErrNotFound, got %v", err)
-	}
-}
-
-func TestMedicationEvent_Delete(t *testing.T) {
-	s := newStore(t)
-	s.MedicationEvents().Create(ctx, medEvent("e1", "u1", "m1", "2026-01-01T08:00:00Z")) //nolint:errcheck
-	if err := s.MedicationEvents().DeleteByID(ctx, "e1"); err != nil {
-		t.Fatal(err)
-	}
-	_, err := s.MedicationEvents().GetByID(ctx, "e1")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatal("expected not found after delete")
-	}
-}
-
-func TestMedicationEvent_DeleteNotFound(t *testing.T) {
-	s := newStore(t)
-	err := s.MedicationEvents().DeleteByID(ctx, "nope")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatalf("want ErrNotFound, got %v", err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := newStore(t)
+			err := tt.setup(s)
+			if tt.wantErr != nil {
+				if !errors.Is(err, tt.wantErr) {
+					t.Fatalf("want %v, got %v", tt.wantErr, err)
+				}
+				return
+			}
+			mustNoErr(t, err)
+			if tt.verify != nil {
+				tt.verify(t, s)
+			}
+		})
 	}
 }
 
@@ -626,28 +831,65 @@ func phaseEstimate(id, userID, date, cycleID string) *v1.PhaseEstimate {
 	}
 }
 
-func TestPhaseEstimate_CreateAndList(t *testing.T) {
-	s := newStore(t)
-	s.PhaseEstimates().Create(ctx, phaseEstimate("pe1", "u1", "2026-01-05", "cy1")) //nolint:errcheck
-	s.PhaseEstimates().Create(ctx, phaseEstimate("pe2", "u1", "2026-01-10", "cy1")) //nolint:errcheck
-	s.PhaseEstimates().Create(ctx, phaseEstimate("pe3", "u1", "2026-02-01", "cy2")) //nolint:errcheck
-	s.PhaseEstimates().Create(ctx, phaseEstimate("pe4", "u2", "2026-01-07", "cy3")) //nolint:errcheck
-
-	page, err := s.PhaseEstimates().ListByUserAndDateRange(ctx, "u1", "2026-01-01", "2026-01-31", storage.PageRequest{})
-	if err != nil {
-		t.Fatal(err)
+func TestPhaseEstimate_CreateListDuplicate(t *testing.T) {
+	tests := []struct {
+		name    string
+		setup   func(*sqlite.Store) error
+		verify  func(*testing.T, *sqlite.Store)
+		wantErr error
+	}{
+		{
+			name: "create and list",
+			setup: func(s *sqlite.Store) error {
+				if err := s.PhaseEstimates().Create(ctx, phaseEstimate("pe1", "u1", "2026-01-05", "cy1")); err != nil {
+					return err
+				}
+				if err := s.PhaseEstimates().Create(ctx, phaseEstimate("pe2", "u1", "2026-01-10", "cy1")); err != nil {
+					return err
+				}
+				if err := s.PhaseEstimates().Create(ctx, phaseEstimate("pe3", "u1", "2026-02-01", "cy2")); err != nil {
+					return err
+				}
+				if err := s.PhaseEstimates().Create(ctx, phaseEstimate("pe4", "u2", "2026-01-07", "cy3")); err != nil {
+					return err
+				}
+				return nil
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				page, err := s.PhaseEstimates().ListByUserAndDateRange(ctx, "u1", "2026-01-01", "2026-01-31", storage.PageRequest{})
+				mustNoErr(t, err)
+				if len(page.Items) != 2 {
+					t.Fatalf("want 2, got %d", len(page.Items))
+				}
+			},
+		},
+		{
+			name: "duplicate ID rejected",
+			setup: func(s *sqlite.Store) error {
+				if err := s.PhaseEstimates().Create(ctx, phaseEstimate("pe1", "u1", "2026-01-05", "cy1")); err != nil {
+					return err
+				}
+				return s.PhaseEstimates().Create(ctx, phaseEstimate("pe1", "u1", "2026-01-05", "cy1"))
+			},
+			wantErr: storage.ErrConflict,
+		},
 	}
-	if len(page.Items) != 2 {
-		t.Fatalf("want 2, got %d", len(page.Items))
-	}
-}
 
-func TestPhaseEstimate_DuplicateIDRejected(t *testing.T) {
-	s := newStore(t)
-	s.PhaseEstimates().Create(ctx, phaseEstimate("pe1", "u1", "2026-01-05", "cy1")) //nolint:errcheck
-	err := s.PhaseEstimates().Create(ctx, phaseEstimate("pe1", "u1", "2026-01-05", "cy1"))
-	if !errors.Is(err, storage.ErrConflict) {
-		t.Fatalf("want ErrConflict, got %v", err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := newStore(t)
+			err := tt.setup(s)
+			if tt.wantErr != nil {
+				if !errors.Is(err, tt.wantErr) {
+					t.Fatalf("want %v, got %v", tt.wantErr, err)
+				}
+				return
+			}
+			mustNoErr(t, err)
+			if tt.verify != nil {
+				tt.verify(t, s)
+			}
+		})
 	}
 }
 
