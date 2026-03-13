@@ -34,7 +34,7 @@ const MaxCycleLength DayCount = 90
 // the valid bounds (15–90 days) per domain rules §1.2. Open-ended cycles
 // (no end_date) are never considered outliers.
 func IsOutlierLength(c *v1.Cycle) bool {
-	l := CycleLength(c)
+	l := DayCount(CycleLength(c))
 	if l <= 0 {
 		return false // open-ended or unparseable
 	}
@@ -194,7 +194,7 @@ func findEpisodeStarts(dates []string, dayMap map[string]map[v1.BleedingFlow]str
 			if err1 != nil || err2 != nil {
 				continue
 			}
-			gapDays := int(cur.Sub(prev).Hours() / 24)
+			gapDays := DayCount(cur.Sub(prev).Hours() / 24)
 			if gapDays > minNonBleedingGap {
 				isStart = true
 			}
