@@ -3,6 +3,8 @@ syntax = "proto3";
 package openmenses.v1;
 
 import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/api/resource.proto";
 import "google/protobuf/field_mask.proto";
 import "openmenses/v1/model.proto";
 import "openmenses/v1/types.proto";
@@ -10,46 +12,158 @@ import "openmenses/v1/types.proto";
 option go_package = "github.com/2ajoyce/openmenses/gen/go/openmenses/v1;openmensesv1";
 
 service CycleTrackerService {
-  rpc GetUserProfile(GetUserProfileRequest) returns (GetUserProfileResponse);
-  rpc CreateUserProfile(CreateUserProfileRequest) returns (CreateUserProfileResponse);
-  rpc UpdateUserProfile(UpdateUserProfileRequest) returns (UpdateUserProfileResponse);
+  rpc GetUserProfile(GetUserProfileRequest) returns (GetUserProfileResponse) {
+    option (google.api.http) = {get: "/v1/{name}"};
+  }
+  rpc CreateUserProfile(CreateUserProfileRequest) returns (CreateUserProfileResponse) {
+    option (google.api.http) = {
+      post: "/v1/users"
+      body: "profile"
+    };
+  }
+  rpc UpdateUserProfile(UpdateUserProfileRequest) returns (UpdateUserProfileResponse) {
+    option (google.api.http) = {
+      patch: "/v1/{profile.name}"
+      body: "profile"
+    };
+  }
 
-  rpc GetBleedingObservation(GetBleedingObservationRequest) returns (GetBleedingObservationResponse);
-  rpc CreateBleedingObservation(CreateBleedingObservationRequest) returns (CreateBleedingObservationResponse);
-  rpc UpdateBleedingObservation(UpdateBleedingObservationRequest) returns (UpdateBleedingObservationResponse);
-  rpc DeleteBleedingObservation(DeleteBleedingObservationRequest) returns (DeleteBleedingObservationResponse);
-  rpc ListBleedingObservations(ListBleedingObservationsRequest) returns (ListBleedingObservationsResponse);
-  rpc GetSymptomObservation(GetSymptomObservationRequest) returns (GetSymptomObservationResponse);
-  rpc CreateSymptomObservation(CreateSymptomObservationRequest) returns (CreateSymptomObservationResponse);
-  rpc UpdateSymptomObservation(UpdateSymptomObservationRequest) returns (UpdateSymptomObservationResponse);
-  rpc DeleteSymptomObservation(DeleteSymptomObservationRequest) returns (DeleteSymptomObservationResponse);
-  rpc ListSymptomObservations(ListSymptomObservationsRequest) returns (ListSymptomObservationsResponse);
-  rpc GetMoodObservation(GetMoodObservationRequest) returns (GetMoodObservationResponse);
-  rpc CreateMoodObservation(CreateMoodObservationRequest) returns (CreateMoodObservationResponse);
-  rpc UpdateMoodObservation(UpdateMoodObservationRequest) returns (UpdateMoodObservationResponse);
-  rpc DeleteMoodObservation(DeleteMoodObservationRequest) returns (DeleteMoodObservationResponse);
-  rpc ListMoodObservations(ListMoodObservationsRequest) returns (ListMoodObservationsResponse);
+  rpc GetBleedingObservation(GetBleedingObservationRequest) returns (GetBleedingObservationResponse) {
+    option (google.api.http) = {get: "/v1/{name}"};
+  }
+  rpc CreateBleedingObservation(CreateBleedingObservationRequest) returns (CreateBleedingObservationResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent}/observations/bleeding"
+      body: "observation"
+    };
+  }
+  rpc UpdateBleedingObservation(UpdateBleedingObservationRequest) returns (UpdateBleedingObservationResponse) {
+    option (google.api.http) = {
+      patch: "/v1/{observation.name}"
+      body: "observation"
+    };
+  }
+  rpc DeleteBleedingObservation(DeleteBleedingObservationRequest) returns (DeleteBleedingObservationResponse) {
+    option (google.api.http) = {delete: "/v1/{name}"};
+  }
+  rpc ListBleedingObservations(ListBleedingObservationsRequest) returns (ListBleedingObservationsResponse) {
+    option (google.api.http) = {get: "/v1/{parent}/observations/bleeding"};
+  }
+  rpc GetSymptomObservation(GetSymptomObservationRequest) returns (GetSymptomObservationResponse) {
+    option (google.api.http) = {get: "/v1/{name}"};
+  }
+  rpc CreateSymptomObservation(CreateSymptomObservationRequest) returns (CreateSymptomObservationResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent}/observations/symptom"
+      body: "observation"
+    };
+  }
+  rpc UpdateSymptomObservation(UpdateSymptomObservationRequest) returns (UpdateSymptomObservationResponse) {
+    option (google.api.http) = {
+      patch: "/v1/{observation.name}"
+      body: "observation"
+    };
+  }
+  rpc DeleteSymptomObservation(DeleteSymptomObservationRequest) returns (DeleteSymptomObservationResponse) {
+    option (google.api.http) = {delete: "/v1/{name}"};
+  }
+  rpc ListSymptomObservations(ListSymptomObservationsRequest) returns (ListSymptomObservationsResponse) {
+    option (google.api.http) = {get: "/v1/{parent}/observations/symptom"};
+  }
+  rpc GetMoodObservation(GetMoodObservationRequest) returns (GetMoodObservationResponse) {
+    option (google.api.http) = {get: "/v1/{name}"};
+  }
+  rpc CreateMoodObservation(CreateMoodObservationRequest) returns (CreateMoodObservationResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent}/observations/mood"
+      body: "observation"
+    };
+  }
+  rpc UpdateMoodObservation(UpdateMoodObservationRequest) returns (UpdateMoodObservationResponse) {
+    option (google.api.http) = {
+      patch: "/v1/{observation.name}"
+      body: "observation"
+    };
+  }
+  rpc DeleteMoodObservation(DeleteMoodObservationRequest) returns (DeleteMoodObservationResponse) {
+    option (google.api.http) = {delete: "/v1/{name}"};
+  }
+  rpc ListMoodObservations(ListMoodObservationsRequest) returns (ListMoodObservationsResponse) {
+    option (google.api.http) = {get: "/v1/{parent}/observations/mood"};
+  }
 
-  rpc GetMedication(GetMedicationRequest) returns (GetMedicationResponse);
-  rpc CreateMedication(CreateMedicationRequest) returns (CreateMedicationResponse);
-  rpc UpdateMedication(UpdateMedicationRequest) returns (UpdateMedicationResponse);
-  rpc DeleteMedication(DeleteMedicationRequest) returns (DeleteMedicationResponse);
-  rpc ListMedications(ListMedicationsRequest) returns (ListMedicationsResponse);
-  rpc GetMedicationEvent(GetMedicationEventRequest) returns (GetMedicationEventResponse);
-  rpc CreateMedicationEvent(CreateMedicationEventRequest) returns (CreateMedicationEventResponse);
-  rpc UpdateMedicationEvent(UpdateMedicationEventRequest) returns (UpdateMedicationEventResponse);
-  rpc DeleteMedicationEvent(DeleteMedicationEventRequest) returns (DeleteMedicationEventResponse);
-  rpc ListMedicationEvents(ListMedicationEventsRequest) returns (ListMedicationEventsResponse);
+  rpc GetMedication(GetMedicationRequest) returns (GetMedicationResponse) {
+    option (google.api.http) = {get: "/v1/{name}"};
+  }
+  rpc CreateMedication(CreateMedicationRequest) returns (CreateMedicationResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent}/medications"
+      body: "medication"
+    };
+  }
+  rpc UpdateMedication(UpdateMedicationRequest) returns (UpdateMedicationResponse) {
+    option (google.api.http) = {
+      patch: "/v1/{medication.name}"
+      body: "medication"
+    };
+  }
+  rpc DeleteMedication(DeleteMedicationRequest) returns (DeleteMedicationResponse) {
+    option (google.api.http) = {delete: "/v1/{name}"};
+  }
+  rpc ListMedications(ListMedicationsRequest) returns (ListMedicationsResponse) {
+    option (google.api.http) = {get: "/v1/{parent}/medications"};
+  }
+  rpc GetMedicationEvent(GetMedicationEventRequest) returns (GetMedicationEventResponse) {
+    option (google.api.http) = {get: "/v1/{name}"};
+  }
+  rpc CreateMedicationEvent(CreateMedicationEventRequest) returns (CreateMedicationEventResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent}/events"
+      body: "event"
+    };
+  }
+  rpc UpdateMedicationEvent(UpdateMedicationEventRequest) returns (UpdateMedicationEventResponse) {
+    option (google.api.http) = {
+      patch: "/v1/{event.name}"
+      body: "event"
+    };
+  }
+  rpc DeleteMedicationEvent(DeleteMedicationEventRequest) returns (DeleteMedicationEventResponse) {
+    option (google.api.http) = {delete: "/v1/{name}"};
+  }
+  rpc ListMedicationEvents(ListMedicationEventsRequest) returns (ListMedicationEventsResponse) {
+    option (google.api.http) = {get: "/v1/{parent}/events"};
+  }
 
-  rpc ListTimeline(ListTimelineRequest) returns (ListTimelineResponse);
+  rpc ListTimeline(ListTimelineRequest) returns (ListTimelineResponse) {
+    option (google.api.http) = {get: "/v1/{parent}/timeline"};
+  }
 
-  rpc GetCycle(GetCycleRequest) returns (GetCycleResponse);
-  rpc ListCycles(ListCyclesRequest) returns (ListCyclesResponse);
-  rpc ListPredictions(ListPredictionsRequest) returns (ListPredictionsResponse);
-  rpc ListInsights(ListInsightsRequest) returns (ListInsightsResponse);
+  rpc GetCycle(GetCycleRequest) returns (GetCycleResponse) {
+    option (google.api.http) = {get: "/v1/{name}"};
+  }
+  rpc ListCycles(ListCyclesRequest) returns (ListCyclesResponse) {
+    option (google.api.http) = {get: "/v1/{parent}/cycles"};
+  }
+  rpc ListPredictions(ListPredictionsRequest) returns (ListPredictionsResponse) {
+    option (google.api.http) = {get: "/v1/{parent}/predictions"};
+  }
+  rpc ListInsights(ListInsightsRequest) returns (ListInsightsResponse) {
+    option (google.api.http) = {get: "/v1/{parent}/insights"};
+  }
 
-  rpc CreateDataExport(CreateDataExportRequest) returns (CreateDataExportResponse);
-  rpc CreateDataImport(CreateDataImportRequest) returns (CreateDataImportResponse);
+  rpc CreateDataExport(CreateDataExportRequest) returns (CreateDataExportResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent}:export"
+      body: "*"
+    };
+  }
+  rpc CreateDataImport(CreateDataImportRequest) returns (CreateDataImportResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent}:import"
+      body: "*"
+    };
+  }
 }
 
 message GetUserProfileRequest {

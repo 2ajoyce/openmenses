@@ -388,28 +388,112 @@ func med(id, userID string) *v1.Medication {
 }
 
 func TestMedication_CRUD(t *testing.T) {
-	s := newStore(t)
-	if err := s.Medications().Create(ctx, med("m1", "u1")); err != nil {
-		t.Fatal(err)
+	tests := []struct {
+		name    string
+		setup   func(*sqlite.Store) error
+		verify  func(*testing.T, *sqlite.Store)
+		wantErr error
+	}{
+		{
+			name: "create and get",
+			setup: func(s *sqlite.Store) error {
+				return s.Medications().Create(ctx, med("m1", "u1"))
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				got, err := s.Medications().GetByID(ctx, "m1")
+				mustNoErr(t, err)
+				if got.GetName() != "m1" {
+					t.Fatalf("got %q", got.GetName())
+				}
+			},
+		},
+		{
+			name: "get not found",
+			setup: func(s *sqlite.Store) error {
+				return nil
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				_, err := s.Medications().GetByID(ctx, "nope")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatalf("want ErrNotFound, got %v", err)
+				}
+			},
+		},
+		{
+			name: "duplicate ID rejected",
+			setup: func(s *sqlite.Store) error {
+				m := med("m1", "u1")
+				if err := s.Medications().Create(ctx, m); err != nil {
+					return err
+				}
+				return s.Medications().Create(ctx, m)
+			},
+			wantErr: storage.ErrConflict,
+		},
+		{
+			name: "update",
+			setup: func(s *sqlite.Store) error {
+				m := med("m1", "u1")
+				if err := s.Medications().Create(ctx, m); err != nil {
+					return err
+				}
+				m.Active = false
+				return s.Medications().Update(ctx, m)
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				got, err := s.Medications().GetByID(ctx, "m1")
+				mustNoErr(t, err)
+				if got.GetActive() {
+					t.Fatal("expected active to be false after update")
+				}
+			},
+		},
+		{
+			name: "update not found",
+			setup: func(s *sqlite.Store) error {
+				return s.Medications().Update(ctx, med("nope", "u1"))
+			},
+			wantErr: storage.ErrNotFound,
+		},
+		{
+			name: "delete",
+			setup: func(s *sqlite.Store) error {
+				if err := s.Medications().Create(ctx, med("m1", "u1")); err != nil {
+					return err
+				}
+				return s.Medications().DeleteByID(ctx, "m1")
+			},
+			verify: func(t *testing.T, s *sqlite.Store) {
+				_, err := s.Medications().GetByID(ctx, "m1")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatal("expected not found after delete")
+				}
+			},
+		},
+		{
+			name: "delete not found",
+			setup: func(s *sqlite.Store) error {
+				return s.Medications().DeleteByID(ctx, "nope")
+			},
+			wantErr: storage.ErrNotFound,
+		},
 	}
-	got, err := s.Medications().GetByID(ctx, "m1")
-	if err != nil {
-		t.Fatal(err)
-	}
-	got.Active = false
-	if err = s.Medications().Update(ctx, got); err != nil {
-		t.Fatal(err)
-	}
-	updated, _ := s.Medications().GetByID(ctx, "m1")
-	if updated.GetActive() {
-		t.Fatal("active should be false after update")
-	}
-	if err = s.Medications().DeleteByID(ctx, "m1"); err != nil {
-		t.Fatal(err)
-	}
-	_, err = s.Medications().GetByID(ctx, "m1")
-	if !errors.Is(err, storage.ErrNotFound) {
-		t.Fatal("expected not found")
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := newStore(t)
+			err := tt.setup(s)
+			if tt.wantErr != nil {
+				if !errors.Is(err, tt.wantErr) {
+					t.Fatalf("want %v, got %v", tt.wantErr, err)
+				}
+				return
+			}
+			mustNoErr(t, err)
+			if tt.verify != nil {
+				tt.verify(t, s)
+			}
+		})
 	}
 }
 
