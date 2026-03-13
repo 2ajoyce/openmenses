@@ -319,6 +319,32 @@ func TestUpdateUserProfile(t *testing.T) {
 			t.Errorf("reproductive_goal was unexpectedly changed to %v", profile.GetReproductiveGoal())
 		}
 	})
+
+	// InvalidFieldMaskPath - subtest for invalid field mask paths
+	t.Run("InvalidFieldMaskPath", func(t *testing.T) {
+		store := memory.New()
+		if err := store.UserProfiles().Create(ctx, validProfile("u1")); err != nil {
+			t.Fatal(err)
+		}
+
+		svc := newSvcWithStore(t, store)
+
+		updates := validProfile("u1")
+		updateMask := &fieldmaskpb.FieldMask{
+			Paths: []string{"typo_field"}, // Invalid field path
+		}
+
+		_, err := svc.UpdateUserProfile(ctx, connect.NewRequest(&v1.UpdateUserProfileRequest{
+			Profile:    updates,
+			UpdateMask: updateMask,
+		}))
+		if err == nil {
+			t.Fatal("expected error for invalid field mask path, got nil")
+		}
+		if codeOf(err) != connect.CodeInvalidArgument {
+			t.Fatalf("want code %v, got %v", connect.CodeInvalidArgument, codeOf(err))
+		}
+	})
 }
 
 // ─── CreateBleedingObservation ────────────────────────────────────────────────

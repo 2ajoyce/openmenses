@@ -127,8 +127,9 @@ func marshalAll[T proto.Message](items []T) ([]json.RawMessage, error) {
 
 // applyUserProfileFieldMask merges updates into existing according to the
 // field paths specified in mask. If mask is nil or empty, all fields from
-// updates are used (full replace).
-func applyUserProfileFieldMask(existing, updates *v1.UserProfile, mask *fieldmaskpb.FieldMask) *v1.UserProfile {
+// updates are used (full replace). Returns an error if any path in the mask
+// is unrecognized.
+func applyUserProfileFieldMask(existing, updates *v1.UserProfile, mask *fieldmaskpb.FieldMask) (*v1.UserProfile, error) {
 	// If no mask or empty mask, do a full replace of all fields
 	if mask == nil || len(mask.GetPaths()) == 0 {
 		return &v1.UserProfile{
@@ -139,7 +140,7 @@ func applyUserProfileFieldMask(existing, updates *v1.UserProfile, mask *fieldmas
 			ReproductiveGoal: updates.GetReproductiveGoal(),
 			HealthConditions: updates.GetHealthConditions(),
 			TrackingFocus:    updates.GetTrackingFocus(),
-		}
+		}, nil
 	}
 
 	// Apply only the fields specified in the mask.
@@ -158,9 +159,11 @@ func applyUserProfileFieldMask(existing, updates *v1.UserProfile, mask *fieldmas
 			existing.HealthConditions = updates.HealthConditions
 		case "tracking_focus":
 			existing.TrackingFocus = updates.TrackingFocus
+		default:
+			return nil, fmt.Errorf("invalid field mask path: %q", path)
 		}
 	}
-	return existing
+	return existing, nil
 }
 
 // ─── RPC: user profile ────────────────────────────────────────────────────────
@@ -227,7 +230,10 @@ func (s *CycleTrackerService) UpdateUserProfile(
 
 	// Apply the update mask to merge only specified fields
 	mask := req.Msg.GetUpdateMask()
-	profile := applyUserProfileFieldMask(existing, updates, mask)
+	profile, err := applyUserProfileFieldMask(existing, updates, mask)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
 
 	// Validate the merged profile
 	if err := s.validator.ValidateUserProfile(ctx, profile); err != nil {
