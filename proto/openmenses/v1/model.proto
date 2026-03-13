@@ -3,11 +3,16 @@ syntax = "proto3";
 package openmenses.v1;
 
 import "buf/validate/validate.proto";
+import "google/api/resource.proto";
 import "openmenses/v1/types.proto";
 
 option go_package = "github.com/2ajoyce/openmenses/gen/go/openmenses/v1;openmensesv1";
 
 message UserProfile {
+  option (google.api.resource) = {
+    type: "openmenses.v1/UserProfile"
+    pattern: "users/{user}"
+  };
   string name = 1 [(buf.validate.field).string = {
     min_len: 1
     max_len: 128
@@ -36,6 +41,10 @@ message UserProfile {
 }
 
 message BleedingObservation {
+  option (google.api.resource) = {
+    type: "openmenses.v1/BleedingObservation"
+    pattern: "users/{user}/observations/bleeding/{id}"
+  };
   string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   DateTime timestamp = 3;
@@ -47,6 +56,10 @@ message BleedingObservation {
 }
 
 message SymptomObservation {
+  option (google.api.resource) = {
+    type: "openmenses.v1/SymptomObservation"
+    pattern: "users/{user}/observations/symptom/{id}"
+  };
   string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   DateTime timestamp = 3;
@@ -59,6 +72,10 @@ message SymptomObservation {
 }
 
 message MoodObservation {
+  option (google.api.resource) = {
+    type: "openmenses.v1/MoodObservation"
+    pattern: "users/{user}/observations/mood/{id}"
+  };
   string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   DateTime timestamp = 3;
@@ -71,6 +88,10 @@ message MoodObservation {
 }
 
 message Medication {
+  option (google.api.resource) = {
+    type: "openmenses.v1/Medication"
+    pattern: "users/{user}/medications/{id}"
+  };
   string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   string display_name = 3 [(buf.validate.field).string = {
@@ -86,6 +107,10 @@ message Medication {
 }
 
 message MedicationEvent {
+  option (google.api.resource) = {
+    type: "openmenses.v1/MedicationEvent"
+    pattern: "users/{user}/medications/{medication}/events/{id}"
+  };
   string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   string medication_id = 3 [(buf.validate.field).string.min_len = 1];
@@ -99,6 +124,10 @@ message MedicationEvent {
 }
 
 message Cycle {
+  option (google.api.resource) = {
+    type: "openmenses.v1/Cycle"
+    pattern: "users/{user}/cycles/{id}"
+  };
   string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   LocalDate start_date = 3;
@@ -107,6 +136,10 @@ message Cycle {
 }
 
 message PhaseEstimate {
+  option (google.api.resource) = {
+    type: "openmenses.v1/PhaseEstimate"
+    pattern: "users/{user}/phases/{id}"
+  };
   string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   LocalDate date = 3;
@@ -116,6 +149,10 @@ message PhaseEstimate {
 }
 
 message Prediction {
+  option (google.api.resource) = {
+    type: "openmenses.v1/Prediction"
+    pattern: "users/{user}/predictions/{id}"
+  };
   string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   PredictionType kind = 3 [(buf.validate.field).enum = {
@@ -129,6 +166,10 @@ message Prediction {
 }
 
 message Insight {
+  option (google.api.resource) = {
+    type: "openmenses.v1/Insight"
+    pattern: "users/{user}/insights/{id}"
+  };
   string name = 1 [(buf.validate.field).string.min_len = 1];
   string user_id = 2 [(buf.validate.field).string.min_len = 1];
   InsightType kind = 3 [(buf.validate.field).enum = {

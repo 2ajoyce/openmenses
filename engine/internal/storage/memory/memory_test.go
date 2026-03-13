@@ -440,32 +440,87 @@ func TestMedication_CRUD(t *testing.T) {
 		wantErr error
 	}{
 		{
-			name: "full CRUD",
+			name: "create and get",
+			setup: func(s *memory.Store) error {
+				return s.Medications().Create(ctx, med("m1", "u1"))
+			},
+			verify: func(t *testing.T, s *memory.Store) {
+				got, err := s.Medications().GetByID(ctx, "m1")
+				mustNoErr(t, err)
+				if got.GetName() != "m1" {
+					t.Fatalf("got %q", got.GetName())
+				}
+			},
+		},
+		{
+			name: "get not found",
+			setup: func(s *memory.Store) error {
+				return nil
+			},
+			verify: func(t *testing.T, s *memory.Store) {
+				_, err := s.Medications().GetByID(ctx, "nope")
+				if !errors.Is(err, storage.ErrNotFound) {
+					t.Fatalf("want ErrNotFound, got %v", err)
+				}
+			},
+		},
+		{
+			name: "duplicate ID rejected",
 			setup: func(s *memory.Store) error {
 				m := med("m1", "u1")
 				if err := s.Medications().Create(ctx, m); err != nil {
 					return err
 				}
+				return s.Medications().Create(ctx, m)
+			},
+			wantErr: storage.ErrConflict,
+		},
+		{
+			name: "update",
+			setup: func(s *memory.Store) error {
+				m := med("m1", "u1")
+				if err := s.Medications().Create(ctx, m); err != nil {
+					return err
+				}
+				m.Active = false
+				return s.Medications().Update(ctx, m)
+			},
+			verify: func(t *testing.T, s *memory.Store) {
 				got, err := s.Medications().GetByID(ctx, "m1")
-				if err != nil {
-					return err
+				mustNoErr(t, err)
+				if got.GetActive() {
+					t.Fatal("expected active to be false after update")
 				}
-				got.Active = false
-				if err = s.Medications().Update(ctx, got); err != nil {
+			},
+		},
+		{
+			name: "update not found",
+			setup: func(s *memory.Store) error {
+				return s.Medications().Update(ctx, med("nope", "u1"))
+			},
+			wantErr: storage.ErrNotFound,
+		},
+		{
+			name: "delete",
+			setup: func(s *memory.Store) error {
+				if err := s.Medications().Create(ctx, med("m1", "u1")); err != nil {
 					return err
-				}
-				updated, _ := s.Medications().GetByID(ctx, "m1")
-				if updated.GetActive() {
-					return errors.New("active should be false after update")
 				}
 				return s.Medications().DeleteByID(ctx, "m1")
 			},
 			verify: func(t *testing.T, s *memory.Store) {
 				_, err := s.Medications().GetByID(ctx, "m1")
 				if !errors.Is(err, storage.ErrNotFound) {
-					t.Fatal("expected not found")
+					t.Fatal("expected not found after delete")
 				}
 			},
+		},
+		{
+			name: "delete not found",
+			setup: func(s *memory.Store) error {
+				return s.Medications().DeleteByID(ctx, "nope")
+			},
+			wantErr: storage.ErrNotFound,
 		},
 	}
 

@@ -13,19 +13,22 @@ import (
 	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
+// DayCount represents a number of calendar days.
+type DayCount int
+
 // minNonBleedingGap is the number of consecutive non-bleeding days required
 // before a new cycle begins. A date gap strictly greater than this value
 // (i.e., ≥ 4 calendar days between consecutive bleeding dates) separates
 // two distinct episodes per domain rules §1.1.
-const minNonBleedingGap = 3
+const minNonBleedingGap DayCount = 3
 
 // MinCycleLength is the minimum valid cycle length in days per domain rules
 // §1.2. Cycles shorter than this are considered outliers.
-const MinCycleLength = 15
+const MinCycleLength DayCount = 15
 
 // MaxCycleLength is the maximum valid cycle length in days per domain rules
 // §1.2. Cycles longer than this are considered outliers.
-const MaxCycleLength = 90
+const MaxCycleLength DayCount = 90
 
 // IsOutlierLength reports whether a completed cycle's length falls outside
 // the valid bounds (15–90 days) per domain rules §1.2. Open-ended cycles
