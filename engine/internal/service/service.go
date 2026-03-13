@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
+	"log/slog"
 	"math"
 
 	"connectrpc.com/connect"
@@ -270,7 +270,7 @@ func (s *CycleTrackerService) CreateBleedingObservation(
 	// Best-effort: errors here do not fail the request because the observation
 	// is already persisted and ListCycles re-derives on demand.
 	if err := s.redetectAndStoreCycles(ctx, userID); err != nil {
-		log.Printf("redetectAndStoreCycles: user %s: %v", userID, err)
+		slog.Error("redetectAndStoreCycles failed", "user_id", userID, "error", err)
 	}
 	return connect.NewResponse(&v1.CreateBleedingObservationResponse{Observation: obs}), nil
 }
@@ -1160,7 +1160,7 @@ func (s *CycleTrackerService) CreateDataImport(
 	// import itself is not rolled back.
 	if payload.UserID != "" {
 		if err := s.redetectAndStoreCycles(ctx, payload.UserID); err != nil {
-			log.Printf("CreateDataImport: redetectAndStoreCycles: user %s: %v", payload.UserID, err)
+			slog.Error("CreateDataImport: redetectAndStoreCycles failed", "user_id", payload.UserID, "error", err)
 		}
 	}
 
