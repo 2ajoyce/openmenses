@@ -1,6 +1,7 @@
 package rules_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/2ajoyce/openmenses/engine/internal/rules"
@@ -37,179 +38,6 @@ func allConfidence(ests []*v1.PhaseEstimate, c v1.ConfidenceLevel) bool {
 	return true
 }
 
-// ---- Basic ovulatory model ------------------------------------------------ //
-
-func TestPhases_Ovulatory_28Day(t *testing.T) {
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
-	ests := rules.EstimatePhases(cycle, regularProfile(), 28, 5)
-
-	if len(ests) != 28 {
-		t.Fatalf("expected 28 estimates, got %d", len(ests))
-	}
-
-	// O = 28-14 = 14. Phases:
-	// Menstruation: days 1-5     → 5  days
-	// Follicular:   days 6-12    → 7  days (o-2=12)
-	// Ovulation:    days 13-15   → 3  days (o-1=13, o+1=15)
-	// Luteal:       days 16-28   → 13 days
-	gotMen := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
-	gotFol := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_FOLLICULAR)
-	gotOvl := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
-	gotLut := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_LUTEAL)
-
-	if gotMen != 5 {
-		t.Errorf("menstruation = %d days, want 5", gotMen)
-	}
-	if gotFol != 7 {
-		t.Errorf("follicular = %d days, want 7", gotFol)
-	}
-	if gotOvl != 3 {
-		t.Errorf("ovulation_window = %d days, want 3", gotOvl)
-	}
-	if gotLut != 13 {
-		t.Errorf("luteal = %d days, want 13", gotLut)
-	}
-}
-
-func TestPhases_Ovulatory_30Day(t *testing.T) {
-	// O = 30-14 = 16. Follicular: days 6-14 (9 days). Ovulation: 15-17 (3 days). Luteal: 18-30 (13 days).
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-30")
-	ests := rules.EstimatePhases(cycle, regularProfile(), 30, 5)
-
-	if len(ests) != 30 {
-		t.Fatalf("expected 30 estimates, got %d", len(ests))
-	}
-	gotOvl := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
-	if gotOvl != 3 {
-		t.Errorf("ovulation_window = %d days, want 3", gotOvl)
-	}
-}
-
-// ---- Open-ended cycle ---------------------------------------------------- //
-
-func TestPhases_OpenEnded_UsesAvgLen(t *testing.T) {
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "")
-	ests := rules.EstimatePhases(cycle, regularProfile(), 28, 3)
-	// Should estimate 28 days when open-ended with avgCycleLen=28.
-	if len(ests) != 28 {
-		t.Fatalf("expected 28 estimates for open-ended cycle (avg=28), got %d", len(ests))
-	}
-}
-
-func TestPhases_OpenEnded_DefaultAvg(t *testing.T) {
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "")
-	// avgCycleLen=0 → default 28.
-	ests := rules.EstimatePhases(cycle, regularProfile(), 0, 1)
-	if len(ests) != 28 {
-		t.Fatalf("expected 28 estimates (default avg), got %d", len(ests))
-	}
-}
-
-// ---- Hormonally suppressed model ----------------------------------------- //
-
-func TestPhases_HormonallySuppressed_NoOvulationWindow(t *testing.T) {
-	profile := &v1.UserProfile{
-		Name:            "u1",
-		BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED,
-		CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
-	}
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
-	ests := rules.EstimatePhases(cycle, profile, 28, 5)
-
-	if len(ests) != 28 {
-		t.Fatalf("expected 28 estimates, got %d", len(ests))
-	}
-	ovl := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
-	if ovl != 0 {
-		t.Errorf("suppressed model should have 0 ovulation window days, got %d", ovl)
-	}
-	men := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
-	if men != 5 {
-		t.Errorf("menstruation = %d days, want 5", men)
-	}
-	fol := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_FOLLICULAR)
-	if fol != 23 {
-		t.Errorf("follicular = %d days, want 23", fol)
-	}
-}
-
-// ---- Confidence assignment ----------------------------------------------- //
-
-func TestPhases_Confidence_LowWhenFewCycles(t *testing.T) {
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
-	ests := rules.EstimatePhases(cycle, regularProfile(), 28, 1)
-	if !allConfidence(ests, v1.ConfidenceLevel_CONFIDENCE_LEVEL_LOW) {
-		t.Error("expected LOW confidence for <2 completed cycles")
-	}
-}
-
-func TestPhases_Confidence_MediumFor2to4Cycles(t *testing.T) {
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
-	ests := rules.EstimatePhases(cycle, regularProfile(), 28, 3)
-	if !allConfidence(ests, v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM) {
-		t.Error("expected MEDIUM confidence for 3 completed cycles (regular)")
-	}
-}
-
-func TestPhases_Confidence_HighFor5PlusCycles(t *testing.T) {
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
-	ests := rules.EstimatePhases(cycle, regularProfile(), 28, 5)
-	if !allConfidence(ests, v1.ConfidenceLevel_CONFIDENCE_LEVEL_HIGH) {
-		t.Error("expected HIGH confidence for ≥5 completed cycles (regular)")
-	}
-}
-
-func TestPhases_Confidence_VeryIrregularCapsAtLow(t *testing.T) {
-	profile := &v1.UserProfile{
-		Name:            "u1",
-		BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
-		CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR,
-	}
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
-	// 10 cycles → base HIGH, but VERY_IRREGULAR caps at LOW.
-	ests := rules.EstimatePhases(cycle, profile, 28, 10)
-	if !allConfidence(ests, v1.ConfidenceLevel_CONFIDENCE_LEVEL_LOW) {
-		t.Error("expected LOW confidence for VERY_IRREGULAR regardless of cycle count")
-	}
-}
-
-func TestPhases_Confidence_SomewhatIrregularCapsAtMedium(t *testing.T) {
-	profile := &v1.UserProfile{
-		Name:            "u1",
-		BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
-		CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_SOMEWHAT_IRREGULAR,
-	}
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
-	ests := rules.EstimatePhases(cycle, profile, 28, 10)
-	if !allConfidence(ests, v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM) {
-		t.Error("expected MEDIUM confidence for SOMEWHAT_IRREGULAR with many cycles")
-	}
-}
-
-func TestPhases_Confidence_IrregularModelCapsAtMedium(t *testing.T) {
-	profile := &v1.UserProfile{
-		Name:            "u1",
-		BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_IRREGULAR,
-		CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
-	}
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
-	ests := rules.EstimatePhases(cycle, profile, 28, 10)
-	// §2.3: ovulation window is always LOW; all other phases are capped at MEDIUM.
-	for _, e := range ests {
-		if e.GetPhase() == v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW {
-			if e.GetConfidence() != v1.ConfidenceLevel_CONFIDENCE_LEVEL_LOW {
-				t.Errorf("ovulation window phase: expected LOW confidence, got %v", e.GetConfidence())
-			}
-		} else {
-			if e.GetConfidence() != v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM {
-				t.Errorf("non-ovulation phase %v: expected MEDIUM confidence, got %v", e.GetPhase(), e.GetConfidence())
-			}
-		}
-	}
-}
-
-// ---- Irregular model phase widening (§2.3) -------------------------------- //
-
 // irregularProfile returns a profile with BIOLOGICAL_CYCLE_MODEL_IRREGULAR.
 func irregularProfile() *v1.UserProfile {
 	return &v1.UserProfile{
@@ -219,71 +47,342 @@ func irregularProfile() *v1.UserProfile {
 	}
 }
 
-// TestPhases_Irregular_28Day verifies the ±3-day widening for a 28-day cycle.
-// O = 28-14 = 14.  Expected widened boundaries:
-//   - Menstruation:     days 1–8      (5+3)
-//   - Follicular:       day 9         (O-5 = 9; 1 day)
-//   - Ovulation window: days 10–18    (O-4=10, O+4=18; 9 days)
-//   - Luteal:           days 19–28    (O+5=19; 10 days)
-func TestPhases_Irregular_28Day(t *testing.T) {
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
-	ests := rules.EstimatePhases(cycle, irregularProfile(), 28, 5)
+// ============================================================================
+// TestEstimatePhases_Basic — Basic cycle length and open-ended behavior
+// ============================================================================
 
-	if len(ests) != 28 {
-		t.Fatalf("expected 28 estimates, got %d", len(ests))
+type basicPhasesTestCase struct {
+	name                string
+	cycleDays           int
+	cycleEnd            string
+	avgCycleLen         int
+	completedCycleCount int
+
+	wantEstimateCount int
+	wantMenDays       int
+	wantFolDays       int
+	wantOvlDays       int
+	wantLutDays       int
+}
+
+func TestEstimatePhases_Basic(t *testing.T) {
+	tests := []basicPhasesTestCase{
+		{
+			name:                "28DayRegular",
+			cycleDays:           28,
+			cycleEnd:            "2026-01-28",
+			avgCycleLen:         28,
+			completedCycleCount: 5,
+			wantEstimateCount:   28,
+			wantMenDays:         5,  // Days 1-5
+			wantFolDays:         7,  // Days 6-12 (O-2=12)
+			wantOvlDays:         3,  // Days 13-15 (O-1 to O+1)
+			wantLutDays:         13, // Days 16-28
+		},
+		{
+			name:                "30DayRegular",
+			cycleDays:           30,
+			cycleEnd:            "2026-01-30",
+			avgCycleLen:         30,
+			completedCycleCount: 5,
+			wantEstimateCount:   30,
+			wantOvlDays:         3, // Still 3 days for ovulation window
+		},
+		{
+			name:                "OpenEndedWithAvg",
+			cycleDays:           0,
+			cycleEnd:            "",
+			avgCycleLen:         28,
+			completedCycleCount: 3,
+			wantEstimateCount:   28, // Should estimate 28 days
+		},
+		{
+			name:                "OpenEndedDefaultAvg",
+			cycleDays:           0,
+			cycleEnd:            "",
+			avgCycleLen:         0, // Should default to 28
+			completedCycleCount: 1,
+			wantEstimateCount:   28,
+		},
 	}
 
-	gotMen := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
-	gotFol := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_FOLLICULAR)
-	gotOvl := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
-	gotLut := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_LUTEAL)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cycleEnd := tt.cycleEnd
+			if tt.cycleDays > 0 && cycleEnd == "" {
+				// Calculate end date
+				cycleEnd = "2026-01-" + padInt(tt.cycleDays, 2)
+			}
 
-	if gotMen != 8 {
-		t.Errorf("menstruation = %d days, want 8 (widened from 5)", gotMen)
-	}
-	if gotFol != 1 {
-		t.Errorf("follicular = %d days, want 1 (compressed for 28-day cycle)", gotFol)
-	}
-	if gotOvl != 9 {
-		t.Errorf("ovulation_window = %d days, want 9 (widened ±3 from 3)", gotOvl)
-	}
-	if gotLut != 10 {
-		t.Errorf("luteal = %d days, want 10", gotLut)
+			cycle := makeCycle("cy1", "u1", "2026-01-01", cycleEnd)
+			ests := rules.EstimatePhases(cycle, regularProfile(), tt.avgCycleLen, tt.completedCycleCount)
+
+			if len(ests) != tt.wantEstimateCount {
+				t.Errorf("estimate count = %d, want %d", len(ests), tt.wantEstimateCount)
+			}
+
+			if tt.wantMenDays > 0 {
+				got := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
+				if got != tt.wantMenDays {
+					t.Errorf("menstruation days = %d, want %d", got, tt.wantMenDays)
+				}
+			}
+			if tt.wantFolDays > 0 {
+				got := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_FOLLICULAR)
+				if got != tt.wantFolDays {
+					t.Errorf("follicular days = %d, want %d", got, tt.wantFolDays)
+				}
+			}
+			if tt.wantOvlDays > 0 {
+				got := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
+				if got != tt.wantOvlDays {
+					t.Errorf("ovulation window days = %d, want %d", got, tt.wantOvlDays)
+				}
+			}
+			if tt.wantLutDays > 0 {
+				got := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_LUTEAL)
+				if got != tt.wantLutDays {
+					t.Errorf("luteal days = %d, want %d", got, tt.wantLutDays)
+				}
+			}
+		})
 	}
 }
 
-// TestPhases_Irregular_30Day verifies the ±3-day widening for a 30-day cycle.
-// O = 30-14 = 16.  Expected:
-//   - Menstruation:     days 1–8      (8 days)
-//   - Follicular:       days 9–11     (O-5=11; 3 days)
-//   - Ovulation window: days 12–20    (O-4=12, O+4=20; 9 days)
-//   - Luteal:           days 21–30    (O+5=21; 10 days)
-func TestPhases_Irregular_30Day(t *testing.T) {
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-30")
-	ests := rules.EstimatePhases(cycle, irregularProfile(), 30, 5)
+// ============================================================================
+// TestEstimatePhases_BiologicalModels — Different biological cycle models
+// ============================================================================
 
-	if len(ests) != 30 {
-		t.Fatalf("expected 30 estimates, got %d", len(ests))
+type biologicalModelTestCase struct {
+	name                 string
+	profile              *v1.UserProfile
+	cycleDays            int
+	wantOvulationDays    int
+	wantMenstruationDays int
+	wantMenstruationMin  int
+	wantFollicularDays   int
+	wantLutealDays       int
+}
+
+func TestEstimatePhases_BiologicalModels(t *testing.T) {
+	tests := []biologicalModelTestCase{
+		{
+			name:                 "RegularOvulatory",
+			profile:              regularProfile(),
+			cycleDays:            28,
+			wantMenstruationDays: 5,
+			wantFollicularDays:   7,
+			wantOvulationDays:    3,
+			wantLutealDays:       13,
+		},
+		{
+			name: "HormonallySuppressed",
+			profile: &v1.UserProfile{
+				Name:            "u1",
+				BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED,
+				CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
+			},
+			cycleDays:            28,
+			wantMenstruationDays: 5,
+			wantFollicularDays:   23,
+			wantOvulationDays:    0, // Should have no ovulation window
+			wantLutealDays:       0, // Remaining goes to follicular
+		},
 	}
 
-	gotMen := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
-	gotFol := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_FOLLICULAR)
-	gotOvl := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
-	gotLut := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_LUTEAL)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-"+padInt(tt.cycleDays, 2))
+			ests := rules.EstimatePhases(cycle, tt.profile, tt.cycleDays, 5)
 
-	if gotMen != 8 {
-		t.Errorf("menstruation = %d days, want 8", gotMen)
-	}
-	if gotFol != 3 {
-		t.Errorf("follicular = %d days, want 3", gotFol)
-	}
-	if gotOvl != 9 {
-		t.Errorf("ovulation_window = %d days, want 9", gotOvl)
-	}
-	if gotLut != 10 {
-		t.Errorf("luteal = %d days, want 10", gotLut)
+			if len(ests) != tt.cycleDays {
+				t.Errorf("estimate count = %d, want %d", len(ests), tt.cycleDays)
+			}
+
+			if tt.wantMenstruationDays > 0 {
+				got := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
+				if got != tt.wantMenstruationDays {
+					t.Errorf("menstruation days = %d, want %d", got, tt.wantMenstruationDays)
+				}
+			}
+			if tt.wantFollicularDays > 0 {
+				got := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_FOLLICULAR)
+				if got != tt.wantFollicularDays {
+					t.Errorf("follicular days = %d, want %d", got, tt.wantFollicularDays)
+				}
+			}
+			if tt.wantOvulationDays > 0 {
+				got := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
+				if got != tt.wantOvulationDays {
+					t.Errorf("ovulation window days = %d, want %d", got, tt.wantOvulationDays)
+				}
+			} else if tt.wantOvulationDays == 0 {
+				got := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
+				if got != 0 {
+					t.Errorf("expected 0 ovulation window days, got %d", got)
+				}
+			}
+		})
 	}
 }
+
+// ============================================================================
+// TestEstimatePhases_Confidence — Confidence level assignments
+// ============================================================================
+
+type confidenceTestCase struct {
+	name             string
+	profile          *v1.UserProfile
+	completedCycles  int
+	wantConfidence   v1.ConfidenceLevel
+	wantOvulationCap bool // Some models cap ovulation confidence specifically
+}
+
+func TestEstimatePhases_Confidence(t *testing.T) {
+	tests := []confidenceTestCase{
+		{
+			name:            "LowWhenFewCycles",
+			profile:         regularProfile(),
+			completedCycles: 1,
+			wantConfidence:  v1.ConfidenceLevel_CONFIDENCE_LEVEL_LOW,
+		},
+		{
+			name:            "MediumFor3Cycles",
+			profile:         regularProfile(),
+			completedCycles: 3,
+			wantConfidence:  v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM,
+		},
+		{
+			name:            "HighFor5Cycles",
+			profile:         regularProfile(),
+			completedCycles: 5,
+			wantConfidence:  v1.ConfidenceLevel_CONFIDENCE_LEVEL_HIGH,
+		},
+		{
+			name: "VeryIrregularCapsAtLow",
+			profile: &v1.UserProfile{
+				Name:            "u1",
+				BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
+				CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR,
+			},
+			completedCycles: 10,
+			wantConfidence:  v1.ConfidenceLevel_CONFIDENCE_LEVEL_LOW,
+		},
+		{
+			name: "SomewhatIrregularCapsAtMedium",
+			profile: &v1.UserProfile{
+				Name:            "u1",
+				BiologicalCycle: v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
+				CycleRegularity: v1.CycleRegularity_CYCLE_REGULARITY_SOMEWHAT_IRREGULAR,
+			},
+			completedCycles: 10,
+			wantConfidence:  v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM,
+		},
+		{
+			name:             "IrregularModelCapsNonOvulationAtMedium",
+			profile:          irregularProfile(),
+			completedCycles:  10,
+			wantConfidence:   v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM,
+			wantOvulationCap: true, // Ovulation window specifically capped at LOW
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
+			ests := rules.EstimatePhases(cycle, tt.profile, 28, tt.completedCycles)
+
+			if tt.wantOvulationCap {
+				// Check irregular model: ovulation window at LOW, others at MEDIUM
+				for _, e := range ests {
+					if e.GetPhase() == v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW {
+						if e.GetConfidence() != v1.ConfidenceLevel_CONFIDENCE_LEVEL_LOW {
+							t.Errorf("ovulation window: got %v, want LOW", e.GetConfidence())
+						}
+					} else {
+						if e.GetConfidence() != v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM {
+							t.Errorf("non-ovulation phase %v: got %v, want MEDIUM", e.GetPhase(), e.GetConfidence())
+						}
+					}
+				}
+			} else {
+				// Check all estimates have expected confidence
+				if !allConfidence(ests, tt.wantConfidence) {
+					t.Errorf("not all estimates have confidence %v", tt.wantConfidence)
+				}
+			}
+		})
+	}
+}
+
+// ============================================================================
+// TestEstimatePhases_IrregularModel — Irregular model specific phase widening
+// ============================================================================
+
+type irregularModelTestCase struct {
+	name        string
+	cycleDays   int
+	wantMenDays int
+	wantFolDays int
+	wantOvlDays int
+	wantLutDays int
+}
+
+func TestEstimatePhases_IrregularModel(t *testing.T) {
+	tests := []irregularModelTestCase{
+		{
+			name:        "28DayWidened",
+			cycleDays:   28,
+			wantMenDays: 8,  // Widened from 5 (5+3)
+			wantFolDays: 1,  // Compressed (O-5=9, only day 9)
+			wantOvlDays: 9,  // Widened ±3 from 3
+			wantLutDays: 10, // O+5=19
+		},
+		{
+			name:        "30DayWidened",
+			cycleDays:   30,
+			wantMenDays: 8,  // Widened to 8
+			wantFolDays: 3,  // O-5=11, days 9-11
+			wantOvlDays: 9,  // Widened ±3
+			wantLutDays: 10, // O+5=21
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-"+padInt(tt.cycleDays, 2))
+			ests := rules.EstimatePhases(cycle, irregularProfile(), tt.cycleDays, 5)
+
+			if len(ests) != tt.cycleDays {
+				t.Errorf("estimate count = %d, want %d", len(ests), tt.cycleDays)
+			}
+
+			gotMen := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
+			if gotMen != tt.wantMenDays {
+				t.Errorf("menstruation days = %d, want %d", gotMen, tt.wantMenDays)
+			}
+
+			gotFol := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_FOLLICULAR)
+			if gotFol != tt.wantFolDays {
+				t.Errorf("follicular days = %d, want %d", gotFol, tt.wantFolDays)
+			}
+
+			gotOvl := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
+			if gotOvl != tt.wantOvlDays {
+				t.Errorf("ovulation window days = %d, want %d", gotOvl, tt.wantOvlDays)
+			}
+
+			gotLut := countPhase(ests, v1.CyclePhase_CYCLE_PHASE_LUTEAL)
+			if gotLut != tt.wantLutDays {
+				t.Errorf("luteal days = %d, want %d", gotLut, tt.wantLutDays)
+			}
+		})
+	}
+}
+
+// ============================================================================
+// Additional validation tests — Irregular model widening comparison, dates, etc.
+// ============================================================================
 
 // TestPhases_Irregular_WiderThanOvulatory verifies that the irregular model's
 // ovulation window is always wider than the standard ovulatory model.
@@ -308,8 +407,7 @@ func TestPhases_Irregular_WiderThanOvulatory(t *testing.T) {
 	}
 }
 
-// ---- Dates fields populated correctly ------------------------------------ //
-
+// TestPhases_DatesSequential validates that date fields are populated correctly.
 func TestPhases_DatesSequential(t *testing.T) {
 	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-03")
 	ests := rules.EstimatePhases(cycle, regularProfile(), 28, 5)
@@ -330,12 +428,20 @@ func TestPhases_DatesSequential(t *testing.T) {
 	}
 }
 
-// ---- No start date --------------------------------------------------------- //
-
+// TestPhases_MissingStartDate_Empty validates behavior with no start date.
 func TestPhases_MissingStartDate_Empty(t *testing.T) {
 	cycle := &v1.Cycle{Name: "cy1", UserId: "u1"}
 	ests := rules.EstimatePhases(cycle, regularProfile(), 28, 5)
 	if len(ests) != 0 {
 		t.Errorf("expected 0 estimates for cycle with no start_date, got %d", len(ests))
 	}
+}
+
+// ============================================================================
+// Utility helpers
+// ============================================================================
+
+// padInt formats an integer to a string with zero-padding.
+func padInt(n, width int) string {
+	return fmt.Sprintf("%0*d", width, n)
 }
