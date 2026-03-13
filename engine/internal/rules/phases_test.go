@@ -57,12 +57,14 @@ type basicPhasesTestCase struct {
 	cycleEnd            string
 	avgCycleLen         int
 	completedCycleCount int
+	missingStartDate    bool // If true, cycle has no start date
 
 	wantEstimateCount int
 	wantMenDays       int
 	wantFolDays       int
 	wantOvlDays       int
 	wantLutDays       int
+	wantDates         []string // If set, verify each estimate's date matches
 }
 
 func TestEstimatePhases_Basic(t *testing.T) {
@@ -104,21 +106,61 @@ func TestEstimatePhases_Basic(t *testing.T) {
 			completedCycleCount: 1,
 			wantEstimateCount:   28,
 		},
+		{
+			name:                "DatesSequential",
+			cycleDays:           3,
+			cycleEnd:            "2026-01-03",
+			avgCycleLen:         28,
+			completedCycleCount: 5,
+			wantEstimateCount:   3,
+			wantDates:           []string{"2026-01-01", "2026-01-02", "2026-01-03"},
+		},
+		{
+			name:                "MissingStartDate_Empty",
+			cycleEnd:            "",
+			avgCycleLen:         28,
+			completedCycleCount: 5,
+			missingStartDate:    true,
+			wantEstimateCount:   0,
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			cycleEnd := tt.cycleEnd
-			if tt.cycleDays > 0 && cycleEnd == "" {
-				// Calculate end date
-				cycleEnd = "2026-01-" + padInt(tt.cycleDays, 2)
+			var cycle *v1.Cycle
+			if tt.missingStartDate {
+				// Test with missing start date
+				cycle = &v1.Cycle{Name: "cy1", UserId: "u1"}
+			} else {
+				cycleEnd := tt.cycleEnd
+				if tt.cycleDays > 0 && cycleEnd == "" {
+					// Calculate end date
+					cycleEnd = "2026-01-" + padInt(tt.cycleDays, 2)
+				}
+				cycle = makeCycle("cy1", "u1", "2026-01-01", cycleEnd)
 			}
 
-			cycle := makeCycle("cy1", "u1", "2026-01-01", cycleEnd)
 			ests := rules.EstimatePhases(cycle, regularProfile(), tt.avgCycleLen, tt.completedCycleCount)
 
 			if len(ests) != tt.wantEstimateCount {
 				t.Errorf("estimate count = %d, want %d", len(ests), tt.wantEstimateCount)
+			}
+
+			if tt.wantDates != nil {
+				if len(ests) != len(tt.wantDates) {
+					t.Fatalf("expected %d estimates for date check, got %d", len(tt.wantDates), len(ests))
+				}
+				for i, est := range ests {
+					if est.GetDate().GetValue() != tt.wantDates[i] {
+						t.Errorf("estimate[%d] date = %q, want %q", i, est.GetDate().GetValue(), tt.wantDates[i])
+					}
+					if est.GetUserId() != "u1" {
+						t.Errorf("estimate[%d] user_id = %q, want u1", i, est.GetUserId())
+					}
+					if est.GetName() == "" {
+						t.Errorf("estimate[%d] has empty name", i)
+					}
+				}
 			}
 
 			if tt.wantMenDays > 0 {
@@ -320,31 +362,34 @@ func TestEstimatePhases_Confidence(t *testing.T) {
 // ============================================================================
 
 type irregularModelTestCase struct {
-	name        string
-	cycleDays   int
-	wantMenDays int
-	wantFolDays int
-	wantOvlDays int
-	wantLutDays int
+	name                    string
+	cycleDays               int
+	wantMenDays             int
+	wantFolDays             int
+	wantOvlDays             int
+	wantLutDays             int
+	checkWiderThanOvulatory bool // If true, verify irregular is wider than ovulatory
 }
 
 func TestEstimatePhases_IrregularModel(t *testing.T) {
 	tests := []irregularModelTestCase{
 		{
-			name:        "28DayWidened",
-			cycleDays:   28,
-			wantMenDays: 8,  // Widened from 5 (5+3)
-			wantFolDays: 1,  // Compressed (O-5=9, only day 9)
-			wantOvlDays: 9,  // Widened ±3 from 3
-			wantLutDays: 10, // O+5=19
+			name:                    "28DayWidened",
+			cycleDays:               28,
+			wantMenDays:             8,  // Widened from 5 (5+3)
+			wantFolDays:             1,  // Compressed (O-5=9, only day 9)
+			wantOvlDays:             9,  // Widened ±3 from 3
+			wantLutDays:             10, // O+5=19
+			checkWiderThanOvulatory: true,
 		},
 		{
-			name:        "30DayWidened",
-			cycleDays:   30,
-			wantMenDays: 8,  // Widened to 8
-			wantFolDays: 3,  // O-5=11, days 9-11
-			wantOvlDays: 9,  // Widened ±3
-			wantLutDays: 10, // O+5=21
+			name:                    "30DayWidened",
+			cycleDays:               30,
+			wantMenDays:             8,  // Widened to 8
+			wantFolDays:             3,  // O-5=11, days 9-11
+			wantOvlDays:             9,  // Widened ±3
+			wantLutDays:             10, // O+5=21
+			checkWiderThanOvulatory: true,
 		},
 	}
 
@@ -376,69 +421,25 @@ func TestEstimatePhases_IrregularModel(t *testing.T) {
 			if gotLut != tt.wantLutDays {
 				t.Errorf("luteal days = %d, want %d", gotLut, tt.wantLutDays)
 			}
+
+			// If requested, verify that irregular model is wider than ovulatory
+			if tt.checkWiderThanOvulatory {
+				ovulatoryEsts := rules.EstimatePhases(cycle, regularProfile(), tt.cycleDays, 5)
+				stdOvl := countPhase(ovulatoryEsts, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
+				if gotOvl <= stdOvl {
+					t.Errorf("irregular ovulation window (%d days) should be wider than standard (%d days)", gotOvl, stdOvl)
+				}
+				stdMen := countPhase(ovulatoryEsts, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
+				if gotMen <= stdMen {
+					t.Errorf("irregular menstruation (%d days) should be wider than standard (%d days)", gotMen, stdMen)
+				}
+			}
 		})
 	}
 }
 
 // ============================================================================
-// Additional validation tests — Irregular model widening comparison, dates, etc.
-// ============================================================================
-
-// TestPhases_Irregular_WiderThanOvulatory verifies that the irregular model's
-// ovulation window is always wider than the standard ovulatory model.
-func TestPhases_Irregular_WiderThanOvulatory(t *testing.T) {
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-28")
-
-	ovulatoryEsts := rules.EstimatePhases(cycle, regularProfile(), 28, 5)
-	irregularEsts := rules.EstimatePhases(cycle, irregularProfile(), 28, 5)
-
-	stdOvl := countPhase(ovulatoryEsts, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
-	irrOvl := countPhase(irregularEsts, v1.CyclePhase_CYCLE_PHASE_OVULATION_WINDOW)
-
-	if irrOvl <= stdOvl {
-		t.Errorf("irregular ovulation window (%d days) should be wider than standard (%d days)", irrOvl, stdOvl)
-	}
-
-	stdMen := countPhase(ovulatoryEsts, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
-	irrMen := countPhase(irregularEsts, v1.CyclePhase_CYCLE_PHASE_MENSTRUATION)
-
-	if irrMen <= stdMen {
-		t.Errorf("irregular menstruation (%d days) should be wider than standard (%d days)", irrMen, stdMen)
-	}
-}
-
-// TestPhases_DatesSequential validates that date fields are populated correctly.
-func TestPhases_DatesSequential(t *testing.T) {
-	cycle := makeCycle("cy1", "u1", "2026-01-01", "2026-01-03")
-	ests := rules.EstimatePhases(cycle, regularProfile(), 28, 5)
-	if len(ests) != 3 {
-		t.Fatalf("expected 3 estimates, got %d", len(ests))
-	}
-	wantDates := []string{"2026-01-01", "2026-01-02", "2026-01-03"}
-	for i, e := range ests {
-		if e.GetDate().GetValue() != wantDates[i] {
-			t.Errorf("estimate[%d] date = %q, want %q", i, e.GetDate().GetValue(), wantDates[i])
-		}
-		if e.GetUserId() != "u1" {
-			t.Errorf("estimate[%d] user_id = %q, want u1", i, e.GetUserId())
-		}
-		if e.GetName() == "" {
-			t.Errorf("estimate[%d] has empty name", i)
-		}
-	}
-}
-
-// TestPhases_MissingStartDate_Empty validates behavior with no start date.
-func TestPhases_MissingStartDate_Empty(t *testing.T) {
-	cycle := &v1.Cycle{Name: "cy1", UserId: "u1"}
-	ests := rules.EstimatePhases(cycle, regularProfile(), 28, 5)
-	if len(ests) != 0 {
-		t.Errorf("expected 0 estimates for cycle with no start_date, got %d", len(ests))
-	}
-}
-
-// ============================================================================
-// Utility helpers
+// Additional validation tests — date verification
 // ============================================================================
 
 // padInt formats an integer to a string with zero-padding.

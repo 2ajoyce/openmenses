@@ -31,15 +31,24 @@ func mustCreate[T any](t *testing.T, fn func(context.Context, T) error, val T) {
 }
 
 // ============================================================================
+// obsInput — Typed observation input for better type safety
+// ============================================================================
+
+type obsInput struct {
+	date string
+	flow v1.BleedingFlow
+}
+
+// ============================================================================
 // TestDetectCycles — Table-driven tests for cycle detection
 // ============================================================================
 
 type detectCyclesTestCase struct {
 	name           string
 	userID         string
-	observations   [][2]interface{} // [0]=date string, [1]=BleedingFlow
+	observations   []obsInput
 	confirmedCycle *v1.Cycle
-	multiUserObs   map[string][][2]interface{}
+	multiUserObs   map[string][]obsInput
 
 	wantCycleCount   int
 	wantFirstName    string         // Expected name of first cycle
@@ -65,7 +74,7 @@ func TestDetectCycles(t *testing.T) {
 		{
 			name:            "SingleObs_OpenEndedCycle",
 			userID:          "u1",
-			observations:    [][2]interface{}{{"2026-01-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM}},
+			observations:    []obsInput{{date: "2026-01-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM}},
 			wantCycleCount:  1,
 			wantFirstStart:  "2026-01-01",
 			wantFirstEnd:    "",
@@ -74,15 +83,15 @@ func TestDetectCycles(t *testing.T) {
 		{
 			name:   "TwoRegularCycles",
 			userID: "u1",
-			observations: [][2]interface{}{
-				{"2026-01-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-01-02", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-01-03", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-01-04", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-01-05", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-02-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-02-02", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-02-03", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+			observations: []obsInput{
+				{date: "2026-01-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-01-02", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-01-03", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-01-04", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-01-05", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-02-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-02-02", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-02-03", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
 			},
 			wantCycleCount:  2,
 			wantFirstStart:  "2026-01-01",
@@ -93,28 +102,28 @@ func TestDetectCycles(t *testing.T) {
 		{
 			name:   "Gap4Days_NewEpisode",
 			userID: "u1",
-			observations: [][2]interface{}{
-				{"2026-01-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-01-05", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+			observations: []obsInput{
+				{date: "2026-01-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-01-05", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
 			},
 			wantCycleCount: 2,
 		},
 		{
 			name:   "Gap3Days_SameEpisode",
 			userID: "u1",
-			observations: [][2]interface{}{
-				{"2026-01-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-01-04", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+			observations: []obsInput{
+				{date: "2026-01-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-01-04", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
 			},
 			wantCycleCount: 1,
 		},
 		{
 			name:   "SpottingFollowedByHeavy_ValidCycleStart",
 			userID: "u1",
-			observations: [][2]interface{}{
-				{"2026-01-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-02-01", v1.BleedingFlow_BLEEDING_FLOW_SPOTTING},
-				{"2026-02-02", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+			observations: []obsInput{
+				{date: "2026-01-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-02-01", flow: v1.BleedingFlow_BLEEDING_FLOW_SPOTTING},
+				{date: "2026-02-02", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
 			},
 			wantCycleCount:  2,
 			wantSecondStart: "2026-02-01",
@@ -122,9 +131,9 @@ func TestDetectCycles(t *testing.T) {
 		{
 			name:   "SpottingAlone_MidCycle",
 			userID: "u1",
-			observations: [][2]interface{}{
-				{"2026-01-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-02-01", v1.BleedingFlow_BLEEDING_FLOW_SPOTTING},
+			observations: []obsInput{
+				{date: "2026-01-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-02-01", flow: v1.BleedingFlow_BLEEDING_FLOW_SPOTTING},
 			},
 			wantCycleCount: 1,
 		},
@@ -138,9 +147,9 @@ func TestDetectCycles(t *testing.T) {
 				EndDate:   &v1.LocalDate{Value: "2026-01-28"},
 				Source:    v1.CycleSource_CYCLE_SOURCE_USER_CONFIRMED,
 			},
-			observations: [][2]interface{}{
-				{"2026-01-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-01-04", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+			observations: []obsInput{
+				{date: "2026-01-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-01-04", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
 			},
 			wantCycleCount: 1,
 			wantFirstName:  "cy-confirmed",
@@ -155,8 +164,8 @@ func TestDetectCycles(t *testing.T) {
 				EndDate:   &v1.LocalDate{Value: "2026-01-28"},
 				Source:    v1.CycleSource_CYCLE_SOURCE_USER_CONFIRMED,
 			},
-			observations: [][2]interface{}{
-				{"2026-02-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+			observations: []obsInput{
+				{date: "2026-02-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
 			},
 			wantCycleCount:   2,
 			wantFirstName:    "cy-confirmed",
@@ -165,11 +174,11 @@ func TestDetectCycles(t *testing.T) {
 		{
 			name:   "Isolation_DifferentUsers",
 			userID: "u1",
-			observations: [][2]interface{}{
-				{"2026-01-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+			observations: []obsInput{
+				{date: "2026-01-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
 			},
-			multiUserObs: map[string][][2]interface{}{
-				"u2": {{"2026-01-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM}},
+			multiUserObs: map[string][]obsInput{
+				"u2": {{date: "2026-01-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM}},
 			},
 			wantCycleCount:  1,
 			wantOtherUserID: "u2",
@@ -178,28 +187,44 @@ func TestDetectCycles(t *testing.T) {
 		{
 			name:   "AllSpotting_NoCycles",
 			userID: "u1",
-			observations: [][2]interface{}{
-				{"2026-01-01", v1.BleedingFlow_BLEEDING_FLOW_SPOTTING},
-				{"2026-02-01", v1.BleedingFlow_BLEEDING_FLOW_SPOTTING},
+			observations: []obsInput{
+				{date: "2026-01-01", flow: v1.BleedingFlow_BLEEDING_FLOW_SPOTTING},
+				{date: "2026-02-01", flow: v1.BleedingFlow_BLEEDING_FLOW_SPOTTING},
 			},
 			wantCycleCount: 0,
 		},
 		{
 			name:   "MultipleEpisodes_CorrectBoundaries",
 			userID: "u1",
-			observations: [][2]interface{}{
-				{"2026-01-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-01-02", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-01-03", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-02-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-02-02", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-02-03", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
-				{"2026-03-01", v1.BleedingFlow_BLEEDING_FLOW_LIGHT},
+			observations: []obsInput{
+				{date: "2026-01-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-01-02", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-01-03", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-02-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-02-02", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-02-03", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM},
+				{date: "2026-03-01", flow: v1.BleedingFlow_BLEEDING_FLOW_LIGHT},
 			},
 			wantCycleCount: 3,
 			wantFirstEnd:   "2026-01-31",
 			wantSecondEnd:  "2026-02-28",
 			wantThirdEnd:   "",
+		},
+		{
+			name:   "IrregularCycles_22_35_28Days",
+			userID: "u1",
+			observations: []obsInput{
+				{date: "2026-01-01", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM}, // interval to next: 22 days
+				{date: "2026-01-23", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM}, // interval to next: 35 days
+				{date: "2026-02-27", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM}, // interval to next: 28 days
+				{date: "2026-03-27", flow: v1.BleedingFlow_BLEEDING_FLOW_MEDIUM}, // open-ended
+			},
+			wantCycleCount:  4,
+			wantFirstStart:  "2026-01-01",
+			wantFirstEnd:    "2026-01-22",
+			wantSecondStart: "2026-01-23",
+			wantSecondEnd:   "2026-02-26",
+			wantThirdEnd:    "2026-03-26",
 		},
 	}
 
@@ -214,21 +239,17 @@ func TestDetectCycles(t *testing.T) {
 
 			// Setup observations for main user
 			for i, obs := range tt.observations {
-				date := obs[0].(string)
-				flow := obs[1].(v1.BleedingFlow)
 				id := fmt.Sprintf("b%s-%d", tt.userID, i)
 				mustCreate(t, store.BleedingObservations().Create,
-					makeObs(id, tt.userID, date, flow))
+					makeObs(id, tt.userID, obs.date, obs.flow))
 			}
 
 			// Setup observations for other users (isolation test)
 			for uid, obs := range tt.multiUserObs {
 				for j, o := range obs {
-					date := o[0].(string)
-					flow := o[1].(v1.BleedingFlow)
 					id := fmt.Sprintf("b%s-%d", uid, j)
 					mustCreate(t, store.BleedingObservations().Create,
-						makeObs(id, uid, date, flow))
+						makeObs(id, uid, o.date, o.flow))
 				}
 			}
 
@@ -337,6 +358,12 @@ func TestIsOutlierLength(t *testing.T) {
 			endDate:     "2026-03-31", // 90 days (= maximum)
 			wantOutlier: false,
 		},
+		{
+			name:        "OpenEnded",
+			startDate:   "2026-01-01",
+			endDate:     "", // no end date
+			wantOutlier: false,
+		},
 	}
 
 	for _, tt := range tests {
@@ -345,8 +372,10 @@ func TestIsOutlierLength(t *testing.T) {
 				Name:      "c1",
 				UserId:    "u1",
 				StartDate: &v1.LocalDate{Value: tt.startDate},
-				EndDate:   &v1.LocalDate{Value: tt.endDate},
 				Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,
+			}
+			if tt.endDate != "" {
+				cycle.EndDate = &v1.LocalDate{Value: tt.endDate}
 			}
 
 			got := rules.IsOutlierLength(cycle)
@@ -357,54 +386,7 @@ func TestIsOutlierLength(t *testing.T) {
 	}
 }
 
-// ---- Irregular cycle intervals -------------------------------------------- //
-
-// TestDetect_IrregularCycles verifies that cycle detection correctly identifies
-// cycles with highly variable interval lengths (22, 35, 28 days), demonstrating
-// that the algorithm does not rely on regularity assumptions.
-func TestDetect_IrregularCycles(t *testing.T) {
-	store := memory.New()
-
-	// Episode 1: Jan 1 — cycle interval to next: 22 days.
-	mustCreate(t, store.BleedingObservations().Create,
-		makeObs("b1", "u1", "2026-01-01", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM))
-
-	// Episode 2: Jan 23 — 22 days after Jan 1; interval to next: 35 days.
-	mustCreate(t, store.BleedingObservations().Create,
-		makeObs("b2", "u1", "2026-01-23", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM))
-
-	// Episode 3: Feb 27 — 35 days after Jan 23; interval to next: 28 days.
-	mustCreate(t, store.BleedingObservations().Create,
-		makeObs("b3", "u1", "2026-02-27", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM))
-
-	// Episode 4: Mar 27 — 28 days after Feb 27; open-ended.
-	mustCreate(t, store.BleedingObservations().Create,
-		makeObs("b4", "u1", "2026-03-27", v1.BleedingFlow_BLEEDING_FLOW_MEDIUM))
-
-	cycles, err := rules.DetectCycles(ctx, "u1", store)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(cycles) != 4 {
-		t.Fatalf("expected 4 cycles with irregular intervals, got %d", len(cycles))
-	}
-	// Verify start dates.
-	wantStarts := []string{"2026-01-01", "2026-01-23", "2026-02-27", "2026-03-27"}
-	for i, want := range wantStarts {
-		if got := cycles[i].GetStartDate().GetValue(); got != want {
-			t.Errorf("cycle[%d] start = %q, want %q", i, got, want)
-		}
-	}
-	// Cycles 1–3 should be closed; cycle 4 is open-ended.
-	wantEnds := []string{"2026-01-22", "2026-02-26", "2026-03-26", ""}
-	for i, want := range wantEnds {
-		if got := cycles[i].GetEndDate().GetValue(); got != want {
-			t.Errorf("cycle[%d] end = %q, want %q", i, got, want)
-		}
-	}
-}
-
-// ---- Re-detection after adding a new observation -------------------------- //
+// ---- Detailed re-detection test ---------------------------------------- //
 
 // TestDetect_RedetectionAfterNewObservation verifies that calling DetectCycles
 // again after adding a new observation produces correctly updated cycle
@@ -452,17 +434,5 @@ func TestDetect_RedetectionAfterNewObservation(t *testing.T) {
 	}
 	if got := cycles[2].GetEndDate().GetValue(); got != "" {
 		t.Errorf("after re-detection: cycle[2] should be open-ended, got %q", got)
-	}
-}
-
-func TestIsOutlierLength_OpenEnded(t *testing.T) {
-	c := &v1.Cycle{
-		Name:      "c1",
-		UserId:    "u1",
-		StartDate: &v1.LocalDate{Value: "2026-01-01"},
-		Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,
-	}
-	if rules.IsOutlierLength(c) {
-		t.Error("open-ended cycle should not be an outlier")
 	}
 }
