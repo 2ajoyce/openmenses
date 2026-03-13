@@ -1,15 +1,361 @@
 {
-    "version": "1",
-    "user_id": "user-full",
+    "bleeding_observations": [
+        {
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "name": "full-b-c1-1",
+            "timestamp": {
+                "value": "2025-12-01T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "name": "full-b-c1-2",
+            "timestamp": {
+                "value": "2025-12-02T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_MEDIUM",
+            "name": "full-b-c1-3",
+            "timestamp": {
+                "value": "2025-12-03T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_MEDIUM",
+            "name": "full-b-c1-4",
+            "timestamp": {
+                "value": "2025-12-04T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_LIGHT",
+            "name": "full-b-c1-5",
+            "timestamp": {
+                "value": "2025-12-05T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_SPOTTING",
+            "name": "full-b-c1-6",
+            "timestamp": {
+                "value": "2025-12-06T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "name": "full-b-c2-1",
+            "note": "cycle gap: 31 days",
+            "timestamp": {
+                "value": "2026-01-01T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "name": "full-b-c2-2",
+            "timestamp": {
+                "value": "2026-01-02T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_MEDIUM",
+            "name": "full-b-c2-3",
+            "timestamp": {
+                "value": "2026-01-03T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_LIGHT",
+            "name": "full-b-c2-4",
+            "timestamp": {
+                "value": "2026-01-04T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_SPOTTING",
+            "name": "full-b-c2-5",
+            "timestamp": {
+                "value": "2026-01-05T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "name": "full-b-c3-1",
+            "note": "cycle gap: 32 days",
+            "timestamp": {
+                "value": "2026-02-02T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_HEAVY",
+            "name": "full-b-c3-2",
+            "timestamp": {
+                "value": "2026-02-03T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_MEDIUM",
+            "name": "full-b-c3-3",
+            "timestamp": {
+                "value": "2026-02-04T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_LIGHT",
+            "name": "full-b-c3-4",
+            "timestamp": {
+                "value": "2026-02-05T08:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "flow": "BLEEDING_FLOW_SPOTTING",
+            "name": "full-b-c3-5",
+            "timestamp": {
+                "value": "2026-02-06T08:00:00Z"
+            },
+            "userId": "user-full"
+        }
+    ],
+    "medication_events": [
+        {
+            "dose": "400mg",
+            "medicationId": "full-med-1",
+            "name": "full-me-1",
+            "note": "taken with food",
+            "status": "MEDICATION_EVENT_STATUS_TAKEN",
+            "timestamp": {
+                "value": "2025-12-01T09:30:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "dose": "400mg",
+            "medicationId": "full-med-1",
+            "name": "full-me-2",
+            "status": "MEDICATION_EVENT_STATUS_TAKEN",
+            "timestamp": {
+                "value": "2025-12-02T10:30:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "dose": "400mg",
+            "medicationId": "full-med-1",
+            "name": "full-me-3",
+            "status": "MEDICATION_EVENT_STATUS_TAKEN",
+            "timestamp": {
+                "value": "2026-01-01T09:30:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "dose": "400mg",
+            "medicationId": "full-med-1",
+            "name": "full-me-4",
+            "status": "MEDICATION_EVENT_STATUS_TAKEN",
+            "timestamp": {
+                "value": "2026-02-02T09:30:00Z"
+            },
+            "userId": "user-full"
+        }
+    ],
+    "medications": [
+        {
+            "active": true,
+            "category": "MEDICATION_CATEGORY_PAIN_RELIEF",
+            "displayName": "Ibuprofen",
+            "name": "full-med-1",
+            "note": "400mg for menstrual cramps",
+            "userId": "user-full"
+        }
+    ],
+    "mood_observations": [
+        {
+            "intensity": "MOOD_INTENSITY_HIGH",
+            "mood": "MOOD_TYPE_IRRITABLE",
+            "name": "full-m-1",
+            "note": "PMS",
+            "timestamp": {
+                "value": "2025-11-28T20:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "mood": "MOOD_TYPE_ANXIOUS",
+            "name": "full-m-2",
+            "note": "PMS",
+            "timestamp": {
+                "value": "2025-11-29T20:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_HIGH",
+            "mood": "MOOD_TYPE_SAD",
+            "name": "full-m-3",
+            "timestamp": {
+                "value": "2025-12-01T19:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "mood": "MOOD_TYPE_IRRITABLE",
+            "name": "full-m-4",
+            "timestamp": {
+                "value": "2025-12-02T19:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_LOW",
+            "mood": "MOOD_TYPE_CALM",
+            "name": "full-m-5",
+            "timestamp": {
+                "value": "2025-12-05T19:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "mood": "MOOD_TYPE_HAPPY",
+            "name": "full-m-6",
+            "note": "mid-cycle",
+            "timestamp": {
+                "value": "2025-12-26T10:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_HIGH",
+            "mood": "MOOD_TYPE_IRRITABLE",
+            "name": "full-m-7",
+            "note": "PMS",
+            "timestamp": {
+                "value": "2025-12-29T20:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "mood": "MOOD_TYPE_SAD",
+            "name": "full-m-8",
+            "note": "PMS",
+            "timestamp": {
+                "value": "2025-12-30T20:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_HIGH",
+            "mood": "MOOD_TYPE_IRRITABLE",
+            "name": "full-m-9",
+            "timestamp": {
+                "value": "2026-01-01T19:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "mood": "MOOD_TYPE_ANXIOUS",
+            "name": "full-m-10",
+            "timestamp": {
+                "value": "2026-01-02T19:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_LOW",
+            "mood": "MOOD_TYPE_CALM",
+            "name": "full-m-11",
+            "timestamp": {
+                "value": "2026-01-05T19:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "mood": "MOOD_TYPE_HAPPY",
+            "name": "full-m-12",
+            "note": "mid-cycle",
+            "timestamp": {
+                "value": "2026-01-26T10:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "mood": "MOOD_TYPE_ANXIOUS",
+            "name": "full-m-13",
+            "note": "PMS",
+            "timestamp": {
+                "value": "2026-01-30T20:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_HIGH",
+            "mood": "MOOD_TYPE_IRRITABLE",
+            "name": "full-m-14",
+            "note": "PMS",
+            "timestamp": {
+                "value": "2026-01-31T20:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_HIGH",
+            "mood": "MOOD_TYPE_IRRITABLE",
+            "name": "full-m-15",
+            "timestamp": {
+                "value": "2026-02-01T20:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_MEDIUM",
+            "mood": "MOOD_TYPE_SAD",
+            "name": "full-m-16",
+            "timestamp": {
+                "value": "2026-02-02T19:00:00Z"
+            },
+            "userId": "user-full"
+        },
+        {
+            "intensity": "MOOD_INTENSITY_LOW",
+            "mood": "MOOD_TYPE_CALM",
+            "name": "full-m-17",
+            "timestamp": {
+                "value": "2026-02-04T19:00:00Z"
+            },
+            "userId": "user-full"
+        }
+    ],
     "profile": {
-        "name": "user-full",
         "biologicalCycle": "BIOLOGICAL_CYCLE_MODEL_OVULATORY",
         "contraception": "CONTRACEPTION_TYPE_NONE",
         "cycleRegularity": "CYCLE_REGULARITY_SOMEWHAT_IRREGULAR",
-        "reproductiveGoal": "REPRODUCTIVE_GOAL_PREGNANCY_IRRELEVANT",
         "healthConditions": [
             "HEALTH_CONDITION_PMDD"
         ],
+        "name": "user-full",
+        "reproductiveGoal": "REPRODUCTIVE_GOAL_PREGNANCY_IRRELEVANT",
         "trackingFocus": [
             "TRACKING_FOCUS_BLEEDING",
             "TRACKING_FOCUS_SYMPTOMS",
@@ -17,428 +363,82 @@
             "TRACKING_FOCUS_MEDICATION"
         ]
     },
-    "bleeding_observations": [
-        {
-            "name": "full-b-c1-1",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-12-01T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_HEAVY"
-        },
-        {
-            "name": "full-b-c1-2",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-12-02T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_HEAVY"
-        },
-        {
-            "name": "full-b-c1-3",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-12-03T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_MEDIUM"
-        },
-        {
-            "name": "full-b-c1-4",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-12-04T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_MEDIUM"
-        },
-        {
-            "name": "full-b-c1-5",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-12-05T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_LIGHT"
-        },
-        {
-            "name": "full-b-c1-6",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-12-06T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_SPOTTING"
-        },
-        {
-            "name": "full-b-c2-1",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-01-01T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_HEAVY",
-            "note": "cycle gap: 31 days"
-        },
-        {
-            "name": "full-b-c2-2",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-01-02T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_HEAVY"
-        },
-        {
-            "name": "full-b-c2-3",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-01-03T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_MEDIUM"
-        },
-        {
-            "name": "full-b-c2-4",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-01-04T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_LIGHT"
-        },
-        {
-            "name": "full-b-c2-5",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-01-05T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_SPOTTING"
-        },
-        {
-            "name": "full-b-c3-1",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-02-02T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_HEAVY",
-            "note": "cycle gap: 32 days"
-        },
-        {
-            "name": "full-b-c3-2",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-02-03T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_HEAVY"
-        },
-        {
-            "name": "full-b-c3-3",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-02-04T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_MEDIUM"
-        },
-        {
-            "name": "full-b-c3-4",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-02-05T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_LIGHT"
-        },
-        {
-            "name": "full-b-c3-5",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-02-06T08:00:00Z"
-            },
-            "flow": "BLEEDING_FLOW_SPOTTING"
-        }
-    ],
     "symptom_observations": [
         {
             "name": "full-s-1",
-            "userId": "user-full",
+            "severity": "SYMPTOM_SEVERITY_SEVERE",
+            "symptom": "SYMPTOM_TYPE_CRAMPS",
             "timestamp": {
                 "value": "2025-12-01T09:00:00Z"
             },
-            "symptom": "SYMPTOM_TYPE_CRAMPS",
-            "severity": "SYMPTOM_SEVERITY_SEVERE"
+            "userId": "user-full"
         },
         {
             "name": "full-s-2",
-            "userId": "user-full",
+            "severity": "SYMPTOM_SEVERITY_MODERATE",
+            "symptom": "SYMPTOM_TYPE_HEADACHE",
             "timestamp": {
                 "value": "2025-12-02T10:00:00Z"
             },
-            "symptom": "SYMPTOM_TYPE_HEADACHE",
-            "severity": "SYMPTOM_SEVERITY_MODERATE"
+            "userId": "user-full"
         },
         {
             "name": "full-s-3",
-            "userId": "user-full",
+            "severity": "SYMPTOM_SEVERITY_SEVERE",
+            "symptom": "SYMPTOM_TYPE_CRAMPS",
             "timestamp": {
                 "value": "2026-01-01T09:00:00Z"
             },
-            "symptom": "SYMPTOM_TYPE_CRAMPS",
-            "severity": "SYMPTOM_SEVERITY_SEVERE"
+            "userId": "user-full"
         },
         {
             "name": "full-s-4",
-            "userId": "user-full",
+            "severity": "SYMPTOM_SEVERITY_MILD",
+            "symptom": "SYMPTOM_TYPE_FATIGUE",
             "timestamp": {
                 "value": "2026-01-02T10:00:00Z"
             },
-            "symptom": "SYMPTOM_TYPE_FATIGUE",
-            "severity": "SYMPTOM_SEVERITY_MILD"
+            "userId": "user-full"
         },
         {
             "name": "full-s-5",
-            "userId": "user-full",
+            "severity": "SYMPTOM_SEVERITY_MODERATE",
+            "symptom": "SYMPTOM_TYPE_HEADACHE",
             "timestamp": {
                 "value": "2026-01-03T10:00:00Z"
             },
-            "symptom": "SYMPTOM_TYPE_HEADACHE",
-            "severity": "SYMPTOM_SEVERITY_MODERATE"
+            "userId": "user-full"
         },
         {
             "name": "full-s-6",
-            "userId": "user-full",
+            "note": "pre-period",
+            "severity": "SYMPTOM_SEVERITY_MILD",
+            "symptom": "SYMPTOM_TYPE_BREAST_TENDERNESS",
             "timestamp": {
                 "value": "2026-01-30T18:00:00Z"
             },
-            "symptom": "SYMPTOM_TYPE_BREAST_TENDERNESS",
-            "severity": "SYMPTOM_SEVERITY_MILD",
-            "note": "pre-period"
+            "userId": "user-full"
         },
         {
             "name": "full-s-7",
-            "userId": "user-full",
+            "note": "pre-period",
+            "severity": "SYMPTOM_SEVERITY_MILD",
+            "symptom": "SYMPTOM_TYPE_BLOATING",
             "timestamp": {
                 "value": "2026-02-01T08:00:00Z"
             },
-            "symptom": "SYMPTOM_TYPE_BLOATING",
-            "severity": "SYMPTOM_SEVERITY_MILD",
-            "note": "pre-period"
+            "userId": "user-full"
         },
         {
             "name": "full-s-8",
-            "userId": "user-full",
+            "severity": "SYMPTOM_SEVERITY_MODERATE",
+            "symptom": "SYMPTOM_TYPE_CRAMPS",
             "timestamp": {
                 "value": "2026-02-02T09:00:00Z"
             },
-            "symptom": "SYMPTOM_TYPE_CRAMPS",
-            "severity": "SYMPTOM_SEVERITY_MODERATE"
+            "userId": "user-full"
         }
     ],
-    "mood_observations": [
-        {
-            "name": "full-m-1",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-11-28T20:00:00Z"
-            },
-            "mood": "MOOD_TYPE_IRRITABLE",
-            "intensity": "MOOD_INTENSITY_HIGH",
-            "note": "PMS"
-        },
-        {
-            "name": "full-m-2",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-11-29T20:00:00Z"
-            },
-            "mood": "MOOD_TYPE_ANXIOUS",
-            "intensity": "MOOD_INTENSITY_MEDIUM",
-            "note": "PMS"
-        },
-        {
-            "name": "full-m-3",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-12-01T19:00:00Z"
-            },
-            "mood": "MOOD_TYPE_SAD",
-            "intensity": "MOOD_INTENSITY_HIGH"
-        },
-        {
-            "name": "full-m-4",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-12-02T19:00:00Z"
-            },
-            "mood": "MOOD_TYPE_IRRITABLE",
-            "intensity": "MOOD_INTENSITY_MEDIUM"
-        },
-        {
-            "name": "full-m-5",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-12-05T19:00:00Z"
-            },
-            "mood": "MOOD_TYPE_CALM",
-            "intensity": "MOOD_INTENSITY_LOW"
-        },
-        {
-            "name": "full-m-6",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-12-26T10:00:00Z"
-            },
-            "mood": "MOOD_TYPE_HAPPY",
-            "intensity": "MOOD_INTENSITY_MEDIUM",
-            "note": "mid-cycle"
-        },
-        {
-            "name": "full-m-7",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-12-29T20:00:00Z"
-            },
-            "mood": "MOOD_TYPE_IRRITABLE",
-            "intensity": "MOOD_INTENSITY_HIGH",
-            "note": "PMS"
-        },
-        {
-            "name": "full-m-8",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2025-12-30T20:00:00Z"
-            },
-            "mood": "MOOD_TYPE_SAD",
-            "intensity": "MOOD_INTENSITY_MEDIUM",
-            "note": "PMS"
-        },
-        {
-            "name": "full-m-9",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-01-01T19:00:00Z"
-            },
-            "mood": "MOOD_TYPE_IRRITABLE",
-            "intensity": "MOOD_INTENSITY_HIGH"
-        },
-        {
-            "name": "full-m-10",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-01-02T19:00:00Z"
-            },
-            "mood": "MOOD_TYPE_ANXIOUS",
-            "intensity": "MOOD_INTENSITY_MEDIUM"
-        },
-        {
-            "name": "full-m-11",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-01-05T19:00:00Z"
-            },
-            "mood": "MOOD_TYPE_CALM",
-            "intensity": "MOOD_INTENSITY_LOW"
-        },
-        {
-            "name": "full-m-12",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-01-26T10:00:00Z"
-            },
-            "mood": "MOOD_TYPE_HAPPY",
-            "intensity": "MOOD_INTENSITY_MEDIUM",
-            "note": "mid-cycle"
-        },
-        {
-            "name": "full-m-13",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-01-30T20:00:00Z"
-            },
-            "mood": "MOOD_TYPE_ANXIOUS",
-            "intensity": "MOOD_INTENSITY_MEDIUM",
-            "note": "PMS"
-        },
-        {
-            "name": "full-m-14",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-01-31T20:00:00Z"
-            },
-            "mood": "MOOD_TYPE_IRRITABLE",
-            "intensity": "MOOD_INTENSITY_HIGH",
-            "note": "PMS"
-        },
-        {
-            "name": "full-m-15",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-02-01T20:00:00Z"
-            },
-            "mood": "MOOD_TYPE_IRRITABLE",
-            "intensity": "MOOD_INTENSITY_HIGH"
-        },
-        {
-            "name": "full-m-16",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-02-02T19:00:00Z"
-            },
-            "mood": "MOOD_TYPE_SAD",
-            "intensity": "MOOD_INTENSITY_MEDIUM"
-        },
-        {
-            "name": "full-m-17",
-            "userId": "user-full",
-            "timestamp": {
-                "value": "2026-02-04T19:00:00Z"
-            },
-            "mood": "MOOD_TYPE_CALM",
-            "intensity": "MOOD_INTENSITY_LOW"
-        }
-    ],
-    "medications": [
-        {
-            "name": "full-med-1",
-            "userId": "user-full",
-            "displayName": "Ibuprofen",
-            "category": "MEDICATION_CATEGORY_PAIN_RELIEF",
-            "active": true,
-            "note": "400mg for menstrual cramps"
-        }
-    ],
-    "medication_events": [
-        {
-            "name": "full-me-1",
-            "userId": "user-full",
-            "medicationId": "full-med-1",
-            "timestamp": {
-                "value": "2025-12-01T09:30:00Z"
-            },
-            "status": "MEDICATION_EVENT_STATUS_TAKEN",
-            "dose": "400mg",
-            "note": "taken with food"
-        },
-        {
-            "name": "full-me-2",
-            "userId": "user-full",
-            "medicationId": "full-med-1",
-            "timestamp": {
-                "value": "2025-12-02T10:30:00Z"
-            },
-            "status": "MEDICATION_EVENT_STATUS_TAKEN",
-            "dose": "400mg"
-        },
-        {
-            "name": "full-me-3",
-            "userId": "user-full",
-            "medicationId": "full-med-1",
-            "timestamp": {
-                "value": "2026-01-01T09:30:00Z"
-            },
-            "status": "MEDICATION_EVENT_STATUS_TAKEN",
-            "dose": "400mg"
-        },
-        {
-            "name": "full-me-4",
-            "userId": "user-full",
-            "medicationId": "full-med-1",
-            "timestamp": {
-                "value": "2026-02-02T09:30:00Z"
-            },
-            "status": "MEDICATION_EVENT_STATUS_TAKEN",
-            "dose": "400mg"
-        }
-    ]
+    "user_id": "user-full",
+    "version": "1"
 }

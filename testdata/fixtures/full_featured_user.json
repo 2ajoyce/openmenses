@@ -407,7 +407,8 @@
                 "value": "2025-12-01T09:30:00Z"
             },
             "status": "MEDICATION_EVENT_STATUS_TAKEN",
-            "dose": "400mg"
+            "dose": "400mg",
+            "note": "taken with food"
         },
         {
             "name": "full-me-2",
