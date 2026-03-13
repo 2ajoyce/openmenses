@@ -1060,9 +1060,9 @@ func TestCreateDataImport(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		// Profile uses Upsert (always counts as 1), bleeding already exists (skipped).
+		// Profile uses creation (always counts as 1), bleeding already exists (skipped).
 		if resp2.Msg.GetRecordsImported() != 1 {
-			t.Errorf("second import: want 1 (profile upsert), got %d", resp2.Msg.GetRecordsImported())
+			t.Errorf("second import: want 1 (profile creation), got %d", resp2.Msg.GetRecordsImported())
 		}
 	})
 }

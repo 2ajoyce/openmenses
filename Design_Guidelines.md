@@ -276,7 +276,7 @@ All services should follow these conventions.
 | **Get**    | GET       | `Get<Resource>`    | Must return the specific resource message.   |
 | **Create** | POST      | `Create<Resource>` | Must take a parent and the resource message. |
 | **Update** | PATCH     | `Update<Resource>` | Must use `google.protobuf.FieldMask`.        |
-| **Delete** | DELETE    | `Delete<Resource>` | Should return `google.protobuf.Empty`.       |
+| **Delete** | DELETE    | `Delete<Resource>` | Must return `Delete<Resource>Response`.      |
 
 ### Get
 
