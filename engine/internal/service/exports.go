@@ -42,7 +42,7 @@ func (s *CycleTrackerService) CreateDataExport(
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
-	userID := req.Msg.GetName()
+	userID := req.Msg.GetParent()
 	payload := exportPayload{Version: exportFormatVersion, UserID: userID}
 
 	// UserProfile (optional – may not exist for new users)

@@ -8,6 +8,7 @@ package openmensesv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1918,7 +1919,7 @@ var File_openmenses_v1_model_proto protoreflect.FileDescriptor
 
 const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\n" +
-	"\x19openmenses/v1/model.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19openmenses/v1/types.proto\"\xb6\x04\n" +
+	"\x19openmenses/v1/model.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19google/api/resource.proto\x1a\x19openmenses/v1/types.proto\"\xe4\x04\n" +
 	"\vUserProfile\x12\x1e\n" +
 	"\x04name\x18\x01 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x01\x18\x80\x01R\x04name\x12Z\n" +
@@ -1932,14 +1933,16 @@ const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x10reproductiveGoal\x12U\n" +
 	"\x11health_conditions\x18\x06 \x03(\x0e2\x1e.openmenses.v1.HealthConditionB\b\xbaH\x05\x92\x01\x02\x18\x01R\x10healthConditions\x12O\n" +
 	"\x0etracking_focus\x18\a \x03(\x0e2\x1c.openmenses.v1.TrackingFocusB\n" +
-	"\xbaH\a\x92\x01\x04\b\x01\x18\x01R\rtrackingFocus\"\xe6\x01\n" +
+	"\xbaH\a\x92\x01\x04\b\x01\x18\x01R\rtrackingFocus:,\xeaA)\n" +
+	"\x19openmenses.v1/UserProfile\x12\fusers/{user}\"\xb7\x02\n" +
 	"\x13BleedingObservation\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x125\n" +
 	"\ttimestamp\x18\x03 \x01(\v2\x17.openmenses.v1.DateTimeR\ttimestamp\x12;\n" +
 	"\x04flow\x18\x04 \x01(\x0e2\x1b.openmenses.v1.BleedingFlowB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04flow\x12\x1c\n" +
-	"\x04note\x18\x05 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xb0\x02\n" +
+	"\x04note\x18\x05 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note:O\xeaAL\n" +
+	"!openmenses.v1/BleedingObservation\x12'users/{user}/observations/bleeding/{id}\"\xff\x02\n" +
 	"\x12SymptomObservation\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x125\n" +
@@ -1947,7 +1950,8 @@ const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\asymptom\x18\x04 \x01(\x0e2\x1a.openmenses.v1.SymptomTypeB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\asymptom\x12D\n" +
 	"\bseverity\x18\x05 \x01(\x0e2\x1e.openmenses.v1.SymptomSeverityB\b\xbaH\x05\x82\x01\x02\x10\x01R\bseverity\x12\x1c\n" +
-	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xa4\x02\n" +
+	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note:M\xeaAJ\n" +
+	" openmenses.v1/SymptomObservation\x12&users/{user}/observations/symptom/{id}\"\xed\x02\n" +
 	"\x0fMoodObservation\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x125\n" +
@@ -1955,7 +1959,8 @@ const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\x04mood\x18\x04 \x01(\x0e2\x17.openmenses.v1.MoodTypeB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x04mood\x12D\n" +
 	"\tintensity\x18\x05 \x01(\x0e2\x1c.openmenses.v1.MoodIntensityB\b\xbaH\x05\x82\x01\x02\x10\x01R\tintensity\x12\x1c\n" +
-	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xfb\x01\n" +
+	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note:G\xeaAD\n" +
+	"\x1dopenmenses.v1/MoodObservation\x12#users/{user}/observations/mood/{id}\"\xb9\x02\n" +
 	"\n" +
 	"Medication\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
@@ -1965,7 +1970,8 @@ const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\bcategory\x18\x04 \x01(\x0e2!.openmenses.v1.MedicationCategoryB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\bcategory\x12\x16\n" +
 	"\x06active\x18\x05 \x01(\bR\x06active\x12\x1c\n" +
-	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xba\x02\n" +
+	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note:<\xeaA9\n" +
+	"\x18openmenses.v1/Medication\x12\x1dusers/{user}/medications/{id}\"\x91\x03\n" +
 	"\x0fMedicationEvent\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12,\n" +
@@ -1974,14 +1980,16 @@ const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\x06status\x18\x05 \x01(\x0e2$.openmenses.v1.MedicationEventStatusB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\x06status\x12\x1b\n" +
 	"\x04dose\x18\x06 \x01(\tB\a\xbaH\x04r\x02\x18@R\x04dose\x12\x1c\n" +
-	"\x04note\x18\a \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note\"\xf2\x01\n" +
+	"\x04note\x18\a \x01(\tB\b\xbaH\x05r\x03\x18\x80\bR\x04note:U\xeaAR\n" +
+	"\x1dopenmenses.v1/MedicationEvent\x121users/{user}/medications/{medication}/events/{id}\"\xa6\x02\n" +
 	"\x05Cycle\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x127\n" +
 	"\n" +
 	"start_date\x18\x03 \x01(\v2\x18.openmenses.v1.LocalDateR\tstartDate\x123\n" +
 	"\bend_date\x18\x04 \x01(\v2\x18.openmenses.v1.LocalDateR\aendDate\x12<\n" +
-	"\x06source\x18\x05 \x01(\x0e2\x1a.openmenses.v1.CycleSourceB\b\xbaH\x05\x82\x01\x02\x10\x01R\x06source\"\xcc\x02\n" +
+	"\x06source\x18\x05 \x01(\x0e2\x1a.openmenses.v1.CycleSourceB\b\xbaH\x05\x82\x01\x02\x10\x01R\x06source:2\xeaA/\n" +
+	"\x13openmenses.v1/Cycle\x12\x18users/{user}/cycles/{id}\"\x88\x03\n" +
 	"\rPhaseEstimate\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12,\n" +
@@ -1990,7 +1998,8 @@ const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\n" +
 	"confidence\x18\x05 \x01(\x0e2\x1e.openmenses.v1.ConfidenceLevelB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
 	"confidence\x12I\n" +
-	"\x14based_on_record_refs\x18\x06 \x03(\v2\x18.openmenses.v1.RecordRefR\x11basedOnRecordRefs\"\x90\x03\n" +
+	"\x14based_on_record_refs\x18\x06 \x03(\v2\x18.openmenses.v1.RecordRefR\x11basedOnRecordRefs::\xeaA7\n" +
+	"\x1bopenmenses.v1/PhaseEstimate\x12\x18users/{user}/phases/{id}\"\xce\x03\n" +
 	"\n" +
 	"Prediction\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
@@ -2002,7 +2011,8 @@ const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\n" +
 	"confidence\x18\x06 \x01(\x0e2\x1e.openmenses.v1.ConfidenceLevelB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
 	"confidence\x12&\n" +
-	"\trationale\x18\a \x03(\tB\b\xbaH\x05\x92\x01\x02\x10\x10R\trationale\"\xc0\x02\n" +
+	"\trationale\x18\a \x03(\tB\b\xbaH\x05\x92\x01\x02\x10\x10R\trationale:<\xeaA9\n" +
+	"\x18openmenses.v1/Prediction\x12\x1dusers/{user}/predictions/{id}\"\xf8\x02\n" +
 	"\aInsight\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12:\n" +
@@ -2013,7 +2023,8 @@ const file_openmenses_v1_model_proto_rawDesc = "" +
 	"\x14evidence_record_refs\x18\x05 \x03(\v2\x18.openmenses.v1.RecordRefR\x12evidenceRecordRefs\x12H\n" +
 	"\n" +
 	"confidence\x18\x06 \x01(\x0e2\x1e.openmenses.v1.ConfidenceLevelB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
-	"confidence*\xbc\x01\n" +
+	"confidence:6\xeaA3\n" +
+	"\x15openmenses.v1/Insight\x12\x1ausers/{user}/insights/{id}*\xbc\x01\n" +
 	"\x14BiologicalCycleModel\x12&\n" +
 	"\"BIOLOGICAL_CYCLE_MODEL_UNSPECIFIED\x10\x00\x12$\n" +
 	" BIOLOGICAL_CYCLE_MODEL_OVULATORY\x10\x01\x120\n" +

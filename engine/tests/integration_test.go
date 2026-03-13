@@ -51,7 +51,7 @@ func importFixture(t *testing.T, client openmensesv1connect.CycleTrackerServiceC
 	if err != nil {
 		t.Fatalf("LoadFixtureBytes(%q): %v", fixtureName, err)
 	}
-	resp, err := client.CreateDataImport(context.Background(), connect.NewRequest(&v1.CreateDataImportRequest{Data: data}))
+	resp, err := client.CreateDataImport(context.Background(), connect.NewRequest(&v1.CreateDataImportRequest{Parent: "users/import", Data: data}))
 	if err != nil {
 		t.Fatalf("CreateDataImport(%q): %v", fixtureName, err)
 	}
@@ -326,7 +326,7 @@ func TestIntegration_ImportExportRoundTrip(t *testing.T) {
 			}
 
 			// Export from A.
-			exportResp, err := clientA.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Name: userID}))
+			exportResp, err := clientA.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("CreateDataExport: %v", err)
 			}
@@ -337,7 +337,7 @@ func TestIntegration_ImportExportRoundTrip(t *testing.T) {
 
 			// Engine B: import the export.
 			clientB := engineClient(t, v.opts...)
-			importResp, err := clientB.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Data: exportedData}))
+			importResp, err := clientB.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Parent: userID, Data: exportedData}))
 			if err != nil {
 				t.Fatalf("B CreateDataImport (round-trip): %v", err)
 			}
@@ -436,7 +436,7 @@ func TestIntegration_EmptyDatabase(t *testing.T) {
 			}
 
 			// CreateDataExport on missing user → valid (empty) payload.
-			exportResp, err := client.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Name: userID}))
+			exportResp, err := client.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Parent: userID}))
 			if err != nil {
 				t.Fatalf("CreateDataExport on empty DB: %v", err)
 			}
@@ -904,7 +904,7 @@ func TestSampleExport_ImportAndVerify(t *testing.T) {
 			if err != nil {
 				t.Fatalf("LoadSampleExportBytes: %v", err)
 			}
-			importResp, err := client.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Data: data}))
+			importResp, err := client.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Parent: "users/import", Data: data}))
 			if err != nil {
 				t.Fatalf("CreateDataImport(sample export): %v", err)
 			}
