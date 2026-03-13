@@ -8,6 +8,7 @@ package openmensesv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -3324,7 +3325,7 @@ func (x *ListInsightsResponse) GetPagination() *PaginationResponse {
 // Resource-oriented versions (preferred)
 type CreateDataExportRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3359,9 +3360,9 @@ func (*CreateDataExportRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{67}
 }
 
-func (x *CreateDataExportRequest) GetName() string {
+func (x *CreateDataExportRequest) GetParent() string {
 	if x != nil {
-		return x.Name
+		return x.Parent
 	}
 	return ""
 }
@@ -3412,7 +3413,8 @@ func (x *CreateDataExportResponse) GetData() []byte {
 
 type CreateDataImportRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Data          []byte                 `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Data          []byte                 `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3445,6 +3447,13 @@ func (x *CreateDataImportRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateDataImportRequest.ProtoReflect.Descriptor instead.
 func (*CreateDataImportRequest) Descriptor() ([]byte, []int) {
 	return file_openmenses_v1_service_proto_rawDescGZIP(), []int{69}
+}
+
+func (x *CreateDataImportRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
 }
 
 func (x *CreateDataImportRequest) GetData() []byte {
@@ -3502,7 +3511,7 @@ var File_openmenses_v1_service_proto protoreflect.FileDescriptor
 
 const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1bopenmenses/v1/service.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a google/protobuf/field_mask.proto\x1a\x19openmenses/v1/model.proto\x1a\x19openmenses/v1/types.proto\"4\n" +
+	"\x1bopenmenses/v1/service.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\x1a\x19openmenses/v1/model.proto\x1a\x19openmenses/v1/types.proto\"4\n" +
 	"\x15GetUserProfileRequest\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"N\n" +
 	"\x16GetUserProfileResponse\x124\n" +
@@ -3726,52 +3735,67 @@ const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\binsights\x18\x01 \x03(\v2\x16.openmenses.v1.InsightR\binsights\x12A\n" +
 	"\n" +
 	"pagination\x18\x02 \x01(\v2!.openmenses.v1.PaginationResponseR\n" +
-	"pagination\"6\n" +
-	"\x17CreateDataExportRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\".\n" +
+	"pagination\":\n" +
+	"\x17CreateDataExportRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\".\n" +
 	"\x18CreateDataExportResponse\x12\x12\n" +
-	"\x04data\x18\x01 \x01(\fR\x04data\"-\n" +
-	"\x17CreateDataImportRequest\x12\x12\n" +
-	"\x04data\x18\x01 \x01(\fR\x04data\"E\n" +
+	"\x04data\x18\x01 \x01(\fR\x04data\"N\n" +
+	"\x17CreateDataImportRequest\x12\x1f\n" +
+	"\x06parent\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06parent\x12\x12\n" +
+	"\x04data\x18\x02 \x01(\fR\x04data\"E\n" +
 	"\x18CreateDataImportResponse\x12)\n" +
-	"\x10records_imported\x18\x01 \x01(\rR\x0frecordsImported2\xf8\x1d\n" +
-	"\x13CycleTrackerService\x12]\n" +
-	"\x0eGetUserProfile\x12$.openmenses.v1.GetUserProfileRequest\x1a%.openmenses.v1.GetUserProfileResponse\x12f\n" +
-	"\x11CreateUserProfile\x12'.openmenses.v1.CreateUserProfileRequest\x1a(.openmenses.v1.CreateUserProfileResponse\x12f\n" +
-	"\x11UpdateUserProfile\x12'.openmenses.v1.UpdateUserProfileRequest\x1a(.openmenses.v1.UpdateUserProfileResponse\x12u\n" +
-	"\x16GetBleedingObservation\x12,.openmenses.v1.GetBleedingObservationRequest\x1a-.openmenses.v1.GetBleedingObservationResponse\x12~\n" +
-	"\x19CreateBleedingObservation\x12/.openmenses.v1.CreateBleedingObservationRequest\x1a0.openmenses.v1.CreateBleedingObservationResponse\x12~\n" +
-	"\x19UpdateBleedingObservation\x12/.openmenses.v1.UpdateBleedingObservationRequest\x1a0.openmenses.v1.UpdateBleedingObservationResponse\x12~\n" +
-	"\x19DeleteBleedingObservation\x12/.openmenses.v1.DeleteBleedingObservationRequest\x1a0.openmenses.v1.DeleteBleedingObservationResponse\x12{\n" +
-	"\x18ListBleedingObservations\x12..openmenses.v1.ListBleedingObservationsRequest\x1a/.openmenses.v1.ListBleedingObservationsResponse\x12r\n" +
-	"\x15GetSymptomObservation\x12+.openmenses.v1.GetSymptomObservationRequest\x1a,.openmenses.v1.GetSymptomObservationResponse\x12{\n" +
-	"\x18CreateSymptomObservation\x12..openmenses.v1.CreateSymptomObservationRequest\x1a/.openmenses.v1.CreateSymptomObservationResponse\x12{\n" +
-	"\x18UpdateSymptomObservation\x12..openmenses.v1.UpdateSymptomObservationRequest\x1a/.openmenses.v1.UpdateSymptomObservationResponse\x12{\n" +
-	"\x18DeleteSymptomObservation\x12..openmenses.v1.DeleteSymptomObservationRequest\x1a/.openmenses.v1.DeleteSymptomObservationResponse\x12x\n" +
-	"\x17ListSymptomObservations\x12-.openmenses.v1.ListSymptomObservationsRequest\x1a..openmenses.v1.ListSymptomObservationsResponse\x12i\n" +
-	"\x12GetMoodObservation\x12(.openmenses.v1.GetMoodObservationRequest\x1a).openmenses.v1.GetMoodObservationResponse\x12r\n" +
-	"\x15CreateMoodObservation\x12+.openmenses.v1.CreateMoodObservationRequest\x1a,.openmenses.v1.CreateMoodObservationResponse\x12r\n" +
-	"\x15UpdateMoodObservation\x12+.openmenses.v1.UpdateMoodObservationRequest\x1a,.openmenses.v1.UpdateMoodObservationResponse\x12r\n" +
-	"\x15DeleteMoodObservation\x12+.openmenses.v1.DeleteMoodObservationRequest\x1a,.openmenses.v1.DeleteMoodObservationResponse\x12o\n" +
-	"\x14ListMoodObservations\x12*.openmenses.v1.ListMoodObservationsRequest\x1a+.openmenses.v1.ListMoodObservationsResponse\x12Z\n" +
-	"\rGetMedication\x12#.openmenses.v1.GetMedicationRequest\x1a$.openmenses.v1.GetMedicationResponse\x12c\n" +
-	"\x10CreateMedication\x12&.openmenses.v1.CreateMedicationRequest\x1a'.openmenses.v1.CreateMedicationResponse\x12c\n" +
-	"\x10UpdateMedication\x12&.openmenses.v1.UpdateMedicationRequest\x1a'.openmenses.v1.UpdateMedicationResponse\x12c\n" +
-	"\x10DeleteMedication\x12&.openmenses.v1.DeleteMedicationRequest\x1a'.openmenses.v1.DeleteMedicationResponse\x12`\n" +
-	"\x0fListMedications\x12%.openmenses.v1.ListMedicationsRequest\x1a&.openmenses.v1.ListMedicationsResponse\x12i\n" +
-	"\x12GetMedicationEvent\x12(.openmenses.v1.GetMedicationEventRequest\x1a).openmenses.v1.GetMedicationEventResponse\x12r\n" +
-	"\x15CreateMedicationEvent\x12+.openmenses.v1.CreateMedicationEventRequest\x1a,.openmenses.v1.CreateMedicationEventResponse\x12r\n" +
-	"\x15UpdateMedicationEvent\x12+.openmenses.v1.UpdateMedicationEventRequest\x1a,.openmenses.v1.UpdateMedicationEventResponse\x12r\n" +
-	"\x15DeleteMedicationEvent\x12+.openmenses.v1.DeleteMedicationEventRequest\x1a,.openmenses.v1.DeleteMedicationEventResponse\x12o\n" +
-	"\x14ListMedicationEvents\x12*.openmenses.v1.ListMedicationEventsRequest\x1a+.openmenses.v1.ListMedicationEventsResponse\x12W\n" +
-	"\fListTimeline\x12\".openmenses.v1.ListTimelineRequest\x1a#.openmenses.v1.ListTimelineResponse\x12K\n" +
-	"\bGetCycle\x12\x1e.openmenses.v1.GetCycleRequest\x1a\x1f.openmenses.v1.GetCycleResponse\x12Q\n" +
+	"\x10records_imported\x18\x01 \x01(\rR\x0frecordsImported2\x89'\n" +
+	"\x13CycleTrackerService\x12q\n" +
+	"\x0eGetUserProfile\x12$.openmenses.v1.GetUserProfileRequest\x1a%.openmenses.v1.GetUserProfileResponse\"\x12\x82\xd3\xe4\x93\x02\f\x12\n" +
+	"/v1/{name}\x12\x82\x01\n" +
+	"\x11CreateUserProfile\x12'.openmenses.v1.CreateUserProfileRequest\x1a(.openmenses.v1.CreateUserProfileResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\aprofile\"\t/v1/users\x12\x8b\x01\n" +
+	"\x11UpdateUserProfile\x12'.openmenses.v1.UpdateUserProfileRequest\x1a(.openmenses.v1.UpdateUserProfileResponse\"#\x82\xd3\xe4\x93\x02\x1d:\aprofile2\x12/v1/{profile.name}\x12\x89\x01\n" +
+	"\x16GetBleedingObservation\x12,.openmenses.v1.GetBleedingObservationRequest\x1a-.openmenses.v1.GetBleedingObservationResponse\"\x12\x82\xd3\xe4\x93\x02\f\x12\n" +
+	"/v1/{name}\x12\xb7\x01\n" +
+	"\x19CreateBleedingObservation\x12/.openmenses.v1.CreateBleedingObservationRequest\x1a0.openmenses.v1.CreateBleedingObservationResponse\"7\x82\xd3\xe4\x93\x021:\vobservation\"\"/v1/{parent}/observations/bleeding\x12\xab\x01\n" +
+	"\x19UpdateBleedingObservation\x12/.openmenses.v1.UpdateBleedingObservationRequest\x1a0.openmenses.v1.UpdateBleedingObservationResponse\"+\x82\xd3\xe4\x93\x02%:\vobservation2\x16/v1/{observation.name}\x12\x92\x01\n" +
+	"\x19DeleteBleedingObservation\x12/.openmenses.v1.DeleteBleedingObservationRequest\x1a0.openmenses.v1.DeleteBleedingObservationResponse\"\x12\x82\xd3\xe4\x93\x02\f*\n" +
+	"/v1/{name}\x12\xa7\x01\n" +
+	"\x18ListBleedingObservations\x12..openmenses.v1.ListBleedingObservationsRequest\x1a/.openmenses.v1.ListBleedingObservationsResponse\"*\x82\xd3\xe4\x93\x02$\x12\"/v1/{parent}/observations/bleeding\x12\x86\x01\n" +
+	"\x15GetSymptomObservation\x12+.openmenses.v1.GetSymptomObservationRequest\x1a,.openmenses.v1.GetSymptomObservationResponse\"\x12\x82\xd3\xe4\x93\x02\f\x12\n" +
+	"/v1/{name}\x12\xb3\x01\n" +
+	"\x18CreateSymptomObservation\x12..openmenses.v1.CreateSymptomObservationRequest\x1a/.openmenses.v1.CreateSymptomObservationResponse\"6\x82\xd3\xe4\x93\x020:\vobservation\"!/v1/{parent}/observations/symptom\x12\xa8\x01\n" +
+	"\x18UpdateSymptomObservation\x12..openmenses.v1.UpdateSymptomObservationRequest\x1a/.openmenses.v1.UpdateSymptomObservationResponse\"+\x82\xd3\xe4\x93\x02%:\vobservation2\x16/v1/{observation.name}\x12\x8f\x01\n" +
+	"\x18DeleteSymptomObservation\x12..openmenses.v1.DeleteSymptomObservationRequest\x1a/.openmenses.v1.DeleteSymptomObservationResponse\"\x12\x82\xd3\xe4\x93\x02\f*\n" +
+	"/v1/{name}\x12\xa3\x01\n" +
+	"\x17ListSymptomObservations\x12-.openmenses.v1.ListSymptomObservationsRequest\x1a..openmenses.v1.ListSymptomObservationsResponse\")\x82\xd3\xe4\x93\x02#\x12!/v1/{parent}/observations/symptom\x12}\n" +
+	"\x12GetMoodObservation\x12(.openmenses.v1.GetMoodObservationRequest\x1a).openmenses.v1.GetMoodObservationResponse\"\x12\x82\xd3\xe4\x93\x02\f\x12\n" +
+	"/v1/{name}\x12\xa7\x01\n" +
+	"\x15CreateMoodObservation\x12+.openmenses.v1.CreateMoodObservationRequest\x1a,.openmenses.v1.CreateMoodObservationResponse\"3\x82\xd3\xe4\x93\x02-:\vobservation\"\x1e/v1/{parent}/observations/mood\x12\x9f\x01\n" +
+	"\x15UpdateMoodObservation\x12+.openmenses.v1.UpdateMoodObservationRequest\x1a,.openmenses.v1.UpdateMoodObservationResponse\"+\x82\xd3\xe4\x93\x02%:\vobservation2\x16/v1/{observation.name}\x12\x86\x01\n" +
+	"\x15DeleteMoodObservation\x12+.openmenses.v1.DeleteMoodObservationRequest\x1a,.openmenses.v1.DeleteMoodObservationResponse\"\x12\x82\xd3\xe4\x93\x02\f*\n" +
+	"/v1/{name}\x12\x97\x01\n" +
+	"\x14ListMoodObservations\x12*.openmenses.v1.ListMoodObservationsRequest\x1a+.openmenses.v1.ListMoodObservationsResponse\"&\x82\xd3\xe4\x93\x02 \x12\x1e/v1/{parent}/observations/mood\x12n\n" +
+	"\rGetMedication\x12#.openmenses.v1.GetMedicationRequest\x1a$.openmenses.v1.GetMedicationResponse\"\x12\x82\xd3\xe4\x93\x02\f\x12\n" +
+	"/v1/{name}\x12\x91\x01\n" +
+	"\x10CreateMedication\x12&.openmenses.v1.CreateMedicationRequest\x1a'.openmenses.v1.CreateMedicationResponse\",\x82\xd3\xe4\x93\x02&:\n" +
+	"medication\"\x18/v1/{parent}/medications\x12\x8e\x01\n" +
+	"\x10UpdateMedication\x12&.openmenses.v1.UpdateMedicationRequest\x1a'.openmenses.v1.UpdateMedicationResponse\")\x82\xd3\xe4\x93\x02#:\n" +
+	"medication2\x15/v1/{medication.name}\x12w\n" +
+	"\x10DeleteMedication\x12&.openmenses.v1.DeleteMedicationRequest\x1a'.openmenses.v1.DeleteMedicationResponse\"\x12\x82\xd3\xe4\x93\x02\f*\n" +
+	"/v1/{name}\x12\x82\x01\n" +
+	"\x0fListMedications\x12%.openmenses.v1.ListMedicationsRequest\x1a&.openmenses.v1.ListMedicationsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/{parent}/medications\x12}\n" +
+	"\x12GetMedicationEvent\x12(.openmenses.v1.GetMedicationEventRequest\x1a).openmenses.v1.GetMedicationEventResponse\"\x12\x82\xd3\xe4\x93\x02\f\x12\n" +
+	"/v1/{name}\x12\x96\x01\n" +
+	"\x15CreateMedicationEvent\x12+.openmenses.v1.CreateMedicationEventRequest\x1a,.openmenses.v1.CreateMedicationEventResponse\"\"\x82\xd3\xe4\x93\x02\x1c:\x05event\"\x13/v1/{parent}/events\x12\x93\x01\n" +
+	"\x15UpdateMedicationEvent\x12+.openmenses.v1.UpdateMedicationEventRequest\x1a,.openmenses.v1.UpdateMedicationEventResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x05event2\x10/v1/{event.name}\x12\x86\x01\n" +
+	"\x15DeleteMedicationEvent\x12+.openmenses.v1.DeleteMedicationEventRequest\x1a,.openmenses.v1.DeleteMedicationEventResponse\"\x12\x82\xd3\xe4\x93\x02\f*\n" +
+	"/v1/{name}\x12\x8c\x01\n" +
+	"\x14ListMedicationEvents\x12*.openmenses.v1.ListMedicationEventsRequest\x1a+.openmenses.v1.ListMedicationEventsResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/v1/{parent}/events\x12v\n" +
+	"\fListTimeline\x12\".openmenses.v1.ListTimelineRequest\x1a#.openmenses.v1.ListTimelineResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/v1/{parent}/timeline\x12_\n" +
+	"\bGetCycle\x12\x1e.openmenses.v1.GetCycleRequest\x1a\x1f.openmenses.v1.GetCycleResponse\"\x12\x82\xd3\xe4\x93\x02\f\x12\n" +
+	"/v1/{name}\x12n\n" +
 	"\n" +
-	"ListCycles\x12 .openmenses.v1.ListCyclesRequest\x1a!.openmenses.v1.ListCyclesResponse\x12`\n" +
-	"\x0fListPredictions\x12%.openmenses.v1.ListPredictionsRequest\x1a&.openmenses.v1.ListPredictionsResponse\x12W\n" +
-	"\fListInsights\x12\".openmenses.v1.ListInsightsRequest\x1a#.openmenses.v1.ListInsightsResponse\x12c\n" +
-	"\x10CreateDataExport\x12&.openmenses.v1.CreateDataExportRequest\x1a'.openmenses.v1.CreateDataExportResponse\x12c\n" +
-	"\x10CreateDataImport\x12&.openmenses.v1.CreateDataImportRequest\x1a'.openmenses.v1.CreateDataImportResponseBAZ?github.com/2ajoyce/openmenses/gen/go/openmenses/v1;openmensesv1b\x06proto3"
+	"ListCycles\x12 .openmenses.v1.ListCyclesRequest\x1a!.openmenses.v1.ListCyclesResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/v1/{parent}/cycles\x12\x82\x01\n" +
+	"\x0fListPredictions\x12%.openmenses.v1.ListPredictionsRequest\x1a&.openmenses.v1.ListPredictionsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/{parent}/predictions\x12v\n" +
+	"\fListInsights\x12\".openmenses.v1.ListInsightsRequest\x1a#.openmenses.v1.ListInsightsResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/v1/{parent}/insights\x12\x83\x01\n" +
+	"\x10CreateDataExport\x12&.openmenses.v1.CreateDataExportRequest\x1a'.openmenses.v1.CreateDataExportResponse\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/v1/{parent}:export\x12\x83\x01\n" +
+	"\x10CreateDataImport\x12&.openmenses.v1.CreateDataImportRequest\x1a'.openmenses.v1.CreateDataImportResponse\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/v1/{parent}:importBAZ?github.com/2ajoyce/openmenses/gen/go/openmenses/v1;openmensesv1b\x06proto3"
 
 var (
 	file_openmenses_v1_service_proto_rawDescOnce sync.Once

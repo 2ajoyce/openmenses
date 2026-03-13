@@ -918,7 +918,7 @@ func TestListInsights(t *testing.T) {
 func TestCreateDataExport(t *testing.T) {
 	t.Run("EmptyUser", func(t *testing.T) {
 		svc := newSvc(t)
-		resp, err := svc.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Name: "u1"}))
+		resp, err := svc.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Parent: "u1"}))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -942,7 +942,7 @@ func TestCreateDataExport(t *testing.T) {
 		if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
 			t.Fatal(err)
 		}
-		resp, err := svc.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Name: "u1"}))
+		resp, err := svc.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Parent: "u1"}))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -1011,13 +1011,13 @@ func TestCreateDataImport(t *testing.T) {
 			t.Fatal(err)
 		}
 		// Export from source.
-		exportResp, err := srcSvc.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Name: "u1"}))
+		exportResp, err := srcSvc.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Parent: "u1"}))
 		if err != nil {
 			t.Fatal(err)
 		}
 		// Import into a fresh service.
 		dstSvc := newSvc(t)
-		importResp, err := dstSvc.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Data: exportResp.Msg.GetData()}))
+		importResp, err := dstSvc.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Parent: "u1", Data: exportResp.Msg.GetData()}))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -1047,16 +1047,16 @@ func TestCreateDataImport(t *testing.T) {
 		})); err != nil {
 			t.Fatal(err)
 		}
-		exportResp, err := svc.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Name: "u1"}))
+		exportResp, err := svc.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{Parent: "u1"}))
 		if err != nil {
 			t.Fatal(err)
 		}
 		// Import into the SAME service twice; second import should find all
 		// records already present and return 0 newly created.
-		if _, err := svc.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Data: exportResp.Msg.GetData()})); err != nil {
+		if _, err := svc.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Parent: "u1", Data: exportResp.Msg.GetData()})); err != nil {
 			t.Fatal(err)
 		}
-		resp2, err := svc.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Data: exportResp.Msg.GetData()}))
+		resp2, err := svc.CreateDataImport(ctx, connect.NewRequest(&v1.CreateDataImportRequest{Parent: "u1", Data: exportResp.Msg.GetData()}))
 		if err != nil {
 			t.Fatal(err)
 		}

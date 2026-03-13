@@ -437,14 +437,15 @@ message ListInsightsResponse {
 
 // Resource-oriented versions (preferred)
 message CreateDataExportRequest {
-  string name = 1 [(buf.validate.field).string.min_len = 1];
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
 }
 message CreateDataExportResponse {
   bytes data = 1;
 }
 
 message CreateDataImportRequest {
-  bytes data = 1;
+  string parent = 1 [(buf.validate.field).string.min_len = 1];
+  bytes data = 2;
 }
 message CreateDataImportResponse {
   uint32 records_imported = 1;
