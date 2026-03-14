@@ -67,6 +67,35 @@ User action → UI → Go Engine (via bridge) → local storage (SQLite)
                 └────── updated state ────┘
 ```
 
+## UI-to-Engine Bridge
+
+The React UI runs inside a WebView hosted by the native mobile wrapper. To communicate with the Go engine (which runs as a native library in the same process), the app uses a localhost-only Connect-RPC HTTP listener as an in-process IPC mechanism.
+
+### How it works
+
+1. The native mobile wrapper starts the Go engine in-process.
+2. The engine binds a Connect-RPC HTTP listener to `127.0.0.1` on a random port.
+3. The React UI (rendered in a WebView) makes standard Connect-RPC HTTP calls to this localhost listener.
+4. Responses flow back through the same HTTP path.
+
+This means the UI uses the same generated Connect-RPC client code regardless of whether it is running in development or in a production mobile build.
+
+### "No server" clarification
+
+When project documentation says "no server," it means no remote or cloud server. The localhost listener is an in-process IPC mechanism that never leaves the device. It is not a deployed service and accepts no connections from the network.
+
+### Security
+
+In production, the listener is secured by:
+
+- Binding to `127.0.0.1` only (not `0.0.0.0`), so it is unreachable from the network.
+- Using a random port, so other apps cannot predict the endpoint.
+- Using an auth token passed from the native shell to the WebView, so other apps on the device cannot access the listener.
+
+### Development mode
+
+In development, `engine/cmd/engine-dev/main.go` plays the role of the native shell. It starts the same localhost Connect-RPC listener so the UI can be developed and tested in a browser without a mobile device or emulator.
+
 ## Key Constraints
 
 | Constraint | Rationale |

@@ -24,6 +24,25 @@ import (
 	openmenses "github.com/2ajoyce/openmenses/engine/pkg/openmenses"
 )
 
+// corsMiddleware wraps an http.Handler with permissive CORS headers suitable
+// for local development.  It is intentionally placed in the dev server binary
+// and must NOT be added to the engine library itself.
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers",
+			"Content-Type, Connect-Protocol-Version, Connect-Timeout-Ms, Grpc-Timeout, X-Grpc-Web, X-User-Agent")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	port := flag.Int("port", 8080, "TCP port to listen on")
 	db := flag.String("db", "", "SQLite database path; omit for in-memory backend")
@@ -61,7 +80,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	srv := &http.Server{Handler: mux}
+	srv := &http.Server{Handler: corsMiddleware(mux)}
 
 	log.Printf("engine-dev listening on http://%s", addr)
 	log.Printf("Connect-RPC path prefix: %s", path)

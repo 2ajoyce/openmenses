@@ -111,6 +111,22 @@ Responsibilities include:
 
 The shell hosts the runtime and exposes platform APIs to the application.
 
+### Build and packaging
+
+The Go engine compiles to native libraries via `gomobile bind`: `.aar` for Android, `.xcframework` for iOS. See https://go.dev/wiki/Mobile#sdk-applications-and-generating-bindings for reference.
+
+### WebView architecture
+
+The native shell hosts a WebView that renders the React UI. On startup, the shell initializes the Go engine in-process and binds a localhost-only Connect-RPC HTTP listener. The WebView calls this listener using standard Connect-RPC HTTP requests, providing a platform-agnostic bridge between the UI and the engine.
+
+### Platform-specific integrations
+
+Platform-specific integrations (HealthKit on iOS, Google Fit on Android) are implemented in Swift or Kotlin within the native shell. They are not implemented in Go or TypeScript. This keeps the Go engine platform-neutral and avoids pulling platform SDKs into the shared codebase.
+
+### Backups
+
+iCloud and platform backups work automatically because all persistent data is stored in a local SQLite file. The operating system's built-in backup mechanism (iCloud on iOS, device backup on Android) includes this file without any custom integration.
+
 ---
 
 # Data Model Philosophy

@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(make test:*)",
-      "Bash(make ci:*)"
+      "Bash(make ci:*)",
+      "Bash(cd C:/Users/aronw/code/Github/openmenses/ui && npx tsc --noEmit 2>&1)",
+      "Bash(cd C:/Users/aronw/code/Github/openmenses/ui && npx eslint src 2>&1)",
+      "Bash(cd C:/Users/aronw/code/Github/openmenses/ui && npx eslint src 2>&1 && echo \"ESLint OK\")",
+      "Bash(cd C:/Users/aronw/code/Github/openmenses/ui && npm.cmd run build 2>&1)",
+      "Bash(cd C:/Users/aronw/code/Github/openmenses/ui && npm.cmd run test 2>&1)",
+      "Bash(cd C:/Users/aronw/code/Github/openmenses && make ui-lint 2>&1 && echo \"PASS: ui-lint\")",
+      "Bash(cd C:/Users/aronw/code/Github/openmenses && make ui-test 2>&1 && echo \"PASS: ui-test\")"
     ]
   }
 }

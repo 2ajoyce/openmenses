@@ -32,10 +32,32 @@ go.work.sum
 # .vscode/
 
 # Node.js / UI
-ui/node_modules/
+node_modules/
 ui/dist/
 ui/.eslintcache
+.npm/
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Go build output
+bin/
+dist/
+
+# Logs
+*.log
+
+# Mobile build artifacts
+mobile/ios/build/
+mobile/android/.gradle/
+mobile/android/build/
+mobile/android/local.properties
 
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
