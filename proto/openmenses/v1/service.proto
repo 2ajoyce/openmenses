@@ -4,7 +4,6 @@ package openmenses.v1;
 
 import "buf/validate/validate.proto";
 import "google/api/annotations.proto";
-import "google/api/resource.proto";
 import "google/protobuf/field_mask.proto";
 import "openmenses/v1/model.proto";
 import "openmenses/v1/types.proto";

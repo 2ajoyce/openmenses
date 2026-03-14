@@ -12,7 +12,7 @@ endif
 
 .PHONY: proto-lint proto-generate proto-breaking proto-check \
         engine-lint engine-test \
-        ui-lint ui-test \
+        engine-dev ui-dev ui-build ui-lint ui-test \
         lint test ci
 
 # ---------------------------------------------------------------------------
@@ -47,6 +47,18 @@ engine-test:
 # ---------------------------------------------------------------------------
 # UI targets (TypeScript)
 # ---------------------------------------------------------------------------
+
+# Development: run engine-dev and Vite dev server in separate terminals.
+#   Terminal 1: make engine-dev
+#   Terminal 2: make ui-dev
+engine-dev:
+	go run ./engine/cmd/engine-dev --port 8080
+
+ui-dev:
+	cd ui && $(NPM) run dev
+
+ui-build:
+	cd ui && $(NPM) run build
 
 ui-lint:
 	cd ui && $(NPM) run lint && $(NPM) run typecheck

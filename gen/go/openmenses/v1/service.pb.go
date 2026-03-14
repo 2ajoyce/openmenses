@@ -3511,7 +3511,7 @@ var File_openmenses_v1_service_proto protoreflect.FileDescriptor
 
 const file_openmenses_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1bopenmenses/v1/service.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a google/protobuf/field_mask.proto\x1a\x19openmenses/v1/model.proto\x1a\x19openmenses/v1/types.proto\"4\n" +
+	"\x1bopenmenses/v1/service.proto\x12\ropenmenses.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a google/protobuf/field_mask.proto\x1a\x19openmenses/v1/model.proto\x1a\x19openmenses/v1/types.proto\"4\n" +
 	"\x15GetUserProfileRequest\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"N\n" +
 	"\x16GetUserProfileResponse\x124\n" +
