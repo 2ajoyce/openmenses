@@ -11,35 +11,31 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({
   medication,
 }) => {
   return (
-    <Card>
-      <CardHeader>
-        <span>Medication — {medication.displayName}</span>
-      </CardHeader>
-      <CardContent>
-        <p>{medicationCategoryLabel(medication.category)}</p>
-        <p
-          style={{
-            color: medication.active ? "#4caf50" : "#9e9e9e",
-            fontWeight: 500,
-          }}
-        >
-          {medication.active ? "Active" : "Inactive"}
-        </p>
-        {medication.note && (
-          <p
-            style={{
-              opacity: 0.7,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-            }}
-          >
-            {medication.note}
+    <div className="medication-card">
+      <Card>
+        <CardHeader>
+          <span className="om-card-title">
+            Medication — {medication.displayName}
+          </span>
+        </CardHeader>
+        <CardContent>
+          <p className="om-card-timestamp">
+            {medicationCategoryLabel(medication.category)}
           </p>
-        )}
-      </CardContent>
-    </Card>
+          <p
+            className={
+              medication.active ? "medication-status-active" : "om-muted"
+            }
+          >
+            {medication.active ? "Active" : "Inactive"}
+          </p>
+          {medication.note && (
+            <p className="om-card-notes om-muted om-truncate-2">
+              {medication.note}
+            </p>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 };

@@ -6,13 +6,6 @@ import { formatDateTime } from "../../lib/dates";
 import { ConfirmDialog } from "../../components/ConfirmDialog";
 import { client } from "../../lib/client";
 
-const flowColors: Record<number, string> = {
-  1: "#ffb6c1",
-  2: "#ff8da1",
-  3: "#e74c6f",
-  4: "#c62828",
-};
-
 interface BleedingCardProps {
   observation: BleedingObservation;
   onEdit?: (name: string) => void;
@@ -42,52 +35,41 @@ export const BleedingCard: React.FC<BleedingCardProps> = ({
 
   return (
     <>
-      <Card>
-        <CardHeader>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span
-              style={{
-                width: 12,
-                height: 12,
-                borderRadius: "50%",
-                backgroundColor: flowColors[observation.flow] ?? "#ccc",
-                display: "inline-block",
-              }}
-            />
-            <span>Bleeding — {bleedingFlowLabel(observation.flow)}</span>
-          </div>
-          <div style={{ display: "flex", gap: "8px" }}>
-            {onEdit && (
-              <Link onClick={() => onEdit(observation.name)}>Edit</Link>
+      <div className="bleeding-card">
+        <Card>
+          <CardHeader>
+            <div className="om-row">
+              <span
+                className="om-dot"
+                data-flow={String(observation.flow)}
+              />
+              <span className="om-card-title">
+                Bleeding — {bleedingFlowLabel(observation.flow)}
+              </span>
+            </div>
+            <div className="om-row">
+              {onEdit && (
+                <Link onClick={() => onEdit(observation.name)}>Edit</Link>
+              )}
+              <Link color="red" onClick={() => setConfirmDelete(true)}>
+                Delete
+              </Link>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {observation.timestamp && (
+              <p className="om-card-timestamp">
+                {formatDateTime(observation.timestamp)}
+              </p>
             )}
-            <Link
-              color="red"
-              onClick={() => setConfirmDelete(true)}
-            >
-              Delete
-            </Link>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {observation.timestamp && (
-            <p>{formatDateTime(observation.timestamp)}</p>
-          )}
-          {observation.note && (
-            <p
-              style={{
-                opacity: 0.7,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-              }}
-            >
-              {observation.note}
-            </p>
-          )}
-        </CardContent>
-      </Card>
+            {observation.note && (
+              <p className="om-card-notes om-muted om-truncate-2">
+                {observation.note}
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
       <ConfirmDialog
         open={confirmDelete}
         title="Delete Observation"

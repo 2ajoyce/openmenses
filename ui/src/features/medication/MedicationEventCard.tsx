@@ -39,39 +39,36 @@ export const MedicationEventCard: React.FC<MedicationEventCardProps> = ({
 
   return (
     <>
-      <Card>
-        <CardHeader>
-          <span>
-            {displayName} — {medicationEventStatusLabel(event.status)}
-          </span>
-          <div style={{ display: "flex", gap: "8px" }}>
-            {onEdit && (
-              <Link onClick={() => onEdit(event.name)}>Edit</Link>
+      <div className="medication-event-card">
+        <Card>
+          <CardHeader>
+            <span className="om-card-title">
+              {displayName} — {medicationEventStatusLabel(event.status)}
+            </span>
+            <div className="om-row">
+              {onEdit && (
+                <Link onClick={() => onEdit(event.name)}>Edit</Link>
+              )}
+              <Link color="red" onClick={() => setConfirmDelete(true)}>
+                Delete
+              </Link>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {event.dose && <p className="om-card-timestamp">Dose: {event.dose}</p>}
+            {event.timestamp && (
+              <p className="om-card-timestamp">
+                {formatDateTime(event.timestamp)}
+              </p>
             )}
-            <Link color="red" onClick={() => setConfirmDelete(true)}>
-              Delete
-            </Link>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {event.dose && <p>Dose: {event.dose}</p>}
-          {event.timestamp && <p>{formatDateTime(event.timestamp)}</p>}
-          {event.note && (
-            <p
-              style={{
-                opacity: 0.7,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-              }}
-            >
-              {event.note}
-            </p>
-          )}
-        </CardContent>
-      </Card>
+            {event.note && (
+              <p className="om-card-notes om-muted om-truncate-2">
+                {event.note}
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
       <ConfirmDialog
         open={confirmDelete}
         title="Delete Event"

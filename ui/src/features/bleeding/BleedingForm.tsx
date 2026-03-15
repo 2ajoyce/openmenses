@@ -70,7 +70,7 @@ const BleedingForm: React.FC<BleedingFormProps> = ({ f7router, name }) => {
         });
       }
 
-      f7.tab.show("#tab-timeline");
+      f7router.back();
     } catch (err) {
       console.error("Failed to save bleeding observation:", err);
       f7.dialog.alert(

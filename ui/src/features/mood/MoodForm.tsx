@@ -74,7 +74,7 @@ const MoodForm: React.FC<MoodFormProps> = ({ f7router, name }) => {
         });
       }
 
-      f7.tab.show("#tab-timeline");
+      f7router.back();
     } catch (err) {
       console.error("Failed to save mood observation:", err);
       f7.dialog.alert(
