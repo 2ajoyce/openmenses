@@ -16,10 +16,12 @@ import { moodIntensityOptions, moodTypeOptions } from "../../lib/enums";
 
 interface MoodFormProps {
   f7router: Router.Router;
+  f7route?: Router.Route;
   name?: string;
 }
 
-const MoodForm: React.FC<MoodFormProps> = ({ f7router, name }) => {
+const MoodForm: React.FC<MoodFormProps> = ({ f7router, f7route, name: nameProp }) => {
+  const name = nameProp ?? f7route?.query?.name;
   const [timestamp, setTimestamp] = useState(new Date());
   const [mood, setMood] = useState<number>(MoodType.CALM);
   const [intensity, setIntensity] = useState<number>(MoodIntensity.MEDIUM);

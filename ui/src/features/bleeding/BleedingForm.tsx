@@ -15,10 +15,12 @@ import { bleedingFlowOptions } from "../../lib/enums";
 
 interface BleedingFormProps {
   f7router: Router.Router;
+  f7route?: Router.Route;
   name?: string;
 }
 
-const BleedingForm: React.FC<BleedingFormProps> = ({ f7router, name }) => {
+const BleedingForm: React.FC<BleedingFormProps> = ({ f7router, f7route, name: nameProp }) => {
+  const name = nameProp ?? f7route?.query?.name;
   const [timestamp, setTimestamp] = useState(new Date());
   const [flow, setFlow] = useState<number>(BleedingFlow.MEDIUM);
   const [note, setNote] = useState("");

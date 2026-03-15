@@ -24,13 +24,16 @@ import { medicationEventStatusOptions } from "../../lib/enums";
 
 interface MedicationEventFormProps {
   f7router: Router.Router;
+  f7route?: Router.Route;
   name?: string;
 }
 
 const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
   f7router,
-  name,
+  f7route,
+  name: nameProp,
 }) => {
+  const name = nameProp ?? f7route?.query?.name;
   const [medications, setMedications] = useState<Medication[]>([]);
   const [medicationId, setMedicationId] = useState("");
   const [timestamp, setTimestamp] = useState(new Date());
