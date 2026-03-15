@@ -38,6 +38,7 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
   const [dose, setDose] = useState("");
   const [note, setNote] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(!name);
   const isEdit = Boolean(name);
 
   useEffect(() => {
@@ -74,6 +75,7 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
             setStatus(evt.status);
             setDose(evt.dose);
             setNote(evt.note);
+            setDataLoaded(true);
           }
         })
         .catch((err) => {
@@ -165,7 +167,7 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
         onChange={setStatus}
       />
 
-      <List inset>
+      <List inset key={dataLoaded ? "ready" : "loading"}>
         <ListInput
           label="Dose"
           type="text"
