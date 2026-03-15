@@ -58,10 +58,11 @@ When asked to add a feature or generate code, follow these steps in order:
 6. **Generate Code**: Run `make proto-generate` to produce stubs.
 7. **Implement Logic**: Write service logic in `engine/internal/`.
 
-All Go code generation and architectural proposals must follow the rules in:
+All code generation and architectural proposals must follow the rules in:
 
 - `Design_Guidelines.md` — resource-oriented design
 - `Go_Code_Guidelines.md` — Go implementation conventions
+- `UI_Design_Guidelines.md` — UI styling conventions (CSS tokens, utility classes, theming)
 
 ---
 
@@ -118,6 +119,11 @@ Always use these `make` targets. Do not run the underlying tools directly unless
 
 - UI code lives in `ui/src/`.
 - Generated TypeScript bindings come from `gen/ts/` — do not duplicate them in `ui/src/generated/`.
+- All styling follows `UI_Design_Guidelines.md`. Key rules:
+  - All custom CSS lives in `ui/src/app/theme.css`. Do not create per-component CSS files.
+  - Use `--om-` prefixed CSS custom properties for colors, spacing, and typography.
+  - Use `om-` prefixed utility classes instead of inline `style={{}}` blocks.
+  - Do not introduce CSS-in-JS, CSS modules, or Tailwind.
 - Run `make ui-lint` before committing.
 - Run `make ui-test` to validate.
 
