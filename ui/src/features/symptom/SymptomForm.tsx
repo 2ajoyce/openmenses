@@ -16,10 +16,12 @@ import { symptomSeverityOptions, symptomTypeOptions } from "../../lib/enums";
 
 interface SymptomFormProps {
   f7router: Router.Router;
+  f7route?: Router.Route;
   name?: string;
 }
 
-const SymptomForm: React.FC<SymptomFormProps> = ({ f7router, name }) => {
+const SymptomForm: React.FC<SymptomFormProps> = ({ f7router, f7route, name: nameProp }) => {
+  const name = nameProp ?? f7route?.query?.name;
   const [timestamp, setTimestamp] = useState(new Date());
   const [symptom, setSymptom] = useState<number>(SymptomType.CRAMPS);
   const [severity, setSeverity] = useState<number>(SymptomSeverity.MODERATE);
