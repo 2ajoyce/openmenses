@@ -19,7 +19,10 @@
       "Bash(cd C:/Users/aronw/code/Github/openmenses/ui && npm.cmd run lint 2>&1 && npm.cmd run typecheck 2>&1)",
       "Bash(cd C:/Users/aronw/code/Github/openmenses/ui && npm.cmd run typecheck 2>&1 && npm.cmd run test 2>&1)",
       "Bash(cd C:/Users/aronw/code/Github/openmenses/ui && npx vitest run src/features/timeline/__tests__/TimelinePage.test.tsx 2>&1)",
-      "Bash(cd C:/Users/aronw/code/Github/openmenses/ui && npm.cmd run lint 2>&1 && npm.cmd run typecheck 2>&1 && npm.cmd run test 2>&1)"
+      "Bash(cd C:/Users/aronw/code/Github/openmenses/ui && npm.cmd run lint 2>&1 && npm.cmd run typecheck 2>&1 && npm.cmd run test 2>&1)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(npm run:*)"
     ]
   }
 }

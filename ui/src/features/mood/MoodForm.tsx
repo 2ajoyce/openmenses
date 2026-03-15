@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Page, Navbar, List, Button, BlockTitle, f7 } from "framework7-react";
-import type { Router } from "framework7/types";
 import { create } from "@bufbuild/protobuf";
-import { MoodType, MoodIntensity } from "@gen/openmenses/v1/model_pb";
-import { MoodObservationSchema } from "@gen/openmenses/v1/model_pb";
-import { client, DEFAULT_PARENT } from "../../lib/client";
-import { toDateTime } from "../../lib/dates";
-import { moodTypeOptions, moodIntensityOptions } from "../../lib/enums";
+import {
+  MoodIntensity,
+  MoodObservationSchema,
+  MoodType,
+} from "@gen/openmenses/v1/model_pb";
+import { BlockTitle, Button, f7, List, Navbar, Page } from "framework7-react";
+import type { Router } from "framework7/types";
+import React, { useEffect, useState } from "react";
 import { DateTimePicker } from "../../components/DateTimePicker";
 import { EnumSelector } from "../../components/EnumSelector";
 import { NotesField } from "../../components/NotesField";
+import { client, DEFAULT_PARENT } from "../../lib/client";
+import { toDateTime } from "../../lib/dates";
+import { moodIntensityOptions, moodTypeOptions } from "../../lib/enums";
 
 interface MoodFormProps {
   f7router: Router.Router;
@@ -71,7 +74,7 @@ const MoodForm: React.FC<MoodFormProps> = ({ f7router, name }) => {
         });
       }
 
-      f7router.back();
+      f7.tab.show("#tab-timeline");
     } catch (err) {
       console.error("Failed to save mood observation:", err);
       f7.dialog.alert(
@@ -87,9 +90,9 @@ const MoodForm: React.FC<MoodFormProps> = ({ f7router, name }) => {
     <Page>
       <Navbar title={isEdit ? "Edit Mood" : "Log Mood"} backLink="Back" />
 
-      <List inset>
+      <div style={{ padding: "0 16px 8px" }}>
         <DateTimePicker value={timestamp} onChange={setTimestamp} />
-      </List>
+      </div>
 
       <BlockTitle>Mood</BlockTitle>
       <EnumSelector

@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
+import { create } from "@bufbuild/protobuf";
+import type { Medication } from "@gen/openmenses/v1/model_pb";
 import {
-  Page,
-  Navbar,
+  MedicationEventSchema,
+  MedicationEventStatus,
+} from "@gen/openmenses/v1/model_pb";
+import {
+  BlockTitle,
+  Button,
+  f7,
   List,
   ListInput,
-  Button,
-  BlockTitle,
-  f7,
+  Navbar,
+  Page,
 } from "framework7-react";
 import type { Router } from "framework7/types";
-import { create } from "@bufbuild/protobuf";
-import {
-  MedicationEventStatus,
-  MedicationEventSchema,
-} from "@gen/openmenses/v1/model_pb";
-import type { Medication } from "@gen/openmenses/v1/model_pb";
-import { client, DEFAULT_PARENT } from "../../lib/client";
-import { toDateTime } from "../../lib/dates";
-import { medicationEventStatusOptions } from "../../lib/enums";
+import React, { useEffect, useState } from "react";
 import { DateTimePicker } from "../../components/DateTimePicker";
 import { EnumSelector } from "../../components/EnumSelector";
 import { NotesField } from "../../components/NotesField";
+import { client, DEFAULT_PARENT } from "../../lib/client";
+import { toDateTime } from "../../lib/dates";
+import { medicationEventStatusOptions } from "../../lib/enums";
 
 interface MedicationEventFormProps {
   f7router: Router.Router;
@@ -114,7 +114,7 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
         });
       }
 
-      f7router.back();
+      f7.tab.show("#tab-timeline");
     } catch (err) {
       console.error("Failed to save medication event:", err);
       f7.dialog.alert(
@@ -152,8 +152,11 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
             <option value="">No active medications</option>
           )}
         </ListInput>
-        <DateTimePicker value={timestamp} onChange={setTimestamp} />
       </List>
+
+      <div style={{ padding: "0 16px 8px" }}>
+        <DateTimePicker value={timestamp} onChange={setTimestamp} />
+      </div>
 
       <BlockTitle>Status</BlockTitle>
       <EnumSelector

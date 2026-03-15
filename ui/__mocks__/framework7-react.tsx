@@ -1,5 +1,3 @@
-import React from "react";
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // Minimal Framework7 React mock for testing
@@ -14,7 +12,16 @@ export const f7 = {
 };
 
 export const App = ({ children }: any) => <div>{children}</div>;
-export const Page = ({ children }: any) => <div data-testid="page">{children}</div>;
+export const Page = ({ children, onInfinite }: any) => (
+  <div data-testid="page">
+    {children}
+    {onInfinite && (
+      <button data-testid="trigger-infinite" onClick={onInfinite}>
+        Load More
+      </button>
+    )}
+  </div>
+);
 export const Navbar = ({ title, backLink }: any) => (
   <nav data-testid="navbar">
     {backLink && <span>{backLink}</span>}
@@ -22,15 +29,34 @@ export const Navbar = ({ title, backLink }: any) => (
   </nav>
 );
 export const List = ({ children }: any) => <ul>{children}</ul>;
-export const ListInput = ({ label, type, value, onInput, children, placeholder, disabled }: any) => (
+export const ListInput = ({
+  label,
+  type,
+  value,
+  onInput,
+  children,
+  placeholder,
+  disabled,
+}: any) => (
   <label>
     {label}
     {type === "select" ? (
-      <select value={value} onChange={onInput} aria-label={label} disabled={disabled}>
+      <select
+        value={value}
+        onChange={onInput}
+        aria-label={label}
+        disabled={disabled}
+      >
         {children}
       </select>
     ) : type === "textarea" ? (
-      <textarea value={value} onChange={onInput} placeholder={placeholder} aria-label={label} disabled={disabled} />
+      <textarea
+        value={value}
+        onChange={onInput}
+        placeholder={placeholder}
+        aria-label={label}
+        disabled={disabled}
+      />
     ) : (
       <input
         type={type ?? "text"}
@@ -43,7 +69,13 @@ export const ListInput = ({ label, type, value, onInput, children, placeholder, 
     )}
   </label>
 );
-export const ListItem = ({ title, subtitle, after, children, onClick }: any) => (
+export const ListItem = ({
+  title,
+  subtitle,
+  after,
+  children,
+  onClick,
+}: any) => (
   <li onClick={onClick}>
     <span>{title}</span>
     {subtitle && <span>{subtitle}</span>}
@@ -52,13 +84,21 @@ export const ListItem = ({ title, subtitle, after, children, onClick }: any) => 
   </li>
 );
 export const Button = ({ children, onClick, disabled, fill }: any) => (
-  <button onClick={onClick} disabled={disabled} data-fill={fill ? "true" : "false"}>
+  <button
+    onClick={onClick}
+    disabled={disabled}
+    data-fill={fill ? "true" : "false"}
+  >
     {children}
   </button>
 );
 export const BlockTitle = ({ children }: any) => <h3>{children}</h3>;
-export const Block = ({ children, style }: any) => <div style={style}>{children}</div>;
-export const Card = ({ children }: any) => <div data-testid="card">{children}</div>;
+export const Block = ({ children, style }: any) => (
+  <div style={style}>{children}</div>
+);
+export const Card = ({ children }: any) => (
+  <div data-testid="card">{children}</div>
+);
 export const CardHeader = ({ children }: any) => <div>{children}</div>;
 export const CardContent = ({ children }: any) => <div>{children}</div>;
 export const Link = ({ children, onClick }: any) => (
