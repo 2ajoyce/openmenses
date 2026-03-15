@@ -144,6 +144,7 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
       infiniteDistance={50}
       onInfinite={loadMore}
       infinitePreloader={Boolean(nextPageToken)}
+      onPageBeforeIn={() => fetchTimeline()}
     >
       <Navbar title="Timeline" />
 
