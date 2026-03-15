@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, Link } from "framework7-react";
+import { Card, CardContent, CardHeader, Link, f7 } from "framework7-react";
 import type { MedicationEvent } from "@gen/openmenses/v1/model_pb";
 import { medicationEventStatusLabel } from "../../lib/enums";
 import { formatDateTime } from "../../lib/dates";
@@ -8,12 +8,14 @@ import { client } from "../../lib/client";
 
 interface MedicationEventCardProps {
   event: MedicationEvent;
+  medicationName?: string;
   onEdit?: (name: string) => void;
   onDeleted?: () => void;
 }
 
 export const MedicationEventCard: React.FC<MedicationEventCardProps> = ({
   event,
+  medicationName,
   onEdit,
   onDeleted,
 }) => {
@@ -25,16 +27,22 @@ export const MedicationEventCard: React.FC<MedicationEventCardProps> = ({
       onDeleted?.();
     } catch (err) {
       console.error("Failed to delete medication event:", err);
+      f7.dialog.alert(
+        err instanceof Error ? err.message : "Failed to delete event",
+        "Error",
+      );
     }
     setConfirmDelete(false);
   }
+
+  const displayName = medicationName ?? "Medication";
 
   return (
     <>
       <Card>
         <CardHeader>
           <span>
-            Medication — {medicationEventStatusLabel(event.status)}
+            {displayName} — {medicationEventStatusLabel(event.status)}
           </span>
           <div style={{ display: "flex", gap: "8px" }}>
             {onEdit && (
@@ -48,7 +56,20 @@ export const MedicationEventCard: React.FC<MedicationEventCardProps> = ({
         <CardContent>
           {event.dose && <p>Dose: {event.dose}</p>}
           {event.timestamp && <p>{formatDateTime(event.timestamp)}</p>}
-          {event.note && <p style={{ opacity: 0.7 }}>{event.note}</p>}
+          {event.note && (
+            <p
+              style={{
+                opacity: 0.7,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {event.note}
+            </p>
+          )}
         </CardContent>
       </Card>
       <ConfirmDialog

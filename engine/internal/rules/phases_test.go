@@ -201,7 +201,6 @@ type biologicalModelTestCase struct {
 	cycleDays            int
 	wantOvulationDays    int
 	wantMenstruationDays int
-	wantMenstruationMin  int
 	wantFollicularDays   int
 	wantLutealDays       int
 }

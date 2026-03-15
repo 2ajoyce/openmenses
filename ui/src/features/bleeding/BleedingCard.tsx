@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, Link } from "framework7-react";
+import { Card, CardContent, CardHeader, Link, f7 } from "framework7-react";
 import type { BleedingObservation } from "@gen/openmenses/v1/model_pb";
 import { bleedingFlowLabel } from "../../lib/enums";
 import { formatDateTime } from "../../lib/dates";
@@ -32,6 +32,10 @@ export const BleedingCard: React.FC<BleedingCardProps> = ({
       onDeleted?.();
     } catch (err) {
       console.error("Failed to delete bleeding observation:", err);
+      f7.dialog.alert(
+        err instanceof Error ? err.message : "Failed to delete observation",
+        "Error",
+      );
     }
     setConfirmDelete(false);
   }
@@ -69,7 +73,18 @@ export const BleedingCard: React.FC<BleedingCardProps> = ({
             <p>{formatDateTime(observation.timestamp)}</p>
           )}
           {observation.note && (
-            <p style={{ opacity: 0.7 }}>{observation.note}</p>
+            <p
+              style={{
+                opacity: 0.7,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {observation.note}
+            </p>
           )}
         </CardContent>
       </Card>

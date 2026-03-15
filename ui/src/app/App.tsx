@@ -41,7 +41,7 @@ const App: React.FC = () => {
   return (
     <F7App {...f7params}>
       <Views tabs className="safe-areas">
-        <Toolbar tabbar bottom>
+        <Toolbar tabbar icons bottom>
           <Link
             tabLink="#tab-timeline"
             tabLinkActive

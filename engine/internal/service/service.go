@@ -37,4 +37,3 @@ func New(store storage.Repository) (*CycleTrackerService, error) {
 	}
 	return &CycleTrackerService{store: store, validator: v}, nil
 }
-
