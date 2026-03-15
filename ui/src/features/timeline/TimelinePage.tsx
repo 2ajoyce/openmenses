@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Page, Navbar, Block, Chip } from "framework7-react";
 import type { Router } from "framework7/types";
 import type { TimelineRecord } from "@gen/openmenses/v1/service_pb";
@@ -6,6 +6,7 @@ import { client, DEFAULT_PARENT } from "../../lib/client";
 import { toLocalDate, daysAgo } from "../../lib/dates";
 import { TimelineItem } from "./TimelineItem";
 import { EmptyState } from "../../components/EmptyState";
+import { DateTimePicker } from "../../components/DateTimePicker";
 
 type FilterType =
   | "bleedingObservation"
@@ -31,41 +32,69 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
   const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(
     new Set(),
   );
+  const [medicationNames, setMedicationNames] = useState<
+    Record<string, string>
+  >({});
+  const [startDate, setStartDate] = useState(() => daysAgo(30));
+  const [endDate, setEndDate] = useState(() => new Date());
+  const loadingMoreRef = useRef(false);
 
-  const fetchTimeline = useCallback(async (pageToken = "") => {
+  const fetchMedicationNames = useCallback(async () => {
     try {
-      const res = await client.listTimeline({
+      const res = await client.listMedications({
         parent: DEFAULT_PARENT,
-        range: {
-          start: toLocalDate(daysAgo(30)),
-          end: toLocalDate(new Date()),
-        },
-        pagination: { pageSize: 50, pageToken },
+        pagination: { pageSize: 100, pageToken: "" },
       });
-
-      if (pageToken) {
-        setRecords((prev) => [...prev, ...res.records]);
-      } else {
-        setRecords(res.records);
+      const lookup: Record<string, string> = {};
+      for (const med of res.medications) {
+        lookup[med.name] = med.displayName;
       }
-      setNextPageToken(res.pagination?.nextPageToken ?? "");
-    } catch (err) {
-      console.error("Failed to fetch timeline:", err);
-    } finally {
-      setLoading(false);
+      setMedicationNames(lookup);
+    } catch {
+      // Non-critical: cards fall back to "Medication"
     }
   }, []);
 
+  const fetchTimeline = useCallback(
+    async (pageToken = "") => {
+      try {
+        const res = await client.listTimeline({
+          parent: DEFAULT_PARENT,
+          range: {
+            start: toLocalDate(startDate),
+            end: toLocalDate(endDate),
+          },
+          pagination: { pageSize: 50, pageToken },
+        });
+
+        if (pageToken) {
+          setRecords((prev) => [...prev, ...res.records]);
+        } else {
+          setRecords(res.records);
+        }
+        setNextPageToken(res.pagination?.nextPageToken ?? "");
+      } catch (err) {
+        console.error("Failed to fetch timeline:", err);
+      } finally {
+        setLoading(false);
+        loadingMoreRef.current = false;
+      }
+    },
+    [startDate, endDate],
+  );
+
   useEffect(() => {
     fetchTimeline();
-  }, [fetchTimeline]);
+    fetchMedicationNames();
+  }, [fetchTimeline, fetchMedicationNames]);
 
   function handleRefresh(done: () => void) {
-    fetchTimeline().then(done);
+    Promise.all([fetchTimeline(), fetchMedicationNames()]).then(done);
   }
 
   function loadMore() {
-    if (nextPageToken) {
+    if (nextPageToken && !loadingMoreRef.current) {
+      loadingMoreRef.current = true;
       fetchTimeline(nextPageToken);
     }
   }
@@ -85,9 +114,14 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
   const filteredRecords =
     activeFilters.size === 0
       ? records
-      : records.filter((r) =>
-          activeFilters.has(r.record.case as FilterType),
-        );
+      : records.filter((r) => {
+          const c = r.record.case;
+          if (activeFilters.has(c as FilterType)) return true;
+          // "Medication" chip also shows medication resource records
+          if (c === "medication" && activeFilters.has("medicationEvent"))
+            return true;
+          return false;
+        });
 
   return (
     <Page
@@ -99,6 +133,22 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
       infinitePreloader={Boolean(nextPageToken)}
     >
       <Navbar title="Timeline" />
+
+      <Block
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "8px",
+          paddingBottom: 0,
+        }}
+      >
+        <DateTimePicker
+          label="From"
+          value={startDate}
+          onChange={setStartDate}
+        />
+        <DateTimePicker label="To" value={endDate} onChange={setEndDate} />
+      </Block>
 
       <Block
         style={{
@@ -127,10 +177,11 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
         />
       )}
 
-      {filteredRecords.map((record, i) => (
+      {filteredRecords.map((record) => (
         <TimelineItem
-          key={`${record.record.case}-${i}`}
+          key={`${record.record.case}-${record.record.value?.name}`}
           record={record}
+          medicationNames={medicationNames}
           onNavigateEdit={(path) => f7router.navigate(path)}
           onDeleted={() => fetchTimeline()}
         />

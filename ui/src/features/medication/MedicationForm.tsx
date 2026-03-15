@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Page, Navbar, List, ListInput, Button, BlockTitle } from "framework7-react";
+import { Page, Navbar, List, ListInput, Button, BlockTitle, f7 } from "framework7-react";
 import type { Router } from "framework7/types";
 import { create } from "@bufbuild/protobuf";
 import { MedicationCategory, MedicationSchema } from "@gen/openmenses/v1/model_pb";
@@ -37,7 +37,13 @@ const MedicationForm: React.FC<MedicationFormProps> = ({
             setNote(med.note);
           }
         })
-        .catch(console.error);
+        .catch((err) => {
+          console.error("Failed to fetch medication:", err);
+          f7.dialog.alert(
+            err instanceof Error ? err.message : "Failed to load medication",
+            "Error",
+          );
+        });
     }
   }, [medicationName]);
 
@@ -48,6 +54,7 @@ const MedicationForm: React.FC<MedicationFormProps> = ({
       if (isEdit && medicationName) {
         const medication = create(MedicationSchema, {
           name: medicationName,
+          userId: DEFAULT_PARENT,
           displayName,
           category: category as MedicationCategory,
           note,
@@ -73,6 +80,10 @@ const MedicationForm: React.FC<MedicationFormProps> = ({
       f7router.back();
     } catch (err) {
       console.error("Failed to save medication:", err);
+      f7.dialog.alert(
+        err instanceof Error ? err.message : "An unexpected error occurred",
+        "Error",
+      );
     } finally {
       setSubmitting(false);
     }

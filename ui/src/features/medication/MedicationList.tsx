@@ -7,13 +7,13 @@ import {
   Button,
   SwipeoutActions,
   SwipeoutButton,
+  f7,
 } from "framework7-react";
 import type { Router } from "framework7/types";
 import type { Medication } from "@gen/openmenses/v1/model_pb";
 import { client, DEFAULT_PARENT } from "../../lib/client";
 import { medicationCategoryLabel } from "../../lib/enums";
 import { EmptyState } from "../../components/EmptyState";
-import { ConfirmDialog } from "../../components/ConfirmDialog";
 
 interface MedicationListProps {
   f7router: Router.Router;
@@ -22,7 +22,6 @@ interface MedicationListProps {
 const MedicationList: React.FC<MedicationListProps> = ({ f7router }) => {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [loading, setLoading] = useState(true);
-  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
   const fetchMedications = useCallback(async () => {
     try {
@@ -33,6 +32,10 @@ const MedicationList: React.FC<MedicationListProps> = ({ f7router }) => {
       setMedications(res.medications);
     } catch (err) {
       console.error("Failed to fetch medications:", err);
+      f7.dialog.alert(
+        err instanceof Error ? err.message : "Failed to load medications",
+        "Error",
+      );
     } finally {
       setLoading(false);
     }
@@ -41,17 +44,6 @@ const MedicationList: React.FC<MedicationListProps> = ({ f7router }) => {
   useEffect(() => {
     fetchMedications();
   }, [fetchMedications]);
-
-  async function handleDelete() {
-    if (!deleteTarget) return;
-    try {
-      await client.deleteMedication({ name: deleteTarget });
-      await fetchMedications();
-    } catch (err) {
-      console.error("Failed to delete medication:", err);
-    }
-    setDeleteTarget(null);
-  }
 
   async function handleToggleActive(med: Medication) {
     try {
@@ -62,6 +54,10 @@ const MedicationList: React.FC<MedicationListProps> = ({ f7router }) => {
       await fetchMedications();
     } catch (err) {
       console.error("Failed to update medication:", err);
+      f7.dialog.alert(
+        err instanceof Error ? err.message : "Failed to update medication",
+        "Error",
+      );
     }
   }
 
@@ -110,7 +106,16 @@ const MedicationList: React.FC<MedicationListProps> = ({ f7router }) => {
                   client
                     .deleteMedication({ name: med.name })
                     .then(fetchMedications)
-                    .catch(console.error);
+                    .catch((err) => {
+                      console.error("Failed to delete medication:", err);
+                      f7.dialog.alert(
+                        err instanceof Error
+                          ? err.message
+                          : "Failed to delete medication",
+                        "Error",
+                      );
+                      fetchMedications();
+                    });
                 }}
               >
                 Delete
@@ -130,14 +135,6 @@ const MedicationList: React.FC<MedicationListProps> = ({ f7router }) => {
           Add Medication
         </Button>
       </div>
-
-      <ConfirmDialog
-        open={deleteTarget !== null}
-        title="Delete Medication"
-        message="Are you sure? This will also remove all related events."
-        onConfirm={handleDelete}
-        onCancel={() => setDeleteTarget(null)}
-      />
     </Page>
   );
 };

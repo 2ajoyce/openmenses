@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Page, Navbar, List, Button, BlockTitle } from "framework7-react";
+import { Page, Navbar, List, Button, BlockTitle, f7 } from "framework7-react";
 import type { Router } from "framework7/types";
 import { create } from "@bufbuild/protobuf";
 import { SymptomType, SymptomSeverity } from "@gen/openmenses/v1/model_pb";
@@ -37,7 +37,13 @@ const SymptomForm: React.FC<SymptomFormProps> = ({ f7router, name }) => {
             setNote(obs.note);
           }
         })
-        .catch(console.error);
+        .catch((err) => {
+          console.error("Failed to fetch symptom observation:", err);
+          f7.dialog.alert(
+            err instanceof Error ? err.message : "Failed to load observation",
+            "Error",
+          );
+        });
     }
   }, [name]);
 
@@ -53,6 +59,7 @@ const SymptomForm: React.FC<SymptomFormProps> = ({ f7router, name }) => {
 
       if (isEdit && name) {
         observation.name = name;
+        observation.userId = DEFAULT_PARENT;
         await client.updateSymptomObservation({
           observation,
           updateMask: { paths: ["timestamp", "symptom", "severity", "note"] },
@@ -67,6 +74,10 @@ const SymptomForm: React.FC<SymptomFormProps> = ({ f7router, name }) => {
       f7router.back();
     } catch (err) {
       console.error("Failed to save symptom observation:", err);
+      f7.dialog.alert(
+        err instanceof Error ? err.message : "An unexpected error occurred",
+        "Error",
+      );
     } finally {
       setSubmitting(false);
     }

@@ -8,12 +8,14 @@ import { MedicationEventCard } from "../medication/MedicationEventCard";
 
 interface TimelineItemProps {
   record: TimelineRecord;
+  medicationNames?: Record<string, string>;
   onNavigateEdit: (path: string) => void;
   onDeleted: () => void;
 }
 
 export const TimelineItem: React.FC<TimelineItemProps> = ({
   record,
+  medicationNames,
   onNavigateEdit,
   onDeleted,
 }) => {
@@ -54,6 +56,9 @@ export const TimelineItem: React.FC<TimelineItemProps> = ({
       return (
         <MedicationEventCard
           event={record.record.value}
+          {...(medicationNames?.[record.record.value.medicationId] != null
+            ? { medicationName: medicationNames[record.record.value.medicationId] }
+            : {})}
           onEdit={(name) =>
             onNavigateEdit(
               `/log/medication/?name=${encodeURIComponent(name)}`,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Page, Navbar, List, Button, BlockTitle } from "framework7-react";
+import { Page, Navbar, List, Button, BlockTitle, f7 } from "framework7-react";
 import type { Router } from "framework7/types";
 import { create } from "@bufbuild/protobuf";
 import { MoodType, MoodIntensity } from "@gen/openmenses/v1/model_pb";
@@ -37,7 +37,13 @@ const MoodForm: React.FC<MoodFormProps> = ({ f7router, name }) => {
             setNote(obs.note);
           }
         })
-        .catch(console.error);
+        .catch((err) => {
+          console.error("Failed to fetch mood observation:", err);
+          f7.dialog.alert(
+            err instanceof Error ? err.message : "Failed to load observation",
+            "Error",
+          );
+        });
     }
   }, [name]);
 
@@ -53,6 +59,7 @@ const MoodForm: React.FC<MoodFormProps> = ({ f7router, name }) => {
 
       if (isEdit && name) {
         observation.name = name;
+        observation.userId = DEFAULT_PARENT;
         await client.updateMoodObservation({
           observation,
           updateMask: { paths: ["timestamp", "mood", "intensity", "note"] },
@@ -67,6 +74,10 @@ const MoodForm: React.FC<MoodFormProps> = ({ f7router, name }) => {
       f7router.back();
     } catch (err) {
       console.error("Failed to save mood observation:", err);
+      f7.dialog.alert(
+        err instanceof Error ? err.message : "An unexpected error occurred",
+        "Error",
+      );
     } finally {
       setSubmitting(false);
     }

@@ -6,6 +6,7 @@ import {
   ListInput,
   Button,
   BlockTitle,
+  f7,
 } from "framework7-react";
 import type { Router } from "framework7/types";
 import { create } from "@bufbuild/protobuf";
@@ -48,11 +49,17 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
       .then((res) => {
         const active = res.medications.filter((m) => m.active);
         setMedications(active);
-        if (active.length > 0 && !medicationId) {
+        if (active.length > 0 && !name && !medicationId) {
           setMedicationId(active[0]!.name);
         }
       })
-      .catch(console.error);
+      .catch((err) => {
+        console.error("Failed to fetch medications:", err);
+        f7.dialog.alert(
+          err instanceof Error ? err.message : "Failed to load medications",
+          "Error",
+        );
+      });
   }, []);
 
   useEffect(() => {
@@ -69,7 +76,13 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
             setNote(evt.note);
           }
         })
-        .catch(console.error);
+        .catch((err) => {
+          console.error("Failed to fetch medication event:", err);
+          f7.dialog.alert(
+            err instanceof Error ? err.message : "Failed to load event",
+            "Error",
+          );
+        });
     }
   }, [name]);
 
@@ -78,7 +91,7 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
     setSubmitting(true);
     try {
       const event = create(MedicationEventSchema, {
-        medicationId: extractMedicationId(medicationId),
+        medicationId,
         timestamp: toDateTime(timestamp),
         status: status as MedicationEventStatus,
         dose,
@@ -87,6 +100,7 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
 
       if (isEdit && name) {
         event.name = name;
+        event.userId = DEFAULT_PARENT;
         await client.updateMedicationEvent({
           event,
           updateMask: {
@@ -95,7 +109,7 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
         });
       } else {
         await client.createMedicationEvent({
-          parent: medicationId,
+          parent: DEFAULT_PARENT,
           event,
         });
       }
@@ -103,6 +117,10 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
       f7router.back();
     } catch (err) {
       console.error("Failed to save medication event:", err);
+      f7.dialog.alert(
+        err instanceof Error ? err.message : "An unexpected error occurred",
+        "Error",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -120,6 +138,7 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
           label="Medication"
           type="select"
           value={medicationId}
+          disabled={isEdit}
           onInput={(e: React.ChangeEvent<HTMLSelectElement>) =>
             setMedicationId(e.target.value)
           }
@@ -170,10 +189,5 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
     </Page>
   );
 };
-
-function extractMedicationId(name: string): string {
-  const parts = name.split("/");
-  return parts[parts.length - 1] ?? name;
-}
 
 export default MedicationEventForm;
