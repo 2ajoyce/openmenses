@@ -1,6 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import React from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import TimelinePage from "../TimelinePage";
 
 const mockNavigate = vi.fn();
@@ -247,5 +246,130 @@ describe("TimelinePage", () => {
     expect(screen.getByText(/Yasmin/)).toBeInTheDocument();
     // Bleeding should be filtered out
     expect(screen.queryByText(/Light/)).not.toBeInTheDocument();
+  });
+
+  it("calls listTimeline only once for loadMore when in-flight guard is active", async () => {
+    let resolveFirst!: (value: unknown) => void;
+    const firstPagePromise = new Promise((resolve) => {
+      resolveFirst = resolve;
+    });
+
+    mockListTimeline
+      .mockReturnValueOnce(
+        firstPagePromise.then(() => ({
+          records: [bleedingRecord],
+          pagination: { nextPageToken: "token-1" },
+        })),
+      )
+      .mockResolvedValue({
+        records: [],
+        pagination: { nextPageToken: "" },
+      });
+
+    render(<TimelinePage f7router={mockRouter} />);
+
+    // Wait for initial fetch to complete (first call returns with nextPageToken)
+    resolveFirst(undefined);
+    await waitFor(() => {
+      expect(mockListTimeline).toHaveBeenCalledTimes(1);
+    });
+
+    // initial fetch resolves with nextPageToken, so loadMore can now be called
+    await waitFor(() => {
+      expect(screen.getByTestId("trigger-infinite")).toBeInTheDocument();
+    });
+
+    // Block the second listTimeline call so the guard is active during both clicks
+    let resolveSecond!: (value: unknown) => void;
+    const secondPagePromise = new Promise((resolve) => {
+      resolveSecond = resolve;
+    });
+    mockListTimeline.mockReturnValueOnce(
+      secondPagePromise.then(() => ({
+        records: [],
+        pagination: { nextPageToken: "" },
+      })),
+    );
+
+    const triggerBtn = screen.getByTestId("trigger-infinite");
+    // Fire onInfinite twice before the second fetch resolves
+    fireEvent.click(triggerBtn);
+    fireEvent.click(triggerBtn);
+
+    // Resolve the second fetch
+    resolveSecond(undefined);
+
+    await waitFor(() => {
+      // Initial fetch + exactly one paginated fetch (guard blocked the duplicate)
+      expect(mockListTimeline).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("renders From and To date pickers", async () => {
+    mockListTimeline.mockResolvedValue({
+      records: [],
+      pagination: { nextPageToken: "" },
+    });
+
+    render(<TimelinePage f7router={mockRouter} />);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("From")).toBeInTheDocument();
+      expect(screen.getByLabelText("To")).toBeInTheDocument();
+    });
+  });
+
+  it("re-fetches timeline with updated range.start when start date changes", async () => {
+    mockListTimeline.mockResolvedValue({
+      records: [],
+      pagination: { nextPageToken: "" },
+    });
+
+    render(<TimelinePage f7router={mockRouter} />);
+
+    await waitFor(() => {
+      expect(mockListTimeline).toHaveBeenCalledTimes(1);
+    });
+
+    const fromInput = screen.getByLabelText("From");
+    fireEvent.change(fromInput, { target: { value: "2026-01-01T00:00" } });
+
+    await waitFor(() => {
+      expect(mockListTimeline).toHaveBeenCalledTimes(2);
+    });
+    expect(mockListTimeline).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        range: expect.objectContaining({
+          start: expect.objectContaining({ value: "2026-01-01" }),
+        }),
+      }),
+    );
+  });
+
+  it("re-fetches timeline with updated range.end when end date changes", async () => {
+    mockListTimeline.mockResolvedValue({
+      records: [],
+      pagination: { nextPageToken: "" },
+    });
+
+    render(<TimelinePage f7router={mockRouter} />);
+
+    await waitFor(() => {
+      expect(mockListTimeline).toHaveBeenCalledTimes(1);
+    });
+
+    const toInput = screen.getByLabelText("To");
+    fireEvent.change(toInput, { target: { value: "2026-04-01T00:00" } });
+
+    await waitFor(() => {
+      expect(mockListTimeline).toHaveBeenCalledTimes(2);
+    });
+    expect(mockListTimeline).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        range: expect.objectContaining({
+          end: expect.objectContaining({ value: "2026-04-01" }),
+        }),
+      }),
+    );
   });
 });

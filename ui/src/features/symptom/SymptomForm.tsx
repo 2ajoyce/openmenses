@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Page, Navbar, List, Button, BlockTitle, f7 } from "framework7-react";
-import type { Router } from "framework7/types";
 import { create } from "@bufbuild/protobuf";
-import { SymptomType, SymptomSeverity } from "@gen/openmenses/v1/model_pb";
-import { SymptomObservationSchema } from "@gen/openmenses/v1/model_pb";
-import { client, DEFAULT_PARENT } from "../../lib/client";
-import { toDateTime } from "../../lib/dates";
-import { symptomTypeOptions, symptomSeverityOptions } from "../../lib/enums";
+import {
+  SymptomObservationSchema,
+  SymptomSeverity,
+  SymptomType,
+} from "@gen/openmenses/v1/model_pb";
+import { BlockTitle, Button, f7, List, Navbar, Page } from "framework7-react";
+import type { Router } from "framework7/types";
+import React, { useEffect, useState } from "react";
 import { DateTimePicker } from "../../components/DateTimePicker";
 import { EnumSelector } from "../../components/EnumSelector";
 import { NotesField } from "../../components/NotesField";
+import { client, DEFAULT_PARENT } from "../../lib/client";
+import { toDateTime } from "../../lib/dates";
+import { symptomSeverityOptions, symptomTypeOptions } from "../../lib/enums";
 
 interface SymptomFormProps {
   f7router: Router.Router;
@@ -71,7 +74,7 @@ const SymptomForm: React.FC<SymptomFormProps> = ({ f7router, name }) => {
         });
       }
 
-      f7router.back();
+      f7.tab.show("#tab-timeline");
     } catch (err) {
       console.error("Failed to save symptom observation:", err);
       f7.dialog.alert(
@@ -85,14 +88,11 @@ const SymptomForm: React.FC<SymptomFormProps> = ({ f7router, name }) => {
 
   return (
     <Page>
-      <Navbar
-        title={isEdit ? "Edit Symptom" : "Log Symptom"}
-        backLink="Back"
-      />
+      <Navbar title={isEdit ? "Edit Symptom" : "Log Symptom"} backLink="Back" />
 
-      <List inset>
+      <div style={{ padding: "0 16px 8px" }}>
         <DateTimePicker value={timestamp} onChange={setTimestamp} />
-      </List>
+      </div>
 
       <BlockTitle>Symptom</BlockTitle>
       <EnumSelector

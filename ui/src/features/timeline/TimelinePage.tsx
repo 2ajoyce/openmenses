@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Page, Navbar, Block, Chip } from "framework7-react";
-import type { Router } from "framework7/types";
 import type { TimelineRecord } from "@gen/openmenses/v1/service_pb";
-import { client, DEFAULT_PARENT } from "../../lib/client";
-import { toLocalDate, daysAgo } from "../../lib/dates";
-import { TimelineItem } from "./TimelineItem";
-import { EmptyState } from "../../components/EmptyState";
+import { Block, Chip, f7, Navbar, Page } from "framework7-react";
+import type { Router } from "framework7/types";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { DateTimePicker } from "../../components/DateTimePicker";
+import { EmptyState } from "../../components/EmptyState";
+import { client, DEFAULT_PARENT } from "../../lib/client";
+import { daysAgo, toLocalDate } from "../../lib/dates";
+import { TimelineItem } from "./TimelineItem";
 
 type FilterType =
   | "bleedingObservation"
@@ -87,6 +87,18 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
     fetchTimeline();
     fetchMedicationNames();
   }, [fetchTimeline, fetchMedicationNames]);
+
+  useEffect(() => {
+    const handleTabShow = (tabEl: HTMLElement) => {
+      if (tabEl.id === "tab-timeline") {
+        fetchTimeline();
+      }
+    };
+    f7.on("tabShow", handleTabShow);
+    return () => {
+      f7.off("tabShow", handleTabShow);
+    };
+  }, [fetchTimeline]);
 
   function handleRefresh(done: () => void) {
     Promise.all([fetchTimeline(), fetchMedicationNames()]).then(done);

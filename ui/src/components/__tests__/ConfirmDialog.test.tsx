@@ -1,6 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render } from "@testing-library/react";
-import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ConfirmDialog } from "../ConfirmDialog";
 
 vi.mock("framework7-react");
@@ -94,5 +93,40 @@ describe("ConfirmDialog", () => {
     cancelCallback();
 
     expect(onCancel).toHaveBeenCalledTimes(1);
+  });
+
+  it("calls f7.dialog.confirm exactly once when open transitions from false to true", async () => {
+    const { f7 } = await import("framework7-react");
+    const confirmSpy = vi.spyOn(f7.dialog, "confirm");
+
+    const { rerender } = render(
+      <ConfirmDialog
+        open={false}
+        title="Delete"
+        message="Are you sure?"
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+      />,
+    );
+
+    expect(confirmSpy).not.toHaveBeenCalled();
+
+    rerender(
+      <ConfirmDialog
+        open={true}
+        title="Delete"
+        message="Are you sure?"
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+      />,
+    );
+
+    expect(confirmSpy).toHaveBeenCalledTimes(1);
+    expect(confirmSpy).toHaveBeenCalledWith(
+      "Are you sure?",
+      "Delete",
+      expect.any(Function),
+      expect.any(Function),
+    );
   });
 });
