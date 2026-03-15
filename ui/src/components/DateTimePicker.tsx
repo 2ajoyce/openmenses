@@ -15,15 +15,8 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   const formatted = formatForInput(value);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-      <label
-        htmlFor={id}
-        style={{
-          fontSize: "12px",
-          color: "var(--f7-label-text-color, #6b7280)",
-          fontWeight: 500,
-        }}
-      >
+    <div className="om-input-wrap">
+      <label htmlFor={id} className="om-input-label">
         {label}
       </label>
       <input
@@ -36,14 +29,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
             onChange(new Date(val));
           }
         }}
-        style={{
-          border: "1px solid var(--f7-input-outline-border-color, #c8c7cc)",
-          borderRadius: "8px",
-          padding: "6px 10px",
-          fontSize: "14px",
-          background: "var(--f7-input-bg-color, #fff)",
-          color: "var(--f7-input-text-color, inherit)",
-        }}
+        className="om-input"
       />
     </div>
   );

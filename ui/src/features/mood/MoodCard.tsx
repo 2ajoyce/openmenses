@@ -35,41 +35,36 @@ export const MoodCard: React.FC<MoodCardProps> = ({
 
   return (
     <>
-      <Card>
-        <CardHeader>
-          <span>
-            {moodTypeLabel(observation.mood)} —{" "}
-            {moodIntensityLabel(observation.intensity)}
-          </span>
-          <div style={{ display: "flex", gap: "8px" }}>
-            {onEdit && (
-              <Link onClick={() => onEdit(observation.name)}>Edit</Link>
+      <div className="mood-card">
+        <Card>
+          <CardHeader>
+            <span className="om-card-title">
+              {moodTypeLabel(observation.mood)} —{" "}
+              {moodIntensityLabel(observation.intensity)}
+            </span>
+            <div className="om-row">
+              {onEdit && (
+                <Link onClick={() => onEdit(observation.name)}>Edit</Link>
+              )}
+              <Link color="red" onClick={() => setConfirmDelete(true)}>
+                Delete
+              </Link>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {observation.timestamp && (
+              <p className="om-card-timestamp">
+                {formatDateTime(observation.timestamp)}
+              </p>
             )}
-            <Link color="red" onClick={() => setConfirmDelete(true)}>
-              Delete
-            </Link>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {observation.timestamp && (
-            <p>{formatDateTime(observation.timestamp)}</p>
-          )}
-          {observation.note && (
-            <p
-              style={{
-                opacity: 0.7,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-              }}
-            >
-              {observation.note}
-            </p>
-          )}
-        </CardContent>
-      </Card>
+            {observation.note && (
+              <p className="om-card-notes om-muted om-truncate-2">
+                {observation.note}
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
       <ConfirmDialog
         open={confirmDelete}
         title="Delete Observation"

@@ -1,22 +1,29 @@
 import React from "react";
-import { Block, Button } from "framework7-react";
+import { Block, Button, Icon } from "framework7-react";
 
 interface EmptyStateProps {
   message: string;
   actionLabel?: string;
   onAction?: () => void;
+  icon?: string;
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
   message,
   actionLabel,
   onAction,
+  icon,
 }) => {
   return (
-    <Block className="text-align-center" style={{ marginTop: "40px" }}>
-      <p style={{ color: "var(--f7-text-color)", opacity: 0.55 }}>{message}</p>
+    <Block className="om-empty-state">
+      {icon && (
+        <div className="om-empty-state-icon">
+          <Icon f7={icon} />
+        </div>
+      )}
+      <p className="om-empty-state-message">{message}</p>
       {actionLabel && onAction && (
-        <Button fill round onClick={onAction} style={{ marginTop: "16px" }}>
+        <Button fill round onClick={onAction}>
           {actionLabel}
         </Button>
       )}

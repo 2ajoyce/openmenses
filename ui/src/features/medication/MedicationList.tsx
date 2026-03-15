@@ -45,6 +45,18 @@ const MedicationList: React.FC<MedicationListProps> = ({ f7router }) => {
     fetchMedications();
   }, [fetchMedications]);
 
+  useEffect(() => {
+    const handleTabShow = (tabEl: HTMLElement) => {
+      if (tabEl.id === "tab-medications") {
+        fetchMedications();
+      }
+    };
+    f7.on("tabShow", handleTabShow);
+    return () => {
+      f7.off("tabShow", handleTabShow);
+    };
+  }, [fetchMedications]);
+
   async function handleToggleActive(med: Medication) {
     try {
       await client.updateMedication({

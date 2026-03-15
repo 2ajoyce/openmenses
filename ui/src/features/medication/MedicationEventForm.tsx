@@ -114,7 +114,7 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
         });
       }
 
-      f7.tab.show("#tab-timeline");
+      f7router.back();
     } catch (err) {
       console.error("Failed to save medication event:", err);
       f7.dialog.alert(

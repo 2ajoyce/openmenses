@@ -1,0 +1,384 @@
+/* ============================================================
+   OpenMenses Design Tokens & Utility Classes
+   All custom CSS lives here. No per-component CSS files.
+   ============================================================ */
+
+/* ============================================================
+   1. Design Tokens
+   ============================================================ */
+
+:root {
+  /* Brand Colors */
+  --om-color-primary: #2a9d8f;
+  --om-color-primary-light: #52b8ac;
+  --om-color-primary-dark: #1e7a6e;
+  --om-color-primary-rgb: 42, 157, 143;
+
+  /* Observation-Type Colors */
+  --om-color-bleeding: #e63946;
+  --om-color-symptom: #f4a261;
+  --om-color-mood: #8b5cf6;
+  --om-color-medication: #3b82f6;
+
+  /* Bleeding Flow Sub-Colors (spotting → heavy) */
+  --om-color-bleeding-spotting: #ffb6c1;
+  --om-color-bleeding-light: #ff8da1;
+  --om-color-bleeding-medium: #e74c6f;
+  --om-color-bleeding-heavy: #c62828;
+
+  /* Status Colors */
+  --om-color-success: #4caf50;
+  --om-color-warning: #ff9800;
+  --om-color-error: #f44336;
+
+  /* Surface Colors */
+  --om-color-card-bg: #ffffff;
+  --om-color-page-bg: #f2f2f7;
+
+  /* Spacing Scale */
+  --om-space-xs: 4px;
+  --om-space-sm: 8px;
+  --om-space-md: 16px;
+  --om-space-lg: 24px;
+  --om-space-xl: 32px;
+  --om-space-2xl: 48px;
+
+  /* Typography */
+  --om-font-size-xs: 11px;
+  --om-font-size-sm: 13px;
+  --om-font-size-base: 16px;
+  --om-font-size-lg: 20px;
+  --om-font-weight-normal: 400;
+  --om-font-weight-medium: 500;
+  --om-font-weight-bold: 600;
+
+  /* Border Radii */
+  --om-radius-sm: 4px;
+  --om-radius-md: 8px;
+  --om-radius-lg: 12px;
+  --om-radius-pill: 9999px;
+
+  /* Framework7 Theme Overrides */
+  --f7-theme-color: var(--om-color-primary);
+  --f7-theme-color-rgb: var(--om-color-primary-rgb);
+
+  /* Pull-to-refresh brand color */
+  --f7-ptr-preloader-color: var(--om-color-primary);
+}
+
+/* Dark Mode Overrides */
+:root .dark,
+:root.dark {
+  --om-color-card-bg: #1c1c1e;
+  --om-color-page-bg: #000000;
+
+  /* Lighten observation colors for dark backgrounds */
+  --om-color-bleeding: #ff6b7a;
+  --om-color-symptom: #ffb347;
+  --om-color-mood: #a78bfa;
+  --om-color-medication: #60a5fa;
+
+  --om-color-bleeding-spotting: #ffc0cb;
+  --om-color-bleeding-light: #ff9fb0;
+  --om-color-bleeding-medium: #f06080;
+  --om-color-bleeding-heavy: #e05050;
+
+  --om-color-success: #66bb6a;
+  --om-color-warning: #ffa726;
+  --om-color-error: #ef5350;
+}
+
+/* ============================================================
+   2. Utility Classes
+   ============================================================ */
+
+/* Flex row with centered items */
+.om-row {
+  display: flex;
+  align-items: center;
+  gap: var(--om-space-sm);
+}
+
+/* Flex row with space-between */
+.om-row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--om-space-sm);
+}
+
+/* Flex column */
+.om-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--om-space-xs);
+}
+
+/* Single-line text truncation */
+.om-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Two-line clamp */
+.om-truncate-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Colored indicator dot */
+.om-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+  background-color: #ccc;
+}
+
+/* Muted / secondary text */
+.om-muted {
+  opacity: 0.6;
+}
+
+/* Horizontal padding matching Framework7 content areas */
+.om-section-pad {
+  padding: 0 var(--om-space-md);
+}
+
+/* ============================================================
+   3. Input Styling (DateTimePicker)
+   ============================================================ */
+
+.om-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--om-space-xs);
+}
+
+.om-input-label {
+  font-size: var(--om-font-size-sm);
+  color: var(--f7-label-text-color, #6b7280);
+  font-weight: var(--om-font-weight-medium);
+}
+
+.om-input {
+  border: 1px solid var(--f7-input-outline-border-color, #c8c7cc);
+  border-radius: var(--om-radius-md);
+  padding: var(--om-space-xs) var(--om-space-sm);
+  font-size: var(--om-font-size-sm);
+  background: var(--f7-input-bg-color, #fff);
+  color: var(--f7-input-text-color, inherit);
+}
+
+/* ============================================================
+   4. Timeline Cards — Shared Styles
+   ============================================================ */
+
+/* Card title line */
+.om-card-title {
+  font-weight: var(--om-font-weight-medium);
+  font-size: var(--om-font-size-base);
+}
+
+/* Card timestamp */
+.om-card-timestamp {
+  font-size: var(--om-font-size-sm);
+  opacity: 0.6;
+  margin: 0;
+}
+
+/* Card notes */
+.om-card-notes {
+  font-size: var(--om-font-size-sm);
+  margin: 0;
+}
+
+/* ============================================================
+   5. Card Accent Colors (Left Border)
+   ============================================================ */
+
+.bleeding-card .card {
+  border-left: 3px solid var(--om-color-bleeding);
+}
+
+.symptom-card .card {
+  border-left: 3px solid var(--om-color-symptom);
+}
+
+.mood-card .card {
+  border-left: 3px solid var(--om-color-mood);
+}
+
+.medication-event-card .card {
+  border-left: 3px solid var(--om-color-medication);
+}
+
+.medication-card .card {
+  border-left: 3px solid var(--om-color-medication);
+}
+
+/* ============================================================
+   6. Bleeding Card — Flow Indicator Dot Colors
+   ============================================================ */
+
+.bleeding-card .om-dot[data-flow="1"] {
+  background-color: var(--om-color-bleeding-spotting);
+}
+
+.bleeding-card .om-dot[data-flow="2"] {
+  background-color: var(--om-color-bleeding-light);
+}
+
+.bleeding-card .om-dot[data-flow="3"] {
+  background-color: var(--om-color-bleeding-medium);
+}
+
+.bleeding-card .om-dot[data-flow="4"] {
+  background-color: var(--om-color-bleeding-heavy);
+}
+
+/* ============================================================
+   7. Medication Status Badge
+   ============================================================ */
+
+.medication-status-active {
+  color: var(--om-color-success);
+  font-weight: var(--om-font-weight-medium);
+}
+
+/* Inactive uses .om-muted — no additional rule needed */
+
+/* ============================================================
+   8. Filter Chips (Timeline)
+   Inactive: outlined with observation-type color
+   Active: filled with observation-type color
+   ============================================================ */
+
+.chip.om-chip-bleeding {
+  background-color: transparent;
+  color: var(--om-color-bleeding);
+  box-shadow: 0 0 0 1px var(--om-color-bleeding);
+}
+
+.chip.om-chip-bleeding.om-chip-active {
+  background-color: var(--om-color-bleeding);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.chip.om-chip-symptom {
+  background-color: transparent;
+  color: var(--om-color-symptom);
+  box-shadow: 0 0 0 1px var(--om-color-symptom);
+}
+
+.chip.om-chip-symptom.om-chip-active {
+  background-color: var(--om-color-symptom);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.chip.om-chip-mood {
+  background-color: transparent;
+  color: var(--om-color-mood);
+  box-shadow: 0 0 0 1px var(--om-color-mood);
+}
+
+.chip.om-chip-mood.om-chip-active {
+  background-color: var(--om-color-mood);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.chip.om-chip-medication {
+  background-color: transparent;
+  color: var(--om-color-medication);
+  box-shadow: 0 0 0 1px var(--om-color-medication);
+}
+
+.chip.om-chip-medication.om-chip-active {
+  background-color: var(--om-color-medication);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+/* ============================================================
+   9. Empty State
+   ============================================================ */
+
+.om-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--om-space-2xl) var(--om-space-md);
+  text-align: center;
+}
+
+.om-empty-state-icon {
+  font-size: 48px;
+  margin-bottom: var(--om-space-md);
+  opacity: 0.4;
+}
+
+.om-empty-state-message {
+  font-size: var(--om-font-size-lg);
+  opacity: 0.55;
+  margin-bottom: var(--om-space-md);
+}
+
+/* ============================================================
+   10. Log Chooser Page — Observation Type Icon Colors
+   ============================================================ */
+
+.log-chooser-icon-bleeding {
+  color: var(--om-color-bleeding);
+}
+
+.log-chooser-icon-symptom {
+  color: var(--om-color-symptom);
+}
+
+.log-chooser-icon-mood {
+  color: var(--om-color-mood);
+}
+
+.log-chooser-icon-medication {
+  color: var(--om-color-medication);
+}
+
+/* ============================================================
+   11. Settings Page
+   ============================================================ */
+
+.settings-app-name {
+  font-size: var(--om-font-size-lg);
+  font-weight: var(--om-font-weight-bold);
+  margin: 0 0 var(--om-space-xs);
+}
+
+/* ============================================================
+   12. EnumSelector Options Row
+   ============================================================ */
+
+.enum-selector-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--om-space-sm);
+  padding: 0 var(--om-space-md);
+}
+
+/* ============================================================
+   13. Timeline Controls (date pickers + filter chips row)
+   ============================================================ */
+
+.timeline-control-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--om-space-sm);
+  padding-bottom: 0;
+}

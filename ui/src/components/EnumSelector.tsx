@@ -24,14 +24,7 @@ export const EnumSelector: React.FC<EnumSelectorProps> = ({
       {label && (
         <div className="enum-selector-label block-title">{label}</div>
       )}
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "8px",
-          padding: "0 16px",
-        }}
-      >
+      <div className="enum-selector-options">
         {options.map((opt) => (
           <Button
             key={opt.value}

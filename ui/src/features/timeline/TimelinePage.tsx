@@ -14,12 +14,13 @@ type FilterType =
   | "moodObservation"
   | "medicationEvent";
 
-const FILTER_OPTIONS: { key: FilterType; label: string }[] = [
-  { key: "bleedingObservation", label: "Bleeding" },
-  { key: "symptomObservation", label: "Symptoms" },
-  { key: "moodObservation", label: "Mood" },
-  { key: "medicationEvent", label: "Medication" },
-];
+const FILTER_OPTIONS: { key: FilterType; label: string; chipClass: string }[] =
+  [
+    { key: "bleedingObservation", label: "Bleeding", chipClass: "bleeding" },
+    { key: "symptomObservation", label: "Symptoms", chipClass: "symptom" },
+    { key: "moodObservation", label: "Mood", chipClass: "mood" },
+    { key: "medicationEvent", label: "Medication", chipClass: "medication" },
+  ];
 
 interface TimelinePageProps {
   f7router: Router.Router;
@@ -146,14 +147,7 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
     >
       <Navbar title="Timeline" />
 
-      <Block
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "8px",
-          paddingBottom: 0,
-        }}
-      >
+      <Block className="timeline-control-row">
         <DateTimePicker
           label="From"
           value={startDate}
@@ -162,20 +156,12 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
         <DateTimePicker label="To" value={endDate} onChange={setEndDate} />
       </Block>
 
-      <Block
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "8px",
-          paddingBottom: 0,
-        }}
-      >
-        {FILTER_OPTIONS.map(({ key, label }) => (
+      <Block className="timeline-control-row">
+        {FILTER_OPTIONS.map(({ key, label, chipClass }) => (
           <Chip
             key={key}
             text={label}
-            {...(activeFilters.has(key) ? { mediaBgColor: "primary" } : {})}
-            outline={!activeFilters.has(key)}
+            className={`om-chip-${chipClass}${activeFilters.has(key) ? " om-chip-active" : ""}`}
             onClick={() => toggleFilter(key)}
           />
         ))}

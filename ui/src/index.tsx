@@ -2,6 +2,7 @@ import Framework7 from "framework7/bundle";
 import "framework7-icons/css/framework7-icons.css";
 import Framework7React from "framework7-react";
 import "framework7/css/bundle";
+import "./app/theme.css";
 import { createRoot } from "react-dom/client";
 import App from "./app/App";
 

@@ -9,6 +9,11 @@ export const f7 = {
   toast: {
     create: () => ({ open: () => {} }),
   },
+  on: (..._args: unknown[]) => {},
+  off: (..._args: unknown[]) => {},
+  tab: {
+    show: (..._args: unknown[]) => {},
+  },
 };
 
 export const App = ({ children }: any) => <div>{children}</div>;
@@ -118,3 +123,4 @@ export const SwipeoutActions = ({ children }: any) => <div>{children}</div>;
 export const SwipeoutButton = ({ children, onClick }: any) => (
   <button onClick={onClick}>{children}</button>
 );
+export const Icon = ({ f7: _f7 }: any) => <span data-icon={_f7} />;
