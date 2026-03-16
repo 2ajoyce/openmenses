@@ -1655,6 +1655,90 @@ func (x *Cycle) GetSource() CycleSource {
 	return CycleSource_CYCLE_SOURCE_UNSPECIFIED
 }
 
+type CycleStatistics struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Count         int32                  `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+	Average       float64                `protobuf:"fixed64,2,opt,name=average,proto3" json:"average,omitempty"`
+	Median        float64                `protobuf:"fixed64,3,opt,name=median,proto3" json:"median,omitempty"`
+	Min           int32                  `protobuf:"varint,4,opt,name=min,proto3" json:"min,omitempty"`
+	Max           int32                  `protobuf:"varint,5,opt,name=max,proto3" json:"max,omitempty"`
+	StdDev        float64                `protobuf:"fixed64,6,opt,name=std_dev,json=stdDev,proto3" json:"std_dev,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CycleStatistics) Reset() {
+	*x = CycleStatistics{}
+	mi := &file_openmenses_v1_model_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CycleStatistics) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CycleStatistics) ProtoMessage() {}
+
+func (x *CycleStatistics) ProtoReflect() protoreflect.Message {
+	mi := &file_openmenses_v1_model_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CycleStatistics.ProtoReflect.Descriptor instead.
+func (*CycleStatistics) Descriptor() ([]byte, []int) {
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *CycleStatistics) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+func (x *CycleStatistics) GetAverage() float64 {
+	if x != nil {
+		return x.Average
+	}
+	return 0
+}
+
+func (x *CycleStatistics) GetMedian() float64 {
+	if x != nil {
+		return x.Median
+	}
+	return 0
+}
+
+func (x *CycleStatistics) GetMin() int32 {
+	if x != nil {
+		return x.Min
+	}
+	return 0
+}
+
+func (x *CycleStatistics) GetMax() int32 {
+	if x != nil {
+		return x.Max
+	}
+	return 0
+}
+
+func (x *CycleStatistics) GetStdDev() float64 {
+	if x != nil {
+		return x.StdDev
+	}
+	return 0
+}
+
 type PhaseEstimate struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Name              string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -1669,7 +1753,7 @@ type PhaseEstimate struct {
 
 func (x *PhaseEstimate) Reset() {
 	*x = PhaseEstimate{}
-	mi := &file_openmenses_v1_model_proto_msgTypes[7]
+	mi := &file_openmenses_v1_model_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1681,7 +1765,7 @@ func (x *PhaseEstimate) String() string {
 func (*PhaseEstimate) ProtoMessage() {}
 
 func (x *PhaseEstimate) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_model_proto_msgTypes[7]
+	mi := &file_openmenses_v1_model_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1694,7 +1778,7 @@ func (x *PhaseEstimate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PhaseEstimate.ProtoReflect.Descriptor instead.
 func (*PhaseEstimate) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{7}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *PhaseEstimate) GetName() string {
@@ -1754,7 +1838,7 @@ type Prediction struct {
 
 func (x *Prediction) Reset() {
 	*x = Prediction{}
-	mi := &file_openmenses_v1_model_proto_msgTypes[8]
+	mi := &file_openmenses_v1_model_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1766,7 +1850,7 @@ func (x *Prediction) String() string {
 func (*Prediction) ProtoMessage() {}
 
 func (x *Prediction) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_model_proto_msgTypes[8]
+	mi := &file_openmenses_v1_model_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1779,7 +1863,7 @@ func (x *Prediction) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Prediction.ProtoReflect.Descriptor instead.
 func (*Prediction) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{8}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *Prediction) GetName() string {
@@ -1845,7 +1929,7 @@ type Insight struct {
 
 func (x *Insight) Reset() {
 	*x = Insight{}
-	mi := &file_openmenses_v1_model_proto_msgTypes[9]
+	mi := &file_openmenses_v1_model_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1857,7 +1941,7 @@ func (x *Insight) String() string {
 func (*Insight) ProtoMessage() {}
 
 func (x *Insight) ProtoReflect() protoreflect.Message {
-	mi := &file_openmenses_v1_model_proto_msgTypes[9]
+	mi := &file_openmenses_v1_model_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1870,7 +1954,7 @@ func (x *Insight) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Insight.ProtoReflect.Descriptor instead.
 func (*Insight) Descriptor() ([]byte, []int) {
-	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{9}
+	return file_openmenses_v1_model_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Insight) GetName() string {
@@ -1989,7 +2073,14 @@ const file_openmenses_v1_model_proto_rawDesc = "" +
 	"start_date\x18\x03 \x01(\v2\x18.openmenses.v1.LocalDateR\tstartDate\x123\n" +
 	"\bend_date\x18\x04 \x01(\v2\x18.openmenses.v1.LocalDateR\aendDate\x12<\n" +
 	"\x06source\x18\x05 \x01(\x0e2\x1a.openmenses.v1.CycleSourceB\b\xbaH\x05\x82\x01\x02\x10\x01R\x06source:2\xeaA/\n" +
-	"\x13openmenses.v1/Cycle\x12\x18users/{user}/cycles/{id}\"\x88\x03\n" +
+	"\x13openmenses.v1/Cycle\x12\x18users/{user}/cycles/{id}\"\x96\x01\n" +
+	"\x0fCycleStatistics\x12\x14\n" +
+	"\x05count\x18\x01 \x01(\x05R\x05count\x12\x18\n" +
+	"\aaverage\x18\x02 \x01(\x01R\aaverage\x12\x16\n" +
+	"\x06median\x18\x03 \x01(\x01R\x06median\x12\x10\n" +
+	"\x03min\x18\x04 \x01(\x05R\x03min\x12\x10\n" +
+	"\x03max\x18\x05 \x01(\x05R\x03max\x12\x17\n" +
+	"\astd_dev\x18\x06 \x01(\x01R\x06stdDev\"\x88\x03\n" +
 	"\rPhaseEstimate\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\auser_id\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x06userId\x12,\n" +
@@ -2168,7 +2259,7 @@ func file_openmenses_v1_model_proto_rawDescGZIP() []byte {
 }
 
 var file_openmenses_v1_model_proto_enumTypes = make([]protoimpl.EnumInfo, 18)
-var file_openmenses_v1_model_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_openmenses_v1_model_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_openmenses_v1_model_proto_goTypes = []any{
 	(BiologicalCycleModel)(0),   // 0: openmenses.v1.BiologicalCycleModel
 	(ContraceptionType)(0),      // 1: openmenses.v1.ContraceptionType
@@ -2195,12 +2286,13 @@ var file_openmenses_v1_model_proto_goTypes = []any{
 	(*Medication)(nil),          // 22: openmenses.v1.Medication
 	(*MedicationEvent)(nil),     // 23: openmenses.v1.MedicationEvent
 	(*Cycle)(nil),               // 24: openmenses.v1.Cycle
-	(*PhaseEstimate)(nil),       // 25: openmenses.v1.PhaseEstimate
-	(*Prediction)(nil),          // 26: openmenses.v1.Prediction
-	(*Insight)(nil),             // 27: openmenses.v1.Insight
-	(*DateTime)(nil),            // 28: openmenses.v1.DateTime
-	(*LocalDate)(nil),           // 29: openmenses.v1.LocalDate
-	(*RecordRef)(nil),           // 30: openmenses.v1.RecordRef
+	(*CycleStatistics)(nil),     // 25: openmenses.v1.CycleStatistics
+	(*PhaseEstimate)(nil),       // 26: openmenses.v1.PhaseEstimate
+	(*Prediction)(nil),          // 27: openmenses.v1.Prediction
+	(*Insight)(nil),             // 28: openmenses.v1.Insight
+	(*DateTime)(nil),            // 29: openmenses.v1.DateTime
+	(*LocalDate)(nil),           // 30: openmenses.v1.LocalDate
+	(*RecordRef)(nil),           // 31: openmenses.v1.RecordRef
 }
 var file_openmenses_v1_model_proto_depIdxs = []int32{
 	0,  // 0: openmenses.v1.UserProfile.biological_cycle:type_name -> openmenses.v1.BiologicalCycleModel
@@ -2209,30 +2301,30 @@ var file_openmenses_v1_model_proto_depIdxs = []int32{
 	3,  // 3: openmenses.v1.UserProfile.reproductive_goal:type_name -> openmenses.v1.ReproductiveGoal
 	4,  // 4: openmenses.v1.UserProfile.health_conditions:type_name -> openmenses.v1.HealthCondition
 	5,  // 5: openmenses.v1.UserProfile.tracking_focus:type_name -> openmenses.v1.TrackingFocus
-	28, // 6: openmenses.v1.BleedingObservation.timestamp:type_name -> openmenses.v1.DateTime
+	29, // 6: openmenses.v1.BleedingObservation.timestamp:type_name -> openmenses.v1.DateTime
 	6,  // 7: openmenses.v1.BleedingObservation.flow:type_name -> openmenses.v1.BleedingFlow
-	28, // 8: openmenses.v1.SymptomObservation.timestamp:type_name -> openmenses.v1.DateTime
+	29, // 8: openmenses.v1.SymptomObservation.timestamp:type_name -> openmenses.v1.DateTime
 	7,  // 9: openmenses.v1.SymptomObservation.symptom:type_name -> openmenses.v1.SymptomType
 	8,  // 10: openmenses.v1.SymptomObservation.severity:type_name -> openmenses.v1.SymptomSeverity
-	28, // 11: openmenses.v1.MoodObservation.timestamp:type_name -> openmenses.v1.DateTime
+	29, // 11: openmenses.v1.MoodObservation.timestamp:type_name -> openmenses.v1.DateTime
 	9,  // 12: openmenses.v1.MoodObservation.mood:type_name -> openmenses.v1.MoodType
 	10, // 13: openmenses.v1.MoodObservation.intensity:type_name -> openmenses.v1.MoodIntensity
 	11, // 14: openmenses.v1.Medication.category:type_name -> openmenses.v1.MedicationCategory
-	28, // 15: openmenses.v1.MedicationEvent.timestamp:type_name -> openmenses.v1.DateTime
+	29, // 15: openmenses.v1.MedicationEvent.timestamp:type_name -> openmenses.v1.DateTime
 	12, // 16: openmenses.v1.MedicationEvent.status:type_name -> openmenses.v1.MedicationEventStatus
-	29, // 17: openmenses.v1.Cycle.start_date:type_name -> openmenses.v1.LocalDate
-	29, // 18: openmenses.v1.Cycle.end_date:type_name -> openmenses.v1.LocalDate
+	30, // 17: openmenses.v1.Cycle.start_date:type_name -> openmenses.v1.LocalDate
+	30, // 18: openmenses.v1.Cycle.end_date:type_name -> openmenses.v1.LocalDate
 	13, // 19: openmenses.v1.Cycle.source:type_name -> openmenses.v1.CycleSource
-	29, // 20: openmenses.v1.PhaseEstimate.date:type_name -> openmenses.v1.LocalDate
+	30, // 20: openmenses.v1.PhaseEstimate.date:type_name -> openmenses.v1.LocalDate
 	14, // 21: openmenses.v1.PhaseEstimate.phase:type_name -> openmenses.v1.CyclePhase
 	15, // 22: openmenses.v1.PhaseEstimate.confidence:type_name -> openmenses.v1.ConfidenceLevel
-	30, // 23: openmenses.v1.PhaseEstimate.based_on_record_refs:type_name -> openmenses.v1.RecordRef
+	31, // 23: openmenses.v1.PhaseEstimate.based_on_record_refs:type_name -> openmenses.v1.RecordRef
 	16, // 24: openmenses.v1.Prediction.kind:type_name -> openmenses.v1.PredictionType
-	29, // 25: openmenses.v1.Prediction.predicted_start_date:type_name -> openmenses.v1.LocalDate
-	29, // 26: openmenses.v1.Prediction.predicted_end_date:type_name -> openmenses.v1.LocalDate
+	30, // 25: openmenses.v1.Prediction.predicted_start_date:type_name -> openmenses.v1.LocalDate
+	30, // 26: openmenses.v1.Prediction.predicted_end_date:type_name -> openmenses.v1.LocalDate
 	15, // 27: openmenses.v1.Prediction.confidence:type_name -> openmenses.v1.ConfidenceLevel
 	17, // 28: openmenses.v1.Insight.kind:type_name -> openmenses.v1.InsightType
-	30, // 29: openmenses.v1.Insight.evidence_record_refs:type_name -> openmenses.v1.RecordRef
+	31, // 29: openmenses.v1.Insight.evidence_record_refs:type_name -> openmenses.v1.RecordRef
 	15, // 30: openmenses.v1.Insight.confidence:type_name -> openmenses.v1.ConfidenceLevel
 	31, // [31:31] is the sub-list for method output_type
 	31, // [31:31] is the sub-list for method input_type
@@ -2253,7 +2345,7 @@ func file_openmenses_v1_model_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_openmenses_v1_model_proto_rawDesc), len(file_openmenses_v1_model_proto_rawDesc)),
 			NumEnums:      18,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

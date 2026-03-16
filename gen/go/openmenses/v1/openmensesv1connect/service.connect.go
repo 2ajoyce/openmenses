@@ -126,6 +126,9 @@ const (
 	// CycleTrackerServiceListCyclesProcedure is the fully-qualified name of the CycleTrackerService's
 	// ListCycles RPC.
 	CycleTrackerServiceListCyclesProcedure = "/openmenses.v1.CycleTrackerService/ListCycles"
+	// CycleTrackerServiceGetCycleStatisticsProcedure is the fully-qualified name of the
+	// CycleTrackerService's GetCycleStatistics RPC.
+	CycleTrackerServiceGetCycleStatisticsProcedure = "/openmenses.v1.CycleTrackerService/GetCycleStatistics"
 	// CycleTrackerServiceListPredictionsProcedure is the fully-qualified name of the
 	// CycleTrackerService's ListPredictions RPC.
 	CycleTrackerServiceListPredictionsProcedure = "/openmenses.v1.CycleTrackerService/ListPredictions"
@@ -173,6 +176,7 @@ type CycleTrackerServiceClient interface {
 	ListTimeline(context.Context, *connect.Request[v1.ListTimelineRequest]) (*connect.Response[v1.ListTimelineResponse], error)
 	GetCycle(context.Context, *connect.Request[v1.GetCycleRequest]) (*connect.Response[v1.GetCycleResponse], error)
 	ListCycles(context.Context, *connect.Request[v1.ListCyclesRequest]) (*connect.Response[v1.ListCyclesResponse], error)
+	GetCycleStatistics(context.Context, *connect.Request[v1.GetCycleStatisticsRequest]) (*connect.Response[v1.GetCycleStatisticsResponse], error)
 	ListPredictions(context.Context, *connect.Request[v1.ListPredictionsRequest]) (*connect.Response[v1.ListPredictionsResponse], error)
 	ListInsights(context.Context, *connect.Request[v1.ListInsightsRequest]) (*connect.Response[v1.ListInsightsResponse], error)
 	CreateDataExport(context.Context, *connect.Request[v1.CreateDataExportRequest]) (*connect.Response[v1.CreateDataExportResponse], error)
@@ -376,6 +380,12 @@ func NewCycleTrackerServiceClient(httpClient connect.HTTPClient, baseURL string,
 			connect.WithSchema(cycleTrackerServiceMethods.ByName("ListCycles")),
 			connect.WithClientOptions(opts...),
 		),
+		getCycleStatistics: connect.NewClient[v1.GetCycleStatisticsRequest, v1.GetCycleStatisticsResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceGetCycleStatisticsProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("GetCycleStatistics")),
+			connect.WithClientOptions(opts...),
+		),
 		listPredictions: connect.NewClient[v1.ListPredictionsRequest, v1.ListPredictionsResponse](
 			httpClient,
 			baseURL+CycleTrackerServiceListPredictionsProcedure,
@@ -436,6 +446,7 @@ type cycleTrackerServiceClient struct {
 	listTimeline              *connect.Client[v1.ListTimelineRequest, v1.ListTimelineResponse]
 	getCycle                  *connect.Client[v1.GetCycleRequest, v1.GetCycleResponse]
 	listCycles                *connect.Client[v1.ListCyclesRequest, v1.ListCyclesResponse]
+	getCycleStatistics        *connect.Client[v1.GetCycleStatisticsRequest, v1.GetCycleStatisticsResponse]
 	listPredictions           *connect.Client[v1.ListPredictionsRequest, v1.ListPredictionsResponse]
 	listInsights              *connect.Client[v1.ListInsightsRequest, v1.ListInsightsResponse]
 	createDataExport          *connect.Client[v1.CreateDataExportRequest, v1.CreateDataExportResponse]
@@ -597,6 +608,11 @@ func (c *cycleTrackerServiceClient) ListCycles(ctx context.Context, req *connect
 	return c.listCycles.CallUnary(ctx, req)
 }
 
+// GetCycleStatistics calls openmenses.v1.CycleTrackerService.GetCycleStatistics.
+func (c *cycleTrackerServiceClient) GetCycleStatistics(ctx context.Context, req *connect.Request[v1.GetCycleStatisticsRequest]) (*connect.Response[v1.GetCycleStatisticsResponse], error) {
+	return c.getCycleStatistics.CallUnary(ctx, req)
+}
+
 // ListPredictions calls openmenses.v1.CycleTrackerService.ListPredictions.
 func (c *cycleTrackerServiceClient) ListPredictions(ctx context.Context, req *connect.Request[v1.ListPredictionsRequest]) (*connect.Response[v1.ListPredictionsResponse], error) {
 	return c.listPredictions.CallUnary(ctx, req)
@@ -650,6 +666,7 @@ type CycleTrackerServiceHandler interface {
 	ListTimeline(context.Context, *connect.Request[v1.ListTimelineRequest]) (*connect.Response[v1.ListTimelineResponse], error)
 	GetCycle(context.Context, *connect.Request[v1.GetCycleRequest]) (*connect.Response[v1.GetCycleResponse], error)
 	ListCycles(context.Context, *connect.Request[v1.ListCyclesRequest]) (*connect.Response[v1.ListCyclesResponse], error)
+	GetCycleStatistics(context.Context, *connect.Request[v1.GetCycleStatisticsRequest]) (*connect.Response[v1.GetCycleStatisticsResponse], error)
 	ListPredictions(context.Context, *connect.Request[v1.ListPredictionsRequest]) (*connect.Response[v1.ListPredictionsResponse], error)
 	ListInsights(context.Context, *connect.Request[v1.ListInsightsRequest]) (*connect.Response[v1.ListInsightsResponse], error)
 	CreateDataExport(context.Context, *connect.Request[v1.CreateDataExportRequest]) (*connect.Response[v1.CreateDataExportResponse], error)
@@ -849,6 +866,12 @@ func NewCycleTrackerServiceHandler(svc CycleTrackerServiceHandler, opts ...conne
 		connect.WithSchema(cycleTrackerServiceMethods.ByName("ListCycles")),
 		connect.WithHandlerOptions(opts...),
 	)
+	cycleTrackerServiceGetCycleStatisticsHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceGetCycleStatisticsProcedure,
+		svc.GetCycleStatistics,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("GetCycleStatistics")),
+		connect.WithHandlerOptions(opts...),
+	)
 	cycleTrackerServiceListPredictionsHandler := connect.NewUnaryHandler(
 		CycleTrackerServiceListPredictionsProcedure,
 		svc.ListPredictions,
@@ -937,6 +960,8 @@ func NewCycleTrackerServiceHandler(svc CycleTrackerServiceHandler, opts ...conne
 			cycleTrackerServiceGetCycleHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceListCyclesProcedure:
 			cycleTrackerServiceListCyclesHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceGetCycleStatisticsProcedure:
+			cycleTrackerServiceGetCycleStatisticsHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceListPredictionsProcedure:
 			cycleTrackerServiceListPredictionsHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceListInsightsProcedure:
@@ -1076,6 +1101,10 @@ func (UnimplementedCycleTrackerServiceHandler) GetCycle(context.Context, *connec
 
 func (UnimplementedCycleTrackerServiceHandler) ListCycles(context.Context, *connect.Request[v1.ListCyclesRequest]) (*connect.Response[v1.ListCyclesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.ListCycles is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) GetCycleStatistics(context.Context, *connect.Request[v1.GetCycleStatisticsRequest]) (*connect.Response[v1.GetCycleStatisticsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.GetCycleStatistics is not implemented"))
 }
 
 func (UnimplementedCycleTrackerServiceHandler) ListPredictions(context.Context, *connect.Request[v1.ListPredictionsRequest]) (*connect.Response[v1.ListPredictionsResponse], error) {

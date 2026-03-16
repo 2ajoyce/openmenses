@@ -17,6 +17,7 @@ import MedicationEventForm from "../features/medication/MedicationEventForm";
 import MedicationList from "../features/medication/MedicationList";
 import MedicationForm from "../features/medication/MedicationForm";
 import SettingsPage from "../pages/SettingsPage";
+import CyclesPage from "../features/cycle/CyclesPage";
 
 const routes: Framework7Parameters["routes"] = [
   { path: "/", component: TimelinePage },
@@ -28,6 +29,7 @@ const routes: Framework7Parameters["routes"] = [
   { path: "/medications/", component: MedicationList },
   { path: "/medications/new/", component: MedicationForm },
   { path: "/medications/edit/", component: MedicationForm },
+  { path: "/cycles/", component: CyclesPage },
   { path: "/settings/", component: SettingsPage },
 ];
 
@@ -48,6 +50,7 @@ const App: React.FC = () => {
             text="Timeline"
             iconF7="clock"
           />
+          <Link tabLink="#tab-cycles" text="Cycles" iconF7="circle_grid_hex" />
           <Link tabLink="#tab-log" text="Log" iconF7="plus_circle" />
           <Link
             tabLink="#tab-medications"
@@ -64,6 +67,7 @@ const App: React.FC = () => {
           url="/"
           main
         />
+        <View id="tab-cycles" tab url="/cycles/" />
         <View id="tab-log" tab url="/log/" />
         <View id="tab-medications" tab url="/medications/" />
         <View id="tab-settings" tab url="/settings/" />

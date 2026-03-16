@@ -26,6 +26,19 @@
   --om-color-bleeding-medium: #e74c6f;
   --om-color-bleeding-heavy: #c62828;
 
+  /* Cycle & Phase Colors (color-blind safe: hue + lightness variation) */
+  --om-color-cycle: #7c3aed;
+  --om-color-phase-menstruation: #dc2626;
+  --om-color-phase-follicular: #06b6d4;
+  --om-color-phase-ovulation: #ec4899;
+  --om-color-phase-luteal: #f59e0b;
+  --om-color-phase: #9333ea;
+
+  /* Confidence Level Colors */
+  --om-color-confidence-low: #ef4444;
+  --om-color-confidence-medium: #f59e0b;
+  --om-color-confidence-high: #22c55e;
+
   /* Status Colors */
   --om-color-success: #4caf50;
   --om-color-warning: #ff9800;
@@ -86,6 +99,19 @@
   --om-color-success: #66bb6a;
   --om-color-warning: #ffa726;
   --om-color-error: #ef5350;
+
+  /* Cycle & Phase Colors — Dark Mode */
+  --om-color-cycle: #a78bfa;
+  --om-color-phase-menstruation: #f87171;
+  --om-color-phase-follicular: #22d3ee;
+  --om-color-phase-ovulation: #f472b6;
+  --om-color-phase-luteal: #fbbf24;
+  --om-color-phase: #c084fc;
+
+  /* Confidence Level Colors — Dark Mode */
+  --om-color-confidence-low: #f87171;
+  --om-color-confidence-medium: #fbbf24;
+  --om-color-confidence-high: #4ade80;
 }
 
 /* ============================================================
@@ -221,6 +247,15 @@
   border-left: 3px solid var(--om-color-medication);
 }
 
+.cycle-card .card {
+  border-left: 3px solid var(--om-color-cycle);
+}
+
+.phase-estimate-card .card {
+  border-left: 3px solid;
+  border-left-color: var(--om-phase-color, var(--om-color-phase));
+}
+
 /* ============================================================
    6. Bleeding Card — Flow Indicator Dot Colors
    ============================================================ */
@@ -306,8 +341,161 @@
   box-shadow: none;
 }
 
+.chip.om-chip-cycle {
+  background-color: transparent;
+  color: var(--om-color-cycle);
+  box-shadow: 0 0 0 1px var(--om-color-cycle);
+}
+
+.chip.om-chip-cycle.om-chip-active {
+  background-color: var(--om-color-cycle);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.chip.om-chip-phase {
+  background-color: transparent;
+  color: var(--om-color-phase);
+  box-shadow: 0 0 0 1px var(--om-color-phase);
+}
+
+.chip.om-chip-phase.om-chip-active {
+  background-color: var(--om-color-phase);
+  color: #ffffff;
+  box-shadow: none;
+}
+
 /* ============================================================
-   9. Empty State
+   9. Confidence Level Indicators
+   Must include text label or icon (not just color)
+   ============================================================ */
+
+.om-confidence-low {
+  color: var(--om-color-confidence-low);
+  font-weight: var(--om-font-weight-medium);
+}
+
+.om-confidence-medium {
+  color: var(--om-color-confidence-medium);
+  font-weight: var(--om-font-weight-medium);
+}
+
+.om-confidence-high {
+  color: var(--om-color-confidence-high);
+  font-weight: var(--om-font-weight-medium);
+}
+
+/* Confidence badge with indicator dot + text label */
+.om-confidence-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--om-space-sm);
+  margin-top: var(--om-space-sm);
+  font-size: var(--om-font-size-sm);
+}
+
+.om-confidence-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.om-confidence-text {
+  font-weight: var(--om-font-weight-medium);
+}
+
+/* ============================================================
+   10. Cycle Statistics Card
+   ============================================================ */
+
+.cycle-stats-card .card {
+  border-top: 3px solid var(--om-color-cycle);
+  border-left: none;
+}
+
+.cycle-stats-value {
+  font-size: var(--om-font-size-lg);
+  font-weight: var(--om-font-weight-bold);
+  color: var(--om-color-cycle);
+}
+
+.cycle-stats-label {
+  font-size: var(--om-font-size-sm);
+  opacity: 0.6;
+}
+
+/* ============================================================
+   11. Cycle Statistics Window Selector
+   ============================================================ */
+
+.cycle-stats-window-selector {
+  display: flex;
+  gap: var(--om-space-sm);
+  justify-content: center;
+  padding: var(--om-space-md);
+}
+
+.cycle-stats-window-selector .segmented .segmented-button {
+  flex: 1;
+  font-size: var(--om-font-size-sm);
+}
+
+/* ============================================================
+   12. Phase Color Indicators (for phase estimates)
+   ============================================================ */
+
+.phase-color-menstruation {
+  color: var(--om-color-phase-menstruation);
+}
+
+.phase-color-follicular {
+  color: var(--om-color-phase-follicular);
+}
+
+.phase-color-ovulation {
+  color: var(--om-color-phase-ovulation);
+}
+
+.phase-color-luteal {
+  color: var(--om-color-phase-luteal);
+}
+
+/* ============================================================
+   13. Profile-Incomplete Banner
+   ============================================================ */
+
+.om-banner-profile-incomplete {
+  background-color: var(--om-color-warning);
+  color: #ffffff;
+  padding: var(--om-space-md);
+  border-radius: var(--om-radius-md);
+  margin: var(--om-space-md) var(--om-space-md) 0;
+  font-size: var(--om-font-size-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--om-space-sm);
+}
+
+.om-banner-profile-incomplete-icon {
+  font-size: var(--om-font-size-lg);
+  flex-shrink: 0;
+}
+
+.om-banner-profile-incomplete-content {
+  flex: 1;
+}
+
+.om-banner-profile-incomplete-link {
+  color: #ffffff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: var(--om-font-weight-medium);
+}
+
+/* ============================================================
+   14. Empty State
    ============================================================ */
 
 .om-empty-state {
@@ -381,4 +569,96 @@
   flex-wrap: wrap;
   gap: var(--om-space-sm);
   padding-bottom: 0;
+}
+
+/* ============================================================
+   14. Profile Form (Settings Page)
+   ============================================================ */
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--om-space-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--om-space-xs);
+}
+
+.form-group label {
+  font-weight: var(--om-font-weight-medium);
+  font-size: var(--om-font-size-sm);
+  color: #333333;
+}
+
+.form-group select {
+  padding: var(--om-space-sm) var(--om-space-md);
+  border: 1px solid #d0d0d0;
+  border-radius: var(--om-radius-sm);
+  font-size: var(--om-font-size-sm);
+  background-color: #ffffff;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 20px;
+  padding-right: 32px;
+}
+
+.form-group select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tracking-focus-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--om-space-sm);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--om-space-sm);
+  cursor: pointer;
+  font-size: var(--om-font-size-sm);
+}
+
+.checkbox-label input[type="checkbox"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--om-color-primary);
+}
+
+.checkbox-label input[type="checkbox"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-error {
+  padding: var(--om-space-md);
+  background-color: #fee;
+  border-left: 3px solid var(--om-color-error);
+  color: #c62828;
+  border-radius: var(--om-radius-sm);
+  font-size: var(--om-font-size-sm);
+}
+
+.form-success {
+  padding: var(--om-space-md);
+  background-color: #f0f9ff;
+  border-left: 3px solid var(--om-color-success);
+  color: #22c55e;
+  border-radius: var(--om-radius-sm);
+  font-size: var(--om-font-size-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--om-space-sm);
+}
+
+.save-button {
+  margin-top: var(--om-space-md);
 }

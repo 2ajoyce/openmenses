@@ -1,14 +1,19 @@
 import React from "react";
 import type { TimelineRecord } from "@gen/openmenses/v1/service_pb";
+import type { BiologicalCycleModel, PhaseEstimate } from "@gen/openmenses/v1/model_pb";
 import { BleedingCard } from "../bleeding/BleedingCard";
 import { SymptomCard } from "../symptom/SymptomCard";
 import { MoodCard } from "../mood/MoodCard";
 import { MedicationCard } from "../medication/MedicationCard";
 import { MedicationEventCard } from "../medication/MedicationEventCard";
+import { CycleCard } from "../cycle/CycleCard";
+import { PhaseEstimateCard } from "../cycle/PhaseEstimateCard";
 
 interface TimelineItemProps {
   record: TimelineRecord;
   medicationNames?: Record<string, string>;
+  biologicalCycleModel?: BiologicalCycleModel;
+  groupedPhaseEstimates?: PhaseEstimate[];
   onNavigateEdit: (path: string) => void;
   onDeleted: () => void;
 }
@@ -16,6 +21,8 @@ interface TimelineItemProps {
 export const TimelineItem: React.FC<TimelineItemProps> = ({
   record,
   medicationNames,
+  biologicalCycleModel,
+  groupedPhaseEstimates,
   onNavigateEdit,
   onDeleted,
 }) => {
@@ -65,6 +72,17 @@ export const TimelineItem: React.FC<TimelineItemProps> = ({
             )
           }
           onDeleted={onDeleted}
+        />
+      );
+    case "cycle":
+      return <CycleCard cycle={record.record.value} />;
+    case "phaseEstimate":
+      return (
+        <PhaseEstimateCard
+          estimates={groupedPhaseEstimates || [record.record.value]}
+          {...(biologicalCycleModel != null && {
+            biologicalCycleModel,
+          })}
         />
       );
     default:

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"log/slog"
 
 	"connectrpc.com/connect"
 
@@ -45,6 +46,14 @@ func (s *CycleTrackerService) CreateUserProfile(
 	if err := s.store.UserProfiles().Create(ctx, profile); err != nil {
 		return nil, toConnectErr(err)
 	}
+	// Best-effort: creating a profile may unlock phase estimation for users
+	// who already have bleeding observations.
+	if profile.GetBiologicalCycle() != v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_UNSPECIFIED ||
+		profile.GetCycleRegularity() != v1.CycleRegularity_CYCLE_REGULARITY_UNSPECIFIED {
+		if err := s.redetectAndStoreCycles(ctx, profile.GetName()); err != nil {
+			slog.Error("redetectAndStoreCycles failed after profile create", "user_id", profile.GetName(), "error", err)
+		}
+	}
 	return connect.NewResponse(&v1.CreateUserProfileResponse{Profile: profile}), nil
 }
 
@@ -84,6 +93,17 @@ func (s *CycleTrackerService) UpdateUserProfile(
 	// Persist the updated profile
 	if err := s.store.UserProfiles().Update(ctx, profile); err != nil {
 		return nil, toConnectErr(err)
+	}
+
+	// Best-effort: re-run cycle detection and phase estimation if fields that
+	// affect phase estimates changed, so existing cycles get updated estimates
+	// without requiring a new bleeding observation.
+	biologicalCycleChanged := existing.GetBiologicalCycle() != profile.GetBiologicalCycle()
+	cycleRegularityChanged := existing.GetCycleRegularity() != profile.GetCycleRegularity()
+	if biologicalCycleChanged || cycleRegularityChanged {
+		if err := s.redetectAndStoreCycles(ctx, profile.GetName()); err != nil {
+			slog.Error("redetectAndStoreCycles failed after profile update", "user_id", profile.GetName(), "error", err)
+		}
 	}
 
 	return connect.NewResponse(&v1.UpdateUserProfileResponse{Profile: profile}), nil

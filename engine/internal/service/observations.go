@@ -11,6 +11,14 @@ import (
 	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
+// triggerRedetect is a best-effort helper that calls redetectAndStoreCycles
+// for userID and logs any error without failing the caller's request.
+func (s *CycleTrackerService) triggerRedetect(ctx context.Context, userID string) {
+	if err := s.redetectAndStoreCycles(ctx, userID); err != nil {
+		slog.Error("redetectAndStoreCycles failed", "user_id", userID, "error", err)
+	}
+}
+
 // ─── RPC: observations ────────────────────────────────────────────────────────
 
 // CreateBleedingObservation validates and persists a bleeding observation.
@@ -37,10 +45,8 @@ func (s *CycleTrackerService) CreateBleedingObservation(
 		return nil, toConnectErr(err)
 	}
 	// Best-effort: errors here do not fail the request because the observation
-	// is already persisted and ListCycles re-derives on demand.
-	if err := s.redetectAndStoreCycles(ctx, userID); err != nil {
-		slog.Error("redetectAndStoreCycles failed", "user_id", userID, "error", err)
-	}
+	// is already persisted and cycles can be re-derived on the next mutation.
+	s.triggerRedetect(ctx, userID)
 	return connect.NewResponse(&v1.CreateBleedingObservationResponse{Observation: obs}), nil
 }
 
@@ -130,6 +136,9 @@ func (s *CycleTrackerService) UpdateBleedingObservation(
 	if err := s.store.BleedingObservations().Create(ctx, obs); err != nil {
 		return nil, toConnectErr(err)
 	}
+	// Best-effort: re-detect cycles after the observation is updated so that
+	// edited dates/flow values are reflected in stored cycle boundaries.
+	s.triggerRedetect(ctx, obs.GetUserId())
 	return connect.NewResponse(&v1.UpdateBleedingObservationResponse{Observation: obs}), nil
 }
 
@@ -142,9 +151,17 @@ func (s *CycleTrackerService) DeleteBleedingObservation(
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
+	// Fetch before deletion to capture the user_id for cycle re-detection.
+	obs, err := s.store.BleedingObservations().GetByID(ctx, req.Msg.GetName())
+	if err != nil {
+		return nil, toConnectErr(err)
+	}
 	if err := s.store.BleedingObservations().DeleteByID(ctx, req.Msg.GetName()); err != nil {
 		return nil, toConnectErr(err)
 	}
+	// Best-effort: re-detect cycles so that deleted observations are no longer
+	// reflected in stored cycle boundaries.
+	s.triggerRedetect(ctx, obs.GetUserId())
 	return connect.NewResponse(&v1.DeleteBleedingObservationResponse{}), nil
 }
 

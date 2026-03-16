@@ -1,4 +1,5 @@
 import type { TimelineRecord } from "@gen/openmenses/v1/service_pb";
+import type { BiologicalCycleModel, PhaseEstimate } from "@gen/openmenses/v1/model_pb";
 import { Block, Chip, f7, Navbar, Page } from "framework7-react";
 import type { Router } from "framework7/types";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -12,7 +13,13 @@ type FilterType =
   | "bleedingObservation"
   | "symptomObservation"
   | "moodObservation"
-  | "medicationEvent";
+  | "medicationEvent"
+  | "cycle"
+  | "phaseEstimate";
+
+interface ProcessedTimelineRecord extends TimelineRecord {
+  _groupedPhaseEstimates?: PhaseEstimate[];
+}
 
 const FILTER_OPTIONS: { key: FilterType; label: string; chipClass: string }[] =
   [
@@ -20,6 +27,8 @@ const FILTER_OPTIONS: { key: FilterType; label: string; chipClass: string }[] =
     { key: "symptomObservation", label: "Symptoms", chipClass: "symptom" },
     { key: "moodObservation", label: "Mood", chipClass: "mood" },
     { key: "medicationEvent", label: "Medication", chipClass: "medication" },
+    { key: "cycle", label: "Cycles", chipClass: "cycle" },
+    { key: "phaseEstimate", label: "Phases", chipClass: "phase" },
   ];
 
 interface TimelinePageProps {
@@ -27,7 +36,6 @@ interface TimelinePageProps {
 }
 
 const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
-  const [records, setRecords] = useState<TimelineRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [nextPageToken, setNextPageToken] = useState("");
   const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(
@@ -36,9 +44,16 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
   const [medicationNames, setMedicationNames] = useState<
     Record<string, string>
   >({});
+  const [biologicalCycleModel, setBiologicalCycleModel] = useState<
+    BiologicalCycleModel | undefined
+  >();
+  const [processedRecords, setProcessedRecords] = useState<
+    ProcessedTimelineRecord[]
+  >([]);
   const [startDate, setStartDate] = useState(() => daysAgo(30));
   const [endDate, setEndDate] = useState(() => new Date());
   const loadingMoreRef = useRef(false);
+  const processedRecordsRef = useRef<ProcessedTimelineRecord[]>([]);
 
   const fetchMedicationNames = useCallback(async () => {
     try {
@@ -56,6 +71,60 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
     }
   }, []);
 
+  const fetchUserProfile = useCallback(async () => {
+    try {
+      const res = await client.getUserProfile({ name: DEFAULT_PARENT });
+      setBiologicalCycleModel(res.profile?.biologicalCycle);
+    } catch {
+      // Non-critical: biologicalCycleModel just won't be set
+    }
+  }, []);
+
+  const processRecordsWithGrouping = useCallback(
+    (recs: TimelineRecord[]) => {
+      // Group consecutive phase estimate records
+      const processed: ProcessedTimelineRecord[] = [];
+      let i = 0;
+
+      while (i < recs.length) {
+        const record = recs[i]!;
+
+        if (record.record.case === "phaseEstimate") {
+          // Collect consecutive phase estimates
+          const group: PhaseEstimate[] = [
+            record.record.value as PhaseEstimate,
+          ];
+          let j = i + 1;
+
+          while (
+            j < recs.length &&
+            recs[j]!.record.case === "phaseEstimate" &&
+            (recs[j]!.record.value as PhaseEstimate).phase ===
+              (record.record.value as PhaseEstimate).phase
+          ) {
+            group.push(recs[j]!.record.value as PhaseEstimate);
+            j++;
+          }
+
+          // Create a record with the grouped estimates
+          const groupedRecord: ProcessedTimelineRecord = {
+            ...record,
+            _groupedPhaseEstimates: group,
+          };
+          processed.push(groupedRecord);
+          i = j;
+        } else {
+          processed.push(record);
+          i++;
+        }
+      }
+
+      processedRecordsRef.current = processed;
+      setProcessedRecords(processed);
+    },
+    [],
+  );
+
   const fetchTimeline = useCallback(
     async (pageToken = "") => {
       try {
@@ -68,11 +137,10 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
           pagination: { pageSize: 50, pageToken },
         });
 
-        if (pageToken) {
-          setRecords((prev) => [...prev, ...res.records]);
-        } else {
-          setRecords(res.records);
-        }
+        const newRecords = pageToken
+          ? [...processedRecordsRef.current, ...res.records]
+          : res.records;
+        processRecordsWithGrouping(newRecords);
         setNextPageToken(res.pagination?.nextPageToken ?? "");
       } catch (err) {
         console.error("Failed to fetch timeline:", err);
@@ -81,13 +149,14 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
         loadingMoreRef.current = false;
       }
     },
-    [startDate, endDate],
+    [startDate, endDate, processRecordsWithGrouping],
   );
 
   useEffect(() => {
     fetchTimeline();
     fetchMedicationNames();
-  }, [fetchTimeline, fetchMedicationNames]);
+    fetchUserProfile();
+  }, [fetchTimeline, fetchMedicationNames, fetchUserProfile]);
 
   useEffect(() => {
     const handleTabShow = (tabEl: HTMLElement) => {
@@ -102,7 +171,9 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
   }, [fetchTimeline]);
 
   function handleRefresh(done: () => void) {
-    Promise.all([fetchTimeline(), fetchMedicationNames()]).then(done);
+    Promise.all([fetchTimeline(), fetchMedicationNames(), fetchUserProfile()]).then(
+      done,
+    );
   }
 
   function loadMore() {
@@ -126,8 +197,8 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
 
   const filteredRecords =
     activeFilters.size === 0
-      ? records
-      : records.filter((r) => {
+      ? processedRecords
+      : processedRecords.filter((r) => {
           const c = r.record.case;
           if (activeFilters.has(c as FilterType)) return true;
           // "Medication" chip also shows medication resource records
@@ -181,6 +252,10 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
           key={`${record.record.case}-${record.record.value?.name}`}
           record={record}
           medicationNames={medicationNames}
+          {...(biologicalCycleModel != null && { biologicalCycleModel })}
+          {...(record._groupedPhaseEstimates != null && {
+            groupedPhaseEstimates: record._groupedPhaseEstimates,
+          })}
           onNavigateEdit={(path) => f7router.navigate(path)}
           onDeleted={() => fetchTimeline()}
         />

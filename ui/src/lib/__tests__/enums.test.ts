@@ -7,6 +7,12 @@ import {
   MoodIntensity,
   MedicationCategory,
   MedicationEventStatus,
+  CyclePhase,
+  ConfidenceLevel,
+  CycleSource,
+  BiologicalCycleModel,
+  CycleRegularity,
+  TrackingFocus,
 } from "@gen/openmenses/v1/model_pb";
 import {
   bleedingFlowLabel,
@@ -23,6 +29,19 @@ import {
   medicationCategoryOptions,
   medicationEventStatusLabel,
   medicationEventStatusOptions,
+  cyclePhaseLabel,
+  cyclePhaseOptions,
+  suppressedCyclePhaseLabel,
+  confidenceLevelLabel,
+  confidenceLevelOptions,
+  cycleSourceLabel,
+  cycleSourceOptions,
+  biologicalCycleModelLabel,
+  biologicalCycleModelOptions,
+  cycleRegularityLabel,
+  cycleRegularityOptions,
+  trackingFocusLabel,
+  trackingFocusOptions,
 } from "../enums";
 
 describe("bleedingFlowLabel", () => {
@@ -150,5 +169,184 @@ describe("medicationEventStatusOptions", () => {
     expect(medicationEventStatusOptions.every((o) => o.value !== 0)).toBe(
       true,
     );
+  });
+});
+
+describe("cyclePhaseLabel", () => {
+  it("returns label for each non-UNSPECIFIED value", () => {
+    expect(cyclePhaseLabel(CyclePhase.MENSTRUATION)).toBe("Menstruation");
+    expect(cyclePhaseLabel(CyclePhase.FOLLICULAR)).toBe("Follicular");
+    expect(cyclePhaseLabel(CyclePhase.OVULATION_WINDOW)).toBe(
+      "Ovulation Window",
+    );
+    expect(cyclePhaseLabel(CyclePhase.LUTEAL)).toBe("Luteal");
+  });
+
+  it("returns Unknown for UNSPECIFIED", () => {
+    expect(cyclePhaseLabel(CyclePhase.UNSPECIFIED)).toBe("Unknown");
+  });
+});
+
+describe("cyclePhaseOptions", () => {
+  it("excludes UNSPECIFIED", () => {
+    expect(cyclePhaseOptions.every((o) => o.value !== 0)).toBe(true);
+  });
+
+  it("has 5 options", () => {
+    expect(cyclePhaseOptions).toHaveLength(5);
+  });
+});
+
+describe("suppressedCyclePhaseLabel", () => {
+  it("returns normal labels for menstruation, ovulation window, and luteal", () => {
+    expect(suppressedCyclePhaseLabel(CyclePhase.MENSTRUATION)).toBe(
+      "Menstruation",
+    );
+    expect(suppressedCyclePhaseLabel(CyclePhase.OVULATION_WINDOW)).toBe(
+      "Ovulation Window",
+    );
+    expect(suppressedCyclePhaseLabel(CyclePhase.LUTEAL)).toBe("Luteal");
+  });
+
+  it("returns suppressed label for follicular phase", () => {
+    expect(suppressedCyclePhaseLabel(CyclePhase.FOLLICULAR)).toBe(
+      "Pill-free / Active pill days",
+    );
+  });
+
+  it("returns Unknown for UNSPECIFIED", () => {
+    expect(suppressedCyclePhaseLabel(CyclePhase.UNSPECIFIED)).toBe("Unknown");
+  });
+});
+
+describe("confidenceLevelLabel", () => {
+  it("returns label for each non-UNSPECIFIED value", () => {
+    expect(confidenceLevelLabel(ConfidenceLevel.LOW)).toBe("Low");
+    expect(confidenceLevelLabel(ConfidenceLevel.MEDIUM)).toBe("Medium");
+    expect(confidenceLevelLabel(ConfidenceLevel.HIGH)).toBe("High");
+  });
+
+  it("returns Unknown for UNSPECIFIED", () => {
+    expect(confidenceLevelLabel(ConfidenceLevel.UNSPECIFIED)).toBe("Unknown");
+  });
+});
+
+describe("confidenceLevelOptions", () => {
+  it("excludes UNSPECIFIED", () => {
+    expect(confidenceLevelOptions.every((o) => o.value !== 0)).toBe(true);
+  });
+
+  it("has 3 options", () => {
+    expect(confidenceLevelOptions).toHaveLength(3);
+  });
+});
+
+describe("cycleSourceLabel", () => {
+  it("returns label for each non-UNSPECIFIED value", () => {
+    expect(cycleSourceLabel(CycleSource.DERIVED_FROM_BLEEDING)).toBe(
+      "Derived from bleeding",
+    );
+    expect(cycleSourceLabel(CycleSource.USER_CONFIRMED)).toBe("User confirmed");
+  });
+
+  it("returns Unknown for UNSPECIFIED", () => {
+    expect(cycleSourceLabel(CycleSource.UNSPECIFIED)).toBe("Unknown");
+  });
+});
+
+describe("cycleSourceOptions", () => {
+  it("excludes UNSPECIFIED", () => {
+    expect(cycleSourceOptions.every((o) => o.value !== 0)).toBe(true);
+  });
+
+  it("has 2 options", () => {
+    expect(cycleSourceOptions).toHaveLength(2);
+  });
+});
+
+describe("biologicalCycleModelLabel", () => {
+  it("returns label for each non-UNSPECIFIED value", () => {
+    expect(biologicalCycleModelLabel(BiologicalCycleModel.OVULATORY)).toBe(
+      "Ovulatory",
+    );
+    expect(
+      biologicalCycleModelLabel(BiologicalCycleModel.HORMONALLY_SUPPRESSED),
+    ).toBe("Hormonally Suppressed");
+    expect(biologicalCycleModelLabel(BiologicalCycleModel.IRREGULAR)).toBe(
+      "Irregular",
+    );
+  });
+
+  it("returns Unknown for UNSPECIFIED", () => {
+    expect(biologicalCycleModelLabel(BiologicalCycleModel.UNSPECIFIED)).toBe(
+      "Unknown",
+    );
+  });
+});
+
+describe("biologicalCycleModelOptions", () => {
+  it("excludes UNSPECIFIED", () => {
+    expect(biologicalCycleModelOptions.every((o) => o.value !== 0)).toBe(
+      true,
+    );
+  });
+
+  it("has 3 options", () => {
+    expect(biologicalCycleModelOptions).toHaveLength(3);
+  });
+});
+
+describe("cycleRegularityLabel", () => {
+  it("returns label for each non-UNSPECIFIED value", () => {
+    expect(cycleRegularityLabel(CycleRegularity.REGULAR)).toBe("Regular");
+    expect(cycleRegularityLabel(CycleRegularity.SOMEWHAT_IRREGULAR)).toBe(
+      "Somewhat Irregular",
+    );
+    expect(cycleRegularityLabel(CycleRegularity.VERY_IRREGULAR)).toBe(
+      "Very Irregular",
+    );
+  });
+
+  it("returns Unknown for UNSPECIFIED", () => {
+    expect(cycleRegularityLabel(CycleRegularity.UNSPECIFIED)).toBe("Unknown");
+  });
+});
+
+describe("cycleRegularityOptions", () => {
+  it("excludes UNSPECIFIED", () => {
+    expect(cycleRegularityOptions.every((o) => o.value !== 0)).toBe(true);
+  });
+
+  it("has 4 options", () => {
+    expect(cycleRegularityOptions).toHaveLength(4);
+  });
+});
+
+describe("trackingFocusLabel", () => {
+  it("returns label for each non-UNSPECIFIED value", () => {
+    expect(trackingFocusLabel(TrackingFocus.BLEEDING)).toBe("Bleeding");
+    expect(trackingFocusLabel(TrackingFocus.SYMPTOMS)).toBe("Symptoms");
+    expect(trackingFocusLabel(TrackingFocus.MOOD)).toBe("Mood");
+    expect(trackingFocusLabel(TrackingFocus.MEDICATION)).toBe("Medication");
+    expect(trackingFocusLabel(TrackingFocus.CYCLE_PREDICTION)).toBe(
+      "Cycle Prediction",
+    );
+    expect(trackingFocusLabel(TrackingFocus.PATTERN_ANALYSIS)).toBe(
+      "Pattern Analysis",
+    );
+  });
+
+  it("returns Unknown for UNSPECIFIED", () => {
+    expect(trackingFocusLabel(TrackingFocus.UNSPECIFIED)).toBe("Unknown");
+  });
+});
+
+describe("trackingFocusOptions", () => {
+  it("excludes UNSPECIFIED", () => {
+    expect(trackingFocusOptions.every((o) => o.value !== 0)).toBe(true);
+  });
+
+  it("has 6 options", () => {
+    expect(trackingFocusOptions).toHaveLength(6);
   });
 });

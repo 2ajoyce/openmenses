@@ -13,6 +13,39 @@ import (
 	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 )
 
+// ─── RPC: cycle statistics ────────────────────────────────────────────────────
+
+// GetCycleStatistics computes aggregate statistics over the user's cycles.
+// When window_size > 0, only the last N completed cycles are included.
+func (s *CycleTrackerService) GetCycleStatistics(
+	ctx context.Context,
+	req *connect.Request[v1.GetCycleStatisticsRequest],
+) (*connect.Response[v1.GetCycleStatisticsResponse], error) {
+	if err := s.validator.ValidateRequest(req.Msg); err != nil {
+		return nil, toConnectErr(err)
+	}
+	cycles, err := rules.DetectCycles(ctx, req.Msg.GetParent(), s.store)
+	if err != nil {
+		return nil, toConnectErr(err)
+	}
+	var stats rules.CycleStats
+	if req.Msg.GetWindowSize() > 0 {
+		stats = rules.WindowStats(cycles, int(req.Msg.GetWindowSize()))
+	} else {
+		stats = rules.Stats(cycles)
+	}
+	return connect.NewResponse(&v1.GetCycleStatisticsResponse{
+		Statistics: &v1.CycleStatistics{
+			Count:   int32(stats.Count),
+			Average: stats.Average,
+			Median:  stats.Median,
+			Min:     int32(stats.Min),
+			Max:     int32(stats.Max),
+			StdDev:  stats.StdDev,
+		},
+	}), nil
+}
+
 // ─── RPC: timeline ────────────────────────────────────────────────────────────
 
 // ListTimeline queries all record types within the requested date range, merges
@@ -49,8 +82,10 @@ func (s *CycleTrackerService) ListTimeline(
 
 // ─── RPC: cycles ──────────────────────────────────────────────────────────────
 
-// ListCycles returns all cycles for the given user, computing derived cycles
-// on demand from stored bleeding observations.
+// ListCycles returns cycles for the given user from the stored cycles table
+// with offset-based pagination. Stored cycles are kept current by
+// redetectAndStoreCycles, which is triggered on every bleeding observation
+// mutation.
 func (s *CycleTrackerService) ListCycles(
 	ctx context.Context,
 	req *connect.Request[v1.ListCyclesRequest],
@@ -58,11 +93,14 @@ func (s *CycleTrackerService) ListCycles(
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
-	cycles, err := rules.DetectCycles(ctx, req.Msg.GetParent(), s.store)
+	page, err := s.store.Cycles().ListByUser(ctx, req.Msg.GetParent(), pageReq(req.Msg.GetPagination()))
 	if err != nil {
 		return nil, toConnectErr(err)
 	}
-	return connect.NewResponse(&v1.ListCyclesResponse{Cycles: cycles}), nil
+	return connect.NewResponse(&v1.ListCyclesResponse{
+		Cycles:     page.Items,
+		Pagination: &v1.PaginationResponse{NextPageToken: page.NextPageToken},
+	}), nil
 }
 
 // GetCycle fetches a single cycle by ID.

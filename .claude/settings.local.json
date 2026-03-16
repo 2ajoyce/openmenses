@@ -23,7 +23,16 @@
       "Bash(find:*)",
       "Bash(grep:*)",
       "Bash(npm run:*)",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(make proto-lint:*)",
+      "Bash(make proto-generate:*)",
+      "Bash(make proto-breaking:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(make engine-lint:*)",
+      "Bash(make engine-test:*)",
+      "Bash(cd engine:*)",
+      "Bash(go test:*)",
+      "Bash(cd ui:*)"
     ]
   }
 }

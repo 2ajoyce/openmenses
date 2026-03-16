@@ -135,6 +135,15 @@ message Cycle {
   CycleSource source = 5 [(buf.validate.field).enum.defined_only = true];
 }
 
+message CycleStatistics {
+  int32 count = 1;
+  double average = 2;
+  double median = 3;
+  int32 min = 4;
+  int32 max = 5;
+  double std_dev = 6;
+}
+
 message PhaseEstimate {
   option (google.api.resource) = {
     type: "openmenses.v1/PhaseEstimate"
