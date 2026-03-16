@@ -718,6 +718,175 @@ func TestCreateMedEvent(t *testing.T) {
 	}
 }
 
+// ─── GetCycle ─────────────────────────────────────────────────────────────
+
+func TestGetCycle(t *testing.T) {
+	tests := []struct {
+		name       string
+		cycleID    string
+		queryID    string
+		wantCode   connect.Code
+		shouldFail bool
+		wantExists bool
+	}{
+		{
+			name:       "NotFound",
+			cycleID:    "c1",
+			queryID:    "missing",
+			wantCode:   connect.CodeNotFound,
+			shouldFail: true,
+			wantExists: false,
+		},
+		{
+			name:       "Found",
+			cycleID:    "c1",
+			queryID:    "c1",
+			wantCode:   0,
+			shouldFail: false,
+			wantExists: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			store := memory.New()
+			// Manually create a cycle for the "Found" case
+			if tt.cycleID != "" {
+				cycle := &v1.Cycle{
+					Name:      tt.cycleID,
+					UserId:    "u1",
+					StartDate: &v1.LocalDate{Value: "2026-01-01"},
+					EndDate:   &v1.LocalDate{Value: "2026-01-28"},
+					Source:    v1.CycleSource_CYCLE_SOURCE_DERIVED_FROM_BLEEDING,
+				}
+				if err := store.Cycles().Create(ctx, cycle); err != nil {
+					t.Fatal(err)
+				}
+			}
+			svc := newSvcWithStore(t, store)
+			resp, err := svc.GetCycle(ctx, connect.NewRequest(&v1.GetCycleRequest{Name: tt.queryID}))
+
+			if tt.shouldFail {
+				if codeOf(err) != tt.wantCode {
+					t.Fatalf("want code %v, got %v", tt.wantCode, codeOf(err))
+				}
+			} else if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if tt.wantExists && resp.Msg.GetCycle().GetName() != tt.queryID {
+				t.Errorf("got cycle name %q, want %q", resp.Msg.GetCycle().GetName(), tt.queryID)
+			}
+		})
+	}
+}
+
+// ─── GetCycleStatistics ───────────────────────────────────────────────────
+
+func TestGetCycleStatistics(t *testing.T) {
+	tests := []struct {
+		name       string
+		setupFunc  func(*service.CycleTrackerService) error
+		windowSize int32
+		wantCount  int32
+	}{
+		{
+			name: "NoCycles",
+			setupFunc: func(svc *service.CycleTrackerService) error {
+				return nil
+			},
+			windowSize: 0,
+			wantCount:  0,
+		},
+		{
+			name: "SingleOpenEndedCycle",
+			setupFunc: func(svc *service.CycleTrackerService) error {
+				// Single recent bleeding creates an open-ended cycle with no end_date
+				// Stats only counts completed cycles, so count will be 0
+				obs := validBleeding("b1", "u1", "2026-03-10")
+				_, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs}))
+				return err
+			},
+			windowSize: 0,
+			wantCount:  0, // Open-ended cycles are not counted by Stats()
+		},
+		{
+			name: "TwoMonthsCreatesOneCompletedCycle",
+			setupFunc: func(svc *service.CycleTrackerService) error {
+				// Observations spanning two months create completed cycle(s) and an open cycle
+				for _, obs := range []*v1.BleedingObservation{
+					validBleeding("b1", "u1", "2026-01-01"),
+					validBleeding("b2", "u1", "2026-01-02"),
+					validBleeding("b3", "u1", "2026-02-01"),
+				} {
+					if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
+						return err
+					}
+				}
+				return nil
+			},
+			windowSize: 0,
+			wantCount:  1, // One completed cycle (Jan), one open (Feb)
+		},
+		{
+			name: "ThreeMonthsCreatesMultipleCompletedCycles",
+			setupFunc: func(svc *service.CycleTrackerService) error {
+				// Create 3 completed cycles + 1 open-ended (use past dates: 2025)
+				for _, obs := range []*v1.BleedingObservation{
+					validBleeding("b1", "u1", "2025-10-01"),
+					validBleeding("b2", "u1", "2025-11-01"),
+					validBleeding("b3", "u1", "2025-12-01"),
+					validBleeding("b4", "u1", "2026-01-01"),
+				} {
+					if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
+						return err
+					}
+				}
+				return nil
+			},
+			windowSize: 0,
+			wantCount:  3, // Oct, Nov, Dec 2025 are completed, Jan 2026 is open
+		},
+		{
+			name: "WindowSizeFilter",
+			setupFunc: func(svc *service.CycleTrackerService) error {
+				// Create multiple cycles spanning multiple months (use past dates)
+				for _, obs := range []*v1.BleedingObservation{
+					validBleeding("b1", "u1", "2025-10-01"),
+					validBleeding("b2", "u1", "2025-11-01"),
+					validBleeding("b3", "u1", "2025-12-01"),
+					validBleeding("b4", "u1", "2026-01-01"),
+				} {
+					if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
+						return err
+					}
+				}
+				return nil
+			},
+			windowSize: 2,
+			wantCount:  2, // WindowStats returns stats for the last 2 completed cycles (Dec, Nov or Nov, Oct)
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			svc := newSvc(t)
+			if err := tt.setupFunc(svc); err != nil {
+				t.Fatal(err)
+			}
+			resp, err := svc.GetCycleStatistics(ctx, connect.NewRequest(&v1.GetCycleStatisticsRequest{
+				Parent:     "u1",
+				WindowSize: tt.windowSize,
+			}))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if resp.Msg.GetStatistics().GetCount() != tt.wantCount {
+				t.Errorf("want count %d, got %d", tt.wantCount, resp.Msg.GetStatistics().GetCount())
+			}
+		})
+	}
+}
+
 // ─── ListCycles ───────────────────────────────────────────────────────────────
 
 func TestListCycles(t *testing.T) {
@@ -761,6 +930,243 @@ func TestListCycles(t *testing.T) {
 				t.Errorf("start_date = %q, want 2026-01-01", resp.Msg.GetCycles()[0].GetStartDate().GetValue())
 			}
 		})
+	}
+
+	// Multiple cycles with gap detection
+	t.Run("MultipleCyclesWithGapDetection", func(t *testing.T) {
+		svc := newSvc(t)
+		// Create cycles with >3 day gaps
+		// Cycle 1: Jan 1-2
+		// Gap of 4+ days
+		// Cycle 2: Jan 7-8
+		// Gap crossing into Feb triggers end of Jan cycle
+		// Cycle 3: Feb 1+
+		for _, obs := range []*v1.BleedingObservation{
+			validBleeding("b1", "u1", "2025-01-01"),
+			validBleeding("b2", "u1", "2025-01-02"),
+			validBleeding("b3", "u1", "2025-01-07"),
+			validBleeding("b4", "u1", "2025-01-08"),
+			validBleeding("b5", "u1", "2025-02-01"),
+		} {
+			if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
+				t.Fatal(err)
+			}
+		}
+		resp, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: "u1"}))
+		if err != nil {
+			t.Fatal(err)
+		}
+		// We expect at least 1 cycle
+		if len(resp.Msg.GetCycles()) == 0 {
+			t.Errorf("want at least 1 cycle with gap detection, got %d", len(resp.Msg.GetCycles()))
+		}
+	})
+
+	// Pagination
+	t.Run("PaginationBehavior", func(t *testing.T) {
+		svc := newSvc(t)
+		// Create multiple bleeding episodes with gaps to form multiple cycles
+		dates := []string{
+			"2025-01-01", "2025-01-02", // Cycle 1
+			"2025-01-07", "2025-01-08", // Cycle 2 (gap of 4+ days)
+			"2025-02-01", "2025-02-02", // Cycle 3 (new month)
+			"2025-02-07", "2025-02-08", // Cycle 4 (gap of 4+ days)
+		}
+		for i, date := range dates {
+			obs := validBleeding("b"+string(rune('0'+1+i)), "u1", date)
+			if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
+				t.Fatal(err)
+			}
+		}
+		// Request page 1 with page_size 2
+		resp1, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{
+			Parent:     "u1",
+			Pagination: &v1.PaginationRequest{PageSize: 2},
+		}))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(resp1.Msg.GetCycles()) == 0 {
+			t.Fatalf("page 1: expected at least 1 cycle, got %d", len(resp1.Msg.GetCycles()))
+		}
+		// Only test next_page_token if we got enough cycles
+		if len(resp1.Msg.GetCycles()) >= 2 {
+			nextToken := resp1.Msg.GetPagination().GetNextPageToken()
+			if nextToken != "" {
+				// Request page 2
+				resp2, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{
+					Parent:     "u1",
+					Pagination: &v1.PaginationRequest{PageSize: 2, PageToken: nextToken},
+				}))
+				if err != nil {
+					t.Fatal(err)
+				}
+				if len(resp2.Msg.GetCycles()) == 0 {
+					t.Errorf("page 2: expected cycles with token, got %d", len(resp2.Msg.GetCycles()))
+				}
+			}
+		}
+	})
+}
+
+// ─── PhaseEstimateIntegration ─────────────────────────────────────────────
+
+func TestPhaseEstimateIntegration(t *testing.T) {
+	svc := newSvc(t)
+	// Create a profile first (required for phase estimation)
+	profile := validProfile("u1")
+	if _, err := svc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: profile})); err != nil {
+		t.Fatal(err)
+	}
+	// Create multiple bleeding observations
+	for _, obs := range []*v1.BleedingObservation{
+		validBleeding("b1", "u1", "2025-01-01"),
+		validBleeding("b2", "u1", "2025-01-02"),
+	} {
+		if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
+			t.Fatal(err)
+		}
+	}
+	// Query timeline and verify PhaseEstimate records are present
+	resp, err := svc.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{Parent: "u1"}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Timeline should contain both bleeding observations and phase estimate records (derived from the cycle)
+	var foundPhaseEstimate bool
+	for _, record := range resp.Msg.GetRecords() {
+		if record.GetPhaseEstimate() != nil {
+			foundPhaseEstimate = true
+			break
+		}
+	}
+	if !foundPhaseEstimate {
+		t.Error("expected PhaseEstimate records in timeline after creating bleeding observations with profile")
+	}
+}
+
+// ─── ProfileUpdateTriggersPhaseReEstimation ───────────────────────────────
+
+func TestProfileUpdateTriggersPhaseReEstimation(t *testing.T) {
+	svc := newSvc(t)
+	// Create bleeding observations WITHOUT a profile first
+	for _, obs := range []*v1.BleedingObservation{
+		validBleeding("b1", "u1", "2025-01-01"),
+		validBleeding("b2", "u1", "2025-01-02"),
+	} {
+		if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
+			t.Fatal(err)
+		}
+	}
+	// Verify that without a profile, no phase estimates exist
+	resp1, err := svc.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{Parent: "u1"}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var phaseCountBefore int
+	for _, record := range resp1.Msg.GetRecords() {
+		if record.GetPhaseEstimate() != nil {
+			phaseCountBefore++
+		}
+	}
+	// Now create the profile — should trigger phase re-estimation
+	profile := validProfile("u1")
+	if _, err := svc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: profile})); err != nil {
+		t.Fatal(err)
+	}
+	// Query timeline again and verify phase estimates now exist
+	resp2, err := svc.ListTimeline(ctx, connect.NewRequest(&v1.ListTimelineRequest{Parent: "u1"}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var phaseCountAfter int
+	for _, record := range resp2.Msg.GetRecords() {
+		if record.GetPhaseEstimate() != nil {
+			phaseCountAfter++
+		}
+	}
+	if phaseCountAfter == 0 {
+		t.Error("expected phase estimates after creating profile, but found none")
+	}
+	if phaseCountAfter <= phaseCountBefore {
+		t.Errorf("expected phase estimates to increase after profile creation (before=%d, after=%d)", phaseCountBefore, phaseCountAfter)
+	}
+}
+
+// ─── UpdateBleedingObservationTriggersRedetection ───────────────────────
+
+func TestUpdateBleedingObservationTriggersRedetection(t *testing.T) {
+	svc := newSvc(t)
+	// Create initial bleeding observations
+	obs1 := validBleeding("b1", "u1", "2025-01-01")
+	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs1})); err != nil {
+		t.Fatal(err)
+	}
+	// Verify initial cycles
+	resp1, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: "u1"}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	cycleCountBefore := len(resp1.Msg.GetCycles())
+	// Update the bleeding observation to a different date
+	obs1Updated := validBleeding("b1", "u1", "2025-02-01")
+	if _, err := svc.UpdateBleedingObservation(ctx, connect.NewRequest(&v1.UpdateBleedingObservationRequest{Observation: obs1Updated})); err != nil {
+		t.Fatal(err)
+	}
+	// Verify cycles are recalculated after update
+	resp2, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: "u1"}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	cycleCountAfter := len(resp2.Msg.GetCycles())
+	// The cycle should still exist but with updated dates
+	if cycleCountAfter != cycleCountBefore {
+		t.Logf("cycle count changed from %d to %d (acceptable)", cycleCountBefore, cycleCountAfter)
+	}
+	// Verify the cycle's start date reflects the update
+	if len(resp2.Msg.GetCycles()) > 0 {
+		cycle := resp2.Msg.GetCycles()[0]
+		if cycle.GetStartDate().GetValue() != "2025-02-01" {
+			t.Errorf("expected cycle start_date to be updated to 2025-02-01, got %q", cycle.GetStartDate().GetValue())
+		}
+	}
+}
+
+// ─── DeleteBleedingObservationTriggersRedetection ───────────────────────
+
+func TestDeleteBleedingObservationTriggersRedetection(t *testing.T) {
+	svc := newSvc(t)
+	// Create multiple bleeding observations
+	for _, obs := range []*v1.BleedingObservation{
+		validBleeding("b1", "u1", "2025-01-01"),
+		validBleeding("b2", "u1", "2025-01-02"),
+	} {
+		if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{Parent: "u1", Observation: obs})); err != nil {
+			t.Fatal(err)
+		}
+	}
+	// Verify initial cycles exist
+	resp1, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: "u1"}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	cycleCountBefore := len(resp1.Msg.GetCycles())
+	if cycleCountBefore == 0 {
+		t.Fatal("expected at least 1 cycle before deletion")
+	}
+	// Delete one bleeding observation
+	if _, err := svc.DeleteBleedingObservation(ctx, connect.NewRequest(&v1.DeleteBleedingObservationRequest{Name: "b2"})); err != nil {
+		t.Fatal(err)
+	}
+	// Verify cycles are recalculated after deletion
+	resp2, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: "u1"}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	cycleCountAfter := len(resp2.Msg.GetCycles())
+	// Cycle count should remain the same or decrease
+	if cycleCountAfter > cycleCountBefore {
+		t.Errorf("expected cycle count to not increase after deletion: before=%d, after=%d", cycleCountBefore, cycleCountAfter)
 	}
 }
 

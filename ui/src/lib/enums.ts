@@ -6,6 +6,12 @@ import {
   MoodIntensity,
   MedicationCategory,
   MedicationEventStatus,
+  CyclePhase,
+  ConfidenceLevel,
+  CycleSource,
+  BiologicalCycleModel,
+  CycleRegularity,
+  TrackingFocus,
 } from "@gen/openmenses/v1/model_pb";
 
 export const bleedingFlowLabels: Record<number, string> = {
@@ -154,4 +160,122 @@ export function medicationEventStatusLabel(
   status: MedicationEventStatus,
 ): string {
   return medicationEventStatusLabels[status] ?? "Unknown";
+}
+
+export const cyclePhaseLabels: Record<number, string> = {
+  [CyclePhase.MENSTRUATION]: "Menstruation",
+  [CyclePhase.FOLLICULAR]: "Follicular",
+  [CyclePhase.OVULATION_WINDOW]: "Ovulation Window",
+  [CyclePhase.LUTEAL]: "Luteal",
+  [CyclePhase.UNKNOWN]: "Unknown",
+};
+
+export const cyclePhaseOptions = [
+  { value: CyclePhase.MENSTRUATION, label: "Menstruation" },
+  { value: CyclePhase.FOLLICULAR, label: "Follicular" },
+  { value: CyclePhase.OVULATION_WINDOW, label: "Ovulation Window" },
+  { value: CyclePhase.LUTEAL, label: "Luteal" },
+  { value: CyclePhase.UNKNOWN, label: "Unknown" },
+];
+
+export function cyclePhaseLabel(phase: CyclePhase): string {
+  return cyclePhaseLabels[phase] ?? "Unknown";
+}
+
+export const suppressedCyclePhaseLabels: Record<number, string> = {
+  [CyclePhase.MENSTRUATION]: "Menstruation",
+  [CyclePhase.FOLLICULAR]: "Pill-free / Active pill days",
+  [CyclePhase.OVULATION_WINDOW]: "Ovulation Window",
+  [CyclePhase.LUTEAL]: "Luteal",
+  [CyclePhase.UNKNOWN]: "Unknown",
+};
+
+export function suppressedCyclePhaseLabel(phase: CyclePhase): string {
+  return suppressedCyclePhaseLabels[phase] ?? "Unknown";
+}
+
+export const confidenceLevelLabels: Record<number, string> = {
+  [ConfidenceLevel.LOW]: "Low",
+  [ConfidenceLevel.MEDIUM]: "Medium",
+  [ConfidenceLevel.HIGH]: "High",
+};
+
+export const confidenceLevelOptions = [
+  { value: ConfidenceLevel.LOW, label: "Low" },
+  { value: ConfidenceLevel.MEDIUM, label: "Medium" },
+  { value: ConfidenceLevel.HIGH, label: "High" },
+];
+
+export function confidenceLevelLabel(level: ConfidenceLevel): string {
+  return confidenceLevelLabels[level] ?? "Unknown";
+}
+
+export const cycleSourceLabels: Record<number, string> = {
+  [CycleSource.DERIVED_FROM_BLEEDING]: "Derived from bleeding",
+  [CycleSource.USER_CONFIRMED]: "User confirmed",
+};
+
+export const cycleSourceOptions = [
+  { value: CycleSource.DERIVED_FROM_BLEEDING, label: "Derived from bleeding" },
+  { value: CycleSource.USER_CONFIRMED, label: "User confirmed" },
+];
+
+export function cycleSourceLabel(source: CycleSource): string {
+  return cycleSourceLabels[source] ?? "Unknown";
+}
+
+export const biologicalCycleModelLabels: Record<number, string> = {
+  [BiologicalCycleModel.OVULATORY]: "Ovulatory",
+  [BiologicalCycleModel.HORMONALLY_SUPPRESSED]: "Hormonally Suppressed",
+  [BiologicalCycleModel.IRREGULAR]: "Irregular",
+};
+
+export const biologicalCycleModelOptions = [
+  { value: BiologicalCycleModel.OVULATORY, label: "Ovulatory" },
+  { value: BiologicalCycleModel.HORMONALLY_SUPPRESSED, label: "Hormonally Suppressed" },
+  { value: BiologicalCycleModel.IRREGULAR, label: "Irregular" },
+];
+
+export function biologicalCycleModelLabel(model: BiologicalCycleModel): string {
+  return biologicalCycleModelLabels[model] ?? "Unknown";
+}
+
+export const cycleRegularityLabels: Record<number, string> = {
+  [CycleRegularity.REGULAR]: "Regular",
+  [CycleRegularity.SOMEWHAT_IRREGULAR]: "Somewhat Irregular",
+  [CycleRegularity.VERY_IRREGULAR]: "Very Irregular",
+  [CycleRegularity.UNKNOWN]: "Unknown",
+};
+
+export const cycleRegularityOptions = [
+  { value: CycleRegularity.REGULAR, label: "Regular" },
+  { value: CycleRegularity.SOMEWHAT_IRREGULAR, label: "Somewhat Irregular" },
+  { value: CycleRegularity.VERY_IRREGULAR, label: "Very Irregular" },
+  { value: CycleRegularity.UNKNOWN, label: "Unknown" },
+];
+
+export function cycleRegularityLabel(regularity: CycleRegularity): string {
+  return cycleRegularityLabels[regularity] ?? "Unknown";
+}
+
+export const trackingFocusLabels: Record<number, string> = {
+  [TrackingFocus.BLEEDING]: "Bleeding",
+  [TrackingFocus.SYMPTOMS]: "Symptoms",
+  [TrackingFocus.MOOD]: "Mood",
+  [TrackingFocus.MEDICATION]: "Medication",
+  [TrackingFocus.CYCLE_PREDICTION]: "Cycle Prediction",
+  [TrackingFocus.PATTERN_ANALYSIS]: "Pattern Analysis",
+};
+
+export const trackingFocusOptions = [
+  { value: TrackingFocus.BLEEDING, label: "Bleeding" },
+  { value: TrackingFocus.SYMPTOMS, label: "Symptoms" },
+  { value: TrackingFocus.MOOD, label: "Mood" },
+  { value: TrackingFocus.MEDICATION, label: "Medication" },
+  { value: TrackingFocus.CYCLE_PREDICTION, label: "Cycle Prediction" },
+  { value: TrackingFocus.PATTERN_ANALYSIS, label: "Pattern Analysis" },
+];
+
+export function trackingFocusLabel(focus: TrackingFocus): string {
+  return trackingFocusLabels[focus] ?? "Unknown";
 }

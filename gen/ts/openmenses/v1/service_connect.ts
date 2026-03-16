@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateBleedingObservationRequest, CreateBleedingObservationResponse, CreateDataExportRequest, CreateDataExportResponse, CreateDataImportRequest, CreateDataImportResponse, CreateMedicationEventRequest, CreateMedicationEventResponse, CreateMedicationRequest, CreateMedicationResponse, CreateMoodObservationRequest, CreateMoodObservationResponse, CreateSymptomObservationRequest, CreateSymptomObservationResponse, CreateUserProfileRequest, CreateUserProfileResponse, DeleteBleedingObservationRequest, DeleteBleedingObservationResponse, DeleteMedicationEventRequest, DeleteMedicationEventResponse, DeleteMedicationRequest, DeleteMedicationResponse, DeleteMoodObservationRequest, DeleteMoodObservationResponse, DeleteSymptomObservationRequest, DeleteSymptomObservationResponse, GetBleedingObservationRequest, GetBleedingObservationResponse, GetCycleRequest, GetCycleResponse, GetMedicationEventRequest, GetMedicationEventResponse, GetMedicationRequest, GetMedicationResponse, GetMoodObservationRequest, GetMoodObservationResponse, GetSymptomObservationRequest, GetSymptomObservationResponse, GetUserProfileRequest, GetUserProfileResponse, ListBleedingObservationsRequest, ListBleedingObservationsResponse, ListCyclesRequest, ListCyclesResponse, ListInsightsRequest, ListInsightsResponse, ListMedicationEventsRequest, ListMedicationEventsResponse, ListMedicationsRequest, ListMedicationsResponse, ListMoodObservationsRequest, ListMoodObservationsResponse, ListPredictionsRequest, ListPredictionsResponse, ListSymptomObservationsRequest, ListSymptomObservationsResponse, ListTimelineRequest, ListTimelineResponse, UpdateBleedingObservationRequest, UpdateBleedingObservationResponse, UpdateMedicationEventRequest, UpdateMedicationEventResponse, UpdateMedicationRequest, UpdateMedicationResponse, UpdateMoodObservationRequest, UpdateMoodObservationResponse, UpdateSymptomObservationRequest, UpdateSymptomObservationResponse, UpdateUserProfileRequest, UpdateUserProfileResponse } from "./service_pb.js";
+import { CreateBleedingObservationRequest, CreateBleedingObservationResponse, CreateDataExportRequest, CreateDataExportResponse, CreateDataImportRequest, CreateDataImportResponse, CreateMedicationEventRequest, CreateMedicationEventResponse, CreateMedicationRequest, CreateMedicationResponse, CreateMoodObservationRequest, CreateMoodObservationResponse, CreateSymptomObservationRequest, CreateSymptomObservationResponse, CreateUserProfileRequest, CreateUserProfileResponse, DeleteBleedingObservationRequest, DeleteBleedingObservationResponse, DeleteMedicationEventRequest, DeleteMedicationEventResponse, DeleteMedicationRequest, DeleteMedicationResponse, DeleteMoodObservationRequest, DeleteMoodObservationResponse, DeleteSymptomObservationRequest, DeleteSymptomObservationResponse, GetBleedingObservationRequest, GetBleedingObservationResponse, GetCycleRequest, GetCycleResponse, GetCycleStatisticsRequest, GetCycleStatisticsResponse, GetMedicationEventRequest, GetMedicationEventResponse, GetMedicationRequest, GetMedicationResponse, GetMoodObservationRequest, GetMoodObservationResponse, GetSymptomObservationRequest, GetSymptomObservationResponse, GetUserProfileRequest, GetUserProfileResponse, ListBleedingObservationsRequest, ListBleedingObservationsResponse, ListCyclesRequest, ListCyclesResponse, ListInsightsRequest, ListInsightsResponse, ListMedicationEventsRequest, ListMedicationEventsResponse, ListMedicationsRequest, ListMedicationsResponse, ListMoodObservationsRequest, ListMoodObservationsResponse, ListPredictionsRequest, ListPredictionsResponse, ListSymptomObservationsRequest, ListSymptomObservationsResponse, ListTimelineRequest, ListTimelineResponse, UpdateBleedingObservationRequest, UpdateBleedingObservationResponse, UpdateMedicationEventRequest, UpdateMedicationEventResponse, UpdateMedicationRequest, UpdateMedicationResponse, UpdateMoodObservationRequest, UpdateMoodObservationResponse, UpdateSymptomObservationRequest, UpdateSymptomObservationResponse, UpdateUserProfileRequest, UpdateUserProfileResponse } from "./service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -289,6 +289,15 @@ export const CycleTrackerService = {
       name: "ListCycles",
       I: ListCyclesRequest,
       O: ListCyclesResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc openmenses.v1.CycleTrackerService.GetCycleStatistics
+     */
+    getCycleStatistics: {
+      name: "GetCycleStatistics",
+      I: GetCycleStatisticsRequest,
+      O: GetCycleStatisticsResponse,
       kind: MethodKind.Unary,
     },
     /**

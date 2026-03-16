@@ -7,11 +7,13 @@ const mockRouter = { navigate: mockNavigate } as never;
 
 const mockListTimeline = vi.fn();
 const mockListMedications = vi.fn();
+const mockGetUserProfile = vi.fn();
 
 vi.mock("../../../lib/client", () => ({
   client: {
     listTimeline: (...args: unknown[]) => mockListTimeline(...args),
     listMedications: (...args: unknown[]) => mockListMedications(...args),
+    getUserProfile: (...args: unknown[]) => mockGetUserProfile(...args),
     deleteBleedingObservation: vi.fn().mockResolvedValue({}),
     deleteSymptomObservation: vi.fn().mockResolvedValue({}),
     deleteMoodObservation: vi.fn().mockResolvedValue({}),
@@ -96,6 +98,7 @@ describe("TimelinePage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockListMedications.mockResolvedValue({ medications: [] });
+    mockGetUserProfile.mockResolvedValue({ profile: {} });
   });
 
   it("renders timeline with mixed observation types", async () => {
