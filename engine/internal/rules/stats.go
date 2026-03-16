@@ -39,7 +39,7 @@ func Stats(cycles []*v1.Cycle) CycleStats {
 // start_date. Open-ended cycles are excluded. If fewer than n completed cycles
 // exist, all completed cycles are used.
 func WindowStats(cycles []*v1.Cycle, n int) CycleStats {
-	completed := completedOnly(cycles)
+	completed := CompletedCycles(cycles)
 	sort.Slice(completed, func(i, j int) bool {
 		return completed[i].GetStartDate().GetValue() < completed[j].GetStartDate().GetValue()
 	})
@@ -49,8 +49,8 @@ func WindowStats(cycles []*v1.Cycle, n int) CycleStats {
 	return Stats(completed)
 }
 
-// completedOnly returns cycles that have a non-empty end_date.
-func completedOnly(cycles []*v1.Cycle) []*v1.Cycle {
+// CompletedCycles returns cycles that have a non-empty end_date.
+func CompletedCycles(cycles []*v1.Cycle) []*v1.Cycle {
 	out := make([]*v1.Cycle, 0, len(cycles))
 	for _, c := range cycles {
 		if c.GetEndDate().GetValue() != "" {

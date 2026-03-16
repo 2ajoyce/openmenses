@@ -200,7 +200,7 @@ func (s *CycleTrackerService) estimateAndStorePhases(ctx context.Context, userID
 
 	stats := rules.Stats(cycles)
 	avgLen := int(math.Round(stats.Average))
-	completed := countCompletedCycles(cycles)
+	completed := len(rules.CompletedCycles(cycles))
 
 	for _, c := range cycles {
 		estimates := rules.EstimatePhases(c, profile, avgLen, completed)
@@ -213,15 +213,4 @@ func (s *CycleTrackerService) estimateAndStorePhases(ctx context.Context, userID
 		}
 	}
 	return nil
-}
-
-// countCompletedCycles returns the number of cycles with a non-empty end_date.
-func countCompletedCycles(cycles []*v1.Cycle) int {
-	n := 0
-	for _, c := range cycles {
-		if c.GetEndDate().GetValue() != "" {
-			n++
-		}
-	}
-	return n
 }

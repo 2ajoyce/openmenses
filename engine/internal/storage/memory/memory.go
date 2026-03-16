@@ -261,6 +261,19 @@ func (s *symptomStore) GetByID(_ context.Context, id string) (*v1.SymptomObserva
 	return proto.Clone(obs).(*v1.SymptomObservation), nil
 }
 
+func (s *symptomStore) ListByUser(_ context.Context, userID string, page storage.PageRequest) (storage.ListPage[*v1.SymptomObservation], error) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	var filtered []*v1.SymptomObservation
+	for _, obs := range s.data {
+		if obs.GetUserId() == userID {
+			filtered = append(filtered, obs)
+		}
+	}
+	sortSymptomsByTimestamp(filtered)
+	return pageItems(filtered, page)
+}
+
 func (s *symptomStore) ListByUserAndDateRange(_ context.Context, userID, start, end string, page storage.PageRequest) (storage.ListPage[*v1.SymptomObservation], error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()

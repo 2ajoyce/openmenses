@@ -310,6 +310,21 @@ func (r *symptomRepo) GetByID(ctx context.Context, id string) (*v1.SymptomObserv
 	return &obs, proto.Unmarshal(data, &obs)
 }
 
+func (r *symptomRepo) ListByUser(ctx context.Context, userID string, page storage.PageRequest) (storage.ListPage[*v1.SymptomObservation], error) {
+	limit, offset, err := pageArgs(page)
+	if err != nil {
+		return storage.ListPage[*v1.SymptomObservation]{}, err
+	}
+	rows, err := r.db.QueryContext(ctx,
+		`SELECT data FROM symptom_observations WHERE user_id = ? ORDER BY timestamp LIMIT ? OFFSET ?`,
+		userID, limit+1, offset)
+	if err != nil {
+		return storage.ListPage[*v1.SymptomObservation]{}, err
+	}
+	defer rows.Close()
+	return scanSymptoms(rows, limit, offset)
+}
+
 func (r *symptomRepo) ListByUserAndDateRange(ctx context.Context, userID, start, end string, page storage.PageRequest) (storage.ListPage[*v1.SymptomObservation], error) {
 	limit, offset, err := pageArgs(page)
 	if err != nil {

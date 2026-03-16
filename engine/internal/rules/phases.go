@@ -54,7 +54,7 @@ func EstimatePhases(
 		endTime = startTime.AddDate(0, 0, avgCycleLen-1)
 	}
 
-	confidence := computeConfidence(completedCycles, profile)
+	confidence := ComputeConfidence(completedCycles, profile)
 	var fn phaseFn
 	switch profile.GetBiologicalCycle() {
 	case v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED:
@@ -164,9 +164,9 @@ func suppressedPhaseFn() phaseFn {
 	}
 }
 
-// computeConfidence computes the ConfidenceLevel for phase estimates per
+// ComputeConfidence computes the ConfidenceLevel for phase estimates per
 // domain rules §2.4. The lowest applicable cap wins.
-func computeConfidence(completedCycles int, profile *v1.UserProfile) v1.ConfidenceLevel {
+func ComputeConfidence(completedCycles int, profile *v1.UserProfile) v1.ConfidenceLevel {
 	var base v1.ConfidenceLevel
 	switch {
 	case completedCycles < 2:
