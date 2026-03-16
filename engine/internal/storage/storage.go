@@ -74,6 +74,7 @@ type BleedingObservationRepository interface {
 type SymptomObservationRepository interface {
 	Create(ctx context.Context, obs *v1.SymptomObservation) error
 	GetByID(ctx context.Context, id string) (*v1.SymptomObservation, error)
+	ListByUser(ctx context.Context, userID string, page PageRequest) (ListPage[*v1.SymptomObservation], error)
 	ListByUserAndDateRange(ctx context.Context, userID string, start, end string, page PageRequest) (ListPage[*v1.SymptomObservation], error)
 	DeleteByID(ctx context.Context, id string) error
 }
