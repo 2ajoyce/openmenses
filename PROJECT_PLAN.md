@@ -224,7 +224,7 @@ Users maintain full control of their information.
 - implement observation storage
 - implement core cycle logic
 
-## Phase 2: Core Logging
+## Phase 2: Core Logging ✅ COMPLETE
 
 - bleeding tracking
 - symptom tracking
@@ -232,7 +232,7 @@ Users maintain full control of their information.
 - medication tracking
 - timeline view
 
-## Phase 3: Cycle Detection
+## Phase 3: Cycle Detection ✅ COMPLETE
 
 - derive cycle boundaries
 - compute cycle statistics
