@@ -16,6 +16,7 @@
       "Bash(git ls-tree:*)",
       "Bash(find:*)",
       "Bash(grep:*)",
+      "Bash(ls:*)",
       "Bash(cd C:/Users/aronw/code/Github/openmenses && *)"
     ]
   }
