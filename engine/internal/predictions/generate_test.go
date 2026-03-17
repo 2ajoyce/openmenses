@@ -258,10 +258,15 @@ func TestGenerate(t *testing.T) {
 				makeCycle("c1", userID, "2026-01-01", "2026-01-28"), // 28 days: valid
 				makeCycle("c2", userID, "2026-01-29", "2026-05-02"), // 94 days: outlier (>90)
 			},
-			symptoms:  nil,
-			profile:   makeProfile(v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY, v1.CycleRegularity_CYCLE_REGULARITY_REGULAR),
-			wantCount: 0, // Only 1 non-outlier; need ≥2
-			wantKinds: nil,
+			symptoms: nil,
+			profile:  makeProfile(v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY, v1.CycleRegularity_CYCLE_REGULARITY_REGULAR),
+			// §4.1: eligibility counts all completed (2), so NEXT_BLEED + PMS_WINDOW.
+			// Dates based on the 1 non-outlier cycle's length (28 days).
+			wantCount: 2,
+			wantKinds: []v1.PredictionType{
+				v1.PredictionType_PREDICTION_TYPE_NEXT_BLEED,
+				v1.PredictionType_PREDICTION_TYPE_PMS_WINDOW,
+			},
 		},
 
 		{
@@ -295,6 +300,10 @@ func TestGenerate(t *testing.T) {
 			wantKinds: []v1.PredictionType{
 				v1.PredictionType_PREDICTION_TYPE_NEXT_BLEED,
 				v1.PredictionType_PREDICTION_TYPE_PMS_WINDOW,
+			},
+			// nextBleedStart = open cycle start (2026-02-26) + avg 28 = 2026-03-26
+			wantDates: map[v1.PredictionType][2]string{
+				v1.PredictionType_PREDICTION_TYPE_NEXT_BLEED: {"2026-03-26", "2026-03-31"},
 			},
 		},
 	}
@@ -386,6 +395,19 @@ func TestPredictedDates(t *testing.T) {
 			},
 		},
 		{
+			name: "28-day cycle with open cycle",
+			cycles: []*v1.Cycle{
+				makeCycle("c1", userID, "2026-01-01", "2026-01-28"),
+				makeCycle("c2", userID, "2026-01-29", "2026-02-25"),
+				makeCycle("open", userID, "2026-02-26", ""), // open-ended
+			},
+			avgLen: 28,
+			dayCount: map[v1.PredictionType]int{
+				v1.PredictionType_PREDICTION_TYPE_NEXT_BLEED: 0,   // starts on nextBleedStart
+				v1.PredictionType_PREDICTION_TYPE_PMS_WINDOW: -10, // 10 days before
+			},
+		},
+		{
 			name: "35-day cycle with 3 cycles",
 			cycles: []*v1.Cycle{
 				makeCycle("c1", userID, "2026-01-01", "2026-02-04"),
@@ -465,6 +487,15 @@ func TestConfidenceLevels(t *testing.T) {
 				makeCycle("c2", userID, "2026-01-29", "2026-02-25"),
 			},
 			profile:  makeProfile(v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY, v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR),
+			wantConf: v1.ConfidenceLevel_CONFIDENCE_LEVEL_LOW,
+		},
+		{
+			name: "two cycles with one outlier: LOW (1 non-outlier for confidence)",
+			cycles: []*v1.Cycle{
+				makeCycle("c1", userID, "2026-01-01", "2026-01-28"), // 28 days: valid
+				makeCycle("c2", userID, "2026-01-29", "2026-05-02"), // 94 days: outlier
+			},
+			profile:  makeProfile(v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY, v1.CycleRegularity_CYCLE_REGULARITY_REGULAR),
 			wantConf: v1.ConfidenceLevel_CONFIDENCE_LEVEL_LOW,
 		},
 		{

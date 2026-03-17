@@ -174,6 +174,38 @@ func BuildTimeline(
 		}
 	}
 
+	// ── predictions ────────────────────────────────────────────────────────────
+	{
+		req := storage.PageRequest{PageSize: fetchPageSize}
+		for {
+			pg, err := store.Predictions().ListByUser(ctx, userID, req)
+			if err != nil {
+				return nil, "", fmt.Errorf("list predictions: %w", err)
+			}
+			for _, pred := range pg.Items {
+				// Filter in-memory: include predictions where predicted_start_date <= end
+				// AND (predicted_end_date >= start OR predicted_end_date is empty).
+				predStart := pred.GetPredictedStartDate().GetValue()
+				predEnd := pred.GetPredictedEndDate().GetValue()
+
+				if predStart > end {
+					continue
+				}
+				if predEnd != "" && predEnd < start {
+					continue
+				}
+
+				add(predStart, &v1.TimelineRecord{
+					Record: &v1.TimelineRecord_Prediction{Prediction: pred},
+				})
+			}
+			if pg.NextPageToken == "" {
+				break
+			}
+			req.PageToken = pg.NextPageToken
+		}
+	}
+
 	// Sort most-recent-first (descending lexicographic order of full timestamp/date keys).
 	sort.SliceStable(entries, func(i, j int) bool {
 		return entries[i].key > entries[j].key

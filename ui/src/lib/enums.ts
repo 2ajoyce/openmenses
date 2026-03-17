@@ -12,6 +12,7 @@ import {
   BiologicalCycleModel,
   CycleRegularity,
   TrackingFocus,
+  PredictionType,
 } from "@gen/openmenses/v1/model_pb";
 
 export const bleedingFlowLabels: Record<number, string> = {
@@ -278,4 +279,15 @@ export const trackingFocusOptions = [
 
 export function trackingFocusLabel(focus: TrackingFocus): string {
   return trackingFocusLabels[focus] ?? "Unknown";
+}
+
+export const predictionTypeLabels: Record<number, string> = {
+  [PredictionType.NEXT_BLEED]: "Next Period",
+  [PredictionType.PMS_WINDOW]: "PMS Window",
+  [PredictionType.OVULATION_WINDOW]: "Ovulation Window",
+  [PredictionType.SYMPTOM_WINDOW]: "Symptom Window",
+};
+
+export function predictionTypeLabel(type: PredictionType): string {
+  return predictionTypeLabels[type] ?? "Unknown";
 }

@@ -39,6 +39,13 @@
   --om-color-confidence-medium: #f59e0b;
   --om-color-confidence-high: #22c55e;
 
+  /* Prediction Colors */
+  --om-color-prediction: #06b6d4;
+  --om-color-prediction-bleed: #f97316;
+  --om-color-prediction-pms: #d946ef;
+  --om-color-prediction-ovulation: #ec4899;
+  --om-color-prediction-symptom: #8b5cf6;
+
   /* Status Colors */
   --om-color-success: #4caf50;
   --om-color-warning: #ff9800;
@@ -112,6 +119,13 @@
   --om-color-confidence-low: #f87171;
   --om-color-confidence-medium: #fbbf24;
   --om-color-confidence-high: #4ade80;
+
+  /* Prediction Colors — Dark Mode */
+  --om-color-prediction: #22d3ee;
+  --om-color-prediction-bleed: #fb923c;
+  --om-color-prediction-pms: #ec4899;
+  --om-color-prediction-ovulation: #f472b6;
+  --om-color-prediction-symptom: #a78bfa;
 }
 
 /* ============================================================
@@ -256,6 +270,11 @@
   border-left-color: var(--om-phase-color, var(--om-color-phase));
 }
 
+.prediction-card .card {
+  border-left: 3px solid;
+  border-left-color: var(--om-prediction-color, var(--om-color-prediction));
+}
+
 /* ============================================================
    6. Bleeding Card — Flow Indicator Dot Colors
    ============================================================ */
@@ -365,6 +384,18 @@
   box-shadow: none;
 }
 
+.chip.om-chip-prediction {
+  background-color: transparent;
+  color: var(--om-color-prediction);
+  box-shadow: 0 0 0 1px var(--om-color-prediction);
+}
+
+.chip.om-chip-prediction.om-chip-active {
+  background-color: var(--om-color-prediction);
+  color: #ffffff;
+  box-shadow: none;
+}
+
 /* ============================================================
    9. Confidence Level Indicators
    Must include text label or icon (not just color)
@@ -404,6 +435,23 @@
 
 .om-confidence-text {
   font-weight: var(--om-font-weight-medium);
+}
+
+/* Prediction Rationale List */
+.om-prediction-rationale {
+  margin-top: var(--om-space-sm);
+  padding-left: var(--om-space-md);
+  font-size: var(--om-font-size-sm);
+  opacity: 0.8;
+}
+
+.om-prediction-rationale ul {
+  margin: 0;
+  padding-left: var(--om-space-md);
+}
+
+.om-prediction-rationale li {
+  margin-bottom: var(--om-space-xs);
 }
 
 /* ============================================================

@@ -13,6 +13,7 @@ import {
   BiologicalCycleModel,
   CycleRegularity,
   TrackingFocus,
+  PredictionType,
 } from "@gen/openmenses/v1/model_pb";
 import {
   bleedingFlowLabel,
@@ -42,6 +43,7 @@ import {
   cycleRegularityOptions,
   trackingFocusLabel,
   trackingFocusOptions,
+  predictionTypeLabel,
 } from "../enums";
 
 describe("bleedingFlowLabel", () => {
@@ -348,5 +350,18 @@ describe("trackingFocusOptions", () => {
 
   it("has 6 options", () => {
     expect(trackingFocusOptions).toHaveLength(6);
+  });
+});
+
+describe("predictionTypeLabel", () => {
+  it("returns label for each non-UNSPECIFIED value", () => {
+    expect(predictionTypeLabel(PredictionType.NEXT_BLEED)).toBe("Next Period");
+    expect(predictionTypeLabel(PredictionType.PMS_WINDOW)).toBe("PMS Window");
+    expect(predictionTypeLabel(PredictionType.OVULATION_WINDOW)).toBe("Ovulation Window");
+    expect(predictionTypeLabel(PredictionType.SYMPTOM_WINDOW)).toBe("Symptom Window");
+  });
+
+  it("returns Unknown for UNSPECIFIED", () => {
+    expect(predictionTypeLabel(PredictionType.UNSPECIFIED)).toBe("Unknown");
   });
 });

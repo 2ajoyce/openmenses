@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Block, Button, Card, CardContent, CardHeader, Navbar, Page, Segmented } from "framework7-react";
 import type { Router } from "framework7/types";
-import type { Cycle, CycleStatistics, PhaseEstimate, BiologicalCycleModel } from "@gen/openmenses/v1/model_pb";
+import type { Cycle, CycleStatistics, PhaseEstimate, BiologicalCycleModel, Prediction } from "@gen/openmenses/v1/model_pb";
 import { client, DEFAULT_PARENT } from "../../lib/client";
 import { toLocalDate, fromLocalDate, formatDate } from "../../lib/dates";
 import { EmptyState } from "../../components/EmptyState";
 import { CycleCard } from "./CycleCard";
 import { PhaseEstimateCard } from "./PhaseEstimateCard";
+import { PredictionCard } from "../prediction/PredictionCard";
 
 interface CyclesPageProps {
   f7router: Router.Router;
@@ -25,6 +26,7 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
   const [todayPhaseEstimate, setTodayPhaseEstimate] = useState<
     PhaseEstimate | undefined
   >();
+  const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [profileComplete, setProfileComplete] = useState(true);
   const loadingRef = useRef(false);
 
@@ -109,6 +111,19 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
     }
   }, []);
 
+  const fetchPredictions = useCallback(async () => {
+    try {
+      const res = await client.listPredictions({
+        parent: DEFAULT_PARENT,
+        pagination: { pageSize: 100, pageToken: "" },
+      });
+      setPredictions(res.predictions || []);
+    } catch (err) {
+      console.error("Failed to fetch predictions:", err);
+      setPredictions([]);
+    }
+  }, []);
+
   const handleFetch = useCallback(async () => {
     if (loadingRef.current) return;
     loadingRef.current = true;
@@ -120,6 +135,7 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
         fetchCycles(),
         fetchStatistics(),
         fetchTodayPhaseEstimate(),
+        fetchPredictions(),
       ]);
     } finally {
       setLoading(false);
@@ -130,6 +146,7 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
     fetchCycles,
     fetchStatistics,
     fetchTodayPhaseEstimate,
+    fetchPredictions,
   ]);
 
   useEffect(() => {
@@ -322,6 +339,16 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
               </CardContent>
             </Card>
           </div>
+        </Block>
+      )}
+
+      {/* Predictions section */}
+      {!loading && predictions.length > 0 && (
+        <Block strong>
+          <h3 className="om-block-subtitle">Predictions</h3>
+          {predictions.map((prediction) => (
+            <PredictionCard key={prediction.name} prediction={prediction} />
+          ))}
         </Block>
       )}
 
