@@ -244,3 +244,142 @@ The engine returns validation errors as a `connect.Error` with code `codes.Inval
 - `description`: human-readable reason in English (e.g., `"end_date must be on or after start_date"`)
 
 Multiple violations from a single request are **all reported** in a single error response (no fail-fast).
+
+---
+
+## 6. Insight Generation Rules
+
+Insights are backward-looking summaries that surface trends and patterns in accumulated data. Unlike predictions (forward-looking), insights synthesize historical observations to identify what has already happened. This section specifies eligibility criteria, algorithms, confidence assignment, evidence linking, and regeneration triggers for all insight types.
+
+### 6.1 Insight Types and Eligibility
+
+| Insight Type                           | Minimum Criteria                                                                         |
+| -------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `INSIGHT_TYPE_CYCLE_LENGTH_PATTERN`    | ≥ 3 completed non-outlier cycles                                                         |
+| `INSIGHT_TYPE_SYMPTOM_PATTERN`         | ≥ 3 completed cycles with ≥ 3 matching observations of the same `SymptomType` on similar cycle days |
+| `INSIGHT_TYPE_MEDICATION_ADHERENCE_PATTERN` | ≥ 1 active medication with ≥ 14 days of `MedicationEvent` records                    |
+| `INSIGHT_TYPE_BLEEDING_PATTERN`        | ≥ 3 completed cycles with at least one `BleedingObservation` per cycle                   |
+
+### 6.2 Cycle Length Pattern Algorithm
+
+**Eligibility:** ≥ 3 completed non-outlier cycles (see §1.2 for outlier definition).
+
+**Algorithm:**
+
+1. Collect all non-outlier cycle lengths in chronological order.
+2. Perform simple linear regression on cycle lengths: `y = mx + b` where `x` is cycle index and `y` is cycle length.
+3. Classify the trend:
+   - **SHORTENING:** negative slope (`m < 0`) with `|m| > 0.5` days per cycle
+   - **LENGTHENING:** positive slope (`m > 0`) with `m > 0.5` days per cycle
+   - **STABLE:** coefficient of variation (standard deviation ÷ mean) < 0.08 (≈ 8% variation)
+   - **IRREGULAR:** otherwise (high variance, no clear trend)
+
+**Summary generation:** e.g., "Your cycle length has been gradually increasing over the last 5 cycles" (LENGTHENING), "Your cycle length has remained stable at around 28 days" (STABLE).
+
+**Evidence:** Include the `name` (ULID) of each cycle considered in the computation.
+
+### 6.3 Symptom Pattern Algorithm
+
+**Eligibility:** ≥ 3 completed cycles with ≥ 3 matching observations of the same `SymptomType` on similar cycle days (within ±2 days).
+
+**Algorithm:**
+
+1. For each completed cycle, compute the cycle day for each `SymptomObservation` (day 1 = `start_date`).
+2. Group observations by `SymptomType`.
+3. For each symptom type, check if it appears on similar cycle days across ≥ 3 distinct cycles:
+   - Map each observation to its cycle day.
+   - Find the mode (most common cycle day) for that symptom type.
+   - Count how many cycles have an observation within ±2 days of the mode.
+   - If ≥ 3 cycles have observations within ±2 days of the mode, the symptom type qualifies.
+4. For each qualifying symptom type, generate an insight.
+
+**Summary generation:** e.g., "Headaches tend to occur around cycle day 12" or "Cramps typically start on cycle day 2 and last 3–4 days".
+
+**Evidence:** Include the `name` (ULID) of each `SymptomObservation` that contributed to the pattern.
+
+### 6.4 Medication Adherence Pattern Algorithm
+
+**Eligibility:** ≥ 1 active medication with ≥ 14 days of `MedicationEvent` records.
+
+**Algorithm:**
+
+1. For each active `Medication`, collect all associated `MedicationEvent` records.
+2. Count unique calendar dates with at least one event.
+3. Compute the adherence ratio: `days_with_events ÷ total_days_since_first_event`.
+4. Classify adherence:
+   - **HIGH:** ratio ≥ 0.90 (≥ 90%)
+   - **MODERATE:** ratio 0.70–0.89 (70–89%)
+   - **LOW:** ratio < 0.70 (< 70%)
+5. Generate one insight per active medication.
+
+**Summary generation:** e.g., "Your adherence to Ibuprofen has been high at 95%" (HIGH), "Your adherence to Vitamin D has been moderate at 78%" (MODERATE).
+
+**Evidence:** Include the `name` (ULID) of the `Medication` referenced.
+
+### 6.5 Bleeding Pattern Algorithm
+
+**Eligibility:** ≥ 3 completed cycles with at least one `BleedingObservation` per cycle.
+
+**Algorithm:**
+
+1. For each completed cycle, collect all `BleedingObservation` records.
+2. Compute bleed duration: count consecutive bleeding days from the start of the cycle (first day of menstruation).
+3. Compute average flow intensity: group observations by date, assign numeric scores (`SPOTTING=1`, `LIGHT=2`, `MEDIUM=3`, `HEAVY=4`), compute mean across all bleed days.
+4. Analyze duration trend:
+   - Perform simple linear regression on bleed durations.
+   - Classify as SHORTENING (negative trend), LENGTHENING (positive trend), or STABLE (low variance).
+5. Analyze flow trend:
+   - Perform simple linear regression on average flow intensities.
+   - Classify similarly.
+6. Generate a single insight summarizing both trends.
+
+**Summary generation:** e.g., "Your period duration has been stable at around 5 days with medium flow" (STABLE duration, medium intensity), "Your period has been getting lighter over the last 3 cycles" (STABLE duration, SHORTENING flow).
+
+**Evidence:** Include the `name` (ULID) of each `BleedingObservation` that contributed to the pattern.
+
+### 6.6 Confidence Assignment
+
+Insight confidence follows the same rules as phase estimates (§2.4):
+
+| Condition                             | Confidence                       |
+| ------------------------------------- | -------------------------------- |
+| < 2 completed cycles                  | `CONFIDENCE_LEVEL_LOW`           |
+| 2–4 completed cycles, regular         | `CONFIDENCE_LEVEL_MEDIUM`        |
+| ≥ 5 completed cycles, regular         | `CONFIDENCE_LEVEL_HIGH`          |
+| `CYCLE_REGULARITY_VERY_IRREGULAR`     | cap at `CONFIDENCE_LEVEL_LOW`    |
+| `CYCLE_REGULARITY_SOMEWHAT_IRREGULAR` | cap at `CONFIDENCE_LEVEL_MEDIUM` |
+
+**Special note for SYMPTOM_PATTERN:** Confidence may be capped lower if the symptom type has very few observations or limited spread across cycles. Use the number of qualifying cycles (≥ 3) as the primary basis: 3 cycles → `CONFIDENCE_LEVEL_MEDIUM` (or `CONFIDENCE_LEVEL_LOW` if irregular), ≥ 5 cycles → `CONFIDENCE_LEVEL_HIGH`.
+
+### 6.7 Insight Invalidation and Regeneration Triggers
+
+All insights for a user are **deleted and regenerated** when:
+
+- A new `BleedingObservation` is logged that starts a new cycle.
+- A `USER_CONFIRMED` cycle boundary is added or modified.
+- The user updates `UserProfile.biological_cycle` or `UserProfile.cycle_regularity`.
+- A new `SymptomObservation`, `MedicationEvent`, or medication activation/deactivation occurs.
+
+This follows the same pattern as prediction invalidation (§4.3). The `regenerateAndStoreInsights()` method on `CycleTrackerService` handles this:
+
+1. Delete all insights for the user.
+2. Call `insights.Generate()` with fresh data.
+3. Persist each returned insight.
+
+This is called at the end of `redetectAndStoreCycles()`, after prediction regeneration. Since `redetectAndStoreCycles` is already triggered by bleeding observation CRUD, profile updates, and data import, all invalidation triggers are covered automatically.
+
+### 6.8 Insight Name Generation and Evidence Linking
+
+- Each insight is assigned a ULID-based `name` at generation time, matching the predictions pattern.
+- The `evidence_record_refs` field contains the `name` (ULID) of records that support the insight (e.g., cycle names, observation names, medication names). This makes insights traceable and explainable to the user.
+- Evidence records are determined by the algorithm (see §6.2–6.5 for per-type details).
+
+### 6.9 Profile Completeness Requirement
+
+Insights are only generated when `UserProfile` is complete (see §5.5):
+
+- `biological_cycle` (non-UNSPECIFIED)
+- `cycle_regularity` (non-UNSPECIFIED)
+- `tracking_focus` (at least one value)
+
+If the profile is incomplete, `regenerateAndStoreInsights()` returns without generating insights.
