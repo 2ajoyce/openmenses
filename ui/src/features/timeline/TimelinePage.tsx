@@ -15,7 +15,8 @@ type FilterType =
   | "moodObservation"
   | "medicationEvent"
   | "cycle"
-  | "phaseEstimate";
+  | "phaseEstimate"
+  | "prediction";
 
 interface ProcessedTimelineRecord extends TimelineRecord {
   _groupedPhaseEstimates?: PhaseEstimate[];
@@ -29,6 +30,7 @@ const FILTER_OPTIONS: { key: FilterType; label: string; chipClass: string }[] =
     { key: "medicationEvent", label: "Medication", chipClass: "medication" },
     { key: "cycle", label: "Cycles", chipClass: "cycle" },
     { key: "phaseEstimate", label: "Phases", chipClass: "phase" },
+    { key: "prediction", label: "Predictions", chipClass: "prediction" },
   ];
 
 interface TimelinePageProps {

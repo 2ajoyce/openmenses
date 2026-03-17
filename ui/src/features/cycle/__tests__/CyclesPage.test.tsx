@@ -12,6 +12,7 @@ const mockListCycles = vi.fn();
 const mockGetCycleStatistics = vi.fn();
 const mockGetUserProfile = vi.fn();
 const mockListTimeline = vi.fn();
+const mockListPredictions = vi.fn();
 
 vi.mock("../../../lib/client", () => ({
   client: {
@@ -19,6 +20,7 @@ vi.mock("../../../lib/client", () => ({
     getCycleStatistics: (...args: unknown[]) => mockGetCycleStatistics(...args),
     getUserProfile: (...args: unknown[]) => mockGetUserProfile(...args),
     listTimeline: (...args: unknown[]) => mockListTimeline(...args),
+    listPredictions: (...args: unknown[]) => mockListPredictions(...args),
   },
   DEFAULT_PARENT: "users/default",
 }));
@@ -47,6 +49,7 @@ describe("CyclesPage", () => {
     mockGetCycleStatistics.mockResolvedValue({ statistics: null });
     mockGetUserProfile.mockResolvedValue({ profile: null });
     mockListTimeline.mockResolvedValue({ records: [] });
+    mockListPredictions.mockResolvedValue({ predictions: [] });
   });
 
   it("shows loading state when initially loading", () => {
@@ -178,5 +181,51 @@ describe("CyclesPage", () => {
         }),
       );
     });
+  });
+
+  it("fetches predictions on load", async () => {
+    render(<CyclesPage f7router={mockRouter} />);
+
+    await waitFor(() => {
+      expect(mockListPredictions).toHaveBeenCalledWith(
+        expect.objectContaining({
+          parent: "users/default",
+        }),
+      );
+    });
+  });
+
+  it("renders predictions section when predictions are available", async () => {
+    mockListPredictions.mockResolvedValue({
+      predictions: [
+        {
+          name: "users/default/predictions/01",
+          userId: "users/default",
+          kind: 1, // NEXT_BLEED
+          predictedStartDate: { value: "2026-04-01" },
+          predictedEndDate: { value: "2026-04-06" },
+          confidence: 3, // HIGH
+          rationale: [],
+        },
+      ],
+    });
+
+    render(<CyclesPage f7router={mockRouter} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Next Period")).toBeInTheDocument();
+    });
+  });
+
+  it("does not render predictions section when predictions are empty", async () => {
+    mockListPredictions.mockResolvedValue({ predictions: [] });
+
+    render(<CyclesPage f7router={mockRouter} />);
+
+    await waitFor(() => {
+      expect(mockListPredictions).toHaveBeenCalled();
+    });
+
+    expect(screen.queryByText("Predictions")).not.toBeInTheDocument();
   });
 });

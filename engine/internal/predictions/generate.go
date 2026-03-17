@@ -30,20 +30,22 @@ func Generate(
 		return nil
 	}
 
-	// Use the count of non-outlier completed cycles from stats.
-	completedCount := stats.Count
+	// Use total completed cycles for eligibility (§4.1 counts all, including outliers).
+	// Use non-outlier count from stats for confidence and rationale.
+	allCompletedCount := len(completed)
+	nonOutlierCount := stats.Count
 	avgLen := int(math.Round(stats.Average))
 
-	// Find anchor cycle: open-ended cycle OR last completed cycle.
-	var anchorStart time.Time
+	// Compute the predicted next bleed date from the open cycle or last completed cycle.
+	var nextBleedStart time.Time
 	openCycle := findOpenCycle(cycles)
 	if openCycle != nil {
 		t, err := time.Parse("2006-01-02", openCycle.GetStartDate().GetValue())
 		if err == nil {
-			anchorStart = t
+			nextBleedStart = t.AddDate(0, 0, avgLen)
 		}
 	}
-	if anchorStart.IsZero() && len(completed) > 0 {
+	if nextBleedStart.IsZero() && len(completed) > 0 {
 		// Fall back to last completed cycle start + avgLen.
 		sort.Slice(completed, func(i, j int) bool {
 			return completed[i].GetStartDate().GetValue() < completed[j].GetStartDate().GetValue()
@@ -51,41 +53,40 @@ func Generate(
 		last := completed[len(completed)-1]
 		t, err := time.Parse("2006-01-02", last.GetStartDate().GetValue())
 		if err == nil {
-			anchorStart = t.AddDate(0, 0, avgLen)
+			nextBleedStart = t.AddDate(0, 0, avgLen)
 		}
 	}
-	if anchorStart.IsZero() {
+	if nextBleedStart.IsZero() {
 		return nil
 	}
 
-	nextBleedStart := anchorStart
-	confidence := rules.ComputeConfidence(completedCount, profile)
+	confidence := rules.ComputeConfidence(nonOutlierCount, profile)
 
 	var predictions []*v1.Prediction
 
 	// NEXT_BLEED: requires ≥2 completed cycles.
-	if completedCount >= 2 {
-		pred := predictNextBleed(userID, nextBleedStart, confidence, avgLen, completedCount)
+	if allCompletedCount >= 2 {
+		pred := predictNextBleed(userID, nextBleedStart, confidence, avgLen, nonOutlierCount)
 		predictions = append(predictions, pred)
 	}
 
 	// PMS_WINDOW: requires ≥2 completed cycles.
-	if completedCount >= 2 {
-		pred := predictPMSWindow(userID, nextBleedStart, confidence, avgLen, completedCount)
+	if allCompletedCount >= 2 {
+		pred := predictPMSWindow(userID, nextBleedStart, confidence, avgLen, nonOutlierCount)
 		predictions = append(predictions, pred)
 	}
 
 	// OVULATION_WINDOW: requires ≥3 completed cycles AND (REGULAR or SOMEWHAT_IRREGULAR)
 	// AND NOT (HORMONALLY_SUPPRESSED or IRREGULAR).
-	if completedCount >= 3 && canPredictOvulation(profile) {
+	if allCompletedCount >= 3 && canPredictOvulation(profile) {
 		pred := predictOvulationWindow(userID, nextBleedStart, confidence, avgLen)
 		predictions = append(predictions, pred)
 	}
 
 	// SYMPTOM_WINDOWS: requires ≥3 completed cycles.
-	if completedCount >= 3 && len(symptoms) > 0 {
+	if allCompletedCount >= 3 && len(symptoms) > 0 {
 		symptomPreds := predictSymptomWindows(
-			userID, completed, symptoms, nextBleedStart, completedCount, profile,
+			userID, completed, symptoms, nextBleedStart, nonOutlierCount, profile,
 		)
 		predictions = append(predictions, symptomPreds...)
 	}

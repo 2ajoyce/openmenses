@@ -3,10 +3,12 @@ package service
 import (
 	"context"
 	"errors"
+	"log/slog"
 	"math"
 
 	"connectrpc.com/connect"
 
+	"github.com/2ajoyce/openmenses/engine/internal/predictions"
 	"github.com/2ajoyce/openmenses/engine/internal/rules"
 	"github.com/2ajoyce/openmenses/engine/internal/storage"
 	"github.com/2ajoyce/openmenses/engine/internal/timeline"
@@ -121,16 +123,23 @@ func (s *CycleTrackerService) GetCycle(
 
 // ─── RPC: predictions & insights (Phase 4/5 stubs) ───────────────────────────
 
-// ListPredictions returns an empty list. Prediction generation is deferred to
-// Phase 4.
+// ListPredictions returns predictions for the given user from the stored
+// predictions table with offset-based pagination.
 func (s *CycleTrackerService) ListPredictions(
-	_ context.Context,
+	ctx context.Context,
 	req *connect.Request[v1.ListPredictionsRequest],
 ) (*connect.Response[v1.ListPredictionsResponse], error) {
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
-	return connect.NewResponse(&v1.ListPredictionsResponse{}), nil
+	page, err := s.store.Predictions().ListByUser(ctx, req.Msg.GetParent(), pageReq(req.Msg.GetPagination()))
+	if err != nil {
+		return nil, toConnectErr(err)
+	}
+	return connect.NewResponse(&v1.ListPredictionsResponse{
+		Predictions: page.Items,
+		Pagination:  &v1.PaginationResponse{NextPageToken: page.NextPageToken},
+	}), nil
 }
 
 // ListInsights returns an empty list. Insight generation is deferred to
@@ -184,7 +193,67 @@ func (s *CycleTrackerService) redetectAndStoreCycles(ctx context.Context, userID
 	}
 
 	// Estimate and store phases for all cycles (derived + confirmed).
-	return s.estimateAndStorePhases(ctx, userID, newCycles)
+	if err := s.estimateAndStorePhases(ctx, userID, newCycles); err != nil {
+		return err
+	}
+
+	// Regenerate and store predictions based on updated cycles.
+	return s.regenerateAndStorePredictions(ctx, userID, newCycles)
+}
+
+// regenerateAndStorePredictions deletes all existing predictions for the user
+// and regenerates them based on current cycles. If the profile is missing or
+// incomplete, no predictions are generated.
+func (s *CycleTrackerService) regenerateAndStorePredictions(ctx context.Context, userID string, cycles []*v1.Cycle) error {
+	// Delete all existing predictions for the user.
+	if err := s.store.Predictions().DeleteByUser(ctx, userID); err != nil {
+		return err
+	}
+
+	// Fetch user profile; if not found, return nil (no predictions without profile).
+	profile, err := s.store.UserProfiles().GetByID(ctx, userID)
+	if err != nil {
+		if errors.Is(err, storage.ErrNotFound) {
+			return nil // no profile yet — predictions require profile
+		}
+		return err
+	}
+
+	// Check profile completeness (§5.5): biological_cycle and cycle_regularity must
+	// be non-UNSPECIFIED; tracking_focus must have at least one value.
+	if profile.GetBiologicalCycle() == v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_UNSPECIFIED ||
+		profile.GetCycleRegularity() == v1.CycleRegularity_CYCLE_REGULARITY_UNSPECIFIED ||
+		len(profile.GetTrackingFocus()) == 0 {
+		return nil // incomplete profile — no predictions
+	}
+
+	// Fetch all symptom observations for the user via pagination loop.
+	var symptoms []*v1.SymptomObservation
+	token := ""
+	for {
+		page, err := s.store.SymptomObservations().ListByUser(ctx, userID, storage.PageRequest{PageSize: 500, PageToken: token})
+		if err != nil {
+			return err
+		}
+		symptoms = append(symptoms, page.Items...)
+		if page.NextPageToken == "" {
+			break
+		}
+		token = page.NextPageToken
+	}
+
+	// Generate predictions based on cycles, symptoms, and profile.
+	preds := predictions.Generate(userID, cycles, symptoms, profile)
+
+	// Persist each prediction.
+	for _, pred := range preds {
+		if err := s.store.Predictions().Create(ctx, pred); err != nil {
+			slog.Error("failed to create prediction", "user_id", userID, "prediction_kind", pred.GetKind(), "error", err)
+			// Continue on error — one failed prediction should not block others
+		}
+	}
+
+	return nil
 }
 
 // estimateAndStorePhases computes PhaseEstimates for each cycle and persists
