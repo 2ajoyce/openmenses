@@ -8,6 +8,7 @@ import (
 
 	"connectrpc.com/connect"
 
+	"github.com/2ajoyce/openmenses/engine/internal/insights"
 	"github.com/2ajoyce/openmenses/engine/internal/predictions"
 	"github.com/2ajoyce/openmenses/engine/internal/rules"
 	"github.com/2ajoyce/openmenses/engine/internal/storage"
@@ -142,16 +143,23 @@ func (s *CycleTrackerService) ListPredictions(
 	}), nil
 }
 
-// ListInsights returns an empty list. Insight generation is deferred to
-// Phase 5.
+// ListInsights returns insights for the given user from the stored insights
+// table with offset-based pagination.
 func (s *CycleTrackerService) ListInsights(
-	_ context.Context,
+	ctx context.Context,
 	req *connect.Request[v1.ListInsightsRequest],
 ) (*connect.Response[v1.ListInsightsResponse], error) {
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
-	return connect.NewResponse(&v1.ListInsightsResponse{}), nil
+	page, err := s.store.Insights().ListByUser(ctx, req.Msg.GetParent(), pageReq(req.Msg.GetPagination()))
+	if err != nil {
+		return nil, toConnectErr(err)
+	}
+	return connect.NewResponse(&v1.ListInsightsResponse{
+		Insights:   page.Items,
+		Pagination: &v1.PaginationResponse{NextPageToken: page.NextPageToken},
+	}), nil
 }
 
 // ─── internal helpers ─────────────────────────────────────────────────────────
@@ -198,7 +206,12 @@ func (s *CycleTrackerService) redetectAndStoreCycles(ctx context.Context, userID
 	}
 
 	// Regenerate and store predictions based on updated cycles.
-	return s.regenerateAndStorePredictions(ctx, userID, newCycles)
+	if err := s.regenerateAndStorePredictions(ctx, userID, newCycles); err != nil {
+		return err
+	}
+
+	// Regenerate and store insights based on updated cycles.
+	return s.regenerateAndStoreInsights(ctx, userID, newCycles)
 }
 
 // regenerateAndStorePredictions deletes all existing predictions for the user
@@ -250,6 +263,106 @@ func (s *CycleTrackerService) regenerateAndStorePredictions(ctx context.Context,
 		if err := s.store.Predictions().Create(ctx, pred); err != nil {
 			slog.Error("failed to create prediction", "user_id", userID, "prediction_kind", pred.GetKind(), "error", err)
 			// Continue on error — one failed prediction should not block others
+		}
+	}
+
+	return nil
+}
+
+// regenerateAndStoreInsights deletes all existing insights for the user
+// and regenerates them based on current cycles and observations. If the
+// profile is missing or incomplete, no insights are generated.
+func (s *CycleTrackerService) regenerateAndStoreInsights(ctx context.Context, userID string, cycles []*v1.Cycle) error {
+	// Delete all existing insights for the user.
+	if err := s.store.Insights().DeleteByUser(ctx, userID); err != nil {
+		return err
+	}
+
+	// Fetch user profile; if not found, return nil (no insights without profile).
+	profile, err := s.store.UserProfiles().GetByID(ctx, userID)
+	if err != nil {
+		if errors.Is(err, storage.ErrNotFound) {
+			return nil // no profile yet — insights require profile
+		}
+		return err
+	}
+
+	// Check profile completeness (§5.5): biological_cycle and cycle_regularity must
+	// be non-UNSPECIFIED; tracking_focus must have at least one value.
+	if profile.GetBiologicalCycle() == v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_UNSPECIFIED ||
+		profile.GetCycleRegularity() == v1.CycleRegularity_CYCLE_REGULARITY_UNSPECIFIED ||
+		len(profile.GetTrackingFocus()) == 0 {
+		return nil // incomplete profile — no insights
+	}
+
+	// Fetch all symptom observations for the user via pagination loop.
+	var symptoms []*v1.SymptomObservation
+	token := ""
+	for {
+		page, err := s.store.SymptomObservations().ListByUser(ctx, userID, storage.PageRequest{PageSize: 500, PageToken: token})
+		if err != nil {
+			return err
+		}
+		symptoms = append(symptoms, page.Items...)
+		if page.NextPageToken == "" {
+			break
+		}
+		token = page.NextPageToken
+	}
+
+	// Fetch all medications for the user via pagination loop.
+	var medications []*v1.Medication
+	token = ""
+	for {
+		page, err := s.store.Medications().ListByUser(ctx, userID, storage.PageRequest{PageSize: 500, PageToken: token})
+		if err != nil {
+			return err
+		}
+		medications = append(medications, page.Items...)
+		if page.NextPageToken == "" {
+			break
+		}
+		token = page.NextPageToken
+	}
+
+	// Fetch all medication events for the user via pagination loop.
+	var medicationEvents []*v1.MedicationEvent
+	token = ""
+	for {
+		page, err := s.store.MedicationEvents().ListByUserAndDateRange(ctx, userID, "0001-01-01", "9999-12-31", storage.PageRequest{PageSize: 500, PageToken: token})
+		if err != nil {
+			return err
+		}
+		medicationEvents = append(medicationEvents, page.Items...)
+		if page.NextPageToken == "" {
+			break
+		}
+		token = page.NextPageToken
+	}
+
+	// Fetch all bleeding observations for the user via pagination loop.
+	var bleedingObs []*v1.BleedingObservation
+	token = ""
+	for {
+		page, err := s.store.BleedingObservations().ListByUserAndDateRange(ctx, userID, "0001-01-01", "9999-12-31", storage.PageRequest{PageSize: 500, PageToken: token})
+		if err != nil {
+			return err
+		}
+		bleedingObs = append(bleedingObs, page.Items...)
+		if page.NextPageToken == "" {
+			break
+		}
+		token = page.NextPageToken
+	}
+
+	// Generate insights based on cycles, observations, and profile.
+	ins := insights.Generate(userID, cycles, symptoms, medications, medicationEvents, bleedingObs, profile)
+
+	// Persist each insight.
+	for _, insight := range ins {
+		if err := s.store.Insights().Create(ctx, insight); err != nil {
+			slog.Error("failed to create insight", "user_id", userID, "insight_kind", insight.GetKind(), "error", err)
+			// Continue on error — one failed insight should not block others
 		}
 	}
 

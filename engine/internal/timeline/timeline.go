@@ -206,6 +206,28 @@ func BuildTimeline(
 		}
 	}
 
+	// ── insights ────────────────────────────────────────────────────────────────
+	{
+		req := storage.PageRequest{PageSize: fetchPageSize}
+		for {
+			pg, err := store.Insights().ListByUser(ctx, userID, req)
+			if err != nil {
+				return nil, "", fmt.Errorf("list insights: %w", err)
+			}
+			for _, ins := range pg.Items {
+				// Insights are not date-ranged; use the insight name (ULID-based, sortable)
+				// as the key for consistent ordering.
+				add(ins.GetName(), &v1.TimelineRecord{
+					Record: &v1.TimelineRecord_Insight{Insight: ins},
+				})
+			}
+			if pg.NextPageToken == "" {
+				break
+			}
+			req.PageToken = pg.NextPageToken
+		}
+	}
+
 	// Sort most-recent-first (descending lexicographic order of full timestamp/date keys).
 	sort.SliceStable(entries, func(i, j int) bool {
 		return entries[i].key > entries[j].key
