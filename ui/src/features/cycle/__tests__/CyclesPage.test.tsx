@@ -13,6 +13,7 @@ const mockGetCycleStatistics = vi.fn();
 const mockGetUserProfile = vi.fn();
 const mockListTimeline = vi.fn();
 const mockListPredictions = vi.fn();
+const mockListInsights = vi.fn();
 
 vi.mock("../../../lib/client", () => ({
   client: {
@@ -21,6 +22,7 @@ vi.mock("../../../lib/client", () => ({
     getUserProfile: (...args: unknown[]) => mockGetUserProfile(...args),
     listTimeline: (...args: unknown[]) => mockListTimeline(...args),
     listPredictions: (...args: unknown[]) => mockListPredictions(...args),
+    listInsights: (...args: unknown[]) => mockListInsights(...args),
   },
   DEFAULT_PARENT: "users/default",
 }));
@@ -50,6 +52,7 @@ describe("CyclesPage", () => {
     mockGetUserProfile.mockResolvedValue({ profile: null });
     mockListTimeline.mockResolvedValue({ records: [] });
     mockListPredictions.mockResolvedValue({ predictions: [] });
+    mockListInsights.mockResolvedValue({ insights: [] });
   });
 
   it("shows loading state when initially loading", () => {

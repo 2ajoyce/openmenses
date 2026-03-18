@@ -16,7 +16,8 @@ type FilterType =
   | "medicationEvent"
   | "cycle"
   | "phaseEstimate"
-  | "prediction";
+  | "prediction"
+  | "insight";
 
 interface ProcessedTimelineRecord extends TimelineRecord {
   _groupedPhaseEstimates?: PhaseEstimate[];
@@ -31,6 +32,7 @@ const FILTER_OPTIONS: { key: FilterType; label: string; chipClass: string }[] =
     { key: "cycle", label: "Cycles", chipClass: "cycle" },
     { key: "phaseEstimate", label: "Phases", chipClass: "phase" },
     { key: "prediction", label: "Predictions", chipClass: "prediction" },
+    { key: "insight", label: "Insights", chipClass: "insight" },
   ];
 
 interface TimelinePageProps {

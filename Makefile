@@ -13,6 +13,7 @@ endif
 .PHONY: proto-lint proto-generate proto-breaking proto-check \
         engine-lint engine-test \
         engine-dev ui-dev ui-build ui-lint ui-test \
+        seed seed-all \
         lint test ci
 
 # ---------------------------------------------------------------------------
@@ -65,6 +66,34 @@ ui-lint:
 
 ui-test:
 	cd ui && $(NPM) run test
+
+# ---------------------------------------------------------------------------
+# Seed Data targets (Generate realistic test data for manual testing)
+# ---------------------------------------------------------------------------
+
+SCENARIO ?= regular-12
+CYCLES   ?= 0
+SEED     ?= 42
+
+# Generate a single scenario (default: regular-12) into openmenses.db.
+# Usage:
+#   make seed                         # Runs regular-12 scenario
+#   make seed SCENARIO=irregular      # Runs a different scenario
+#   make seed CYCLES=20               # Overrides cycle count
+#   make seed SEED=12345              # Sets PRNG seed for reproducibility
+seed:
+	go run ./engine/cmd/seed/ --scenario=$(SCENARIO) --db=openmenses.db --cycles=$(CYCLES) --seed=$(SEED)
+
+# Generate all built-in scenarios into separate database files for UI testing.
+# Creates files: openmenses-regular-12.db, openmenses-irregular.db, etc.
+# Usage:
+#   make seed-all                     # Runs all scenarios with defaults
+seed-all:
+	go run ./engine/cmd/seed/ --scenario=regular-12 --db=openmenses-regular-12.db
+	go run ./engine/cmd/seed/ --scenario=irregular --db=openmenses-irregular.db
+	go run ./engine/cmd/seed/ --scenario=shortening --db=openmenses-shortening.db
+	go run ./engine/cmd/seed/ --scenario=medication-gaps --db=openmenses-medication-gaps.db
+	go run ./engine/cmd/seed/ --scenario=minimal --db=openmenses-minimal.db
 
 # ---------------------------------------------------------------------------
 # Aggregate targets

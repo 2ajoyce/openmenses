@@ -13,6 +13,7 @@ import {
   CycleRegularity,
   TrackingFocus,
   PredictionType,
+  InsightType,
 } from "@gen/openmenses/v1/model_pb";
 
 export const bleedingFlowLabels: Record<number, string> = {
@@ -290,4 +291,15 @@ export const predictionTypeLabels: Record<number, string> = {
 
 export function predictionTypeLabel(type: PredictionType): string {
   return predictionTypeLabels[type] ?? "Unknown";
+}
+
+export const insightTypeLabels: Record<number, string> = {
+  [InsightType.CYCLE_LENGTH_PATTERN]: "Cycle Length Trend",
+  [InsightType.SYMPTOM_PATTERN]: "Symptom Pattern",
+  [InsightType.MEDICATION_ADHERENCE_PATTERN]: "Medication Adherence",
+  [InsightType.BLEEDING_PATTERN]: "Bleeding Pattern",
+};
+
+export function insightTypeLabel(type: InsightType): string {
+  return insightTypeLabels[type] ?? "Unknown";
 }

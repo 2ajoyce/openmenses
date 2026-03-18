@@ -9,6 +9,7 @@ import { MedicationEventCard } from "../medication/MedicationEventCard";
 import { CycleCard } from "../cycle/CycleCard";
 import { PhaseEstimateCard } from "../cycle/PhaseEstimateCard";
 import { PredictionCard } from "../prediction/PredictionCard";
+import { InsightCard } from "../insight/InsightCard";
 
 interface TimelineItemProps {
   record: TimelineRecord;
@@ -88,6 +89,8 @@ export const TimelineItem: React.FC<TimelineItemProps> = ({
       );
     case "prediction":
       return <PredictionCard prediction={record.record.value} />;
+    case "insight":
+      return <InsightCard insight={record.record.value} />;
     default:
       return null;
   }
