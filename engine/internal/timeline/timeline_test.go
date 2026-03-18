@@ -82,6 +82,16 @@ func phaseEstimate(id, userID, date string) *v1.PhaseEstimate {
 	}
 }
 
+func insight(id, userID string) *v1.Insight {
+	return &v1.Insight{
+		Name:       id,
+		UserId:     userID,
+		Kind:       v1.InsightType_INSIGHT_TYPE_CYCLE_LENGTH_PATTERN,
+		Summary:    "Your cycle length has been stable",
+		Confidence: v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM,
+	}
+}
+
 // recordTimestamp returns the full timestamp or date string from a
 // TimelineRecord for use in intra-day ordering assertions.
 func recordTimestamp(r *v1.TimelineRecord) string {
@@ -243,6 +253,75 @@ func TestBuildTimeline_AllRecordTypes(t *testing.T) {
 		if types[name] != 1 {
 			t.Errorf("expected 1 %s record, got %d", name, types[name])
 		}
+	}
+}
+
+// TestBuildTimeline_WithInsights verifies that insights are included in
+// the timeline when present. This test manually creates an insight and
+// confirms it appears in the timeline output.
+func TestBuildTimeline_WithInsights(t *testing.T) {
+	store := memory.New()
+
+	// Create profile first (so insights can theoretically be generated)
+	profile := &v1.UserProfile{
+		Name:             "u1",
+		BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
+		Contraception:    v1.ContraceptionType_CONTRACEPTION_TYPE_NONE,
+		CycleRegularity:  v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
+		ReproductiveGoal: v1.ReproductiveGoal_REPRODUCTIVE_GOAL_PREGNANCY_IRRELEVANT,
+		TrackingFocus:    []v1.TrackingFocus{v1.TrackingFocus_TRACKING_FOCUS_BLEEDING},
+	}
+	if err := store.UserProfiles().Upsert(ctx, profile); err != nil {
+		t.Fatal(err)
+	}
+
+	// Create 3+ bleeding episodes to simulate conditions where insights would be generated
+	for _, obs := range []*v1.BleedingObservation{
+		bleeding("b1", "u1", "2024-01-01"),
+		bleeding("b2", "u1", "2024-01-02"),
+		bleeding("b3", "u1", "2024-01-03"),
+		bleeding("b4", "u1", "2024-01-29"),
+		bleeding("b5", "u1", "2024-01-30"),
+		bleeding("b6", "u1", "2024-01-31"),
+		bleeding("b7", "u1", "2024-02-26"),
+		bleeding("b8", "u1", "2024-02-27"),
+		bleeding("b9", "u1", "2024-02-28"),
+	} {
+		if err := store.BleedingObservations().Create(ctx, obs); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	// Manually create an insight to verify it appears in timeline
+	generatedInsight := insight("insight-001", "u1")
+	if err := store.Insights().Create(ctx, generatedInsight); err != nil {
+		t.Fatal(err)
+	}
+
+	// Build timeline across all dates
+	records, _, err := timeline.BuildTimeline(ctx, store, "u1", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	// Verify insight is in the records
+	foundInsight := false
+	for _, r := range records {
+		if ins, ok := r.GetRecord().(*v1.TimelineRecord_Insight); ok {
+			if ins.Insight.GetName() == "insight-001" {
+				foundInsight = true
+				if ins.Insight.GetUserId() != "u1" {
+					t.Errorf("insight user_id mismatch: want u1, got %s", ins.Insight.GetUserId())
+				}
+				if ins.Insight.GetSummary() != "Your cycle length has been stable" {
+					t.Errorf("insight summary mismatch: got %q", ins.Insight.GetSummary())
+				}
+				break
+			}
+		}
+	}
+	if !foundInsight {
+		t.Error("expected to find insight in timeline records")
 	}
 }
 

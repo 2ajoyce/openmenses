@@ -14,6 +14,7 @@ import {
   CycleRegularity,
   TrackingFocus,
   PredictionType,
+  InsightType,
 } from "@gen/openmenses/v1/model_pb";
 import {
   bleedingFlowLabel,
@@ -44,6 +45,7 @@ import {
   trackingFocusLabel,
   trackingFocusOptions,
   predictionTypeLabel,
+  insightTypeLabel,
 } from "../enums";
 
 describe("bleedingFlowLabel", () => {
@@ -363,5 +365,18 @@ describe("predictionTypeLabel", () => {
 
   it("returns Unknown for UNSPECIFIED", () => {
     expect(predictionTypeLabel(PredictionType.UNSPECIFIED)).toBe("Unknown");
+  });
+});
+
+describe("insightTypeLabel", () => {
+  it("returns label for each non-UNSPECIFIED value", () => {
+    expect(insightTypeLabel(InsightType.CYCLE_LENGTH_PATTERN)).toBe("Cycle Length Trend");
+    expect(insightTypeLabel(InsightType.SYMPTOM_PATTERN)).toBe("Symptom Pattern");
+    expect(insightTypeLabel(InsightType.MEDICATION_ADHERENCE_PATTERN)).toBe("Medication Adherence");
+    expect(insightTypeLabel(InsightType.BLEEDING_PATTERN)).toBe("Bleeding Pattern");
+  });
+
+  it("returns Unknown for UNSPECIFIED", () => {
+    expect(insightTypeLabel(InsightType.UNSPECIFIED)).toBe("Unknown");
   });
 });

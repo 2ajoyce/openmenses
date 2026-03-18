@@ -46,6 +46,9 @@
   --om-color-prediction-ovulation: #ec4899;
   --om-color-prediction-symptom: #8b5cf6;
 
+  /* Insight Colors */
+  --om-color-insight: #14b8a6;
+
   /* Status Colors */
   --om-color-success: #4caf50;
   --om-color-warning: #ff9800;
@@ -126,6 +129,9 @@
   --om-color-prediction-pms: #ec4899;
   --om-color-prediction-ovulation: #f472b6;
   --om-color-prediction-symptom: #a78bfa;
+
+  /* Insight Colors — Dark Mode */
+  --om-color-insight: #2dd4bf;
 }
 
 /* ============================================================
@@ -275,6 +281,10 @@
   border-left-color: var(--om-prediction-color, var(--om-color-prediction));
 }
 
+.insight-card .card {
+  border-left: 3px solid var(--om-color-insight);
+}
+
 /* ============================================================
    6. Bleeding Card — Flow Indicator Dot Colors
    ============================================================ */
@@ -396,6 +406,18 @@
   box-shadow: none;
 }
 
+.chip.om-chip-insight {
+  background-color: transparent;
+  color: var(--om-color-insight);
+  box-shadow: 0 0 0 1px var(--om-color-insight);
+}
+
+.chip.om-chip-insight.om-chip-active {
+  background-color: var(--om-color-insight);
+  color: #ffffff;
+  box-shadow: none;
+}
+
 /* ============================================================
    9. Confidence Level Indicators
    Must include text label or icon (not just color)
@@ -452,6 +474,18 @@
 
 .om-prediction-rationale li {
   margin-bottom: var(--om-space-xs);
+}
+
+/* Insight Evidence List */
+.om-insight-evidence {
+  margin-top: var(--om-space-sm);
+  font-size: var(--om-font-size-sm);
+  opacity: 0.7;
+}
+
+.om-insight-evidence ul {
+  margin: var(--om-space-xs) 0 0 var(--om-space-md);
+  padding-left: 0;
 }
 
 /* ============================================================

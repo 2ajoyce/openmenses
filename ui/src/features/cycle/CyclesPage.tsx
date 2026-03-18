@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Block, Button, Card, CardContent, CardHeader, Navbar, Page, Segmented } from "framework7-react";
 import type { Router } from "framework7/types";
-import type { Cycle, CycleStatistics, PhaseEstimate, BiologicalCycleModel, Prediction } from "@gen/openmenses/v1/model_pb";
+import type { Cycle, CycleStatistics, PhaseEstimate, BiologicalCycleModel, Prediction, Insight } from "@gen/openmenses/v1/model_pb";
 import { client, DEFAULT_PARENT } from "../../lib/client";
 import { toLocalDate, fromLocalDate, formatDate } from "../../lib/dates";
 import { EmptyState } from "../../components/EmptyState";
 import { CycleCard } from "./CycleCard";
 import { PhaseEstimateCard } from "./PhaseEstimateCard";
 import { PredictionCard } from "../prediction/PredictionCard";
+import { InsightCard } from "../insight/InsightCard";
 
 interface CyclesPageProps {
   f7router: Router.Router;
@@ -27,6 +28,7 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
     PhaseEstimate | undefined
   >();
   const [predictions, setPredictions] = useState<Prediction[]>([]);
+  const [insights, setInsights] = useState<Insight[]>([]);
   const [profileComplete, setProfileComplete] = useState(true);
   const loadingRef = useRef(false);
 
@@ -124,6 +126,19 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
     }
   }, []);
 
+  const fetchInsights = useCallback(async () => {
+    try {
+      const res = await client.listInsights({
+        parent: DEFAULT_PARENT,
+        pagination: { pageSize: 100, pageToken: "" },
+      });
+      setInsights(res.insights || []);
+    } catch (err) {
+      console.error("Failed to fetch insights:", err);
+      setInsights([]);
+    }
+  }, []);
+
   const handleFetch = useCallback(async () => {
     if (loadingRef.current) return;
     loadingRef.current = true;
@@ -136,6 +151,7 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
         fetchStatistics(),
         fetchTodayPhaseEstimate(),
         fetchPredictions(),
+        fetchInsights(),
       ]);
     } finally {
       setLoading(false);
@@ -147,6 +163,7 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
     fetchStatistics,
     fetchTodayPhaseEstimate,
     fetchPredictions,
+    fetchInsights,
   ]);
 
   useEffect(() => {
@@ -349,6 +366,25 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
           {predictions.map((prediction) => (
             <PredictionCard key={prediction.name} prediction={prediction} />
           ))}
+        </Block>
+      )}
+
+      {/* Insights section */}
+      {!loading && insights.length > 0 && (
+        <Block strong>
+          <h3 className="om-block-subtitle">Insights</h3>
+          {insights.map((insight) => (
+            <InsightCard key={insight.name} insight={insight} />
+          ))}
+        </Block>
+      )}
+
+      {/* Insights empty state */}
+      {!loading && insights.length === 0 && cycles.length > 0 && profileComplete && (
+        <Block className="om-empty-state">
+          <p className="om-empty-state-message">
+            Not enough data yet to generate insights. Continue tracking to unlock pattern analysis.
+          </p>
         </Block>
       )}
 
