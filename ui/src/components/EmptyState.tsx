@@ -15,18 +15,20 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   icon,
 }) => {
   return (
-    <Block className="om-empty-state">
-      {icon && (
-        <div className="om-empty-state-icon">
-          <Icon f7={icon} />
-        </div>
-      )}
-      <p className="om-empty-state-message">{message}</p>
-      {actionLabel && onAction && (
-        <Button fill round onClick={onAction}>
-          {actionLabel}
-        </Button>
-      )}
-    </Block>
+    <div role="status" aria-label="Empty state">
+      <Block className="om-empty-state">
+        {icon && (
+          <div className="om-empty-state-icon">
+            <Icon f7={icon} />
+          </div>
+        )}
+        <p className="om-empty-state-message">{message}</p>
+        {actionLabel && onAction && (
+          <Button fill round onClick={onAction}>
+            {actionLabel}
+          </Button>
+        )}
+      </Block>
+    </div>
   );
 };

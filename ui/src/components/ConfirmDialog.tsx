@@ -21,6 +21,9 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   useEffect(() => {
     if (open && !shownRef.current) {
       shownRef.current = true;
+      // Note: Framework7's f7.dialog.confirm creates a native dialog element
+      // with appropriate role="alertdialog" and aria-labelledby/aria-describedby
+      // semantics handled by the Framework7 library itself.
       f7.dialog.confirm(message, title, () => {
         shownRef.current = false;
         onConfirm();

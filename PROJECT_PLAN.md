@@ -238,13 +238,13 @@ Users maintain full control of their information.
 - compute cycle statistics
 - confidence scoring
 
-## Phase 4: Predictions  ✅ COMPLETE
+## Phase 4: Predictions ✅ COMPLETE
 
 - next bleed prediction
 - PMS window prediction
 - ovulation window prediction
 
-## Phase 5: Insights
+## Phase 5: Insights ✅ COMPLETE
 
 - symptom pattern detection
 - cycle trend analysis

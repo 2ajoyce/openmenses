@@ -232,16 +232,37 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
         <DateTimePicker label="To" value={endDate} onChange={setEndDate} />
       </Block>
 
-      <Block className="timeline-control-row">
-        {FILTER_OPTIONS.map(({ key, label, chipClass }) => (
-          <Chip
-            key={key}
-            text={label}
-            className={`om-chip-${chipClass}${activeFilters.has(key) ? " om-chip-active" : ""}`}
-            onClick={() => toggleFilter(key)}
-          />
-        ))}
-      </Block>
+      <div role="region" aria-label="Filter timeline by observation type">
+        <Block className="timeline-control-row">
+          {FILTER_OPTIONS.map(({ key, label, chipClass }) => (
+            <div
+              key={key}
+              role="button"
+              tabIndex={0}
+              aria-pressed={activeFilters.has(key)}
+              aria-label={label}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  toggleFilter(key);
+                }
+              }}
+            >
+              <Chip
+                text={label}
+                className={`om-chip-${chipClass}${activeFilters.has(key) ? " om-chip-active" : ""}`}
+                onClick={() => toggleFilter(key)}
+              />
+            </div>
+          ))}
+        </Block>
+      </div>
+
+      {loading && (
+        <div aria-live="polite" aria-label="Loading timeline">
+          <p>Loading timeline...</p>
+        </div>
+      )}
 
       {!loading && filteredRecords.length === 0 && (
         <EmptyState
@@ -251,7 +272,8 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
         />
       )}
 
-      {filteredRecords.map((record) => (
+      <div role="feed" aria-label="Timeline observations" aria-live="polite" aria-busy={loading}>
+        {filteredRecords.map((record) => (
         <TimelineItem
           key={`${record.record.case}-${record.record.value?.name}`}
           record={record}
@@ -263,7 +285,8 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
           onNavigateEdit={(path) => f7router.navigate(path)}
           onDeleted={() => fetchTimeline()}
         />
-      ))}
+        ))}
+      </div>
     </Page>
   );
 };

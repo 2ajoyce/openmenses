@@ -7,6 +7,10 @@ import { toLocalDate, fromLocalDate, formatDate } from "../../lib/dates";
 import { EmptyState } from "../../components/EmptyState";
 import { CycleCard } from "./CycleCard";
 import { PhaseEstimateCard } from "./PhaseEstimateCard";
+import { CycleLengthChart } from "./CycleLengthChart";
+import { CalendarHeatmap } from "./CalendarHeatmap";
+import { MoodPhaseChart } from "./MoodPhaseChart";
+import { MoodCycleDayChart } from "./MoodCycleDayChart";
 import { PredictionCard } from "../prediction/PredictionCard";
 import { InsightCard } from "../insight/InsightCard";
 
@@ -249,47 +253,48 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
 
       {/* Statistics section */}
       {!loading && hasStatistics && (
-        <Block strong>
+        <div role="region" aria-labelledby="stats-heading">
+          <Block strong>
           <div className="cycle-stats-card">
             <Card>
               <CardHeader>
-                <span className="om-card-title">Cycle Statistics</span>
+                <span className="om-card-title" id="stats-heading">Cycle Statistics</span>
               </CardHeader>
               <CardContent>
                 <div className="om-stats-grid">
                   <div className="om-stat-item">
                     <span className="om-stat-label">Average</span>
-                    <span className="om-stat-value">
+                    <span className="om-stat-value" aria-label={`Average: ${statistics.average?.toFixed(1) || "—"} days`}>
                       {statistics.average?.toFixed(1) || "—"} days
                     </span>
                   </div>
                   <div className="om-stat-item">
                     <span className="om-stat-label">Median</span>
-                    <span className="om-stat-value">
+                    <span className="om-stat-value" aria-label={`Median: ${statistics.median || "—"} days`}>
                       {statistics.median || "—"} days
                     </span>
                   </div>
                   <div className="om-stat-item">
                     <span className="om-stat-label">Min</span>
-                    <span className="om-stat-value">
+                    <span className="om-stat-value" aria-label={`Minimum: ${statistics.min || "—"} days`}>
                       {statistics.min || "—"} days
                     </span>
                   </div>
                   <div className="om-stat-item">
                     <span className="om-stat-label">Max</span>
-                    <span className="om-stat-value">
+                    <span className="om-stat-value" aria-label={`Maximum: ${statistics.max || "—"} days`}>
                       {statistics.max || "—"} days
                     </span>
                   </div>
                   <div className="om-stat-item">
                     <span className="om-stat-label">Std Dev</span>
-                    <span className="om-stat-value">
+                    <span className="om-stat-value" aria-label={`Standard deviation: ${statistics.stdDev?.toFixed(1) || "—"} days`}>
                       {statistics.stdDev?.toFixed(1) || "—"} days
                     </span>
                   </div>
                   <div className="om-stat-item">
                     <span className="om-stat-label">Count</span>
-                    <span className="om-stat-value">{statistics.count}</span>
+                    <span className="om-stat-value" aria-label={`Count: ${statistics.count}`}>{statistics.count}</span>
                   </div>
                 </div>
               </CardContent>
@@ -320,16 +325,55 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
               </Button>
             </Segmented>
           </div>
-        </Block>
+          </Block>
+        </div>
+      )}
+
+      {/* Cycle Length Trend Chart */}
+      {!loading && completedCycles.length >= 2 && (
+        <div role="region" aria-labelledby="chart-heading">
+          <Block strong>
+          <div className="cycle-length-chart-section">
+            <h3 className="om-block-subtitle" id="chart-heading">Cycle Length Trend</h3>
+            <CycleLengthChart cycles={cycles} />
+          </div>
+          </Block>
+        </div>
+      )}
+
+      {/* Calendar Heatmap */}
+      {!loading && cycles.length > 0 && (
+        <div role="region" aria-labelledby="heatmap-heading">
+          <Block strong>
+          <div className="calendar-heatmap-section">
+            <h3 className="om-block-subtitle" id="heatmap-heading">Observation Calendar</h3>
+            <CalendarHeatmap />
+          </div>
+          </Block>
+        </div>
+      )}
+
+      {/* Mood & Cycle Section */}
+      {!loading && completedCycles.length >= 2 && (
+        <div role="region" aria-labelledby="mood-cycle-heading">
+          <Block strong>
+          <div className="mood-cycle-section">
+            <h3 className="om-block-subtitle" id="mood-cycle-heading">Mood & Cycle</h3>
+            <MoodPhaseChart />
+            <MoodCycleDayChart />
+          </div>
+          </Block>
+        </div>
       )}
 
       {/* Current cycle section */}
       {!loading && currentCycle && (
-        <Block strong>
+        <div role="region" aria-labelledby="current-cycle-heading">
+          <Block strong>
           <div className="current-cycle-section">
             <Card>
               <CardHeader>
-                <span className="om-card-title">Current Cycle</span>
+                <span className="om-card-title" id="current-cycle-heading">Current Cycle</span>
               </CardHeader>
               <CardContent>
                 {currentCycle.startDate && (
@@ -356,27 +400,32 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
               </CardContent>
             </Card>
           </div>
-        </Block>
+          </Block>
+        </div>
       )}
 
       {/* Predictions section */}
       {!loading && predictions.length > 0 && (
-        <Block strong>
-          <h3 className="om-block-subtitle">Predictions</h3>
+        <div role="region" aria-labelledby="predictions-heading">
+          <Block strong>
+          <h3 className="om-block-subtitle" id="predictions-heading">Predictions</h3>
           {predictions.map((prediction) => (
             <PredictionCard key={prediction.name} prediction={prediction} />
           ))}
-        </Block>
+          </Block>
+        </div>
       )}
 
       {/* Insights section */}
       {!loading && insights.length > 0 && (
-        <Block strong>
-          <h3 className="om-block-subtitle">Insights</h3>
+        <div role="region" aria-labelledby="insights-heading">
+          <Block strong>
+          <h3 className="om-block-subtitle" id="insights-heading">Insights</h3>
           {insights.map((insight) => (
             <InsightCard key={insight.name} insight={insight} />
           ))}
-        </Block>
+          </Block>
+        </div>
       )}
 
       {/* Insights empty state */}
@@ -390,12 +439,14 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
 
       {/* Cycle history section */}
       {!loading && completedCycles.length > 0 && (
-        <Block strong>
-          <h3 className="om-block-subtitle">Cycle History</h3>
+        <div role="region" aria-labelledby="history-heading">
+          <Block strong>
+          <h3 className="om-block-subtitle" id="history-heading">Cycle History</h3>
           {completedCycles.map((cycle) => (
             <CycleCard key={cycle.name} cycle={cycle} />
           ))}
-        </Block>
+          </Block>
+        </div>
       )}
     </Page>
   );
