@@ -19,6 +19,7 @@ import MedicationForm from "../features/medication/MedicationForm";
 import SettingsPage from "../pages/SettingsPage";
 import CyclesPage from "../features/cycle/CyclesPage";
 import ExportPage from "../features/export/ExportPage";
+import ClinicianSummaryPage from "../features/summary/ClinicianSummaryPage";
 
 const routes: Framework7Parameters["routes"] = [
   { path: "/", component: TimelinePage },
@@ -32,6 +33,7 @@ const routes: Framework7Parameters["routes"] = [
   { path: "/medications/edit/", component: MedicationForm },
   { path: "/cycles/", component: CyclesPage },
   { path: "/export/", component: ExportPage },
+  { path: "/summary/", component: ClinicianSummaryPage },
   { path: "/settings/", component: SettingsPage },
 ];
 

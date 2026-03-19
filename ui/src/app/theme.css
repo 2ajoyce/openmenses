@@ -983,3 +983,309 @@
 .save-button {
   margin-top: var(--om-space-md);
 }
+
+/* ============================================================
+   15. Clinician Summary Page
+   ============================================================ */
+
+.clinician-summary {
+  background-color: var(--om-color-page-bg);
+}
+
+.print-button {
+  margin-bottom: var(--om-space-md);
+}
+
+.summary-content {
+  padding: 0 var(--om-space-md) var(--om-space-lg);
+}
+
+.summary-section {
+  margin-bottom: var(--om-space-lg);
+  padding-bottom: var(--om-space-lg);
+  border-bottom: 1px solid #e0e0e0;
+}
+
+:root.dark .summary-section {
+  border-bottom-color: #333333;
+}
+
+.summary-section:last-child {
+  border-bottom: none;
+}
+
+.summary-section h1 {
+  font-size: var(--om-font-size-lg);
+  font-weight: var(--om-font-weight-bold);
+  margin: 0 0 var(--om-space-sm);
+  color: #333333;
+}
+
+:root.dark .summary-section h1 {
+  color: #ffffff;
+}
+
+.summary-section h2 {
+  font-size: var(--om-font-size-base);
+  font-weight: var(--om-font-weight-bold);
+  margin: 0 0 var(--om-space-md);
+  color: #333333;
+}
+
+:root.dark .summary-section h2 {
+  color: #ffffff;
+}
+
+.summary-section h3 {
+  font-size: var(--om-font-size-base);
+  font-weight: var(--om-font-weight-medium);
+  margin: 0 0 var(--om-space-xs);
+  color: #333333;
+}
+
+:root.dark .summary-section h3 {
+  color: #ffffff;
+}
+
+.summary-generation-date {
+  font-size: var(--om-font-size-sm);
+  color: #666666;
+  margin: 0;
+}
+
+:root.dark .summary-generation-date {
+  color: #999999;
+}
+
+.summary-definition-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--om-space-md);
+  margin: 0;
+  padding: 0;
+}
+
+.definition-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--om-space-sm);
+}
+
+.definition-item dt {
+  font-weight: var(--om-font-weight-medium);
+  color: #333333;
+  margin: 0;
+}
+
+:root.dark .definition-item dt {
+  color: #ffffff;
+}
+
+.definition-item dd {
+  margin: 0;
+  color: #666666;
+  text-align: right;
+}
+
+:root.dark .definition-item dd {
+  color: #999999;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--om-space-md);
+  font-size: var(--om-font-size-sm);
+}
+
+.summary-table caption {
+  text-align: left;
+  padding-bottom: var(--om-space-sm);
+  font-weight: var(--om-font-weight-medium);
+  color: #666666;
+  font-size: var(--om-font-size-sm);
+}
+
+:root.dark .summary-table caption {
+  color: #999999;
+}
+
+.summary-table thead {
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #d0d0d0;
+}
+
+:root.dark .summary-table thead {
+  background-color: #2a2a2c;
+  border-bottom-color: #444444;
+}
+
+.summary-table th {
+  padding: var(--om-space-sm) var(--om-space-md);
+  text-align: left;
+  font-weight: var(--om-font-weight-bold);
+  color: #333333;
+  border: none;
+}
+
+:root.dark .summary-table th {
+  color: #ffffff;
+}
+
+.summary-table td {
+  padding: var(--om-space-sm) var(--om-space-md);
+  border-bottom: 1px solid #e0e0e0;
+  color: #333333;
+}
+
+:root.dark .summary-table td {
+  border-bottom-color: #333333;
+  color: #ffffff;
+}
+
+.summary-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+:root.dark .summary-table tbody tr:hover {
+  background-color: #272729;
+}
+
+.no-data {
+  padding: var(--om-space-lg) var(--om-space-md);
+  text-align: center;
+  color: #999999;
+  font-size: var(--om-font-size-sm);
+  font-style: italic;
+  margin: 0;
+}
+
+:root.dark .no-data {
+  color: #666666;
+}
+
+.insights-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--om-space-md);
+}
+
+.insight-item {
+  padding: var(--om-space-md);
+  background-color: #f9f9f9;
+  border-left: 3px solid var(--om-color-insight);
+  border-radius: var(--om-radius-sm);
+}
+
+:root.dark .insight-item {
+  background-color: #1c1c1e;
+  border-left-color: var(--om-color-insight);
+}
+
+.insight-title {
+  font-size: var(--om-font-size-base);
+  font-weight: var(--om-font-weight-medium);
+  margin: 0 0 var(--om-space-xs);
+  color: #333333;
+}
+
+:root.dark .insight-title {
+  color: #ffffff;
+}
+
+.insight-summary {
+  font-size: var(--om-font-size-sm);
+  margin: 0 0 var(--om-space-xs);
+  color: #333333;
+  line-height: 1.5;
+}
+
+:root.dark .insight-summary {
+  color: #ffffff;
+}
+
+.insight-confidence {
+  font-size: var(--om-font-size-sm);
+  margin: 0;
+  color: #666666;
+}
+
+:root.dark .insight-confidence {
+  color: #999999;
+}
+
+/* Print Styles */
+@media print {
+  .print-button,
+  .f7-navbar,
+  .f7-toolbar {
+    display: none !important;
+  }
+
+  .clinician-summary {
+    background-color: #ffffff !important;
+  }
+
+  .summary-content {
+    padding: 0;
+  }
+
+  .summary-section {
+    page-break-inside: avoid;
+    margin-bottom: 1.5cm;
+    padding-bottom: 1.5cm;
+  }
+
+  .summary-section h1 {
+    color: #000000 !important;
+    font-size: 18pt;
+    margin-top: 0;
+  }
+
+  .summary-section h2 {
+    color: #000000 !important;
+    font-size: 14pt;
+    margin-top: 1.5cm;
+  }
+
+  .summary-section h3 {
+    color: #000000 !important;
+    font-size: 12pt;
+  }
+
+  .summary-generation-date,
+  .definition-item dt,
+  .definition-item dd,
+  .summary-table,
+  .insight-item {
+    color: #000000 !important;
+    page-break-inside: avoid;
+  }
+
+  .summary-table thead {
+    background-color: #f5f5f5 !important;
+    display: table-header-group;
+  }
+
+  .summary-table th {
+    background-color: #f5f5f5 !important;
+    color: #000000 !important;
+    border: 1px solid #d0d0d0 !important;
+  }
+
+  .summary-table td {
+    border: 1px solid #d0d0d0 !important;
+    color: #000000 !important;
+  }
+
+  .insight-item {
+    background-color: #f9f9f9 !important;
+    border: 1px solid #d0d0d0 !important;
+    border-left: 3px solid #14b8a6 !important;
+  }
+
+  .no-data {
+    color: #666666 !important;
+  }
+}
