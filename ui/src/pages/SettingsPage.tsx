@@ -219,7 +219,7 @@ const SettingsPage: React.FC = () => {
 
       <BlockTitle>Data</BlockTitle>
       <List inset>
-        <ListItem title="Export Data" link="#" />
+        <ListItem title="Export Data" link="/export/" />
       </List>
 
       <BlockTitle>About</BlockTitle>

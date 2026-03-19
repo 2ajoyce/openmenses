@@ -19,10 +19,12 @@ export const EnumSelector: React.FC<EnumSelectorProps> = ({
   onChange,
   label,
 }) => {
+  const labelId = label ? `enum-selector-${label.replace(/\s+/g, "-").toLowerCase()}` : undefined;
+
   return (
-    <div className="enum-selector">
+    <div className="enum-selector" role="group" aria-labelledby={labelId}>
       {label && (
-        <div className="enum-selector-label block-title">{label}</div>
+        <div id={labelId} className="enum-selector-label block-title">{label}</div>
       )}
       <div className="enum-selector-options">
         {options.map((opt) => (
@@ -33,6 +35,8 @@ export const EnumSelector: React.FC<EnumSelectorProps> = ({
             round
             small
             onClick={() => onChange(opt.value)}
+            aria-pressed={selected === opt.value}
+            aria-label={opt.label}
           >
             {opt.label}
           </Button>

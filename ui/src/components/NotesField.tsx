@@ -12,6 +12,8 @@ export const NotesField: React.FC<NotesFieldProps> = ({
   onChange,
   maxLength = 1024,
 }) => {
+  const infoId = "notes-char-count";
+
   return (
     <ListInput
       label="Notes"
@@ -23,6 +25,7 @@ export const NotesField: React.FC<NotesFieldProps> = ({
         onChange(e.target.value)
       }
       info={`${value.length}/${maxLength}`}
+      aria-describedby={infoId}
     />
   );
 };

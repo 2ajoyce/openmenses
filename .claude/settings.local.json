@@ -18,7 +18,8 @@
       "Bash(grep:*)",
       "Bash(ls:*)",
       "Bash(cd ui:*)",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(npm test:*)"
     ]
   }
 }
