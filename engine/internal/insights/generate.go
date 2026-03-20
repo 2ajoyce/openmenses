@@ -404,14 +404,19 @@ func medicationAdherencePattern(
 			adherenceType = "LOW"
 		}
 
-		summary := fmt.Sprintf("Your adherence to %s has been %s at %d%%", med.GetName(), adherenceType, adherencePercent)
+		summary := fmt.Sprintf("Your adherence to %s has been %s at %d%%", med.GetDisplayName(), adherenceType, adherencePercent)
+
+		var eventRefs []*v1.RecordRef
+		for _, evt := range medEvents {
+			eventRefs = append(eventRefs, &v1.RecordRef{Name: evt.GetName()})
+		}
 
 		insight := &v1.Insight{
 			Name:               ulid.Make().String(),
 			UserId:             userID,
 			Kind:               v1.InsightType_INSIGHT_TYPE_MEDICATION_ADHERENCE_PATTERN,
 			Summary:            summary,
-			EvidenceRecordRefs: []*v1.RecordRef{{Name: med.GetName()}},
+			EvidenceRecordRefs: eventRefs,
 			Confidence:         v1.ConfidenceLevel_CONFIDENCE_LEVEL_MEDIUM, // Overridden in Generate()
 		}
 		insights = append(insights, insight)

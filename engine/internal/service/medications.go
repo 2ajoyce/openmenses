@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"log/slog"
 
 	"connectrpc.com/connect"
 
@@ -32,6 +33,7 @@ func (s *CycleTrackerService) CreateMedication(
 	if err := s.store.Medications().Create(ctx, med); err != nil {
 		return nil, toConnectErr(err)
 	}
+	s.triggerInsightRegeneration(ctx, userID)
 	return connect.NewResponse(&v1.CreateMedicationResponse{Medication: med}), nil
 }
 
@@ -70,6 +72,7 @@ func (s *CycleTrackerService) UpdateMedication(
 	if err := s.store.Medications().Update(ctx, med); err != nil {
 		return nil, toConnectErr(err)
 	}
+	s.triggerInsightRegeneration(ctx, med.GetUserId())
 	return connect.NewResponse(&v1.UpdateMedicationResponse{Medication: med}), nil
 }
 
@@ -82,9 +85,15 @@ func (s *CycleTrackerService) DeleteMedication(
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
+	med, err := s.store.Medications().GetByID(ctx, req.Msg.GetName())
+	if err != nil {
+		return nil, toConnectErr(err)
+	}
+	userID := med.GetUserId()
 	if err := s.store.Medications().DeleteByID(ctx, req.Msg.GetName()); err != nil {
 		return nil, toConnectErr(err)
 	}
+	s.triggerInsightRegeneration(ctx, userID)
 	return connect.NewResponse(&v1.DeleteMedicationResponse{}), nil
 }
 
@@ -129,6 +138,7 @@ func (s *CycleTrackerService) CreateMedicationEvent(
 	if err := s.store.MedicationEvents().Create(ctx, event); err != nil {
 		return nil, toConnectErr(err)
 	}
+	s.triggerInsightRegeneration(ctx, userID)
 	return connect.NewResponse(&v1.CreateMedicationEventResponse{Event: event}), nil
 }
 
@@ -165,6 +175,12 @@ func (s *CycleTrackerService) UpdateMedicationEvent(
 	if err := s.validator.ValidateMedicationEvent(ctx, event); err != nil {
 		return nil, toConnectErr(err)
 	}
+	// Fetch the existing event to get the authoritative user ID before overwriting.
+	existing, err := s.store.MedicationEvents().GetByID(ctx, event.GetName())
+	if err != nil {
+		return nil, toConnectErr(err)
+	}
+	userID := existing.GetUserId()
 	// Delete the old record and create the updated one with the same ID
 	if err := s.store.MedicationEvents().DeleteByID(ctx, event.GetName()); err != nil && !errors.Is(err, storage.ErrNotFound) {
 		return nil, toConnectErr(err)
@@ -172,6 +188,7 @@ func (s *CycleTrackerService) UpdateMedicationEvent(
 	if err := s.store.MedicationEvents().Create(ctx, event); err != nil {
 		return nil, toConnectErr(err)
 	}
+	s.triggerInsightRegeneration(ctx, userID)
 	return connect.NewResponse(&v1.UpdateMedicationEventResponse{Event: event}), nil
 }
 
@@ -184,9 +201,15 @@ func (s *CycleTrackerService) DeleteMedicationEvent(
 	if err := s.validator.ValidateRequest(req.Msg); err != nil {
 		return nil, toConnectErr(err)
 	}
+	event, err := s.store.MedicationEvents().GetByID(ctx, req.Msg.GetName())
+	if err != nil {
+		return nil, toConnectErr(err)
+	}
+	userID := event.GetUserId()
 	if err := s.store.MedicationEvents().DeleteByID(ctx, req.Msg.GetName()); err != nil {
 		return nil, toConnectErr(err)
 	}
+	s.triggerInsightRegeneration(ctx, userID)
 	return connect.NewResponse(&v1.DeleteMedicationEventResponse{}), nil
 }
 
@@ -210,4 +233,20 @@ func (s *CycleTrackerService) ListMedicationEvents(
 		Events:     page.Items,
 		Pagination: &v1.PaginationResponse{NextPageToken: page.NextPageToken},
 	}), nil
+}
+
+// triggerInsightRegeneration fetches all cycles for userID and regenerates
+// insights. Errors are logged but do not surface to the caller.
+func (s *CycleTrackerService) triggerInsightRegeneration(ctx context.Context, userID string) {
+	cycles, err := paginateAll(ctx, func(ctx context.Context, token string) ([]*v1.Cycle, string, error) {
+		pg, err := s.store.Cycles().ListByUser(ctx, userID, storage.PageRequest{PageSize: 500, PageToken: token})
+		return pg.Items, pg.NextPageToken, err
+	})
+	if err != nil {
+		slog.Error("failed to fetch cycles for insight regeneration", "user_id", userID, "error", err)
+		return
+	}
+	if err := s.regenerateAndStoreInsights(ctx, userID, cycles); err != nil {
+		slog.Error("failed to regenerate insights after medication change", "user_id", userID, "error", err)
+	}
 }

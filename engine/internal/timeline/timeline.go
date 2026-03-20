@@ -232,11 +232,19 @@ func BuildTimeline(
 				key := time.UnixMilli(int64(id.Time())).UTC().Format(time.RFC3339Nano)
 
 				// Filter in-memory: only include insights whose creation timestamp
-				// falls within [start, end] (same contract as other date-filtered
-				// record types). This prevents insights from appearing beyond the
-				// first page when a large date range is selected.
+				// falls within [start, end+1] (same contract as other date-filtered
+				// record types). We extend end by 1 day to account for UTC vs
+				// local-time discrepancies: the ULID timestamp is decoded in UTC,
+				// while the caller's end date is in local time. For users in
+				// UTC-negative zones, an insight regenerated late in the day may
+				// carry a UTC date that is one calendar day ahead of the local end
+				// date and would otherwise be incorrectly excluded.
 				creationDate := time.UnixMilli(int64(id.Time())).UTC().Format("2006-01-02")
-				if creationDate > end || creationDate < start {
+				endPlusOne := end
+				if t, err2 := time.Parse("2006-01-02", end); err2 == nil {
+					endPlusOne = t.AddDate(0, 0, 1).Format("2006-01-02")
+				}
+				if creationDate > endPlusOne || creationDate < start {
 					continue
 				}
 

@@ -1904,6 +1904,91 @@ func TestInsight_NoProfile(t *testing.T) {
 	}
 }
 
+func TestInsightInvalidation_MedicationUpdate(t *testing.T) {
+	svc := newSvc(t)
+	// Create profile
+	profile := validProfile("u1")
+	if _, err := svc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: profile})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Create a medication
+	med := &v1.Medication{
+		Name:        "med1",
+		UserId:      "u1",
+		DisplayName: "Ibuprofen",
+		Category:    v1.MedicationCategory_MEDICATION_CATEGORY_PAIN_RELIEF,
+		Active:      true,
+	}
+	if _, err := svc.CreateMedication(ctx, connect.NewRequest(&v1.CreateMedicationRequest{Parent: "u1", Medication: med})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Create 20 medication events over 20 days to satisfy adherence threshold
+	for i := 0; i < 20; i++ {
+		date := fmt.Sprintf("2025-01-%02d", i+1)
+		evt := validMedEvent(fmt.Sprintf("e%d", i+1), "u1", "med1", date)
+		if _, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{Parent: "u1", Event: evt})); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	// Verify medication adherence insight is generated
+	resp1, err := svc.ListInsights(ctx, connect.NewRequest(&v1.ListInsightsRequest{Parent: "u1"}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	count1 := len(resp1.Msg.GetInsights())
+	if count1 == 0 {
+		t.Fatal("expected insights after creating medication and events, got none")
+	}
+	var foundAdherence bool
+	for _, ins := range resp1.Msg.GetInsights() {
+		if ins.GetKind() == v1.InsightType_INSIGHT_TYPE_MEDICATION_ADHERENCE_PATTERN {
+			foundAdherence = true
+			break
+		}
+	}
+	if !foundAdherence {
+		t.Fatalf("expected MEDICATION_ADHERENCE_PATTERN insight before update, got kinds: %v", resp1.Msg.GetInsights())
+	}
+
+	// Update the medication display name (simulating the user editing the medication name)
+	updatedMed := &v1.Medication{
+		Name:        "med1",
+		UserId:      "u1",
+		DisplayName: "Ibuprofen 400mg",
+		Category:    v1.MedicationCategory_MEDICATION_CATEGORY_PAIN_RELIEF,
+		Active:      true,
+	}
+	if _, err := svc.UpdateMedication(ctx, connect.NewRequest(&v1.UpdateMedicationRequest{
+		Medication: updatedMed,
+		UpdateMask: &fieldmaskpb.FieldMask{Paths: []string{"display_name"}},
+	})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Verify insights are still present after medication name update
+	resp2, err := svc.ListInsights(ctx, connect.NewRequest(&v1.ListInsightsRequest{Parent: "u1"}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	count2 := len(resp2.Msg.GetInsights())
+	if count2 == 0 {
+		t.Errorf("expected insights after medication name update, got none (had %d before)", count1)
+	}
+	var foundAdherence2 bool
+	for _, ins := range resp2.Msg.GetInsights() {
+		if ins.GetKind() == v1.InsightType_INSIGHT_TYPE_MEDICATION_ADHERENCE_PATTERN {
+			foundAdherence2 = true
+			break
+		}
+	}
+	if !foundAdherence2 {
+		t.Error("expected MEDICATION_ADHERENCE_PATTERN insight after medication name update, got none")
+	}
+}
+
 func TestListInsights_Pagination(t *testing.T) {
 	svc := newSvc(t)
 	// Create profile with multiple insights
