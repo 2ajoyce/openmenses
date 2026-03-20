@@ -26,18 +26,24 @@ export const CalendarHeatmap: React.FC = () => {
       const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
       const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-      const res = await client.listTimeline({
-        parent: DEFAULT_PARENT,
-        range: {
-          start: toLocalDate(startOfMonth),
-          end: toLocalDate(endOfMonth),
-        },
-        pagination: { pageSize: 1000, pageToken: "" },
-      });
+      const allRecords: unknown[] = [];
+      let pageToken = "";
+      do {
+        const res = await client.listTimeline({
+          parent: DEFAULT_PARENT,
+          range: {
+            start: toLocalDate(startOfMonth),
+            end: toLocalDate(endOfMonth),
+          },
+          pagination: { pageSize: 500, pageToken },
+        });
+        allRecords.push(...res.records);
+        pageToken = res.pagination?.nextPageToken ?? "";
+      } while (pageToken);
 
       // Group observations by date
       const byDate: ObservationsByDate = {};
-      res.records.forEach((record: unknown) => {
+      allRecords.forEach((record: unknown) => {
         const r = record as Record<string, unknown>;
         const dateStr = (r.date as Record<string, string> | undefined)?.value || "";
         if (!byDate[dateStr]) {

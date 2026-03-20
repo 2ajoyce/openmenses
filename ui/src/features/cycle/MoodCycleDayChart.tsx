@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import type { MoodObservation } from "@gen/openmenses/v1/model_pb";
+import type { MoodObservation, Cycle } from "@gen/openmenses/v1/model_pb";
 import { MoodType } from "@gen/openmenses/v1/model_pb";
 import { client, DEFAULT_PARENT } from "../../lib/client";
 import { fromLocalDate, fromDateTime } from "../../lib/dates";
@@ -21,18 +21,28 @@ export const MoodCycleDayChart: React.FC = () => {
       setLoading(true);
       try {
         // Fetch all mood observations
-        const moodRes = await client.listMoodObservations({
-          parent: DEFAULT_PARENT,
-          pagination: { pageSize: 1000, pageToken: "" },
-        });
-        const moods = moodRes.observations || [];
+        const moods: MoodObservation[] = [];
+        let moodPageToken = "";
+        do {
+          const moodRes = await client.listMoodObservations({
+            parent: DEFAULT_PARENT,
+            pagination: { pageSize: 500, pageToken: moodPageToken },
+          });
+          moods.push(...(moodRes.observations || []));
+          moodPageToken = moodRes.pagination?.nextPageToken ?? "";
+        } while (moodPageToken);
 
         // Fetch all cycles
-        const cycleRes = await client.listCycles({
-          parent: DEFAULT_PARENT,
-          pagination: { pageSize: 100, pageToken: "" },
-        });
-        const cycles = cycleRes.cycles || [];
+        const cycles: Cycle[] = [];
+        let cyclePageToken = "";
+        do {
+          const cycleRes = await client.listCycles({
+            parent: DEFAULT_PARENT,
+            pagination: { pageSize: 500, pageToken: cyclePageToken },
+          });
+          cycles.push(...(cycleRes.cycles || []));
+          cyclePageToken = cycleRes.pagination?.nextPageToken ?? "";
+        } while (cyclePageToken);
 
         // Filter to completed cycles only
         const completedCycles = cycles.filter((c) => c.endDate);

@@ -37,8 +37,11 @@ func NewGeneratorWithClient(g *Generator, baseURL string) (*Generator, error) { 
 }
 
 // createProfile creates a UserProfile via RPC with reasonable defaults.
+// The profile name is set to "users/default" so that the UI (which always
+// queries under that parent) can see the seeded data.
 func (g *Generator) createProfile(ctx context.Context) (*v1.UserProfile, error) { //nolint:unused
 	profile := &v1.UserProfile{
+		Name:             "users/default",
 		BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
 		Contraception:    v1.ContraceptionType_CONTRACEPTION_TYPE_NONE,
 		CycleRegularity:  v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,

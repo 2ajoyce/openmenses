@@ -16,6 +16,7 @@ interface TimelineItemProps {
   medicationNames?: Record<string, string>;
   biologicalCycleModel?: BiologicalCycleModel;
   groupedPhaseEstimates?: PhaseEstimate[];
+  recordLookup?: Record<string, TimelineRecord>;
   onNavigateEdit: (path: string) => void;
   onDeleted: () => void;
 }
@@ -25,6 +26,7 @@ export const TimelineItem: React.FC<TimelineItemProps> = ({
   medicationNames,
   biologicalCycleModel,
   groupedPhaseEstimates,
+  recordLookup,
   onNavigateEdit,
   onDeleted,
 }) => {
@@ -90,7 +92,7 @@ export const TimelineItem: React.FC<TimelineItemProps> = ({
     case "prediction":
       return <PredictionCard prediction={record.record.value} />;
     case "insight":
-      return <InsightCard insight={record.record.value} />;
+      return <InsightCard insight={record.record.value} {...(recordLookup != null && { recordLookup })} />;
     default:
       return null;
   }

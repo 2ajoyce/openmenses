@@ -521,16 +521,48 @@
   margin-bottom: var(--om-space-xs);
 }
 
-/* Insight Evidence List */
+/* Insight Evidence */
 .om-insight-evidence {
   margin-top: var(--om-space-sm);
   font-size: var(--om-font-size-sm);
+}
+
+.om-insight-evidence-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  font-size: inherit;
+  display: flex;
+  align-items: center;
+  gap: var(--om-space-xs);
+}
+
+.om-insight-evidence-toggle:hover {
+  opacity: 1;
+}
+
+.om-insight-evidence-chevron {
+  font-size: 0.75em;
+}
+
+.om-insight-evidence-list {
+  margin: var(--om-space-xs) 0 0 var(--om-space-md);
+  padding-left: 0;
+  list-style: none;
   opacity: 0.7;
 }
 
-.om-insight-evidence ul {
-  margin: var(--om-space-xs) 0 0 var(--om-space-md);
-  padding-left: 0;
+.om-insight-evidence-list li {
+  margin-bottom: var(--om-space-xs);
+}
+
+.om-insight-evidence-note {
+  margin: var(--om-space-xs) 0 0;
+  opacity: 0.5;
+  font-style: italic;
 }
 
 /* ============================================================

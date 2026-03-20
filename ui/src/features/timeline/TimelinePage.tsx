@@ -2,7 +2,7 @@ import type { TimelineRecord } from "@gen/openmenses/v1/service_pb";
 import type { BiologicalCycleModel, PhaseEstimate } from "@gen/openmenses/v1/model_pb";
 import { Block, Chip, f7, Navbar, Page } from "framework7-react";
 import type { Router } from "framework7/types";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DateTimePicker } from "../../components/DateTimePicker";
 import { EmptyState } from "../../components/EmptyState";
 import { client, DEFAULT_PARENT } from "../../lib/client";
@@ -58,6 +58,15 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
   const [endDate, setEndDate] = useState(() => new Date());
   const loadingMoreRef = useRef(false);
   const processedRecordsRef = useRef<ProcessedTimelineRecord[]>([]);
+
+  const recordLookup = useMemo(() => {
+    const lookup: Record<string, ProcessedTimelineRecord> = {};
+    for (const r of processedRecords) {
+      const val = r.record.value as { name?: string } | undefined;
+      if (val?.name) lookup[val.name] = r;
+    }
+    return lookup;
+  }, [processedRecords]);
 
   const fetchMedicationNames = useCallback(async () => {
     try {
@@ -131,6 +140,7 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
 
   const fetchTimeline = useCallback(
     async (pageToken = "") => {
+      if (!pageToken) setLoading(true);
       try {
         const res = await client.listTimeline({
           parent: DEFAULT_PARENT,
@@ -180,12 +190,21 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
     );
   }
 
-  function loadMore() {
+  const loadMore = useCallback(() => {
     if (nextPageToken && !loadingMoreRef.current) {
       loadingMoreRef.current = true;
       fetchTimeline(nextPageToken);
     }
-  }
+  }, [nextPageToken, fetchTimeline]);
+
+  // Eagerly load all remaining pages in the background so that insight evidence
+  // records (cycles, bleeding obs, etc.) are always present in recordLookup.
+  // For an offline-first app with local SQLite the extra round-trips are cheap.
+  useEffect(() => {
+    if (!nextPageToken || loadingMoreRef.current) return;
+    loadingMoreRef.current = true;
+    fetchTimeline(nextPageToken);
+  }, [nextPageToken, fetchTimeline]);
 
   function toggleFilter(key: FilterType) {
     setActiveFilters((prev) => {
@@ -278,6 +297,7 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
           key={`${record.record.case}-${record.record.value?.name}`}
           record={record}
           medicationNames={medicationNames}
+          recordLookup={recordLookup}
           {...(biologicalCycleModel != null && { biologicalCycleModel })}
           {...(record._groupedPhaseEstimates != null && {
             groupedPhaseEstimates: record._groupedPhaseEstimates,

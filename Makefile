@@ -52,8 +52,11 @@ engine-test:
 # Development: run engine-dev and Vite dev server in separate terminals.
 #   Terminal 1: make engine-dev
 #   Terminal 2: make ui-dev
+# Pass DB= to use a SQLite backend: make engine-dev DB=openmenses-regular-12.db
+DB ?=
+
 engine-dev:
-	go run ./engine/cmd/engine-dev --port 8080
+	go run ./engine/cmd/engine-dev --port 8080 $(if $(DB),--db=$(DB),)
 
 ui-dev:
 	cd ui && $(NPM) run dev
