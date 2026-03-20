@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader } from "framework7-react";
-import type { Insight, Cycle, BleedingObservation } from "@gen/openmenses/v1/model_pb";
+import type { Insight, Cycle, BleedingObservation, SymptomObservation, MoodObservation, Medication, MedicationEvent, PhaseEstimate, Prediction } from "@gen/openmenses/v1/model_pb";
 import type { TimelineRecord } from "@gen/openmenses/v1/service_pb";
 import type { RecordRef } from "@gen/openmenses/v1/types_pb";
-import { insightTypeLabel, confidenceLevelLabel, bleedingFlowLabel } from "../../lib/enums";
+import { insightTypeLabel, confidenceLevelLabel, bleedingFlowLabel, symptomTypeLabel, symptomSeverityLabel, moodTypeLabel, moodIntensityLabel, cyclePhaseLabel, predictionTypeLabel } from "../../lib/enums";
 import { formatDate, fromLocalDate, fromDateTime } from "../../lib/dates";
 
 interface InsightCardProps {
@@ -97,6 +97,52 @@ function formatRef(ref: RecordRef, lookup: Record<string, TimelineRecord>): stri
         year: "numeric",
       });
       return `${date} · ${bleedingFlowLabel(obs.flow)}`;
+    }
+    case "symptomObservation": {
+      const obs = record.record.value as SymptomObservation;
+      if (!obs.timestamp?.value) return "Symptom observation";
+      const date = fromDateTime(obs.timestamp).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+      return `${date} · ${symptomTypeLabel(obs.symptom)} · ${symptomSeverityLabel(obs.severity)}`;
+    }
+    case "moodObservation": {
+      const obs = record.record.value as MoodObservation;
+      if (!obs.timestamp?.value) return "Mood observation";
+      const date = fromDateTime(obs.timestamp).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+      return `${date} · ${moodTypeLabel(obs.mood)} · ${moodIntensityLabel(obs.intensity)}`;
+    }
+    case "medication": {
+      const med = record.record.value as Medication;
+      return med.displayName || "Medication";
+    }
+    case "medicationEvent": {
+      const event = record.record.value as MedicationEvent;
+      if (!event.timestamp?.value) return "Medication event";
+      const date = fromDateTime(event.timestamp).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+      return event.dose ? `${date} · ${event.dose}` : date;
+    }
+    case "phaseEstimate": {
+      const est = record.record.value as PhaseEstimate;
+      if (!est.date?.value) return "Phase estimate";
+      const date = formatDate(est.date);
+      return `${date} · ${cyclePhaseLabel(est.phase)}`;
+    }
+    case "prediction": {
+      const pred = record.record.value as Prediction;
+      if (!pred.predictedStartDate?.value) return predictionTypeLabel(pred.kind);
+      const date = formatDate(pred.predictedStartDate);
+      return `${predictionTypeLabel(pred.kind)} · ${date}`;
     }
     default:
       return record.record.case ?? "Record";
