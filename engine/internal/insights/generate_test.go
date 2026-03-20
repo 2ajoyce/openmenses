@@ -362,6 +362,15 @@ func TestMedicationAdherencePatternHigh(t *testing.T) {
 			if !contains(ins.Summary, "HIGH") {
 				t.Errorf("expected 'HIGH' adherence in summary, got: %s", ins.Summary)
 			}
+			// Verify evidence refs contain all medication events, not the medication itself
+			if len(ins.EvidenceRecordRefs) != 20 {
+				t.Errorf("expected 20 evidence record refs (one per event), got %d", len(ins.EvidenceRecordRefs))
+			}
+			for _, ref := range ins.EvidenceRecordRefs {
+				if ref.Name == "ibuprofen" {
+					t.Errorf("evidence ref should be a medication event name, not the medication name %q", ref.Name)
+				}
+			}
 		}
 	}
 	if !found {
