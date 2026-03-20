@@ -4,6 +4,7 @@ import {
   View,
   Views,
   Toolbar,
+  ToolbarPane,
   Link,
 } from "framework7-react";
 import type { Framework7Parameters } from "framework7/types";
@@ -48,20 +49,22 @@ const App: React.FC = () => {
     <F7App {...f7params}>
       <Views tabs className="safe-areas">
         <Toolbar tabbar icons bottom>
-          <Link
-            tabLink="#tab-timeline"
-            tabLinkActive
-            text="Timeline"
-            iconF7="clock"
-          />
-          <Link tabLink="#tab-cycles" text="Cycles" iconF7="circle_grid_hex" />
-          <Link tabLink="#tab-log" text="Log" iconF7="plus_circle" />
-          <Link
-            tabLink="#tab-medications"
-            text="Medications"
-            iconF7="capsule"
-          />
-          <Link tabLink="#tab-settings" text="Settings" iconF7="gear" />
+          <ToolbarPane>
+            <Link
+              tabLink="#tab-timeline"
+              tabLinkActive
+              text="Timeline"
+              iconF7="clock"
+            />
+            <Link tabLink="#tab-cycles" text="Cycles" iconF7="circle_grid_hex" />
+            <Link tabLink="#tab-log" text="Log" iconF7="plus_circle" />
+            <Link
+              tabLink="#tab-medications"
+              text="Medications"
+              iconF7="capsule"
+            />
+            <Link tabLink="#tab-settings" text="Settings" iconF7="gear" />
+          </ToolbarPane>
         </Toolbar>
 
         <View

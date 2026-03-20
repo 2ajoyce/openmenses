@@ -20,7 +20,8 @@
       "Bash(cd ui:*)",
       "Bash(cd:*)",
       "Bash(npm test:*)",
-      "Bash(npx vitest:*)"
+      "Bash(npx vitest:*)",
+      "Bash(go build:*)"
     ]
   }
 }

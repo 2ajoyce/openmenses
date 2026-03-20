@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { create } from "@bufbuild/protobuf";
 import { InsightCard } from "../InsightCard";
@@ -136,7 +136,7 @@ describe("InsightCard", () => {
     expect(screen.getByText(/Confidence: Low/)).toBeInTheDocument();
   });
 
-  it("displays evidence record references", () => {
+  it("displays evidence count badge and collapsed list", () => {
     const insight = create(InsightSchema, {
       name: "users/default/insights/01",
       userId: "users/default",
@@ -152,10 +152,62 @@ describe("InsightCard", () => {
 
     render(<InsightCard insight={insight} />);
 
-    expect(screen.getByText("Evidence:")).toBeInTheDocument();
-    expect(screen.getByText("users/default/cycles/01")).toBeInTheDocument();
-    expect(screen.getByText("users/default/cycles/02")).toBeInTheDocument();
-    expect(screen.getByText("users/default/cycles/03")).toBeInTheDocument();
+    const toggle = screen.getByRole("button", { name: /based on 3 records/i });
+    expect(toggle).toBeInTheDocument();
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByRole("list")).not.toBeInTheDocument();
+  });
+
+  it("expands to show records in lookup and note for hidden records", () => {
+    const insight = create(InsightSchema, {
+      name: "users/default/insights/01",
+      userId: "users/default",
+      kind: InsightType.CYCLE_LENGTH_PATTERN,
+      summary: "Test summary",
+      confidence: ConfidenceLevel.HIGH,
+      evidenceRecordRefs: [
+        create(RecordRefSchema, { name: "users/default/cycles/01" }),
+        create(RecordRefSchema, { name: "users/default/cycles/02" }),
+      ],
+    });
+
+    // Only one ref is in the lookup — the other is outside the timeline range
+    const recordLookup = {
+      "users/default/cycles/01": {
+        record: { case: "cycle", value: { startDate: { value: "2026-01-01" }, endDate: { value: "2026-01-28" } } },
+      },
+    } as never;
+
+    render(<InsightCard insight={insight} recordLookup={recordLookup} />);
+
+    const toggle = screen.getByRole("button", { name: /based on 2 records/i });
+    fireEvent.click(toggle);
+
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getAllByRole("listitem")).toHaveLength(1);
+    expect(screen.getByText(/1 record is outside the current timeline range/i)).toBeInTheDocument();
+  });
+
+  it("expands to show only a note when no refs are in the lookup", () => {
+    const insight = create(InsightSchema, {
+      name: "users/default/insights/01",
+      userId: "users/default",
+      kind: InsightType.CYCLE_LENGTH_PATTERN,
+      summary: "Test summary",
+      confidence: ConfidenceLevel.HIGH,
+      evidenceRecordRefs: [
+        create(RecordRefSchema, { name: "users/default/cycles/01" }),
+        create(RecordRefSchema, { name: "users/default/cycles/02" }),
+      ],
+    });
+
+    render(<InsightCard insight={insight} />);
+
+    const toggle = screen.getByRole("button", { name: /based on 2 records/i });
+    fireEvent.click(toggle);
+
+    expect(screen.queryByRole("list")).not.toBeInTheDocument();
+    expect(screen.getByText(/2 records are outside the current timeline range/i)).toBeInTheDocument();
   });
 
   it("does not render evidence section when no evidence references are present", () => {
@@ -170,6 +222,6 @@ describe("InsightCard", () => {
 
     render(<InsightCard insight={insight} />);
 
-    expect(screen.queryByText("Evidence:")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /based on/i })).not.toBeInTheDocument();
   });
 });

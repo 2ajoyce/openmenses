@@ -7,6 +7,9 @@ import (
 	"context"
 	"fmt"
 	"sort"
+	"time"
+
+	"github.com/oklog/ulid/v2"
 
 	"github.com/2ajoyce/openmenses/engine/internal/storage"
 	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
@@ -215,9 +218,29 @@ func BuildTimeline(
 				return nil, "", fmt.Errorf("list insights: %w", err)
 			}
 			for _, ins := range pg.Items {
-				// Insights are not date-ranged; use the insight name (ULID-based, sortable)
-				// as the key for consistent ordering.
-				add(ins.GetName(), &v1.TimelineRecord{
+				// Decode the ULID creation timestamp so insights sort inline with
+				// other records from the same moment rather than always after all
+				// date strings (ULID "01J..." < date "2026-..." lexicographically).
+				id, err := ulid.Parse(ins.GetName())
+				if err != nil {
+					// Name is not a bare ULID; fall back to including it unfiltered.
+					add(ins.GetName(), &v1.TimelineRecord{
+						Record: &v1.TimelineRecord_Insight{Insight: ins},
+					})
+					continue
+				}
+				key := time.UnixMilli(int64(id.Time())).UTC().Format(time.RFC3339Nano)
+
+				// Filter in-memory: only include insights whose creation timestamp
+				// falls within [start, end] (same contract as other date-filtered
+				// record types). This prevents insights from appearing beyond the
+				// first page when a large date range is selected.
+				creationDate := time.UnixMilli(int64(id.Time())).UTC().Format("2006-01-02")
+				if creationDate > end || creationDate < start {
+					continue
+				}
+
+				add(key, &v1.TimelineRecord{
 					Record: &v1.TimelineRecord_Insight{Insight: ins},
 				})
 			}

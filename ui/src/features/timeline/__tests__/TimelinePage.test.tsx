@@ -251,59 +251,49 @@ describe("TimelinePage", () => {
     expect(screen.queryByText(/Light/)).not.toBeInTheDocument();
   });
 
-  it("calls listTimeline only once for loadMore when in-flight guard is active", async () => {
-    let resolveFirst!: (value: unknown) => void;
-    const firstPagePromise = new Promise((resolve) => {
-      resolveFirst = resolve;
-    });
+  it("eager-loads next page automatically and deduplicates concurrent loadMore calls", async () => {
+    // Page 1 resolves with a nextPageToken; page 2 stays pending so we can
+    // verify the in-flight guard blocks any concurrent loadMore triggers.
+    let resolvePage1!: (value: unknown) => void;
+    let resolvePage2!: (value: unknown) => void;
+    const page1Promise = new Promise((r) => { resolvePage1 = r; });
+    const page2Promise = new Promise((r) => { resolvePage2 = r; });
 
     mockListTimeline
       .mockReturnValueOnce(
-        firstPagePromise.then(() => ({
+        page1Promise.then(() => ({
           records: [bleedingRecord],
           pagination: { nextPageToken: "token-1" },
         })),
       )
-      .mockResolvedValue({
-        records: [],
-        pagination: { nextPageToken: "" },
-      });
+      .mockReturnValueOnce(
+        page2Promise.then(() => ({
+          records: [],
+          pagination: { nextPageToken: "" },
+        })),
+      );
 
     render(<TimelinePage f7router={mockRouter} />);
 
-    // Wait for initial fetch to complete (first call returns with nextPageToken)
-    resolveFirst(undefined);
+    // Resolve page 1; the eager-load effect should automatically trigger page 2.
+    resolvePage1(undefined);
+
     await waitFor(() => {
-      expect(mockListTimeline).toHaveBeenCalledTimes(1);
+      // Both the initial fetch AND the automatic eager-load of page 2 should
+      // have been issued (guard must not block the eager-load itself).
+      expect(mockListTimeline).toHaveBeenCalledTimes(2);
     });
 
-    // initial fetch resolves with nextPageToken, so loadMore can now be called
-    await waitFor(() => {
-      expect(screen.getByTestId("trigger-infinite")).toBeInTheDocument();
-    });
-
-    // Block the second listTimeline call so the guard is active during both clicks
-    let resolveSecond!: (value: unknown) => void;
-    const secondPagePromise = new Promise((resolve) => {
-      resolveSecond = resolve;
-    });
-    mockListTimeline.mockReturnValueOnce(
-      secondPagePromise.then(() => ({
-        records: [],
-        pagination: { nextPageToken: "" },
-      })),
-    );
-
+    // While page 2 is still in-flight, clicking the infinite-scroll button
+    // should be deduplicated by the in-flight guard.
     const triggerBtn = screen.getByTestId("trigger-infinite");
-    // Fire onInfinite twice before the second fetch resolves
     fireEvent.click(triggerBtn);
     fireEvent.click(triggerBtn);
 
-    // Resolve the second fetch
-    resolveSecond(undefined);
+    // Resolve page 2 — the guard should have allowed no extra calls.
+    resolvePage2(undefined);
 
     await waitFor(() => {
-      // Initial fetch + exactly one paginated fetch (guard blocked the duplicate)
       expect(mockListTimeline).toHaveBeenCalledTimes(2);
     });
   });
