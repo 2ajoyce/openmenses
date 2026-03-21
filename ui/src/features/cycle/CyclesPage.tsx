@@ -1,18 +1,34 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Block, Button, Card, CardContent, CardHeader, Navbar, Page, Segmented } from "framework7-react";
+import type {
+  BiologicalCycleModel,
+  Cycle,
+  CycleStatistics,
+  Insight,
+  PhaseEstimate,
+  Prediction,
+} from "@gen/openmenses/v1/model_pb";
+import {
+  Block,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Navbar,
+  Page,
+  Segmented,
+} from "framework7-react";
 import type { Router } from "framework7/types";
-import type { Cycle, CycleStatistics, PhaseEstimate, BiologicalCycleModel, Prediction, Insight } from "@gen/openmenses/v1/model_pb";
-import { client, DEFAULT_PARENT } from "../../lib/client";
-import { toLocalDate, fromLocalDate, formatDate } from "../../lib/dates";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { EmptyState } from "../../components/EmptyState";
-import { CycleCard } from "./CycleCard";
-import { PhaseEstimateCard } from "./PhaseEstimateCard";
-import { CycleLengthChart } from "./CycleLengthChart";
-import { CalendarHeatmap } from "./CalendarHeatmap";
-import { MoodPhaseChart } from "./MoodPhaseChart";
-import { MoodCycleDayChart } from "./MoodCycleDayChart";
-import { PredictionCard } from "../prediction/PredictionCard";
+import { client, DEFAULT_PARENT } from "../../lib/client";
+import { formatDate, fromLocalDate, toLocalDate } from "../../lib/dates";
 import { InsightCard } from "../insight/InsightCard";
+import { PredictionCard } from "../prediction/PredictionCard";
+import { CalendarHeatmap } from "./CalendarHeatmap";
+import { CycleCard } from "./CycleCard";
+import { CycleLengthChart } from "./CycleLengthChart";
+import { MoodCycleDayChart } from "./MoodCycleDayChart";
+import { MoodPhaseChart } from "./MoodPhaseChart";
+import { PhaseEstimateCard } from "./PhaseEstimateCard";
 
 interface CyclesPageProps {
   f7router: Router.Router;
@@ -174,24 +190,21 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
     handleFetch();
   }, [handleFetch]);
 
-  const handleWindowSizeChange = useCallback(
-    async (size: string) => {
-      const newSize = size as WindowSize;
-      setWindowSize(newSize);
-      try {
-        const windowSizeNum =
-          newSize === "all" ? 0 : newSize === "6" ? 6 : newSize === "12" ? 12 : 0;
-        const res = await client.getCycleStatistics({
-          parent: DEFAULT_PARENT,
-          windowSize: windowSizeNum,
-        });
-        setStatistics(res.statistics || null);
-      } catch (err) {
-        console.error("Failed to fetch statistics:", err);
-      }
-    },
-    [],
-  );
+  const handleWindowSizeChange = useCallback(async (size: string) => {
+    const newSize = size as WindowSize;
+    setWindowSize(newSize);
+    try {
+      const windowSizeNum =
+        newSize === "all" ? 0 : newSize === "6" ? 6 : newSize === "12" ? 12 : 0;
+      const res = await client.getCycleStatistics({
+        parent: DEFAULT_PARENT,
+        windowSize: windowSizeNum,
+      });
+      setStatistics(res.statistics || null);
+    } catch (err) {
+      console.error("Failed to fetch statistics:", err);
+    }
+  }, []);
 
   function handleRefresh(done: () => void) {
     handleFetch().finally(done);
@@ -206,249 +219,304 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
     if (!cycle.startDate) return null;
     const start = fromLocalDate(cycle.startDate);
     const today = new Date();
-    return Math.floor((today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    return (
+      Math.floor((today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) +
+      1
+    );
   };
 
   const hasStatistics = statistics && statistics.count > 0;
 
   return (
-    <Page pageContent={false} ptr onPtrRefresh={handleRefresh} onPageBeforeIn={handleFetch}>
+    <Page
+      pageContent={false}
+      ptr
+      onPtrRefresh={handleRefresh}
+      onPageBeforeIn={handleFetch}
+    >
       <div className="page-content ptr-content">
-      <Navbar title="Cycles" />
+        <Navbar title="Cycles" />
 
-      {/* Loading state */}
-      {loading && cycles.length === 0 && (
-        <Block className="om-loading-placeholder">
-          <p>Loading cycles...</p>
-        </Block>
-      )}
+        {/* Loading state */}
+        {loading && cycles.length === 0 && (
+          <Block className="om-loading-placeholder">
+            <p>Loading cycles...</p>
+          </Block>
+        )}
 
-      {/* Empty state */}
-      {!loading && cycles.length === 0 && (
-        <EmptyState
-          message="No cycles detected yet"
-          actionLabel="Log your first observation"
-          onAction={() => f7router.navigate("/log/")}
-        />
-      )}
+        {/* Empty state */}
+        {!loading && cycles.length === 0 && (
+          <EmptyState
+            message="No cycles detected yet"
+            actionLabel="Log your first observation"
+            onAction={() => f7router.navigate("/log/")}
+          />
+        )}
 
-      {/* Profile incomplete warning */}
-      {!loading && cycles.length > 0 && !profileComplete && (
-        <Block className="om-banner-profile-incomplete">
-          <Card>
-            <CardContent>
-              <p>
-                Complete your profile to see phase estimates and predictions.
-              </p>
-              <Button
-                small
-                fill
-                onClick={() => f7router.navigate("/settings/")}
-              >
-                Complete Profile
-              </Button>
-            </CardContent>
-          </Card>
-        </Block>
-      )}
-
-      {/* Statistics section */}
-      {!loading && hasStatistics && (
-        <div role="region" aria-labelledby="stats-heading">
-          <Block strong>
-          <div className="cycle-stats-card">
+        {/* Profile incomplete warning */}
+        {!loading && cycles.length > 0 && !profileComplete && (
+          <Block className="om-banner-profile-incomplete">
             <Card>
-              <CardHeader>
-                <span className="om-card-title" id="stats-heading">Cycle Statistics</span>
-              </CardHeader>
               <CardContent>
-                <div className="om-stats-grid">
-                  <div className="om-stat-item">
-                    <span className="om-stat-label">Average</span>
-                    <span className="om-stat-value" aria-label={`Average: ${statistics.average?.toFixed(1) || "—"} days`}>
-                      {statistics.average?.toFixed(1) || "—"} days
-                    </span>
-                  </div>
-                  <div className="om-stat-item">
-                    <span className="om-stat-label">Median</span>
-                    <span className="om-stat-value" aria-label={`Median: ${statistics.median || "—"} days`}>
-                      {statistics.median || "—"} days
-                    </span>
-                  </div>
-                  <div className="om-stat-item">
-                    <span className="om-stat-label">Min</span>
-                    <span className="om-stat-value" aria-label={`Minimum: ${statistics.min || "—"} days`}>
-                      {statistics.min || "—"} days
-                    </span>
-                  </div>
-                  <div className="om-stat-item">
-                    <span className="om-stat-label">Max</span>
-                    <span className="om-stat-value" aria-label={`Maximum: ${statistics.max || "—"} days`}>
-                      {statistics.max || "—"} days
-                    </span>
-                  </div>
-                  <div className="om-stat-item">
-                    <span className="om-stat-label">Std Dev</span>
-                    <span className="om-stat-value" aria-label={`Standard deviation: ${statistics.stdDev?.toFixed(1) || "—"} days`}>
-                      {statistics.stdDev?.toFixed(1) || "—"} days
-                    </span>
-                  </div>
-                  <div className="om-stat-item">
-                    <span className="om-stat-label">Count</span>
-                    <span className="om-stat-value" aria-label={`Count: ${statistics.count}`}>{statistics.count}</span>
+                <p>
+                  Complete your profile to see phase estimates and predictions.
+                </p>
+                <Button
+                  small
+                  fill
+                  onClick={() => f7router.navigate("/settings/")}
+                >
+                  Complete Profile
+                </Button>
+              </CardContent>
+            </Card>
+          </Block>
+        )}
+
+        {/* Statistics section */}
+        {!loading && hasStatistics && (
+          <div role="region" aria-labelledby="stats-heading">
+            <Block strong>
+              <div className="cycle-stats-card data-table card">
+                <div className="card-header">
+                  <div className="data-table-title" id="stats-heading">
+                    Cycle Statistics
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+                <div className="card-content">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th className="label-cell">Statistic</th>
+                        <th className="numeric-cell">Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="label-cell">Average</td>
+                        <td
+                          className="numeric-cell"
+                          aria-label={`Average: ${statistics.average?.toFixed(1) || "—"} days`}
+                        >
+                          {statistics.average?.toFixed(1) || "—"} days
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-cell">Median</td>
+                        <td
+                          className="numeric-cell"
+                          aria-label={`Median: ${statistics.median || "—"} days`}
+                        >
+                          {statistics.median || "—"} days
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-cell">Min</td>
+                        <td
+                          className="numeric-cell"
+                          aria-label={`Minimum: ${statistics.min || "—"} days`}
+                        >
+                          {statistics.min || "—"} days
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-cell">Max</td>
+                        <td
+                          className="numeric-cell"
+                          aria-label={`Maximum: ${statistics.max || "—"} days`}
+                        >
+                          {statistics.max || "—"} days
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-cell">Std Dev</td>
+                        <td
+                          className="numeric-cell"
+                          aria-label={`Standard deviation: ${statistics.stdDev?.toFixed(1) || "—"} days`}
+                        >
+                          {statistics.stdDev?.toFixed(1) || "—"} days
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-cell">Count</td>
+                        <td
+                          className="numeric-cell"
+                          aria-label={`Count: ${statistics.count}`}
+                        >
+                          {statistics.count}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Window size selector */}
+              <div className="cycle-stats-window-selector">
+                <label>Statistics Window:</label>
+                <Segmented>
+                  <Button
+                    active={windowSize === "6"}
+                    onClick={() => handleWindowSizeChange("6")}
+                  >
+                    Last 6
+                  </Button>
+                  <Button
+                    active={windowSize === "12"}
+                    onClick={() => handleWindowSizeChange("12")}
+                  >
+                    Last 12
+                  </Button>
+                  <Button
+                    active={windowSize === "all"}
+                    onClick={() => handleWindowSizeChange("all")}
+                  >
+                    All
+                  </Button>
+                </Segmented>
+              </div>
+            </Block>
           </div>
+        )}
 
-          {/* Window size selector */}
-          <div className="cycle-stats-window-selector">
-            <label>Statistics Window:</label>
-            <Segmented>
-              <Button
-                active={windowSize === "6"}
-                onClick={() => handleWindowSizeChange("6")}
-              >
-                Last 6
-              </Button>
-              <Button
-                active={windowSize === "12"}
-                onClick={() => handleWindowSizeChange("12")}
-              >
-                Last 12
-              </Button>
-              <Button
-                active={windowSize === "all"}
-                onClick={() => handleWindowSizeChange("all")}
-              >
-                All
-              </Button>
-            </Segmented>
+        {/* Cycle Length Trend Chart */}
+        {!loading && completedCycles.length >= 2 && (
+          <div role="region" aria-labelledby="chart-heading">
+            <Block strong>
+              <div className="cycle-length-chart-section">
+                <h3 className="om-block-subtitle" id="chart-heading">
+                  Cycle Length Trend
+                </h3>
+                <CycleLengthChart cycles={cycles} />
+              </div>
+            </Block>
           </div>
-          </Block>
-        </div>
-      )}
+        )}
 
-      {/* Cycle Length Trend Chart */}
-      {!loading && completedCycles.length >= 2 && (
-        <div role="region" aria-labelledby="chart-heading">
-          <Block strong>
-          <div className="cycle-length-chart-section">
-            <h3 className="om-block-subtitle" id="chart-heading">Cycle Length Trend</h3>
-            <CycleLengthChart cycles={cycles} />
+        {/* Calendar Heatmap */}
+        {!loading && cycles.length > 0 && (
+          <div role="region" aria-labelledby="heatmap-heading">
+            <Block strong>
+              <div className="calendar-heatmap-section">
+                <h3 className="om-block-subtitle" id="heatmap-heading">
+                  Observation Calendar
+                </h3>
+                <CalendarHeatmap />
+              </div>
+            </Block>
           </div>
-          </Block>
-        </div>
-      )}
+        )}
 
-      {/* Calendar Heatmap */}
-      {!loading && cycles.length > 0 && (
-        <div role="region" aria-labelledby="heatmap-heading">
-          <Block strong>
-          <div className="calendar-heatmap-section">
-            <h3 className="om-block-subtitle" id="heatmap-heading">Observation Calendar</h3>
-            <CalendarHeatmap />
+        {/* Mood & Cycle Section */}
+        {!loading && completedCycles.length >= 2 && (
+          <div role="region" aria-labelledby="mood-cycle-heading">
+            <Block strong>
+              <div className="mood-cycle-section">
+                <h3 className="om-block-subtitle" id="mood-cycle-heading">
+                  Mood & Cycle
+                </h3>
+                <MoodPhaseChart />
+                <MoodCycleDayChart />
+              </div>
+            </Block>
           </div>
-          </Block>
-        </div>
-      )}
+        )}
 
-      {/* Mood & Cycle Section */}
-      {!loading && completedCycles.length >= 2 && (
-        <div role="region" aria-labelledby="mood-cycle-heading">
-          <Block strong>
-          <div className="mood-cycle-section">
-            <h3 className="om-block-subtitle" id="mood-cycle-heading">Mood & Cycle</h3>
-            <MoodPhaseChart />
-            <MoodCycleDayChart />
+        {/* Current cycle section */}
+        {!loading && currentCycle && (
+          <div role="region" aria-labelledby="current-cycle-heading">
+            <Block strong>
+              <div className="current-cycle-section">
+                <Card>
+                  <CardHeader>
+                    <span className="om-card-title" id="current-cycle-heading">
+                      Current Cycle
+                    </span>
+                  </CardHeader>
+                  <CardContent>
+                    {currentCycle.startDate && (
+                      <>
+                        <p className="om-card-timestamp">
+                          Started: {formatDate(currentCycle.startDate)}
+                        </p>
+                        {(() => {
+                          const dayCount =
+                            getCurrentCycleDayCount(currentCycle);
+                          return dayCount ? (
+                            <p className="om-card-notes">Day {dayCount}</p>
+                          ) : null;
+                        })()}
+                      </>
+                    )}
+                    {profileComplete && todayPhaseEstimate && (
+                      <div className="current-phase">
+                        <PhaseEstimateCard
+                          estimates={[todayPhaseEstimate]}
+                          biologicalCycleModel={biologicalCycleModel}
+                        />
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </Block>
           </div>
-          </Block>
-        </div>
-      )}
+        )}
 
-      {/* Current cycle section */}
-      {!loading && currentCycle && (
-        <div role="region" aria-labelledby="current-cycle-heading">
-          <Block strong>
-          <div className="current-cycle-section">
-            <Card>
-              <CardHeader>
-                <span className="om-card-title" id="current-cycle-heading">Current Cycle</span>
-              </CardHeader>
-              <CardContent>
-                {currentCycle.startDate && (
-                  <>
-                    <p className="om-card-timestamp">
-                      Started: {formatDate(currentCycle.startDate)}
-                    </p>
-                    {(() => {
-                      const dayCount = getCurrentCycleDayCount(currentCycle);
-                      return dayCount ? (
-                        <p className="om-card-notes">Day {dayCount}</p>
-                      ) : null;
-                    })()}
-                  </>
-                )}
-                {profileComplete && todayPhaseEstimate && (
-                  <div className="current-phase">
-                    <PhaseEstimateCard
-                      estimates={[todayPhaseEstimate]}
-                      biologicalCycleModel={biologicalCycleModel}
-                    />
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+        {/* Predictions section */}
+        {!loading && predictions.length > 0 && (
+          <div role="region" aria-labelledby="predictions-heading">
+            <Block strong>
+              <h3 className="om-block-subtitle" id="predictions-heading">
+                Predictions
+              </h3>
+              {predictions.map((prediction) => (
+                <PredictionCard key={prediction.name} prediction={prediction} />
+              ))}
+            </Block>
           </div>
-          </Block>
-        </div>
-      )}
+        )}
 
-      {/* Predictions section */}
-      {!loading && predictions.length > 0 && (
-        <div role="region" aria-labelledby="predictions-heading">
-          <Block strong>
-          <h3 className="om-block-subtitle" id="predictions-heading">Predictions</h3>
-          {predictions.map((prediction) => (
-            <PredictionCard key={prediction.name} prediction={prediction} />
-          ))}
-          </Block>
-        </div>
-      )}
+        {/* Insights section */}
+        {!loading && insights.length > 0 && (
+          <div role="region" aria-labelledby="insights-heading">
+            <Block strong>
+              <h3 className="om-block-subtitle" id="insights-heading">
+                Insights
+              </h3>
+              {insights.map((insight) => (
+                <InsightCard key={insight.name} insight={insight} />
+              ))}
+            </Block>
+          </div>
+        )}
 
-      {/* Insights section */}
-      {!loading && insights.length > 0 && (
-        <div role="region" aria-labelledby="insights-heading">
-          <Block strong>
-          <h3 className="om-block-subtitle" id="insights-heading">Insights</h3>
-          {insights.map((insight) => (
-            <InsightCard key={insight.name} insight={insight} />
-          ))}
-          </Block>
-        </div>
-      )}
+        {/* Insights empty state */}
+        {!loading &&
+          insights.length === 0 &&
+          cycles.length > 0 &&
+          profileComplete && (
+            <Block className="om-empty-state">
+              <p className="om-empty-state-message">
+                Not enough data yet to generate insights. Continue tracking to
+                unlock pattern analysis.
+              </p>
+            </Block>
+          )}
 
-      {/* Insights empty state */}
-      {!loading && insights.length === 0 && cycles.length > 0 && profileComplete && (
-        <Block className="om-empty-state">
-          <p className="om-empty-state-message">
-            Not enough data yet to generate insights. Continue tracking to unlock pattern analysis.
-          </p>
-        </Block>
-      )}
-
-      {/* Cycle history section */}
-      {!loading && completedCycles.length > 0 && (
-        <div role="region" aria-labelledby="history-heading">
-          <Block strong>
-          <h3 className="om-block-subtitle" id="history-heading">Cycle History</h3>
-          {completedCycles.map((cycle) => (
-            <CycleCard key={cycle.name} cycle={cycle} />
-          ))}
-          </Block>
-        </div>
-      )}
+        {/* Cycle history section */}
+        {!loading && completedCycles.length > 0 && (
+          <div role="region" aria-labelledby="history-heading">
+            <Block strong>
+              <h3 className="om-block-subtitle" id="history-heading">
+                Cycle History
+              </h3>
+              {completedCycles.map((cycle) => (
+                <CycleCard key={cycle.name} cycle={cycle} />
+              ))}
+            </Block>
+          </div>
+        )}
       </div>
     </Page>
   );
