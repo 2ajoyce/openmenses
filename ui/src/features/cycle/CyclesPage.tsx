@@ -212,7 +212,8 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
   const hasStatistics = statistics && statistics.count > 0;
 
   return (
-    <Page ptr onPtrRefresh={handleRefresh} onPageBeforeIn={handleFetch}>
+    <Page pageContent={false} ptr onPtrRefresh={handleRefresh} onPageBeforeIn={handleFetch}>
+      <div className="page-content ptr-content">
       <Navbar title="Cycles" />
 
       {/* Loading state */}
@@ -448,6 +449,7 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
           </Block>
         </div>
       )}
+      </div>
     </Page>
   );
 };

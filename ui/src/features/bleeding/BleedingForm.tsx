@@ -85,7 +85,8 @@ const BleedingForm: React.FC<BleedingFormProps> = ({ f7router, f7route, name: na
   }
 
   return (
-    <Page>
+    <Page pageContent={false}>
+      <div className="page-content">
       <Navbar
         title={isEdit ? "Edit Bleeding" : "Log Bleeding"}
         backLink="Back"
@@ -110,6 +111,7 @@ const BleedingForm: React.FC<BleedingFormProps> = ({ f7router, f7route, name: na
         <Button fill round large onClick={handleSubmit} disabled={submitting}>
           {submitting ? "Saving..." : isEdit ? "Update" : "Save"}
         </Button>
+      </div>
       </div>
     </Page>
   );

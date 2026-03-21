@@ -89,7 +89,8 @@ const MoodForm: React.FC<MoodFormProps> = ({ f7router, f7route, name: nameProp }
   }
 
   return (
-    <Page>
+    <Page pageContent={false}>
+      <div className="page-content">
       <Navbar title={isEdit ? "Edit Mood" : "Log Mood"} backLink="Back" />
 
       <div style={{ padding: "0 16px 8px" }}>
@@ -118,6 +119,7 @@ const MoodForm: React.FC<MoodFormProps> = ({ f7router, f7route, name: nameProp }
         <Button fill round large onClick={handleSubmit} disabled={submitting}>
           {submitting ? "Saving..." : isEdit ? "Update" : "Save"}
         </Button>
+      </div>
       </div>
     </Page>
   );

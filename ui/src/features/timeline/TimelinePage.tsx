@@ -232,6 +232,7 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
 
   return (
     <Page
+      pageContent={false}
       ptr
       onPtrRefresh={handleRefresh}
       infinite
@@ -240,6 +241,7 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
       infinitePreloader={Boolean(nextPageToken)}
       onPageBeforeIn={() => fetchTimeline()}
     >
+      <div className="page-content ptr-content infinite-scroll-content">
       <Navbar title="Timeline" />
 
       <Block className="timeline-control-row">
@@ -306,6 +308,7 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
           onDeleted={() => fetchTimeline()}
         />
         ))}
+      </div>
       </div>
     </Page>
   );
