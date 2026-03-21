@@ -107,11 +107,13 @@ const ClinicianSummaryPage: React.FC<ClinicianSummaryPageProps> = () => {
 
   if (loading) {
     return (
-      <Page>
+      <Page pageContent={false}>
+        <div className="page-content">
         <Navbar title="Clinician Summary" />
         <Block className="text-align-center">
           <p className="om-muted">Loading summary...</p>
         </Block>
+        </div>
       </Page>
     );
   }
@@ -123,7 +125,8 @@ const ClinicianSummaryPage: React.FC<ClinicianSummaryPageProps> = () => {
   });
 
   return (
-    <Page className="clinician-summary">
+    <Page pageContent={false} className="clinician-summary">
+      <div className="page-content">
       <Navbar title="Clinician Summary" />
 
       <Block>
@@ -344,6 +347,7 @@ const ClinicianSummaryPage: React.FC<ClinicianSummaryPageProps> = () => {
             <p className="no-data">No insights available</p>
           )}
         </section>
+      </div>
       </div>
     </Page>
   );

@@ -90,7 +90,8 @@ const MedicationForm: React.FC<MedicationFormProps> = ({
   }
 
   return (
-    <Page>
+    <Page pageContent={false}>
+      <div className="page-content">
       <Navbar
         title={isEdit ? "Edit Medication" : "Add Medication"}
         backLink="Back"
@@ -130,6 +131,7 @@ const MedicationForm: React.FC<MedicationFormProps> = ({
         >
           {submitting ? "Saving..." : isEdit ? "Update" : "Add"}
         </Button>
+      </div>
       </div>
     </Page>
   );

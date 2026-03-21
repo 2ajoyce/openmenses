@@ -95,7 +95,8 @@ const ExportPage: React.FC = () => {
   };
 
   return (
-    <Page>
+    <Page pageContent={false}>
+      <div className="page-content">
       <Navbar title="Export Data" />
 
       <BlockTitle>Data Export</BlockTitle>
@@ -152,6 +153,7 @@ const ExportPage: React.FC = () => {
           <li>Analyze your data in external tools</li>
         </ul>
       </Block>
+      </div>
     </Page>
   );
 };

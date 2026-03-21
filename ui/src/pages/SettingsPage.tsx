@@ -121,7 +121,8 @@ const SettingsPage: React.FC = () => {
   };
 
   return (
-    <Page>
+    <Page pageContent={false}>
+      <div className="page-content">
       <Navbar title="Settings" />
 
       <Block className="text-align-center">
@@ -228,6 +229,7 @@ const SettingsPage: React.FC = () => {
         <ListItem title="Privacy Policy" link="#" />
         <ListItem title="About OpenMenses" link="#" />
       </List>
+      </div>
     </Page>
   );
 };

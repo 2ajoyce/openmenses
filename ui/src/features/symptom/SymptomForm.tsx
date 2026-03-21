@@ -89,7 +89,8 @@ const SymptomForm: React.FC<SymptomFormProps> = ({ f7router, f7route, name: name
   }
 
   return (
-    <Page>
+    <Page pageContent={false}>
+      <div className="page-content">
       <Navbar title={isEdit ? "Edit Symptom" : "Log Symptom"} backLink="Back" />
 
       <div style={{ padding: "0 16px 8px" }}>
@@ -118,6 +119,7 @@ const SymptomForm: React.FC<SymptomFormProps> = ({ f7router, f7route, name: name
         <Button fill round large onClick={handleSubmit} disabled={submitting}>
           {submitting ? "Saving..." : isEdit ? "Update" : "Save"}
         </Button>
+      </div>
       </div>
     </Page>
   );

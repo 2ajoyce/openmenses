@@ -10,7 +10,8 @@ import {
 
 const LogChooserPage: React.FC = () => {
   return (
-    <Page>
+    <Page pageContent={false}>
+      <div className="page-content">
       <Navbar title="Log Observation" />
       <BlockTitle>What would you like to log?</BlockTitle>
       <List inset>
@@ -47,6 +48,7 @@ const LogChooserPage: React.FC = () => {
           <Icon slot="media" f7="capsule" className="log-chooser-icon-medication" />
         </ListItem>
       </List>
+      </div>
     </Page>
   );
 };

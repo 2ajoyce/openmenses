@@ -75,19 +75,22 @@ const MedicationList: React.FC<MedicationListProps> = ({ f7router }) => {
 
   if (!loading && medications.length === 0) {
     return (
-      <Page>
+      <Page pageContent={false}>
+        <div className="page-content">
         <Navbar title="Medications" />
         <EmptyState
           message="No medications added yet"
           actionLabel="Add Medication"
           onAction={() => f7router.navigate("/medications/new/")}
         />
+        </div>
       </Page>
     );
   }
 
   return (
-    <Page>
+    <Page pageContent={false}>
+      <div className="page-content">
       <Navbar title="Medications" />
 
       <List mediaList inset>
@@ -146,6 +149,7 @@ const MedicationList: React.FC<MedicationListProps> = ({ f7router }) => {
         >
           Add Medication
         </Button>
+      </div>
       </div>
     </Page>
   );

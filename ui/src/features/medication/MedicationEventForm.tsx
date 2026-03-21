@@ -132,7 +132,8 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
   }
 
   return (
-    <Page>
+    <Page pageContent={false}>
+      <div className="page-content">
       <Navbar
         title={isEdit ? "Edit Medication Event" : "Log Medication"}
         backLink="Back"
@@ -193,6 +194,7 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
         >
           {submitting ? "Saving..." : isEdit ? "Update" : "Save"}
         </Button>
+      </div>
       </div>
     </Page>
   );
