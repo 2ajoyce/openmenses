@@ -569,20 +569,19 @@
    10. Cycle Statistics Card
    ============================================================ */
 
-.cycle-stats-card .card {
+.cycle-stats-card.data-table {
   border-top: 3px solid var(--om-color-cycle);
-  border-left: none;
 }
 
-.cycle-stats-value {
-  font-size: var(--om-font-size-lg);
+.cycle-stats-card .data-table-title {
+  font-size: var(--om-font-size-base);
+  font-weight: var(--om-font-weight-bold);
+  color: var(--om-text-primary);
+}
+
+.cycle-stats-card tbody tr td.numeric-cell {
   font-weight: var(--om-font-weight-bold);
   color: var(--om-color-cycle);
-}
-
-.cycle-stats-label {
-  font-size: var(--om-font-size-sm);
-  opacity: 0.6;
 }
 
 /* ============================================================
@@ -591,14 +590,28 @@
 
 .cycle-stats-window-selector {
   display: flex;
+  align-items: center;
   gap: var(--om-space-sm);
   justify-content: center;
   padding: var(--om-space-md);
 }
 
-.cycle-stats-window-selector .segmented .segmented-button {
+.cycle-stats-window-selector .segmented .button {
   flex: 1;
   font-size: var(--om-font-size-sm);
+}
+
+.cycle-stats-window-selector .segmented .button:not(.button-active) {
+  border: 1px solid var(--om-color-cycle);
+  color: var(--om-color-cycle);
+  opacity: 0.65;
+}
+
+.cycle-stats-window-selector
+  .segmented
+  .button:not(.button-active)
+  + .button:not(.button-active) {
+  border-left: none;
 }
 
 /* ============================================================
@@ -860,35 +873,67 @@
 
 /* Phase background colors (subtle) */
 .om-heatmap-phase-menstruation {
-  background: linear-gradient(135deg, var(--om-color-card-bg) 0%, rgba(220, 38, 38, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--om-color-card-bg) 0%,
+    rgba(220, 38, 38, 0.05) 100%
+  );
 }
 
 :root.dark .om-heatmap-phase-menstruation {
-  background: linear-gradient(135deg, var(--om-color-card-bg) 0%, rgba(220, 38, 38, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--om-color-card-bg) 0%,
+    rgba(220, 38, 38, 0.1) 100%
+  );
 }
 
 .om-heatmap-phase-follicular {
-  background: linear-gradient(135deg, var(--om-color-card-bg) 0%, rgba(6, 182, 212, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--om-color-card-bg) 0%,
+    rgba(6, 182, 212, 0.05) 100%
+  );
 }
 
 :root.dark .om-heatmap-phase-follicular {
-  background: linear-gradient(135deg, var(--om-color-card-bg) 0%, rgba(6, 182, 212, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--om-color-card-bg) 0%,
+    rgba(6, 182, 212, 0.1) 100%
+  );
 }
 
 .om-heatmap-phase-ovulation {
-  background: linear-gradient(135deg, var(--om-color-card-bg) 0%, rgba(236, 72, 153, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--om-color-card-bg) 0%,
+    rgba(236, 72, 153, 0.05) 100%
+  );
 }
 
 :root.dark .om-heatmap-phase-ovulation {
-  background: linear-gradient(135deg, var(--om-color-card-bg) 0%, rgba(236, 72, 153, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--om-color-card-bg) 0%,
+    rgba(236, 72, 153, 0.1) 100%
+  );
 }
 
 .om-heatmap-phase-luteal {
-  background: linear-gradient(135deg, var(--om-color-card-bg) 0%, rgba(245, 158, 11, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--om-color-card-bg) 0%,
+    rgba(245, 158, 11, 0.05) 100%
+  );
 }
 
 :root.dark .om-heatmap-phase-luteal {
-  background: linear-gradient(135deg, var(--om-color-card-bg) 0%, rgba(245, 158, 11, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--om-color-card-bg) 0%,
+    rgba(245, 158, 11, 0.1) 100%
+  );
 }
 
 .om-loading-text {
