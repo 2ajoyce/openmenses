@@ -703,6 +703,28 @@
   border-radius: var(--om-radius-md);
 }
 
+.cycle-length-avg-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--om-space-xs);
+  font-size: var(--om-font-size-sm);
+  color: var(--om-color-primary);
+  margin-bottom: var(--om-space-xs);
+}
+
+.cycle-length-avg-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 2px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--om-color-primary) 0,
+    var(--om-color-primary) 5px,
+    transparent 5px,
+    transparent 8px
+  );
+}
+
 /* Mood & Cycle Section */
 .mood-cycle-section {
   display: flex;
