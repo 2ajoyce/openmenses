@@ -277,12 +277,10 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
         {!loading && hasStatistics && (
           <div role="region" aria-labelledby="stats-heading">
             <Block strong>
+              <h3 className="om-block-subtitle" id="stats-heading">
+                Cycle Statistics
+              </h3>
               <div className="cycle-stats-card data-table card">
-                <div className="card-header">
-                  <div className="data-table-title" id="stats-heading">
-                    Cycle Statistics
-                  </div>
-                </div>
                 <div className="card-content">
                   <table>
                     <thead>
