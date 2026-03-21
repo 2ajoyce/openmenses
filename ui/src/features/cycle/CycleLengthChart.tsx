@@ -64,10 +64,7 @@ export const CycleLengthChart: React.FC<CycleLengthChartProps> = ({
     <ChartContainer data={data}>
       <div role="img" aria-label="Line chart showing cycle length over time">
         <div className="cycle-length-avg-badge">
-          <span
-            className="cycle-length-avg-swatch"
-            aria-hidden="true"
-          />
+          <span className="cycle-length-avg-swatch" aria-hidden="true" />
           Avg: {averageLength.toFixed(1)} days
         </div>
         <ResponsiveContainer width="100%" height={300}>
