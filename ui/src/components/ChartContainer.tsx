@@ -6,6 +6,7 @@ interface ChartContainerProps {
   data?: unknown[];
   children: React.ReactElement;
   title?: string;
+  description?: string;
   emptyMessage?: string;
 }
 
@@ -13,6 +14,7 @@ export const ChartContainer: React.FC<ChartContainerProps> = ({
   data,
   children,
   title,
+  description,
   emptyMessage,
 }) => {
   const hasData = data && data.length > 0;
@@ -22,6 +24,7 @@ export const ChartContainer: React.FC<ChartContainerProps> = ({
       {hasData ? (
         <>
           {title && <h3>{title}</h3>}
+          {description && <p className="om-chart-description">{description}</p>}
           <ResponsiveContainer width="100%" height={300}>
             {children}
           </ResponsiveContainer>

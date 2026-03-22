@@ -201,6 +201,7 @@ export const MoodPhaseChart: React.FC = () => {
     <ChartContainer
       data={data}
       title="Mood by Phase"
+      description="Shows how often each mood appears within each cycle phase, as a percentage of all moods recorded in that phase."
       emptyMessage="Track moods across at least one full cycle to see mood patterns by phase."
     >
       <div

@@ -1,6 +1,6 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ChartContainer } from "./ChartContainer";
 
 // Mock ResizeObserver before importing recharts
@@ -16,7 +16,13 @@ vi.mock("framework7-react", async () => {
   return {
     ...actual,
     Icon: ({ f7 }: { f7: string }) => <span data-testid="icon">{f7}</span>,
-    Block: ({ children, className }: { children: React.ReactNode; className?: string }) => (
+    Block: ({
+      children,
+      className,
+    }: {
+      children: React.ReactNode;
+      className?: string;
+    }) => (
       <div className={className} data-testid="block">
         {children}
       </div>
@@ -33,20 +39,24 @@ describe("ChartContainer", () => {
     render(
       <ChartContainer>
         <div>Chart content</div>
-      </ChartContainer>
+      </ChartContainer>,
     );
 
-    expect(screen.getByText("No data available for this chart")).toBeInTheDocument();
+    expect(
+      screen.getByText("No data available for this chart"),
+    ).toBeInTheDocument();
   });
 
   it("renders empty state when data array is empty", () => {
     render(
       <ChartContainer data={[]}>
         <div>Chart content</div>
-      </ChartContainer>
+      </ChartContainer>,
     );
 
-    expect(screen.getByText("No data available for this chart")).toBeInTheDocument();
+    expect(
+      screen.getByText("No data available for this chart"),
+    ).toBeInTheDocument();
   });
 
   it("renders children when data is provided", () => {
@@ -55,12 +65,12 @@ describe("ChartContainer", () => {
     render(
       <ChartContainer data={testData}>
         <div>Chart content</div>
-      </ChartContainer>
+      </ChartContainer>,
     );
 
     expect(screen.getByText("Chart content")).toBeInTheDocument();
     expect(
-      screen.queryByText("No data available for this chart")
+      screen.queryByText("No data available for this chart"),
     ).not.toBeInTheDocument();
   });
 
@@ -70,7 +80,7 @@ describe("ChartContainer", () => {
     render(
       <ChartContainer data={testData} title="Test Chart">
         <div>Chart content</div>
-      </ChartContainer>
+      </ChartContainer>,
     );
 
     expect(screen.getByText("Test Chart")).toBeInTheDocument();
@@ -82,11 +92,40 @@ describe("ChartContainer", () => {
     render(
       <ChartContainer data={testData}>
         <div>Chart content</div>
-      </ChartContainer>
+      </ChartContainer>,
     );
 
     // Just verify that no h3 was created
     const headings = screen.queryAllByRole("heading", { level: 3 });
     expect(headings).toHaveLength(0);
+  });
+
+  it("renders description when provided", () => {
+    const testData = [{ value: 1 }];
+
+    render(
+      <ChartContainer
+        data={testData}
+        description="A helpful explanation of this chart."
+      >
+        <div>Chart content</div>
+      </ChartContainer>,
+    );
+
+    expect(
+      screen.getByText("A helpful explanation of this chart."),
+    ).toBeInTheDocument();
+  });
+
+  it("does not render description when not provided", () => {
+    const testData = [{ value: 1 }];
+
+    render(
+      <ChartContainer data={testData}>
+        <div>Chart content</div>
+      </ChartContainer>,
+    );
+
+    expect(screen.queryByRole("paragraph")).not.toBeInTheDocument();
   });
 });

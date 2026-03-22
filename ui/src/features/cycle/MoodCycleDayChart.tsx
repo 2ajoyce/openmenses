@@ -169,6 +169,7 @@ export const MoodCycleDayChart: React.FC = () => {
     <ChartContainer
       data={data}
       title="Mood Intensity by Cycle Day"
+      description="Shows the average intensity of each mood across each day of the cycle, on a scale of 1 (mild) to 3 (severe)."
       emptyMessage="Track moods across at least 3 cycles to see mood intensity patterns by cycle day."
     >
       <div
@@ -210,7 +211,7 @@ export const MoodCycleDayChart: React.FC = () => {
               labelFormatter={(value: number) => `Day ${value}`}
               formatter={(value: number) => value.toFixed(2)}
             />
-            <Legend />
+            <Legend wrapperStyle={{ paddingTop: "10px" }} />
             <ReferenceArea
               x1={1}
               x2={5}
