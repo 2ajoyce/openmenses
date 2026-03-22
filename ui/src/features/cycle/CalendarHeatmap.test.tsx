@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { create } from "@bufbuild/protobuf";
-import { LocalDateSchema } from "@gen/openmenses/v1/types_pb";
+import { DateTimeSchema } from "@gen/openmenses/v1/types_pb";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CalendarHeatmap } from "./CalendarHeatmap";
 
 const mockListTimeline = vi.fn();
@@ -80,10 +80,14 @@ describe("CalendarHeatmap", () => {
 
     const mockTimelineRecords = [
       {
-        date: create(LocalDateSchema, { value: dateStr }),
         record: {
           case: "bleedingObservation",
-          value: { flow: 2 }, // Light flow
+          value: {
+            flow: 2, // Light flow
+            timestamp: create(DateTimeSchema, {
+              value: `${dateStr}T12:00:00Z`,
+            }),
+          },
         },
       },
     ];
@@ -104,10 +108,14 @@ describe("CalendarHeatmap", () => {
 
     const mockTimelineRecords = [
       {
-        date: create(LocalDateSchema, { value: dateStr }),
         record: {
           case: "bleedingObservation",
-          value: { flow: 2 }, // Light flow
+          value: {
+            flow: 2, // Light flow
+            timestamp: create(DateTimeSchema, {
+              value: `${dateStr}T12:00:00Z`,
+            }),
+          },
         },
       },
     ];
@@ -129,8 +137,12 @@ describe("CalendarHeatmap", () => {
 
     await waitFor(() => {
       expect(mockListTimeline).toHaveBeenCalled();
-      const callArgs = mockListTimeline.mock.calls[0]?.[0] as Record<string, unknown> | undefined;
-      expect((callArgs?.range as Record<string, unknown> | undefined)?.start).toBeDefined();
+      const callArgs = mockListTimeline.mock.calls[0]?.[0] as
+        | Record<string, unknown>
+        | undefined;
+      expect(
+        (callArgs?.range as Record<string, unknown> | undefined)?.start,
+      ).toBeDefined();
     });
   });
 });

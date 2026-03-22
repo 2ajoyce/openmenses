@@ -1,8 +1,19 @@
+import type {
+  BleedingObservation,
+  MedicationEvent,
+  MoodObservation,
+  PhaseEstimate,
+  SymptomObservation,
+} from "@gen/openmenses/v1/model_pb";
+import type { TimelineRecord } from "@gen/openmenses/v1/service_pb";
 import React, { useCallback, useEffect, useState } from "react";
-import type { PhaseEstimate, BleedingObservation, SymptomObservation, MoodObservation, MedicationEvent } from "@gen/openmenses/v1/model_pb";
 import { client, DEFAULT_PARENT } from "../../lib/client";
-import { toLocalDate } from "../../lib/dates";
-import { bleedingFlowLabel, symptomTypeLabel, moodIntensityLabel } from "../../lib/enums";
+import { fromDateTime, toLocalDate } from "../../lib/dates";
+import {
+  bleedingFlowLabel,
+  moodIntensityLabel,
+  symptomTypeLabel,
+} from "../../lib/enums";
 
 interface ObservationsByDate {
   [date: string]: {
@@ -26,7 +37,7 @@ export const CalendarHeatmap: React.FC = () => {
       const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
       const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-      const allRecords: unknown[] = [];
+      const allRecords: TimelineRecord[] = [];
       let pageToken = "";
       do {
         const res = await client.listTimeline({
@@ -43,34 +54,61 @@ export const CalendarHeatmap: React.FC = () => {
 
       // Group observations by date
       const byDate: ObservationsByDate = {};
-      allRecords.forEach((record: unknown) => {
-        const r = record as Record<string, unknown>;
-        const dateStr = (r.date as Record<string, string> | undefined)?.value || "";
-        if (!byDate[dateStr]) {
-          byDate[dateStr] = {};
-        }
+      const getEntry = (dateStr: string) => {
+        if (!byDate[dateStr]) byDate[dateStr] = {};
+        return byDate[dateStr]!;
+      };
+      allRecords.forEach((record: TimelineRecord) => {
+        const { record: data } = record;
 
-        const recordData = r.record as Record<string, unknown> | undefined;
-        switch (recordData?.case) {
-          case "bleedingObservation":
-            if (!byDate[dateStr].bleeding) byDate[dateStr].bleeding = [];
-            byDate[dateStr].bleeding?.push(recordData.value as BleedingObservation);
+        switch (data.case) {
+          case "bleedingObservation": {
+            if (data.value.timestamp) {
+              const entry = getEntry(
+                toLocalDate(fromDateTime(data.value.timestamp)).value,
+              );
+              if (!entry.bleeding) entry.bleeding = [];
+              entry.bleeding.push(data.value);
+            }
             break;
-          case "symptomObservation":
-            if (!byDate[dateStr].symptoms) byDate[dateStr].symptoms = [];
-            byDate[dateStr].symptoms?.push(recordData.value as SymptomObservation);
+          }
+          case "symptomObservation": {
+            if (data.value.timestamp) {
+              const entry = getEntry(
+                toLocalDate(fromDateTime(data.value.timestamp)).value,
+              );
+              if (!entry.symptoms) entry.symptoms = [];
+              entry.symptoms.push(data.value);
+            }
             break;
-          case "moodObservation":
-            if (!byDate[dateStr].moods) byDate[dateStr].moods = [];
-            byDate[dateStr].moods?.push(recordData.value as MoodObservation);
+          }
+          case "moodObservation": {
+            if (data.value.timestamp) {
+              const entry = getEntry(
+                toLocalDate(fromDateTime(data.value.timestamp)).value,
+              );
+              if (!entry.moods) entry.moods = [];
+              entry.moods.push(data.value);
+            }
             break;
-          case "medicationEvent":
-            if (!byDate[dateStr].medications) byDate[dateStr].medications = [];
-            byDate[dateStr].medications?.push(recordData.value as MedicationEvent);
+          }
+          case "medicationEvent": {
+            if (data.value.timestamp) {
+              const entry = getEntry(
+                toLocalDate(fromDateTime(data.value.timestamp)).value,
+              );
+              if (!entry.medications) entry.medications = [];
+              entry.medications.push(data.value);
+            }
             break;
-          case "phaseEstimate":
-            byDate[dateStr].phase = recordData.value as PhaseEstimate;
+          }
+          case "phaseEstimate": {
+            const dateStr = data.value.date?.value ?? "";
+            if (dateStr) {
+              getEntry(dateStr).phase = data.value;
+            }
             break;
+          }
         }
       });
 
@@ -87,11 +125,15 @@ export const CalendarHeatmap: React.FC = () => {
   }, [currentMonth, fetchMonthObservations]);
 
   const handlePrevMonth = () => {
-    setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+    setCurrentMonth(
+      (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1),
+    );
   };
 
   const handleNextMonth = () => {
-    setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+    setCurrentMonth(
+      (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1),
+    );
   };
 
   // Generate calendar grid
@@ -122,15 +164,21 @@ export const CalendarHeatmap: React.FC = () => {
 
     const parts: string[] = [];
     if (obs.bleeding && obs.bleeding.length > 0) {
-      const flows = obs.bleeding.map((b) => bleedingFlowLabel(b.flow)).join(", ");
+      const flows = obs.bleeding
+        .map((b) => bleedingFlowLabel(b.flow))
+        .join(", ");
       parts.push(`bleeding (${flows})`);
     }
     if (obs.symptoms && obs.symptoms.length > 0) {
-      const types = obs.symptoms.map((s) => symptomTypeLabel(s.symptom)).join(", ");
+      const types = obs.symptoms
+        .map((s) => symptomTypeLabel(s.symptom))
+        .join(", ");
       parts.push(`symptoms: ${types}`);
     }
     if (obs.moods && obs.moods.length > 0) {
-      const intensities = obs.moods.map((m) => moodIntensityLabel(m.intensity)).join(", ");
+      const intensities = obs.moods
+        .map((m) => moodIntensityLabel(m.intensity))
+        .join(", ");
       parts.push(`mood: ${intensities}`);
     }
     if (obs.medications && obs.medications.length > 0) {
@@ -160,26 +208,42 @@ export const CalendarHeatmap: React.FC = () => {
     const phaseEstimate = obs.phase as Record<string, unknown>;
     const phase = phaseEstimate.phase as number | undefined;
     switch (phase) {
-      case 1: return "menstruation";
-      case 2: return "follicular";
-      case 3: return "ovulation";
-      case 4: return "luteal";
-      default: return "";
+      case 1:
+        return "menstruation";
+      case 2:
+        return "follicular";
+      case 3:
+        return "ovulation";
+      case 4:
+        return "luteal";
+      default:
+        return "";
     }
   };
 
   const days = generateCalendarDays(currentMonth);
   const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const monthYear = currentMonth.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  const monthYear = currentMonth.toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
 
   return (
     <div className="om-heatmap-container">
       <div className="om-heatmap-nav">
-        <button className="om-heatmap-nav-button" onClick={handlePrevMonth} aria-label="Previous month">
+        <button
+          className="om-heatmap-nav-button"
+          onClick={handlePrevMonth}
+          aria-label="Previous month"
+        >
           ← Prev
         </button>
         <h3 className="om-heatmap-month">{monthYear}</h3>
-        <button className="om-heatmap-nav-button" onClick={handleNextMonth} aria-label="Next month">
+        <button
+          className="om-heatmap-nav-button"
+          onClick={handleNextMonth}
+          aria-label="Next month"
+        >
           Next →
         </button>
       </div>
@@ -197,14 +261,23 @@ export const CalendarHeatmap: React.FC = () => {
         {/* Calendar cells */}
         {days.map((day, index) => {
           if (day === null) {
-            return <div key={`empty-${index}`} className="om-heatmap-cell om-heatmap-empty" />;
+            return (
+              <div
+                key={`empty-${index}`}
+                className="om-heatmap-cell om-heatmap-empty"
+              />
+            );
           }
 
           const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
           const { hasObservations, types } = getObservationIndicators(dateStr);
           const phaseColor = getPhaseColor(dateStr);
           const summary = getObservationSummary(dateStr);
-          const cellDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+          const cellDate = new Date(
+            currentMonth.getFullYear(),
+            currentMonth.getMonth(),
+            day,
+          );
           const ariaLabel = `${cellDate.toLocaleDateString("en-US", { month: "long", day: "numeric" })}: ${summary || "no observations"}`;
 
           return (
@@ -217,15 +290,68 @@ export const CalendarHeatmap: React.FC = () => {
               <div className="om-heatmap-day-number">{day}</div>
               {hasObservations && (
                 <div className="om-heatmap-indicators">
-                  {types.has("bleeding") && <div className="om-heatmap-indicator om-heatmap-indicator-bleeding" />}
-                  {types.has("symptom") && <div className="om-heatmap-indicator om-heatmap-indicator-symptom" />}
-                  {types.has("mood") && <div className="om-heatmap-indicator om-heatmap-indicator-mood" />}
-                  {types.has("medication") && <div className="om-heatmap-indicator om-heatmap-indicator-medication" />}
+                  {types.has("bleeding") && (
+                    <div className="om-heatmap-indicator om-heatmap-indicator-bleeding" />
+                  )}
+                  {types.has("symptom") && (
+                    <div className="om-heatmap-indicator om-heatmap-indicator-symptom" />
+                  )}
+                  {types.has("mood") && (
+                    <div className="om-heatmap-indicator om-heatmap-indicator-mood" />
+                  )}
+                  {types.has("medication") && (
+                    <div className="om-heatmap-indicator om-heatmap-indicator-medication" />
+                  )}
                 </div>
               )}
             </div>
           );
         })}
+      </div>
+
+      <div className="om-heatmap-legend" aria-label="Calendar legend">
+        <div className="om-heatmap-legend-section">
+          <span className="om-heatmap-legend-title">Observations</span>
+          <div className="om-heatmap-legend-items">
+            <div className="om-heatmap-legend-item">
+              <div className="om-heatmap-indicator om-heatmap-indicator-bleeding" />
+              <span>Bleeding</span>
+            </div>
+            <div className="om-heatmap-legend-item">
+              <div className="om-heatmap-indicator om-heatmap-indicator-symptom" />
+              <span>Symptom</span>
+            </div>
+            <div className="om-heatmap-legend-item">
+              <div className="om-heatmap-indicator om-heatmap-indicator-mood" />
+              <span>Mood</span>
+            </div>
+            <div className="om-heatmap-legend-item">
+              <div className="om-heatmap-indicator om-heatmap-indicator-medication" />
+              <span>Medication</span>
+            </div>
+          </div>
+        </div>
+        <div className="om-heatmap-legend-section">
+          <span className="om-heatmap-legend-title">Phases</span>
+          <div className="om-heatmap-legend-items">
+            <div className="om-heatmap-legend-item">
+              <div className="om-heatmap-legend-swatch om-heatmap-phase-menstruation" />
+              <span>Menstruation</span>
+            </div>
+            <div className="om-heatmap-legend-item">
+              <div className="om-heatmap-legend-swatch om-heatmap-phase-follicular" />
+              <span>Follicular</span>
+            </div>
+            <div className="om-heatmap-legend-item">
+              <div className="om-heatmap-legend-swatch om-heatmap-phase-ovulation" />
+              <span>Ovulation</span>
+            </div>
+            <div className="om-heatmap-legend-item">
+              <div className="om-heatmap-legend-swatch om-heatmap-phase-luteal" />
+              <span>Luteal</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
