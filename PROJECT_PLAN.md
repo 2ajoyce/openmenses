@@ -257,6 +257,23 @@ Users maintain full control of their information.
 - export tools
 - clinician-friendly summaries
 
+## Phase 7: iOS Native Shell
+
+- Go mobile bridge package (`engine/mobile/`) with gomobile-bindable `Start`/`Stop` API
+- Auth token generation and middleware (localhost listener security)
+- SPA static file server in bridge (Go serves both Connect-RPC and bundled UI)
+- UI adaptations: dynamic engine URL and auth token injection (`window.__OPENMENSES_ENGINE__`)
+- Xcode project: UIKit shell hosting WkWebView, `EngineManager`, `WebViewController`
+- HealthKit menstrual flow integration (read/write `HKCategoryTypeIdentifierMenstrualFlow`)
+- WebView ↔ native messaging channel for HealthKit sync triggers
+
+## Phase 8: Android Native Shell
+
+- Android Kotlin shell hosting WebView with Go engine via gomobile `.aar` binding
+- Mirrors iOS architecture: same bridge package, same UI adaptations
+- Google Fit / Health Connect menstrual flow integration
+- Android-specific lifecycle management and SQLite path conventions
+
 ---
 
 # Guiding Principles
