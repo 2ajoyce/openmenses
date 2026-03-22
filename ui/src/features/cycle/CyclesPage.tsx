@@ -26,8 +26,8 @@ import { PredictionCard } from "../prediction/PredictionCard";
 import { CalendarHeatmap } from "./CalendarHeatmap";
 import { CycleCard } from "./CycleCard";
 import { CycleLengthChart } from "./CycleLengthChart";
-import { MoodCycleDayChart } from "./MoodCycleDayChart";
 import { MoodPhaseChart } from "./MoodPhaseChart";
+import { MoodPhaseHeatmap } from "./MoodPhaseHeatmap";
 import { PhaseEstimateCard } from "./PhaseEstimateCard";
 
 interface CyclesPageProps {
@@ -455,7 +455,7 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
                   Mood & Cycle
                 </h3>
                 <MoodPhaseChart />
-                <MoodCycleDayChart />
+                <MoodPhaseHeatmap />
               </div>
             </Block>
           </div>
