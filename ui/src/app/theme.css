@@ -716,6 +716,7 @@
    ============================================================ */
 
 .om-chart-container {
+  box-sizing: border-box;
   min-height: 300px;
   width: 100%;
   padding: var(--om-space-md);
