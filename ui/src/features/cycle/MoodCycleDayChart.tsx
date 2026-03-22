@@ -178,7 +178,7 @@ export const MoodCycleDayChart: React.FC = () => {
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
             data={data}
-            margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+            margin={{ top: 5, right: 10, left: 5, bottom: 20 }}
           >
             <CartesianGrid
               strokeDasharray="3 3"
@@ -189,7 +189,7 @@ export const MoodCycleDayChart: React.FC = () => {
               type="number"
               label={{
                 value: "Cycle Day",
-                position: "insideBottomRight",
+                position: "insideBottom",
                 offset: -5,
               }}
             />
@@ -198,7 +198,8 @@ export const MoodCycleDayChart: React.FC = () => {
               label={{
                 value: "Mood Intensity",
                 angle: -90,
-                position: "insideLeft",
+                position: "center",
+                dx: -10,
               }}
             />
             <Tooltip
