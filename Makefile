@@ -14,6 +14,7 @@ endif
         engine-lint engine-test \
         engine-dev ui-dev ui-build ui-lint ui-test \
         seed seed-all \
+        mobile-setup ui-bundle mobile-ios \
         lint test ci
 
 # ---------------------------------------------------------------------------
@@ -97,6 +98,26 @@ seed-all:
 	go run ./engine/cmd/seed/ --scenario=shortening --db=openmenses-shortening.db
 	go run ./engine/cmd/seed/ --scenario=medication-gaps --db=openmenses-medication-gaps.db
 	go run ./engine/cmd/seed/ --scenario=minimal --db=openmenses-minimal.db
+
+# ---------------------------------------------------------------------------
+# Mobile targets (iOS/Android native shells)
+# ---------------------------------------------------------------------------
+
+# Install gomobile tooling (one-time setup).
+mobile-setup:
+	go install golang.org/x/mobile/cmd/gomobile@latest
+	go install golang.org/x/mobile/cmd/gobind@latest
+	PATH="$(shell go env GOPATH)/bin:$$PATH" $(shell go env GOPATH)/bin/gomobile init
+
+# Build UI production bundle into ui/dist/.
+ui-bundle: ui-build
+
+# Build iOS framework via gomobile bind.
+# Requires: Xcode CLI tools, gomobile (run `make mobile-setup` first).
+# Output: mobile/ios/Engine.xcframework/
+# Note: This target only works on macOS with Xcode installed.
+mobile-ios:
+	PATH="$(shell go env GOPATH)/bin:$$PATH" $(shell go env GOPATH)/bin/gomobile bind -target=ios -o mobile/ios/Engine.xcframework ./engine/mobile/
 
 # ---------------------------------------------------------------------------
 # Aggregate targets
