@@ -273,6 +273,47 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
           </Block>
         )}
 
+        {/* Current cycle section */}
+        {!loading && currentCycle && (
+          <div role="region" aria-labelledby="current-cycle-heading">
+            <Block strong>
+              <div className="current-cycle-section">
+                <Card>
+                  <CardHeader>
+                    <span className="om-card-title" id="current-cycle-heading">
+                      Current Cycle
+                    </span>
+                  </CardHeader>
+                  <CardContent>
+                    {currentCycle.startDate && (
+                      <>
+                        <p className="om-card-timestamp">
+                          Started: {formatDate(currentCycle.startDate)}
+                        </p>
+                        {(() => {
+                          const dayCount =
+                            getCurrentCycleDayCount(currentCycle);
+                          return dayCount ? (
+                            <p className="om-card-notes">Day {dayCount}</p>
+                          ) : null;
+                        })()}
+                      </>
+                    )}
+                    {profileComplete && todayPhaseEstimate && (
+                      <div className="current-phase">
+                        <PhaseEstimateCard
+                          estimates={[todayPhaseEstimate]}
+                          biologicalCycleModel={biologicalCycleModel}
+                        />
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </Block>
+          </div>
+        )}
+
         {/* Statistics section */}
         {!loading && hasStatistics && (
           <div role="region" aria-labelledby="stats-heading">
@@ -415,47 +456,6 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
                 </h3>
                 <MoodPhaseChart />
                 <MoodCycleDayChart />
-              </div>
-            </Block>
-          </div>
-        )}
-
-        {/* Current cycle section */}
-        {!loading && currentCycle && (
-          <div role="region" aria-labelledby="current-cycle-heading">
-            <Block strong>
-              <div className="current-cycle-section">
-                <Card>
-                  <CardHeader>
-                    <span className="om-card-title" id="current-cycle-heading">
-                      Current Cycle
-                    </span>
-                  </CardHeader>
-                  <CardContent>
-                    {currentCycle.startDate && (
-                      <>
-                        <p className="om-card-timestamp">
-                          Started: {formatDate(currentCycle.startDate)}
-                        </p>
-                        {(() => {
-                          const dayCount =
-                            getCurrentCycleDayCount(currentCycle);
-                          return dayCount ? (
-                            <p className="om-card-notes">Day {dayCount}</p>
-                          ) : null;
-                        })()}
-                      </>
-                    )}
-                    {profileComplete && todayPhaseEstimate && (
-                      <div className="current-phase">
-                        <PhaseEstimateCard
-                          estimates={[todayPhaseEstimate]}
-                          biologicalCycleModel={biologicalCycleModel}
-                        />
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
               </div>
             </Block>
           </div>

@@ -6,12 +6,14 @@ interface ChartContainerProps {
   data?: unknown[];
   children: React.ReactElement;
   title?: string;
+  emptyMessage?: string;
 }
 
 export const ChartContainer: React.FC<ChartContainerProps> = ({
   data,
   children,
   title,
+  emptyMessage,
 }) => {
   const hasData = data && data.length > 0;
 
@@ -25,7 +27,10 @@ export const ChartContainer: React.FC<ChartContainerProps> = ({
           </ResponsiveContainer>
         </>
       ) : (
-        <EmptyState message="No data available for this chart" icon="chart_bar" />
+        <EmptyState
+          message={emptyMessage ?? "No data available for this chart"}
+          icon="chart_bar"
+        />
       )}
     </div>
   );
