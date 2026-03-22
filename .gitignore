@@ -53,6 +53,8 @@ dist/
 
 # Mobile build artifacts
 mobile/ios/build/
+mobile/ios/Engine.xcframework/
+mobile/ios/ui/
 mobile/android/.gradle/
 mobile/android/build/
 mobile/android/local.properties
