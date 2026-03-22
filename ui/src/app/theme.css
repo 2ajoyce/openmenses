@@ -969,6 +969,67 @@
   color: #999999;
 }
 
+.om-heatmap-legend {
+  margin-top: var(--om-space-md);
+  padding-top: var(--om-space-sm);
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--om-space-sm);
+}
+
+:root.dark .om-heatmap-legend {
+  border-top-color: #333333;
+}
+
+.om-heatmap-legend-section {
+  display: flex;
+  align-items: center;
+  gap: var(--om-space-sm);
+  flex-wrap: wrap;
+}
+
+.om-heatmap-legend-title {
+  font-size: var(--om-font-size-xs);
+  font-weight: var(--om-font-weight-bold);
+  color: #666666;
+  min-width: 80px;
+}
+
+:root.dark .om-heatmap-legend-title {
+  color: #999999;
+}
+
+.om-heatmap-legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--om-space-sm);
+}
+
+.om-heatmap-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--om-font-size-xs);
+  color: #444444;
+}
+
+:root.dark .om-heatmap-legend-item {
+  color: #cccccc;
+}
+
+.om-heatmap-legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--om-radius-sm);
+  border: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+
+:root.dark .om-heatmap-legend-swatch {
+  border-color: #333333;
+}
+
 /* ============================================================
    13. EnumSelector Options Row
    ============================================================ */
