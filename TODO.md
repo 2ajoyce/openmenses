@@ -3,272 +3,828 @@
 This file tracks implementation tasks. Items are grouped by phase and step.
 Check off tasks as they are completed.
 
+Phases 1–6 are complete (domain model, core logging, cycle detection, predictions, insights, UI expansion).
+
 ---
 
-## Phase 6: UI Expansion
+## Phase 7: iOS Native Shell
 
-Phase 6 adds advanced visualizations, export tools, a clinician summary, and accessibility improvements. All features compose existing Connect-RPC endpoints — no new proto definitions or backend changes are needed. The phase is split into three independently shippable sub-phases.
+Phase 7 builds a thin iOS native shell that hosts the Go engine as an in-process library (via `gomobile bind`) and renders the existing React UI in a WkWebView. The Go engine serves **both** the Connect-RPC API and the bundled UI static files from a single `http://127.0.0.1:<random_port>` listener, so the WebView loads everything from the same origin (avoiding CORS issues with `file://` URLs). HealthKit menstrual flow integration follows as a second sub-phase after the shell is working.
+
+This phase spans Go, TypeScript, and Swift. It does **not** modify the proto schema, generated code, or existing engine internals. It adds a new Go package, edits one UI file, and creates a new Xcode project.
 
 ### Background / Key Decisions
 
-- **No new proto/RPC endpoints**: All Phase 6 features compose existing RPCs (`ListCycles`, `GetCycleStatistics`, `ListTimeline`, `ListPredictions`, `ListInsights`, `CreateDataExport`, `ListMoodObservations`, `ListMedications`, `GetUserProfile`).
-- **Recharts for charting**: SVG-based React charting library (~45KB gzipped). Supports theming via CSS custom properties, touch-friendly, works offline.
-- **CSV export is client-side**: Converting JSON export to CSV is a presentation concern, not domain logic. Handled in the UI layer using enum labels from `lib/enums.ts`.
-- **Calendar heatmap is custom HTML/CSS**: No additional library needed — built with a simple grid layout.
-- **All CSS in `theme.css`**: Per `UI_Design_Guidelines.md`, all custom styles go in `ui/src/app/theme.css` using `--om-` design tokens and `om-` utility classes. No CSS-in-JS, modules, or Tailwind.
-- **Dark mode mandatory**: Every new color token must have a `.dark` counterpart.
-- **Clinician summary uses `window.print()`**: Printable page with `@media print` styles. Works in mobile WebViews via the OS print dialog (includes "Save as PDF").
+- **gomobile bind** produces an `.xcframework` containing a native iOS binary of the Go engine. The native shell links it and calls exported Go functions directly — no subprocess, no FFI marshalling. See https://go.dev/wiki/Mobile#sdk-applications-and-generating-bindings.
+- **gomobile restrictions**: Exported functions can only use primitives (`int`, `string`, `bool`, `error`, `[]byte`). No `context.Context`, `http.Handler`, interfaces, channels, or complex structs. The bridge package wraps the existing `engine.Engine` API into gomobile-safe functions.
+- **Static file serving from Go**: The Go HTTP mux serves both the Connect-RPC handler (at its service path) and a static file server (at `/`) for the bundled `ui/dist/` output. A SPA fallback ensures client-side routes resolve to `index.html`.
+- **Auth token**: A 32-byte random hex token is generated at engine startup and injected into the WebView via JavaScript (`window.__OPENMENSES_ENGINE__`). All Connect-RPC requests must include `Authorization: Bearer <token>`. Static file requests are unauthenticated (they are the UI itself).
+- **iOS 16+ minimum deployment target**: Provides modern WkWebView APIs, HealthKit improvements, and covers 95%+ of active devices.
+- **UIKit, not SwiftUI**: WkWebView hosting is simpler and better documented in UIKit. No storyboards beyond LaunchScreen (programmatic layout).
+- **No external Swift dependencies**: No CocoaPods, SPM packages, or Carthage for the MVP shell. HealthKit is a system framework.
+- **Domain logic stays in Go**: Per `AGENT.md` and `PROJECT_PLAN.md`, the native shell contains zero domain logic. HealthKit integration (Phase 7D) reads/writes HealthKit data and funnels it through the Connect-RPC API.
+- **iCloud backup is automatic**: All persistent data is in a SQLite file in the app's Documents directory. iOS backs this up to iCloud without any custom integration code.
+
+### Reference Files
+
+Read these before implementing:
+
+| File                                              | Purpose                                                                      |
+| ------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `AGENT.md`                                        | Mandatory agent workflow, architecture boundaries, things agents must not do |
+| `docs/architecture.md`                            | Full architecture diagram, bridge design, security model                     |
+| `docs/decisions/0004-localhost-connect-bridge.md` | ADR for the localhost Connect-RPC bridge approach                            |
+| `docs/decisions/0005-framework7-react.md`         | ADR for Framework7 React (adaptive iOS/Material styling)                     |
+| `engine/pkg/openmenses/engine.go`                 | Public `Engine` API: `NewEngine()`, `Handler()`, `Close()`                   |
+| `engine/cmd/engine-dev/main.go`                   | Reference implementation of HTTP server setup (mux, listener, CORS)          |
+| `ui/src/lib/client.ts`                            | Current Connect-RPC client — will be modified for dynamic baseUrl/auth       |
+| `PROJECT_PLAN.md`                                 | Phase definitions, data model philosophy, native shell responsibilities      |
 
 ---
 
-## Sub-Phase 6A: Export Tools + Accessibility Foundation
+## Sub-Phase 7A: Go Mobile Bindings
 
-### Step 1: Export Page (VERIFIED)
+Create a new Go package `engine/mobile/` that wraps the existing engine API into gomobile-bindable functions. This package owns the HTTP server lifecycle, static file serving, and auth token generation.
 
-Wire up the existing `CreateDataExport` RPC to a download UI. Add CSV conversion client-side.
+### Step 1: Create bridge package (`engine/mobile/bridge.go`)
 
-- [x] Create `ui/src/features/export/ExportPage.tsx` — page with "Export JSON" and "Export CSV" buttons
-  - Call `CreateDataExport` RPC on click
-  - Use `Blob` + `URL.createObjectURL` + programmatic `<a>` click to trigger download
-  - Show loading state during export
-  - Show success/error feedback
-- [x] Create `ui/src/features/export/csvConverter.ts` — pure function converting JSON export payload to CSV strings
-  - Flatten each record type (bleeding, symptoms, moods, medications, medication events) into rows
-  - Use human-readable enum labels from `lib/enums.ts`
-  - Timestamps in ISO 8601 format
-  - Handle empty optional fields gracefully
-- [x] Add route `/export/` → `ExportPage` in `ui/src/app/App.tsx`
-- [x] Update `ui/src/pages/SettingsPage.tsx` — link "Export Data" item to navigate to `/export/`
-- [x] Create `ui/src/features/export/ExportPage.test.tsx` — renders buttons, verifies click handlers
-- [x] Create `ui/src/features/export/csvConverter.test.ts` — verifies CSV output format with known JSON input
-- [x] Run `make ui-lint` — must pass
-- [x] Run `make ui-test` — must pass
+Create `engine/mobile/bridge.go` with a gomobile-compatible API. gomobile can only export functions whose parameters and return values are primitive types (`int`, `string`, `bool`, `error`, `[]byte`). No `context.Context`, `http.Handler`, or functional options are allowed in exported signatures.
 
----
+**Exported API** (two functions — keep it minimal):
 
-### Step 2: Accessibility Improvements (VERIFIED)
+```go
+// Start initializes the engine, starts the HTTP server, and returns the port
+// and auth token. The HTTP server serves both Connect-RPC endpoints and
+// static UI files. Call Stop() to shut down.
+//
+// dbPath: absolute path to SQLite database file (will be created if absent).
+// uiAssetsDir: absolute path to directory containing the built UI files
+//              (index.html, JS, CSS, etc.). Pass empty string to skip static
+//              file serving (useful for tests that only need the API).
+//
+// Returns: port (the TCP port the server is listening on),
+//          token (32-byte hex auth token required for API calls),
+//          error (non-nil if startup failed).
+func Start(dbPath string, uiAssetsDir string) (port int, token string, err error)
 
-Systematic a11y pass across all existing and new components.
+// Stop gracefully shuts down the HTTP server and closes the engine.
+// Safe to call multiple times. Returns an error if shutdown fails.
+func Stop() error
+```
 
-- [x] Add `.om-sr-only` utility class to `ui/src/app/theme.css` (visually hidden, screen-reader accessible)
-- [x] Audit color contrast for WCAG AA compliance (4.5:1 normal text, 3:1 large text); adjust dark mode tokens if needed
-- [x] `ui/src/features/timeline/TimelinePage.tsx`:
-  - Add `aria-label` to filter chips
-  - Add `role="feed"` to timeline list
-  - Add `aria-live="polite"` to loading states
-- [x] `ui/src/features/cycle/CyclesPage.tsx`:
-  - Add `role="region"` + `aria-label` to each section
-  - Add `aria-label` to stat values
-- [x] `ui/src/components/EnumSelector.tsx`:
-  - Add `role="radiogroup"` or `role="group"` with `aria-label`
-- [x] `ui/src/components/ConfirmDialog.tsx`:
-  - Add `role="alertdialog"`, `aria-labelledby`, `aria-describedby`
-- [x] `ui/src/components/EmptyState.tsx`:
-  - Add `role="status"`
-- [x] All form components (`BleedingForm`, `SymptomForm`, `MoodForm`):
-  - Add `aria-describedby` for validation error messages
-- [x] Run `make ui-lint` — must pass
-- [x] Run `make ui-test` — must pass
+**Internal implementation**:
 
----
+1. Guard against double-start with a `sync.Mutex`-protected module-level state struct:
 
-## Sub-Phase 6B: Visualizations
+   ```go
+   var (
+       mu      sync.Mutex
+       running *state
+   )
+   type state struct {
+       eng    *openmenses.Engine
+       srv    *http.Server
+       ln     net.Listener
+       cancel context.CancelFunc
+   }
+   ```
 
-### Step 3: Install Recharts + Chart Infrastructure (VERIFIED)
+2. `Start` implementation:
+   1. Lock mutex, check `running == nil`
+   2. Generate auth token: `crypto/rand` → 32 bytes → `hex.EncodeToString` (64-char hex string)
+   3. Create context with cancel: `context.WithCancel(context.Background())`
+   4. Initialize engine: `openmenses.NewEngine(ctx, openmenses.WithSQLite(dbPath))`
+   5. Build HTTP mux:
+      - Get Connect-RPC handler: `path, handler := eng.Handler()`
+      - Wrap handler with auth middleware (see Step 2 below)
+      - Mount at `path` on `http.NewServeMux()`
+      - If `uiAssetsDir != ""`: mount SPA file server at `/` (see Step 3 below)
+   6. Listen: `net.Listen("tcp", "127.0.0.1:0")` — OS assigns random port
+   7. Create `http.Server{Handler: mux}`
+   8. Start serving in a goroutine: `go srv.Serve(ln)`
+   9. Extract port: `ln.Addr().(*net.TCPAddr).Port`
+   10. Store state in `running`, unlock mutex
+   11. Return `port, token, nil`
 
-- [x] Add `recharts` dependency to `ui/package.json`
-- [x] Run `npm install` — must succeed
-- [x] Add chart design tokens to `ui/src/app/theme.css` (with dark mode variants):
-  - [x] `--om-color-chart-axis`
-  - [x] `--om-color-chart-grid`
-  - [x] `--om-color-chart-tooltip-bg`
-  - [x] `--om-color-chart-tooltip-border`
-- [x] Add `.om-chart-container` utility class (min-height, responsive width, padding)
-- [x] Create `ui/src/components/ChartContainer.tsx` — wrapper around Recharts `ResponsiveContainer`
-  - [x] Handle empty-data state (render `EmptyState` component)
-  - [x] Provide consistent card shell
-- [x] Create `ui/src/components/ChartContainer.test.tsx` — empty state vs children rendering
-- [x] Run `make ui-lint` — must pass
-- [x] Run `make ui-test` — must pass
+3. `Stop` implementation:
+   1. Lock mutex, check `running != nil`
+   2. `running.srv.Shutdown(context.Background())` — graceful HTTP shutdown
+   3. `running.eng.Close()` — release SQLite file handles
+   4. `running.cancel()` — cancel context
+   5. Set `running = nil`, unlock mutex
 
----
+- [ ] Create `engine/mobile/bridge.go` with `Start` and `Stop` functions as described above
+- [ ] Add `golang.org/x/mobile` to `go.mod` — run `go get golang.org/x/mobile/bind`
+- [ ] Verify `go build ./engine/mobile/` succeeds
 
-### Step 4: Cycle Length Trend Chart (VERIFIED)
+### Step 2: Auth middleware
 
-Line chart showing cycle length over time on the Cycles page.
+Create auth middleware **inside `engine/mobile/bridge.go`** (unexported helper). The middleware validates the `Authorization: Bearer <token>` header on Connect-RPC routes.
 
-- [x] Create `ui/src/features/cycle/CycleLengthChart.tsx`:
-  - Recharts `LineChart` with `ResponsiveContainer`
-  - X-axis: cycle index (1, 2, 3, ...)
-  - Y-axis: length in days
-  - Dashed horizontal reference line at average cycle length
-  - Line stroke uses `--om-color-primary`
-  - Tooltip shows cycle dates and length
-  - Only renders with 2+ completed cycles
-  - Wrap in `role="img"` with descriptive `aria-label`
-  - Include `.om-sr-only` text summary below chart for screen readers
-- [x] Create `ui/src/features/cycle/CycleLengthChart.test.tsx`:
-  - 0 cycles → returns null
-  - 1 cycle → returns null
-  - 3 cycles → renders chart with correct data points
-  - 10 cycles → renders chart with average reference line
-- [x] Modify `ui/src/features/cycle/CyclesPage.tsx` — render `CycleLengthChart` between statistics card and current cycle section
-- [x] Add chart-specific styles to `ui/src/app/theme.css` if needed
-- [x] Run `make ui-lint` — must pass
-- [x] Run `make ui-test` — must pass
+```go
+// authMiddleware wraps a handler and rejects requests missing a valid bearer token.
+func authMiddleware(token string, next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        auth := r.Header.Get("Authorization")
+        if auth != "Bearer "+token {
+            http.Error(w, "unauthorized", http.StatusUnauthorized)
+            return
+        }
+        next.ServeHTTP(w, r)
+    })
+}
+```
 
----
+Usage in `Start`: wrap the Connect-RPC handler before mounting:
 
-### Step 5: Calendar Heatmap (VERIFIED)
+```go
+path, handler := eng.Handler()
+mux.Handle(path, authMiddleware(token, handler))
+```
 
-Month-view grid showing colored cells for days with observations.
+Static file routes at `/` do **not** go through auth middleware — they serve the UI itself.
 
-- [x] Create `ui/src/features/cycle/CalendarHeatmap.tsx`:
-  - Custom HTML grid (no extra library), 7 columns (Sun–Sat), ~5 rows per month
-  - Each cell ~40x40px with 2px gap (meets 44x44px touch target)
-  - Day number in corner of each cell
-  - Colored dot/fill by observation type (bleeding, symptom, mood, medication)
-  - Phase color as subtle background when phase estimates are available
-  - Month prev/next navigation buttons
-  - Tap a day cell to show detail tooltip (observation summary)
-  - Each cell gets `aria-label` describing contents (e.g., "March 15: bleeding (medium), cramps")
-- [x] Create `ui/src/features/cycle/CalendarHeatmap.test.tsx`:
-  - Correct number of rows/columns for a given month
-  - Observation-to-color mapping is correct
-  - Empty month renders with no colored cells
-  - Navigation changes the displayed month
-- [x] Modify `ui/src/features/cycle/CyclesPage.tsx` — render heatmap as new section with month navigation
-- [x] Add heatmap styles to `ui/src/app/theme.css`:
-  - `.om-heatmap-grid` — grid container
-  - `.om-heatmap-cell` — day cell styling
-  - `.om-heatmap-nav` — month navigation buttons
-  - Dark mode variants
-- [x] Data source: `ListTimeline` with month date range, grouped by date
-- [x] Run `make ui-lint` — must pass
-- [x] Run `make ui-test` — must pass
+- [ ] Implement `authMiddleware` in `engine/mobile/bridge.go`
+- [ ] Wire it into `Start` so only Connect-RPC routes require the token
 
----
+### Step 3: SPA static file server
 
-### Step 6: Mood-by-Phase Chart (VERIFIED)
+Create an unexported SPA file server **inside `engine/mobile/bridge.go`**. This serves files from `uiAssetsDir` and falls back to `index.html` for any path that doesn't match a real file (required for client-side routing with Framework7).
 
-Grouped bar chart showing mood type distribution across cycle phases. Answers "do I feel more anxious/sad during luteal phase?"
+```go
+// spaFileServer serves static files from dir, falling back to index.html for
+// paths that don't match a real file (SPA client-side routing support).
+func spaFileServer(dir string) http.Handler {
+    fs := http.Dir(dir)
+    fileServer := http.FileServer(fs)
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        // Try to open the requested path
+        path := r.URL.Path
+        _, err := fs.Open(path)
+        if err != nil {
+            // File doesn't exist — serve index.html for SPA routing
+            r.URL.Path = "/"
+        }
+        fileServer.ServeHTTP(w, r)
+    })
+}
+```
 
-- [x] Create `ui/src/features/cycle/MoodPhaseChart.tsx`:
-  - Recharts `BarChart` with grouped bars
-  - X-axis: cycle phase (Menstruation, Follicular, Ovulation, Luteal)
-  - Grouped bars per mood type, colored with `--om-color-mood` variants
-  - Cross-reference mood observation timestamps against phase estimate date ranges to bucket each mood into a phase
-  - Only renders when mood observations exist AND phase estimates are available
-  - `role="img"` with descriptive `aria-label`
-  - `.om-sr-only` text summary for screen readers
-- [x] Create `ui/src/features/cycle/MoodPhaseChart.test.tsx`:
-  - Correct bucketing of moods into phases
-  - Empty state when no mood data
-  - Empty state when no phase estimates
-- [x] Data source: `ListMoodObservations` (all) + phase estimates from cycles. Map each mood's date to its phase, count occurrences per (phase, mood_type) pair
-- [x] Run `make ui-lint` — must pass
-- [x] Run `make ui-test` — must pass
+Mount in `Start`:
 
----
+```go
+if uiAssetsDir != "" {
+    mux.Handle("/", spaFileServer(uiAssetsDir))
+}
+```
 
-### Step 7: Mood Intensity by Cycle Day Chart (VERIFIED)
+- [ ] Implement `spaFileServer` in `engine/mobile/bridge.go`
+- [ ] Wire it into `Start` when `uiAssetsDir` is non-empty
 
-Line chart plotting average mood intensity by cycle day, aggregated across multiple cycles. Answers "which days of my cycle are my worst mood days?"
+### Step 4: Tests (`engine/mobile/bridge_test.go`)
 
-- [x] Create `ui/src/features/cycle/MoodCycleDayChart.tsx`:
-  - [x] Recharts `LineChart` or `ScatterChart`
-  - [x] X-axis: cycle day (1–35)
-  - [x] Y-axis: average mood intensity (1–3)
-  - [x] One line per mood type, colored distinctly
-  - [x] Compute cycle day as `(mood_date - cycle_start_date) + 1`
-  - [x] Only renders with 2+ completed cycles containing mood data
-  - [x] `role="img"` with descriptive `aria-label`
-  - [x] `.om-sr-only` text summary for screen readers
-- [x] Create `ui/src/features/cycle/MoodCycleDayChart.test.tsx`:
-  - [x] Correct cycle day computation
-  - [x] Averaging intensity across multiple cycles
-  - [x] Empty state with insufficient data
-- [x] Modify `ui/src/features/cycle/CyclesPage.tsx` — render both mood charts (Steps 6 & 7) in a new "Mood & Cycle" section below the calendar heatmap
-- [x] Add mood chart styles to `ui/src/app/theme.css`:
-  - [x] Per-mood-type color tokens for chart lines (reuse existing `--om-color-mood` or add variants)
-  - [x] Dark mode variants
-- [x] Run `make ui-lint` — must pass
-- [x] Run `make ui-test` — must pass
+Write tests that exercise the bridge lifecycle and auth. **Do not use gomobile in tests** — just call `Start`/`Stop` directly as Go functions.
 
----
+```
+TestStartStop
+    - Call Start with a temp SQLite path and empty uiAssetsDir
+    - Assert port > 0
+    - Assert token is 64 hex characters
+    - Assert HTTP GET to http://127.0.0.1:<port>/ returns some response (404 is ok — no UI assets)
+    - Call Stop
+    - Assert second Stop returns nil (idempotent)
 
-## Sub-Phase 6C: Clinician Summary
+TestAuthMiddleware
+    - Call Start
+    - Make a Connect-RPC-style POST to the service path WITHOUT Authorization header → expect 401
+    - Make the same POST WITH correct "Bearer <token>" header → expect non-401 (200, or valid Connect-RPC error)
+    - Make the same POST WITH wrong token → expect 401
+    - Call Stop
 
-### Step 8: Clinician Summary Page (VERIFIED)
+TestDoubleStart
+    - Call Start
+    - Call Start again → expect non-nil error (already running)
+    - Call Stop
 
-Printable summary page designed for showing to a healthcare provider.
+TestStaticFileServing
+    - Create a temp directory with a file "index.html" containing "<html>test</html>"
+    - Call Start with that temp dir as uiAssetsDir
+    - HTTP GET http://127.0.0.1:<port>/ → expect 200 with body containing "test"
+    - HTTP GET http://127.0.0.1:<port>/some/spa/route → expect 200 with body containing "test" (SPA fallback)
+    - Call Stop
+```
 
-- [x] Create `ui/src/features/summary/ClinicianSummaryPage.tsx`:
-  - Fetch on mount: `GetUserProfile`, `GetCycleStatistics`, `ListCycles` (last 6), `ListMedications` (active only), `ListPredictions`, `ListInsights`
-  - Render structured sections:
-    1. Header: "Cycle Health Summary" + generation date
-    2. Profile: cycle model, regularity
-    3. Statistics table: avg, median, min, max, std dev, count
-    4. Recent cycles table: start date, end date, length, source
-    5. Active medications list: name, category
-    6. Current predictions: type, date range, confidence
-    7. Insights: type, summary, confidence
-  - "Print" button at top calling `window.print()`
-  - No interactive elements beyond the print button
-  - Semantic HTML tables with `<thead>`, `<th scope="col">`, `<caption>`
-  - Clear heading hierarchy (h1 > h2 per section)
-  - Handle empty sections with "No data available" messages
-  - Handle loading state
-- [x] Create `ui/src/features/summary/ClinicianSummaryPage.test.tsx`:
-  - All sections render with mock data
-  - Empty sections show "No data" messages
-  - Print button is present
-- [x] Add route `/summary/` → `ClinicianSummaryPage` in `ui/src/app/App.tsx`
-- [x] Add "Clinician Summary" item to `ui/src/pages/SettingsPage.tsx`, linking to `/summary/`
-- [x] Add styles to `ui/src/app/theme.css`:
-  - [x] `.clinician-summary` scoped styles (clean typography, compact tables, clear section headers)
-  - [x] `@media print` block:
-    - [x] Hide navigation bar, toolbar, and print button
-    - [x] Force light background (override dark mode)
-    - [x] Clean typography for paper output
-    - [x] Page break handling between sections
-- [x] Run `make ui-lint` — must pass
-- [x] Run `make ui-test` — must pass
+- [ ] Create `engine/mobile/bridge_test.go` with the tests above
+- [ ] Run `go test ./engine/mobile/` — all must pass
+
+### Step 5: Makefile targets
+
+Add three new targets to the root `Makefile`:
+
+```makefile
+# ---------------------------------------------------------------------------
+# Mobile targets
+# ---------------------------------------------------------------------------
+
+# Install gomobile tooling (one-time setup).
+mobile-setup:
+	go install golang.org/x/mobile/cmd/gomobile@latest
+	go install golang.org/x/mobile/cmd/gobind@latest
+	gomobile init
+
+# Build UI production bundle into ui/dist/.
+ui-bundle: ui-build
+
+# Build iOS framework via gomobile bind.
+# Requires: Xcode CLI tools, gomobile (run `make mobile-setup` first).
+# Output: mobile/ios/Engine.xcframework/
+mobile-ios:
+	gomobile bind -target=ios -o mobile/ios/Engine.xcframework ./engine/mobile/
+```
+
+Also update the `.PHONY` line to include the new targets.
+
+Note: `mobile-ios` requires macOS with Xcode command-line tools installed. It will not work on Windows or Linux. The CI pipeline does not need this target — iOS builds are a manual local step.
+
+- [ ] Add `mobile-setup`, `ui-bundle`, and `mobile-ios` targets to `Makefile`
+- [ ] Add new targets to `.PHONY` declaration
+- [ ] On a macOS machine: verify `make mobile-setup` and `make mobile-ios` succeed
+- [ ] Verify `make ci` still passes (new targets do not affect existing targets)
 
 ---
 
-### Step 9: Final Accessibility Pass (VERIFIED)
+## Sub-Phase 7B: UI Adaptations
 
-Re-audit all Phase 6 components plus any gaps found in earlier steps.
+Small changes to the UI's Connect-RPC client to support dynamic engine URL and auth token injection. These changes are backward-compatible — when the injected config is absent (development mode), behavior is identical to the current implementation.
 
-- [x] Verify all charts have `role="img"` + descriptive `aria-label`
-- [x] Verify all charts have `.om-sr-only` text alternative summaries
-- [x] Verify color contrast on all new design tokens (chart colors, heatmap colors, mood type colors)
-- [x] Verify clinician summary tables have proper `<thead>`, `<th>`, `<caption>` elements
-- [x] Verify export page is keyboard-navigable
-- [x] Verify calendar heatmap cells have descriptive `aria-label` attributes
-- [x] Run `make ui-lint` — must pass
-- [x] Run `make ui-test` — must pass
-- [x] Run `make ci` — must pass (full CI suite)
+### Step 6: Window type augmentation
+
+Create a TypeScript declaration file so `window.__OPENMENSES_ENGINE__` is typed.
+
+Create `ui/src/types/global.d.ts`:
+
+```typescript
+export {};
+
+declare global {
+  interface Window {
+    /**
+     * Injected by the native shell (iOS/Android) at startup.
+     * Absent in browser-based development mode.
+     */
+    __OPENMENSES_ENGINE__?: {
+      /** TCP port the Go engine's HTTP server is listening on. */
+      port: number;
+      /** Bearer token required for Connect-RPC requests. */
+      authToken: string;
+    };
+  }
+}
+```
+
+- [ ] Create `ui/src/types/global.d.ts` as shown above
+- [ ] Verify `make ui-lint` passes (typecheck picks up the declaration)
+
+### Step 7: Dynamic engine URL and auth token in Connect transport
+
+Modify `ui/src/lib/client.ts` to:
+
+1. Check `window.__OPENMENSES_ENGINE__` for port/token
+2. If present (mobile): use `http://127.0.0.1:<port>` as `baseUrl` and add an interceptor that attaches `Authorization: Bearer <token>` to every request
+3. If absent (dev): use `window.location.origin` as `baseUrl` with no auth (existing behavior)
+
+Current file (`ui/src/lib/client.ts`):
+
+```typescript
+import { createClient } from "@connectrpc/connect";
+import { createConnectTransport } from "@connectrpc/connect-web";
+import { CycleTrackerService } from "@gen/openmenses/v1/service_pb";
+
+const transport = createConnectTransport({
+  baseUrl: window.location.origin,
+});
+
+export const client = createClient(CycleTrackerService, transport);
+
+export const DEFAULT_PARENT = "users/default";
+```
+
+Replace with:
+
+```typescript
+import { createClient, type Interceptor } from "@connectrpc/connect";
+import { createConnectTransport } from "@connectrpc/connect-web";
+import { CycleTrackerService } from "@gen/openmenses/v1/service_pb";
+
+// When running inside a native shell, the engine injects its config into
+// window.__OPENMENSES_ENGINE__. In dev mode this is undefined and we fall
+// back to the Vite proxy at window.location.origin.
+const engineConfig = window.__OPENMENSES_ENGINE__;
+
+const baseUrl = engineConfig
+  ? `http://127.0.0.1:${engineConfig.port}`
+  : window.location.origin;
+
+const interceptors: Interceptor[] = [];
+
+if (engineConfig?.authToken) {
+  interceptors.push((next) => async (req) => {
+    req.header.set("Authorization", `Bearer ${engineConfig.authToken}`);
+    return next(req);
+  });
+}
+
+const transport = createConnectTransport({ baseUrl, interceptors });
+
+export const client = createClient(CycleTrackerService, transport);
+
+export const DEFAULT_PARENT = "users/default";
+```
+
+- [ ] Modify `ui/src/lib/client.ts` as shown above
+- [ ] Run `make ui-lint` — must pass
+- [ ] Run `make ui-test` — must pass (no behavioral change in test environment)
+
+---
+
+## Sub-Phase 7C: Xcode Project & iOS Shell
+
+Create the Xcode project and Swift code for the iOS native shell. This sub-phase depends on Sub-Phase 7A (the `.xcframework` must exist) and Sub-Phase 7B (the UI must support dynamic engine URL).
+
+### Project structure
+
+```
+mobile/ios/
+├── OpenMenses.xcodeproj/           ← Xcode project file
+├── OpenMenses/
+│   ├── AppDelegate.swift           ← App entry point, engine lifecycle
+│   ├── SceneDelegate.swift         ← Window/scene setup
+│   ├── EngineManager.swift         ← Go engine lifecycle singleton
+│   ├── WebViewController.swift     ← WkWebView hosting
+│   ├── Info.plist                  ← App metadata, privacy descriptions
+│   ├── Assets.xcassets/            ← App icon, colors
+│   └── LaunchScreen.storyboard    ← Required by iOS
+├── Engine.xcframework/             ← gomobile output (gitignored)
+└── ui/                             ← Copied from ui/dist/ (gitignored)
+```
+
+Add to `.gitignore`:
+
+```
+mobile/ios/Engine.xcframework/
+mobile/ios/ui/
+```
+
+### Step 8: Create Xcode project
+
+Create the Xcode project manually or via `xcodegen` / `tuist`. Target configuration:
+
+- **Product Name**: OpenMenses
+- **Bundle Identifier**: org.openmenses.app (or similar)
+- **Deployment Target**: iOS 16.0
+- **Interface**: Storyboard (for LaunchScreen only, all other UI is programmatic)
+- **Language**: Swift
+- **Device**: iPhone + iPad
+- **Frameworks**: Link `Engine.xcframework` (from `mobile/ios/Engine.xcframework/`)
+- **Resources**: Add `mobile/ios/ui/` folder reference (the built UI assets; gitignored, copied as a build phase)
+
+- [ ] Create Xcode project at `mobile/ios/OpenMenses.xcodeproj`
+- [ ] Configure deployment target iOS 16.0
+- [ ] Link `Engine.xcframework` as an embedded framework
+- [ ] Add `mobile/ios/ui/` as a resource folder reference
+- [ ] Add build phase script to copy UI assets: `cp -R ../../ui/dist/ ${SRCROOT}/ui/` (or use `make ui-bundle`)
+- [ ] Add entries to `.gitignore` for `Engine.xcframework/` and `ui/`
+- [ ] Verify project builds (even without engine — just the Swift code compiling)
+
+### Step 9: EngineManager.swift
+
+Singleton managing the Go engine lifecycle. Calls the exported functions from the gomobile-generated `Engine.xcframework`.
+
+```swift
+import Foundation
+import Engine  // gomobile-generated framework
+
+/// Manages the Go engine lifecycle. Call start() early in app launch
+/// and stop() on termination.
+final class EngineManager {
+    static let shared = EngineManager()
+
+    private(set) var port: Int = 0
+    private(set) var authToken: String = ""
+
+    /// Base URL for the engine's HTTP server.
+    var engineBaseURL: String {
+        "http://127.0.0.1:\(port)"
+    }
+
+    private init() {}
+
+    /// Start the Go engine with a SQLite database in the app's Documents directory.
+    /// Also sets up the static file server to serve the bundled UI assets.
+    func start() throws {
+        let documentsDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let dbPath = documentsDir.appendingPathComponent("openmenses.db").path
+
+        // UI assets are bundled as a resource folder named "ui"
+        let uiAssetsDir = Bundle.main.resourcePath.map { $0 + "/ui" } ?? ""
+
+        var error: NSError?
+        let result = MobileStart(dbPath, uiAssetsDir, &error)
+        if let error = error {
+            throw error
+        }
+
+        // MobileStart returns port via the gomobile binding
+        // The exact API shape depends on gomobile's Go-to-ObjC mapping.
+        // gomobile maps (int, string, error) returns into ObjC output params.
+        // Consult the generated Engine framework headers for the exact signature.
+        self.port = result.port   // Adapt to actual generated API
+        self.authToken = result.token  // Adapt to actual generated API
+    }
+
+    func stop() {
+        var error: NSError?
+        MobileStop(&error)
+        // Log error if non-nil, but don't crash — we're likely shutting down
+    }
+}
+```
+
+**Important**: gomobile maps multi-return Go functions into ObjC/Swift in a specific way. A Go function `func Start(a, b string) (int, string, error)` becomes an ObjC method with output parameters. The exact Swift signature will be visible in the generated `Engine.xcframework` headers. **Adapt the Swift code above to match the actual generated headers** — the logic is correct but the calling convention may differ.
+
+An alternative approach: Instead of returning multiple values from `Start`, consider making the bridge API return a single struct-like string (JSON) that Swift can parse. Or split into `Start(dbPath, uiAssetsDir string) error`, `Port() int`, `AuthToken() string` — three separate exported functions. This avoids multi-return gomobile complexity.
+
+If splitting the API, update `engine/mobile/bridge.go` to add:
+
+```go
+func Port() int       { mu.Lock(); defer mu.Unlock(); if running == nil { return 0 }; return running.ln.Addr().(*net.TCPAddr).Port }
+func AuthToken() string { mu.Lock(); defer mu.Unlock(); if running == nil { return "" }; return running.token }
+```
+
+- [ ] Create `mobile/ios/OpenMenses/EngineManager.swift`
+- [ ] Verify it compiles against the Engine framework
+- [ ] If needed, adjust `engine/mobile/bridge.go` API to use separate getter functions instead of multi-return
+
+### Step 10: WebViewController.swift
+
+UIViewController hosting a WkWebView. Injects the engine config and loads the UI.
+
+```swift
+import UIKit
+import WebKit
+
+final class WebViewController: UIViewController {
+
+    private var webView: WKWebView!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        let config = WKWebViewConfiguration()
+        config.allowsInlineMediaPlayback = true
+
+        // Inject engine config before any page script runs
+        let engineConfig = EngineManager.shared
+        let script = """
+        window.__OPENMENSES_ENGINE__ = {
+            port: \(engineConfig.port),
+            authToken: "\(engineConfig.authToken)"
+        };
+        """
+        let userScript = WKUserScript(
+            source: script,
+            injectionTime: .atDocumentStart,
+            forMainFrameOnly: true
+        )
+        config.userContentController.addUserScript(userScript)
+
+        webView = WKWebView(frame: view.bounds, configuration: config)
+        webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        // Respect safe area (notch, home indicator)
+        webView.scrollView.contentInsetAdjustmentBehavior = .automatic
+
+        view.addSubview(webView)
+
+        // Load the UI from the Go HTTP server
+        if let url = URL(string: engineConfig.engineBaseURL) {
+            webView.load(URLRequest(url: url))
+        }
+    }
+}
+```
+
+- [ ] Create `mobile/ios/OpenMenses/WebViewController.swift`
+- [ ] Verify it compiles
+
+### Step 11: AppDelegate.swift and SceneDelegate.swift
+
+Wire up engine lifecycle and window creation.
+
+**AppDelegate.swift**:
+
+```swift
+import UIKit
+
+@main
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
+        do {
+            try EngineManager.shared.start()
+        } catch {
+            // Fatal — the app cannot function without the engine
+            fatalError("Failed to start engine: \(error)")
+        }
+        return true
+    }
+
+    func applicationWillTerminate(_ application: UIApplication) {
+        EngineManager.shared.stop()
+    }
+
+    // MARK: UISceneSession Lifecycle
+    func application(
+        _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
+        UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    }
+}
+```
+
+**SceneDelegate.swift**:
+
+```swift
+import UIKit
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+
+    var window: UIWindow?
+
+    func scene(
+        _ scene: UIScene,
+        willConnectTo session: UISceneSession,
+        options connectionOptions: UIScene.ConnectionOptions
+    ) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = WebViewController()
+        window?.makeKeyAndVisible()
+    }
+
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        // Engine stays running in background — no restart needed
+    }
+
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        // Engine keeps running — SQLite handles its own locking
+    }
+}
+```
+
+- [ ] Create `mobile/ios/OpenMenses/AppDelegate.swift`
+- [ ] Create `mobile/ios/OpenMenses/SceneDelegate.swift`
+- [ ] Create `mobile/ios/OpenMenses/Info.plist` with scene configuration
+- [ ] Create `mobile/ios/OpenMenses/Assets.xcassets/` with placeholder app icon
+- [ ] Create `mobile/ios/OpenMenses/LaunchScreen.storyboard` (blank white screen)
+- [ ] Build and run on iOS Simulator — expect: app launches, WebView loads UI, can create/view observations
+
+### Step 12: End-to-end verification
+
+Manual verification checklist (no automated iOS tests for MVP):
+
+- [ ] `make ui-bundle` produces `ui/dist/` with production build
+- [ ] `make mobile-ios` produces `mobile/ios/Engine.xcframework/`
+- [ ] Xcode build succeeds with both artifacts linked
+- [ ] iOS Simulator: app launches → blank LaunchScreen → WebView loads Framework7 UI
+- [ ] Can create a user profile
+- [ ] Can log a bleeding observation
+- [ ] Can view the timeline
+- [ ] Can navigate all tabs (Timeline, Cycles, Log, Medications, Settings)
+- [ ] Can export data (JSON/CSV)
+- [ ] Can view clinician summary
+- [ ] App survives backgrounding and foregrounding
+- [ ] App data persists across launches (SQLite in Documents)
+- [ ] `make ci` still passes (no regressions from UI changes)
+
+---
+
+## Sub-Phase 7D: HealthKit Integration
+
+Add bi-directional sync of menstrual flow data between the app and Apple HealthKit. All HealthKit code lives in the native Swift shell — **no domain logic in Swift**. The shell reads/writes HealthKit and translates to/from Connect-RPC calls to the engine.
+
+### Step 13: HealthKit entitlement and permissions
+
+Configure the Xcode project for HealthKit access.
+
+- [ ] Add HealthKit capability to the Xcode project (Signing & Capabilities → + HealthKit)
+- [ ] Add to `Info.plist`:
+  - `NSHealthShareUsageDescription`: "OpenMenses reads menstrual flow data from Health to avoid duplicate logging."
+  - `NSHealthUpdateUsageDescription`: "OpenMenses writes menstrual flow observations to Health so your cycle data is available across apps."
+- [ ] Verify project still builds with HealthKit entitlement
+
+### Step 14: HealthKitManager.swift
+
+New singleton managing HealthKit operations. This class handles authorization, reading, and writing menstrual flow data.
+
+**HealthKit data type**: `HKCategoryTypeIdentifierMenstrualFlow`
+
+**Value mapping** between HealthKit `HKCategoryValueMenstrualFlow` and proto `BleedingFlow`:
+
+| HealthKit Value | Proto `BleedingFlow`   |
+| --------------- | ---------------------- |
+| `.unspecified`  | skip (don't import)    |
+| `.none`         | `BLEEDING_FLOW_NONE`   |
+| `.light`        | `BLEEDING_FLOW_LIGHT`  |
+| `.medium`       | `BLEEDING_FLOW_MEDIUM` |
+| `.heavy`        | `BLEEDING_FLOW_HEAVY`  |
+
+Reverse mapping (proto → HealthKit):
+
+| Proto `BleedingFlow`        | HealthKit Value     |
+| --------------------------- | ------------------- |
+| `BLEEDING_FLOW_UNSPECIFIED` | skip (don't export) |
+| `BLEEDING_FLOW_NONE`        | `.none`             |
+| `BLEEDING_FLOW_LIGHT`       | `.light`            |
+| `BLEEDING_FLOW_MEDIUM`      | `.medium`           |
+| `BLEEDING_FLOW_HEAVY`       | `.heavy`            |
+
+**Key methods**:
+
+```swift
+import HealthKit
+
+final class HealthKitManager {
+    static let shared = HealthKitManager()
+    private let healthStore = HKHealthStore()
+
+    private let menstrualFlowType = HKCategoryType(.menstrualFlow)
+
+    /// Request read/write authorization for menstrual flow.
+    func requestAuthorization() async throws { ... }
+
+    /// Query HealthKit for menstrual flow samples since the given date.
+    /// Returns samples that can be converted to BleedingObservation RPCs.
+    func fetchMenstrualFlow(since: Date) async throws -> [MenstrualFlowSample] { ... }
+
+    /// Write a menstrual flow sample to HealthKit.
+    func writeMenstrualFlow(date: Date, flow: Int, isStartOfCycle: Bool) async throws { ... }
+}
+
+struct MenstrualFlowSample {
+    let startDate: Date
+    let endDate: Date
+    let flowLevel: Int  // maps to BleedingFlow enum value
+    let isStartOfCycle: Bool
+}
+```
+
+**Import flow** (HealthKit → Engine):
+
+1. Query HealthKit for `HKCategoryTypeIdentifierMenstrualFlow` samples since last sync date
+2. For each sample, map `HKCategoryValueMenstrualFlow` to `BleedingFlow` enum value
+3. Call `CreateBleedingObservation` Connect-RPC endpoint for each observation
+4. Engine-side validation will reject duplicates (by date) — this is expected and safe
+5. Store last sync date in `UserDefaults`
+
+**Export flow** (Engine → HealthKit):
+
+1. When a new bleeding observation is created in the app, also write it to HealthKit
+2. This is triggered from the native layer, not the UI — use a notification or polling approach
+3. Set `HKMetadataKeyMenstrualCycleStart` on samples where the observation corresponds to the start of a new cycle
+
+- [ ] Create `mobile/ios/OpenMenses/HealthKitManager.swift` with the structure above
+- [ ] Implement `requestAuthorization()` — request read/write for menstrual flow
+- [ ] Implement `fetchMenstrualFlow(since:)` — query HealthKit, map values
+- [ ] Implement `writeMenstrualFlow(date:flow:isStartOfCycle:)` — write sample to HealthKit
+- [ ] Test on physical device (HealthKit is not available in Simulator by default — use Health app on device)
+
+### Step 15: Sync orchestration
+
+Wire up the HealthKit sync triggers.
+
+**On app launch** (in `AppDelegate.didFinishLaunchingWithOptions`, after engine starts):
+
+1. Request HealthKit authorization (if not already granted)
+2. Fetch menstrual flow samples since last sync
+3. Import each into the engine via Connect-RPC
+
+**On new bleeding observation** (requires native↔WebView communication):
+
+1. WebView notifies native layer when a bleeding observation is created
+2. Native layer reads the observation from the engine (or receives it via message)
+3. Native layer writes it to HealthKit
+
+**User settings toggle**:
+
+1. Add a toggle in the Settings page: "Sync with Apple Health"
+2. Store preference in `UserDefaults`
+3. Only run sync when enabled
+
+- [ ] Add post-launch sync logic to `AppDelegate` or `SceneDelegate`
+- [ ] Store/read last sync date in `UserDefaults`
+- [ ] Add HealthKit sync toggle to settings (requires WebView↔native message)
+- [ ] Test import: add menstrual flow in Health app → launch OpenMenses → verify observation appears
+- [ ] Test export: log bleeding in OpenMenses → verify it appears in Health app
+
+### Step 16: WebView ↔ Native messaging for HealthKit
+
+Add a message channel so the UI can trigger HealthKit operations and receive results.
+
+**Native side** (in `WebViewController.swift`):
+
+```swift
+// Add WKScriptMessageHandler for "healthkit" messages
+config.userContentController.add(self, name: "healthkit")
+
+// Handle messages
+func userContentController(_ controller: WKUserContentController,
+                          didReceive message: WKScriptMessage) {
+    guard let body = message.body as? [String: Any],
+          let action = body["action"] as? String else { return }
+
+    switch action {
+    case "import":
+        Task { await importFromHealthKit() }
+    case "requestAuth":
+        Task { await requestHealthKitAuth() }
+    default:
+        break
+    }
+}
+```
+
+**UI side** (new utility in `ui/src/lib/`):
+
+```typescript
+// Check if running in native iOS shell with HealthKit support
+export function isHealthKitAvailable(): boolean {
+  return (
+    "webkit" in window &&
+    "messageHandlers" in (window as any).webkit &&
+    "healthkit" in (window as any).webkit.messageHandlers
+  );
+}
+
+// Request HealthKit authorization
+export function requestHealthKitAuth(): void {
+  (window as any).webkit.messageHandlers.healthkit.postMessage({
+    action: "requestAuth",
+  });
+}
+
+// Trigger HealthKit import
+export function importFromHealthKit(): void {
+  (window as any).webkit.messageHandlers.healthkit.postMessage({
+    action: "import",
+  });
+}
+```
+
+- [ ] Add `WKScriptMessageHandler` to `WebViewController` for "healthkit" messages
+- [ ] Create `ui/src/lib/healthkit.ts` with native messaging helpers
+- [ ] Add "Import from Health" button to Settings page (visible only when `isHealthKitAvailable()`)
+- [ ] Run `make ui-lint` — must pass
+- [ ] Run `make ui-test` — must pass
+- [ ] Test on physical device: tap "Import from Health" → HealthKit permission prompt → data imported
 
 ---
 
 ## Implementation Order
 
 ```
-6A: Step 1 (Export) → Step 2 (Accessibility foundation)
-6B: Step 3 (Recharts setup) → Step 4 (Cycle trend) → Step 5 (Calendar heatmap) → Step 6 (Mood by phase) → Step 7 (Mood by cycle day)
-6C: Step 8 (Clinician summary) → Step 9 (Final a11y pass)
+7A: Step 1 (bridge.go) → Step 2 (auth middleware) → Step 3 (SPA file server) → Step 4 (tests) → Step 5 (Makefile)
+7B: Step 6 (global.d.ts) → Step 7 (client.ts changes) — can run PARALLEL with 7A
+7C: Step 8 (Xcode project) → Step 9 (EngineManager) → Step 10 (WebViewController) → Step 11 (AppDelegate) → Step 12 (e2e verification) — depends on 7A + 7B
+7D: Step 13 (entitlement) → Step 14 (HealthKitManager) → Step 15 (sync) → Step 16 (WebView messaging) — depends on 7C
 ```
 
-Each sub-phase is independently committable and shippable.
+Sub-phases 7A and 7B are fully independent and can be worked on in parallel.
+Sub-phase 7C requires 7A (xcframework) and 7B (UI supports dynamic URL).
+Sub-phase 7D requires 7C (working iOS shell).
 
 ---
 
 ## Key Reusable Code
 
-- `ui/src/lib/client.ts` — RPC client, all new features call existing RPCs through this
-- `ui/src/lib/enums.ts` — Enum label mappings, reuse for CSV export and chart labels
-- `ui/src/lib/dates.ts` — Date formatting utilities (`formatDate`, `toLocalDate`, `daysAgo`)
-- `ui/src/components/EmptyState.tsx` — Reuse for empty chart/export states
-- `ui/src/app/theme.css` — All design tokens, all new styles go here
+- `engine/pkg/openmenses/engine.go` — `NewEngine()`, `Handler()`, `Close()` — the bridge wraps these
+- `engine/cmd/engine-dev/main.go` — reference HTTP server setup, CORS middleware pattern
+- `ui/src/lib/client.ts` — Connect-RPC client, modified in Step 7 for dynamic URL/auth
+- `gen/go/openmenses/v1/openmensesv1connect/` — Connect-RPC generated handler/client code (used by bridge for path prefix)
+- `ui/dist/` — Vite production build output, served by Go static file server
+
+## Out of Scope (future phases)
+
+- **Android shell** (Phase 8) — Kotlin + WebView + Google Fit, mirrors iOS architecture
+- **Local notifications** — period/PMS reminders via UNUserNotificationCenter
+- **App Store submission** — provisioning, signing, metadata, review
+- **TestFlight distribution** — beta testing pipeline
+- **Automated iOS tests** (XCTest) — manual verification for MVP
+- **CI for iOS builds** — requires macOS runner (GitHub Actions or similar)
+- **Background App Refresh** — periodic HealthKit sync when app is backgrounded
+- **Siri Shortcuts / Widgets** — quick logging from home screen
