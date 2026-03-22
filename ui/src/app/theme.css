@@ -703,6 +703,13 @@
   border-radius: var(--om-radius-md);
 }
 
+.om-chart-description {
+  font-size: var(--om-font-size-sm);
+  color: var(--om-color-chart-axis);
+  margin: var(--om-space-xs) 0 var(--om-space-sm);
+  line-height: 1.4;
+}
+
 .cycle-length-avg-badge {
   display: inline-flex;
   align-items: center;
