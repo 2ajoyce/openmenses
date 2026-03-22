@@ -1,8 +1,13 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render } from "@testing-library/react";
 import { create } from "@bufbuild/protobuf";
-import { MoodObservationSchema, CycleSchema, MoodType, CycleSource } from "@gen/openmenses/v1/model_pb";
-import { LocalDateSchema, DateTimeSchema } from "@gen/openmenses/v1/types_pb";
+import {
+  CycleSchema,
+  CycleSource,
+  MoodObservationSchema,
+  MoodType,
+} from "@gen/openmenses/v1/model_pb";
+import { DateTimeSchema, LocalDateSchema } from "@gen/openmenses/v1/types_pb";
+import { render } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MoodPhaseChart } from "./MoodPhaseChart";
 
 // Mock ResizeObserver before importing recharts
@@ -14,12 +19,15 @@ globalThis.ResizeObserver = vi.fn(() => ({
 
 const mockListMoodObservations = vi.fn();
 const mockListCycles = vi.fn();
+const mockListTimeline = vi.fn();
 
 // Mock the client
 vi.mock("../../lib/client", () => ({
   client: {
-    listMoodObservations: (...args: unknown[]) => mockListMoodObservations(...args),
+    listMoodObservations: (...args: unknown[]) =>
+      mockListMoodObservations(...args),
     listCycles: (...args: unknown[]) => mockListCycles(...args),
+    listTimeline: (...args: unknown[]) => mockListTimeline(...args),
   },
   DEFAULT_PARENT: "users/default",
 }));
@@ -27,26 +35,26 @@ vi.mock("../../lib/client", () => ({
 describe("MoodPhaseChart", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Default: no phase estimates available (charts fall back to arithmetic)
+    mockListTimeline.mockResolvedValue({ records: [] });
   });
 
-  const createMoodObservation = (
-    observedAtDate: string,
-    moodType: MoodType,
-  ) => create(MoodObservationSchema, {
-    name: "observations/test",
-    timestamp: create(DateTimeSchema, { value: `${observedAtDate}T12:00:00Z` }),
-    mood: moodType,
-  });
+  const createMoodObservation = (observedAtDate: string, moodType: MoodType) =>
+    create(MoodObservationSchema, {
+      name: "observations/test",
+      timestamp: create(DateTimeSchema, {
+        value: `${observedAtDate}T12:00:00Z`,
+      }),
+      mood: moodType,
+    });
 
-  const createCycle = (
-    startDate: string,
-    endDate: string,
-  ) => create(CycleSchema, {
-    name: "cycles/test",
-    startDate: create(LocalDateSchema, { value: startDate }),
-    endDate: create(LocalDateSchema, { value: endDate }),
-    source: CycleSource.DERIVED_FROM_BLEEDING,
-  });
+  const createCycle = (startDate: string, endDate: string) =>
+    create(CycleSchema, {
+      name: "cycles/test",
+      startDate: create(LocalDateSchema, { value: startDate }),
+      endDate: create(LocalDateSchema, { value: endDate }),
+      source: CycleSource.DERIVED_FROM_BLEEDING,
+    });
 
   it("returns null when no mood observations exist", async () => {
     mockListMoodObservations.mockResolvedValue({ observations: [] });

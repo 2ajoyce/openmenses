@@ -1,11 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import type { MoodObservation, Cycle } from "@gen/openmenses/v1/model_pb";
+import type { Cycle, MoodObservation } from "@gen/openmenses/v1/model_pb";
 import { MoodType } from "@gen/openmenses/v1/model_pb";
-import { client, DEFAULT_PARENT } from "../../lib/client";
-import { fromLocalDate, fromDateTime } from "../../lib/dates";
-import { moodTypeLabel } from "../../lib/enums";
+import React, { useEffect, useState } from "react";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ReferenceArea,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { ChartContainer } from "../../components/ChartContainer";
+import { client, DEFAULT_PARENT } from "../../lib/client";
+import { fromDateTime, fromLocalDate } from "../../lib/dates";
+import { moodTypeLabel } from "../../lib/enums";
 
 interface MoodCycleDayData {
   cycleDay: number;
@@ -48,16 +58,24 @@ export const MoodCycleDayChart: React.FC = () => {
         const completedCycles = cycles.filter((c) => c.endDate);
 
         // If insufficient data, return empty
-        if (moods.length === 0 || completedCycles.length < 2) {
+        if (moods.length === 0 || completedCycles.length < 3) {
           setData([]);
           return;
         }
 
         // Map moods to cycle days and aggregate by mood type
-        const cycleDayCounters: Record<number, Record<number, { sum: number; count: number }>> = {};
+        const cycleDayCounters: Record<
+          number,
+          Record<number, { sum: number; count: number }>
+        > = {};
 
         moods.forEach((mood: MoodObservation) => {
-          if (!mood.timestamp || mood.mood === undefined || mood.intensity === undefined) return;
+          if (
+            !mood.timestamp ||
+            mood.mood === undefined ||
+            mood.intensity === undefined
+          )
+            return;
 
           const moodDate = fromDateTime(mood.timestamp);
           const moodType = mood.mood; // MoodType enum
@@ -73,7 +91,11 @@ export const MoodCycleDayChart: React.FC = () => {
             // Check if mood is within this cycle
             if (moodDate >= cycleStart && moodDate <= cycleEnd) {
               // Calculate cycle day (1-indexed)
-              const dayInCycle = Math.floor((moodDate.getTime() - cycleStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+              const dayInCycle =
+                Math.floor(
+                  (moodDate.getTime() - cycleStart.getTime()) /
+                    (1000 * 60 * 60 * 24),
+                ) + 1;
 
               if (dayInCycle > 0 && dayInCycle <= 35) {
                 // Initialize counters for this cycle day if not exists
@@ -83,7 +105,10 @@ export const MoodCycleDayChart: React.FC = () => {
 
                 // Initialize mood type counter if not exists
                 if (!cycleDayCounters[dayInCycle]![moodType]) {
-                  cycleDayCounters[dayInCycle]![moodType] = { sum: 0, count: 0 };
+                  cycleDayCounters[dayInCycle]![moodType] = {
+                    sum: 0,
+                    count: 0,
+                  };
                 }
 
                 // Accumulate intensity values for this mood type
@@ -102,11 +127,15 @@ export const MoodCycleDayChart: React.FC = () => {
             const row: MoodCycleDayData = { cycleDay: parseInt(dayStr) };
 
             // For each mood type, compute average intensity across all observations for this cycle day
-            Object.entries(moodCounts).forEach(([moodTypeNum, intensityData]) => {
-              const moodLabel = moodTypeLabel(parseInt(moodTypeNum) as MoodType);
-              const average = intensityData.sum / intensityData.count;
-              row[moodLabel] = parseFloat(average.toFixed(2));
-            });
+            Object.entries(moodCounts).forEach(
+              ([moodTypeNum, intensityData]) => {
+                const moodLabel = moodTypeLabel(
+                  parseInt(moodTypeNum) as MoodType,
+                );
+                const average = intensityData.sum / intensityData.count;
+                row[moodLabel] = parseFloat(average.toFixed(2));
+              },
+            );
 
             return row;
           });
@@ -123,36 +152,54 @@ export const MoodCycleDayChart: React.FC = () => {
     fetchData();
   }, []);
 
-  if (loading || data.length === 0) {
-    return null;
-  }
+  if (loading) return null;
+  if (data.length === 0) return null;
 
-  // Get unique mood types in data
+  // Derive active mood types from data (only those with at least one observation)
   const moodTypes = Array.from(
     new Set(
-      data.flatMap((row) =>
-        Object.keys(row).filter((k) => k !== "cycleDay")
-      )
-    )
+      data.flatMap((row) => Object.keys(row).filter((k) => k !== "cycleDay")),
+    ),
   ).sort();
 
   // Text summary for screen readers
   const summaryText = `Line chart showing average mood intensity by cycle day. X-axis represents cycle day (1-35), Y-axis represents average mood intensity (1-3).`;
 
   return (
-    <ChartContainer data={data} title="Mood Intensity by Cycle Day">
-      <div role="img" aria-label="Line chart showing average mood intensity across cycle days">
+    <ChartContainer
+      data={data}
+      title="Mood Intensity by Cycle Day"
+      emptyMessage="Track moods across at least 3 cycles to see mood intensity patterns by cycle day."
+    >
+      <div
+        role="img"
+        aria-label="Line chart showing average mood intensity across cycle days"
+      >
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--om-color-chart-grid)" />
+          <LineChart
+            data={data}
+            margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+          >
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="var(--om-color-chart-grid)"
+            />
             <XAxis
               dataKey="cycleDay"
               type="number"
-              label={{ value: "Cycle Day", position: "insideBottomRight", offset: -5 }}
+              label={{
+                value: "Cycle Day",
+                position: "insideBottomRight",
+                offset: -5,
+              }}
             />
             <YAxis
               domain={[1, 3]}
-              label={{ value: "Mood Intensity", angle: -90, position: "insideLeft" }}
+              label={{
+                value: "Mood Intensity",
+                angle: -90,
+                position: "insideLeft",
+              }}
             />
             <Tooltip
               contentStyle={{
@@ -163,6 +210,30 @@ export const MoodCycleDayChart: React.FC = () => {
               formatter={(value: number) => value.toFixed(2)}
             />
             <Legend />
+            <ReferenceArea
+              x1={1}
+              x2={5}
+              fill="var(--om-color-phase-menstruation)"
+              fillOpacity={0.08}
+            />
+            <ReferenceArea
+              x1={6}
+              x2={12}
+              fill="var(--om-color-phase-follicular)"
+              fillOpacity={0.08}
+            />
+            <ReferenceArea
+              x1={13}
+              x2={17}
+              fill="var(--om-color-phase-ovulation)"
+              fillOpacity={0.08}
+            />
+            <ReferenceArea
+              x1={18}
+              x2={35}
+              fill="var(--om-color-phase-luteal)"
+              fillOpacity={0.08}
+            />
             {moodTypes.map((moodLabel, index) => (
               <Line
                 key={moodLabel}
@@ -178,7 +249,15 @@ export const MoodCycleDayChart: React.FC = () => {
         <div className="om-sr-only">
           {summaryText}
           Average mood intensities by cycle day:
-          {data.map((row) => `Day ${row.cycleDay}: ${Object.entries(row).filter(([k]) => k !== "cycleDay").map(([k, v]) => `${k}: ${v}`).join(", ")}`).join("; ")}
+          {data
+            .map(
+              (row) =>
+                `Day ${row.cycleDay}: ${Object.entries(row)
+                  .filter(([k]) => k !== "cycleDay")
+                  .map(([k, v]) => `${k}: ${v}`)
+                  .join(", ")}`,
+            )
+            .join("; ")}
         </div>
       </div>
     </ChartContainer>

@@ -1,11 +1,24 @@
+import type {
+  Cycle,
+  MoodObservation,
+  PhaseEstimate,
+} from "@gen/openmenses/v1/model_pb";
+import { CyclePhase, MoodType } from "@gen/openmenses/v1/model_pb";
 import React, { useEffect, useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import type { MoodObservation, Cycle } from "@gen/openmenses/v1/model_pb";
-import { MoodType } from "@gen/openmenses/v1/model_pb";
-import { client, DEFAULT_PARENT } from "../../lib/client";
-import { fromLocalDate, fromDateTime } from "../../lib/dates";
-import { moodTypeLabel } from "../../lib/enums";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { ChartContainer } from "../../components/ChartContainer";
+import { client, DEFAULT_PARENT } from "../../lib/client";
+import { fromDateTime, fromLocalDate, toLocalDate } from "../../lib/dates";
+import { cyclePhaseLabel, moodTypeLabel } from "../../lib/enums";
 
 interface MoodPhaseData {
   phase: string;
@@ -14,6 +27,7 @@ interface MoodPhaseData {
 
 export const MoodPhaseChart: React.FC = () => {
   const [data, setData] = useState<MoodPhaseData[]>([]);
+  const [activeMoodTypes, setActiveMoodTypes] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -44,84 +58,128 @@ export const MoodPhaseChart: React.FC = () => {
           cyclePageToken = cycleRes.pagination?.nextPageToken ?? "";
         } while (cyclePageToken);
 
-        // If no moods or no cycles with phase estimates, return empty
         if (moods.length === 0 || cycles.length === 0) {
           setData([]);
           return;
         }
 
-        // Map moods to phases
-        const phaseCounters: Record<string, Record<number, number>> = {
-          "Menstruation": {},
-          "Follicular": {},
-          "Ovulation Window": {},
-          "Luteal": {},
-        };
-
-        // Initialize counters for all phases and mood types
-        Object.keys(phaseCounters).forEach((phase) => {
-          Object.values(MoodType).forEach((moodType) => {
-            if (typeof moodType === "number") {
-              phaseCounters[phase]![moodType] = 0;
-            }
-          });
-        });
-
-        moods.forEach((mood: MoodObservation) => {
-          if (!mood.timestamp) return;
-
-          const moodDate = fromDateTime(mood.timestamp);
-          let assignedPhase: string | null = null;
-
-          // Find the cycle this mood falls into and determine its phase
-          for (const cycle of cycles) {
-            if (!cycle.startDate || !cycle.endDate) continue;
-
-            const cycleStart = fromLocalDate(cycle.startDate);
-            const cycleEnd = fromLocalDate(cycle.endDate);
-
-            // Check if mood is within this cycle
-            if (moodDate >= cycleStart && moodDate <= cycleEnd) {
-              // Calculate which phase day this is in the cycle
-              const dayInCycle = Math.floor((moodDate.getTime() - cycleStart.getTime()) / (1000 * 60 * 60 * 24));
-
-              // Simple phase estimation (can be enhanced with biological model)
-              // Menstruation: days 1-5
-              // Follicular: days 6-12
-              // Ovulation Window: days 13-17
-              // Luteal: days 18+
-              if (dayInCycle < 5) {
-                assignedPhase = "Menstruation";
-              } else if (dayInCycle < 12) {
-                assignedPhase = "Follicular";
-              } else if (dayInCycle < 17) {
-                assignedPhase = "Ovulation Window";
-              } else {
-                assignedPhase = "Luteal";
-              }
-              break;
-            }
-          }
-
-          // Count mood for its assigned phase
-          if (assignedPhase && mood.mood !== undefined) {
-            phaseCounters[assignedPhase]![mood.mood] =
-              (phaseCounters[assignedPhase]![mood.mood] || 0) + 1;
-          }
-        });
-
-        // Transform counters into chart data
-        const chartData: MoodPhaseData[] = Object.entries(phaseCounters).map(
-          ([phase, moodCounts]) => {
-            const row: MoodPhaseData = { phase };
-            Object.entries(moodCounts).forEach(([moodTypeNum, count]) => {
-              const moodLabel = moodTypeLabel(parseInt(moodTypeNum) as MoodType);
-              row[moodLabel] = count;
+        // Build a date → CyclePhase map from backend phase estimates
+        const phaseDateMap = new Map<string, CyclePhase>();
+        const completedCycles = cycles.filter((c) => c.startDate && c.endDate);
+        if (completedCycles.length > 0) {
+          const startTimes = completedCycles.map((c) =>
+            fromLocalDate(c.startDate!).getTime(),
+          );
+          const endTimes = completedCycles.map((c) =>
+            fromLocalDate(c.endDate!).getTime(),
+          );
+          const rangeStart = new Date(Math.min(...startTimes));
+          const rangeEnd = new Date(Math.max(...endTimes));
+          let timelinePageToken = "";
+          do {
+            const timelineRes = await client.listTimeline({
+              parent: DEFAULT_PARENT,
+              range: {
+                start: toLocalDate(rangeStart),
+                end: toLocalDate(rangeEnd),
+              },
+              pagination: { pageSize: 500, pageToken: timelinePageToken },
             });
-            return row;
-          },
+            for (const record of timelineRes.records ?? []) {
+              if (record.record.case === "phaseEstimate") {
+                const pe = record.record.value as PhaseEstimate;
+                if (pe.date?.value) {
+                  phaseDateMap.set(pe.date.value, pe.phase);
+                }
+              }
+            }
+            timelinePageToken = timelineRes.pagination?.nextPageToken ?? "";
+          } while (timelinePageToken);
+        }
+
+        const ORDERED_PHASES: CyclePhase[] = [
+          CyclePhase.MENSTRUATION,
+          CyclePhase.FOLLICULAR,
+          CyclePhase.OVULATION_WINDOW,
+          CyclePhase.LUTEAL,
+        ];
+
+        const phaseCounters = new Map<CyclePhase, Map<number, number>>(
+          ORDERED_PHASES.map((p) => [p, new Map()]),
         );
 
+        moods.forEach((mood: MoodObservation) => {
+          if (!mood.timestamp || mood.mood === undefined) return;
+
+          const moodDate = fromDateTime(mood.timestamp);
+          const dateStr = toLocalDate(moodDate).value;
+          let assignedPhase = phaseDateMap.get(dateStr);
+
+          // Fall back to cycle-day arithmetic when no backend estimate exists
+          if (
+            assignedPhase === undefined ||
+            assignedPhase === CyclePhase.UNSPECIFIED
+          ) {
+            for (const cycle of cycles) {
+              if (!cycle.startDate || !cycle.endDate) continue;
+              const cycleStart = fromLocalDate(cycle.startDate);
+              const cycleEnd = fromLocalDate(cycle.endDate);
+              if (moodDate >= cycleStart && moodDate <= cycleEnd) {
+                const dayInCycle = Math.floor(
+                  (moodDate.getTime() - cycleStart.getTime()) /
+                    (1000 * 60 * 60 * 24),
+                );
+                if (dayInCycle < 5) assignedPhase = CyclePhase.MENSTRUATION;
+                else if (dayInCycle < 12) assignedPhase = CyclePhase.FOLLICULAR;
+                else if (dayInCycle < 17)
+                  assignedPhase = CyclePhase.OVULATION_WINDOW;
+                else assignedPhase = CyclePhase.LUTEAL;
+                break;
+              }
+            }
+          }
+
+          if (
+            assignedPhase !== undefined &&
+            ORDERED_PHASES.includes(assignedPhase)
+          ) {
+            const phaseMap = phaseCounters.get(assignedPhase)!;
+            phaseMap.set(mood.mood, (phaseMap.get(mood.mood) ?? 0) + 1);
+          }
+        });
+
+        // Derive active mood types (those with at least one observation)
+        const seenMoodTypes = new Set<number>();
+        for (const countsMap of phaseCounters.values()) {
+          for (const [mt, count] of countsMap.entries()) {
+            if (count > 0) seenMoodTypes.add(mt);
+          }
+        }
+        const activeMoodTypeLabels = Array.from(seenMoodTypes)
+          .sort((a, b) => a - b)
+          .map((n) => moodTypeLabel(n as MoodType));
+
+        // Transform into percentage-normalized chart data
+        const chartData: MoodPhaseData[] = ORDERED_PHASES.map((phase) => {
+          const countsMap = phaseCounters.get(phase)!;
+          const total = Array.from(countsMap.values()).reduce(
+            (s, c) => s + c,
+            0,
+          );
+          const row: MoodPhaseData = { phase: cyclePhaseLabel(phase) };
+          for (const moodNum of seenMoodTypes) {
+            const label = moodTypeLabel(moodNum as MoodType);
+            row[label] =
+              total > 0
+                ? parseFloat(
+                    (((countsMap.get(moodNum) ?? 0) / total) * 100).toFixed(1),
+                  )
+                : 0;
+          }
+          return row;
+        });
+
+        setActiveMoodTypes(activeMoodTypeLabels);
         setData(chartData);
       } catch (err) {
         console.error("Failed to fetch mood phase data:", err);
@@ -134,32 +192,41 @@ export const MoodPhaseChart: React.FC = () => {
     fetchData();
   }, []);
 
-  if (loading || data.length === 0) {
-    return null;
-  }
+  if (loading) return null;
+  if (data.length === 0) return null;
 
-  // Text summary for screen readers
-  const summaryText = `Grouped bar chart showing mood type distribution across cycle phases. `;
-  const moodTypes = Object.keys(MoodType)
-    .filter((k) => !isNaN(Number(k)))
-    .map((k) => moodTypeLabel(parseInt(k) as MoodType));
+  const summaryText = `Percentage-normalized bar chart showing mood type distribution across cycle phases.`;
 
   return (
-    <ChartContainer data={data} title="Mood by Phase">
-      <div role="img" aria-label="Grouped bar chart showing mood distribution across menstrual cycle phases">
+    <ChartContainer
+      data={data}
+      title="Mood by Phase"
+      emptyMessage="Track moods across at least one full cycle to see mood patterns by phase."
+    >
+      <div
+        role="img"
+        aria-label="Grouped bar chart showing mood distribution across menstrual cycle phases"
+      >
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--om-color-chart-grid)" />
+          <BarChart
+            data={data}
+            margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+          >
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="var(--om-color-chart-grid)"
+            />
             <XAxis dataKey="phase" />
-            <YAxis />
+            <YAxis tickFormatter={(v: number) => `${v}%`} domain={[0, 100]} />
             <Tooltip
               contentStyle={{
                 backgroundColor: "var(--om-color-chart-tooltip-bg)",
                 border: `1px solid var(--om-color-chart-tooltip-border)`,
               }}
+              formatter={(value: number) => [`${value}%`]}
             />
             <Legend />
-            {moodTypes.map((moodLabel, index) => (
+            {activeMoodTypes.map((moodLabel, index) => (
               <Bar
                 key={moodLabel}
                 dataKey={moodLabel}
@@ -171,7 +238,15 @@ export const MoodPhaseChart: React.FC = () => {
         <div className="om-sr-only">
           {summaryText}
           Distribution across phases:
-          {data.map((row) => `${row.phase}: ${Object.entries(row).filter(([k]) => k !== "phase").map(([k, v]) => `${k}: ${v}`).join(", ")}`).join("; ")}
+          {data
+            .map(
+              (row) =>
+                `${row.phase}: ${Object.entries(row)
+                  .filter(([k]) => k !== "phase")
+                  .map(([k, v]) => `${k}: ${v}%`)
+                  .join(", ")}`,
+            )
+            .join("; ")}
         </div>
       </div>
     </ChartContainer>
