@@ -1,5 +1,12 @@
+import {
+  Block,
+  BlockTitle,
+  Button,
+  Icon,
+  Navbar,
+  Page,
+} from "framework7-react";
 import React, { useState } from "react";
-import { Page, Navbar, Block, BlockTitle, Button, Icon } from "framework7-react";
 import { client, DEFAULT_PARENT } from "../../lib/client";
 import { exportPayloadToCSV } from "./csvConverter";
 
@@ -28,7 +35,7 @@ const ExportPage: React.FC = () => {
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to export JSON data"
+        err instanceof Error ? err.message : "Failed to export JSON data",
       );
     } finally {
       setLoading(false);
@@ -77,7 +84,9 @@ const ExportPage: React.FC = () => {
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to export CSV data");
+      setError(
+        err instanceof Error ? err.message : "Failed to export CSV data",
+      );
     } finally {
       setLoading(false);
     }
@@ -97,62 +106,64 @@ const ExportPage: React.FC = () => {
   return (
     <Page pageContent={false}>
       <div className="page-content">
-      <Navbar title="Export Data" />
+        <Navbar title="Export Data" backLink="Back" />
 
-      <BlockTitle>Data Export</BlockTitle>
-      <Block inset>
-        <p className="om-muted">
-          Download your cycle tracking data in JSON or CSV format. This includes all your observations, medications, and cycles.
-        </p>
+        <BlockTitle>Data Export</BlockTitle>
+        <Block inset>
+          <p className="om-muted">
+            Download your cycle tracking data in JSON or CSV format. This
+            includes all your observations, medications, and cycles.
+          </p>
 
-        <div className="export-buttons">
-          <Button
-            onClick={handleExportJSON}
-            disabled={loading}
-            fill
-            large
-            className="export-button"
-          >
-            {loading ? "Exporting..." : "Export as JSON"}
-          </Button>
+          <div className="export-buttons">
+            <Button
+              onClick={handleExportJSON}
+              disabled={loading}
+              fill
+              large
+              className="export-button"
+            >
+              {loading ? "Exporting..." : "Export as JSON"}
+            </Button>
 
-          <Button
-            onClick={handleExportCSV}
-            disabled={loading}
-            fill
-            large
-            className="export-button"
-          >
-            {loading ? "Exporting..." : "Export as CSV"}
-          </Button>
-        </div>
-
-        {error && (
-          <div className="form-error">
-            <Icon ios="f7:exclamationmark_circle_fill" md="material:error" />
-            {error}
+            <Button
+              onClick={handleExportCSV}
+              disabled={loading}
+              fill
+              large
+              className="export-button"
+            >
+              {loading ? "Exporting..." : "Export as CSV"}
+            </Button>
           </div>
-        )}
 
-        {success && (
-          <div className="form-success">
-            <Icon ios="f7:checkmark_circle_fill" md="material:check_circle" />
-            Export successful
-          </div>
-        )}
-      </Block>
+          {error && (
+            <div className="form-error">
+              <Icon ios="f7:exclamationmark_circle_fill" md="material:error" />
+              {error}
+            </div>
+          )}
 
-      <BlockTitle>About Your Data</BlockTitle>
-      <Block inset>
-        <p className="om-muted">
-          Your data is stored locally on this device and never sent to any server. Exporting your data allows you to:
-        </p>
-        <ul className="om-list">
-          <li>Back up your tracking history</li>
-          <li>Transfer data between devices</li>
-          <li>Analyze your data in external tools</li>
-        </ul>
-      </Block>
+          {success && (
+            <div className="form-success">
+              <Icon ios="f7:checkmark_circle_fill" md="material:check_circle" />
+              Export successful
+            </div>
+          )}
+        </Block>
+
+        <BlockTitle>About Your Data</BlockTitle>
+        <Block inset>
+          <p className="om-muted">
+            Your data is stored locally on this device and never sent to any
+            server. Exporting your data allows you to:
+          </p>
+          <ul className="om-list">
+            <li>Back up your tracking history</li>
+            <li>Transfer data between devices</li>
+            <li>Analyze your data in external tools</li>
+          </ul>
+        </Block>
       </div>
     </Page>
   );
