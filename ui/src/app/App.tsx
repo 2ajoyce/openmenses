@@ -1,26 +1,28 @@
-import React from "react";
 import {
   App as F7App,
-  View,
-  Views,
+  Link,
   Toolbar,
   ToolbarPane,
-  Link,
+  View,
+  Views,
 } from "framework7-react";
 import type { Framework7Parameters } from "framework7/types";
+import React from "react";
 
-import TimelinePage from "../features/timeline/TimelinePage";
-import LogChooserPage from "../pages/LogChooserPage";
 import BleedingForm from "../features/bleeding/BleedingForm";
-import SymptomForm from "../features/symptom/SymptomForm";
-import MoodForm from "../features/mood/MoodForm";
-import MedicationEventForm from "../features/medication/MedicationEventForm";
-import MedicationList from "../features/medication/MedicationList";
-import MedicationForm from "../features/medication/MedicationForm";
-import SettingsPage from "../pages/SettingsPage";
 import CyclesPage from "../features/cycle/CyclesPage";
 import ExportPage from "../features/export/ExportPage";
+import MedicationEventForm from "../features/medication/MedicationEventForm";
+import MedicationForm from "../features/medication/MedicationForm";
+import MedicationList from "../features/medication/MedicationList";
+import MoodForm from "../features/mood/MoodForm";
 import ClinicianSummaryPage from "../features/summary/ClinicianSummaryPage";
+import SymptomForm from "../features/symptom/SymptomForm";
+import TimelinePage from "../features/timeline/TimelinePage";
+import AboutPage from "../pages/AboutPage";
+import LogChooserPage from "../pages/LogChooserPage";
+import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
+import SettingsPage from "../pages/SettingsPage";
 
 const routes: Framework7Parameters["routes"] = [
   { path: "/", component: TimelinePage },
@@ -36,6 +38,8 @@ const routes: Framework7Parameters["routes"] = [
   { path: "/export/", component: ExportPage },
   { path: "/summary/", component: ClinicianSummaryPage },
   { path: "/settings/", component: SettingsPage },
+  { path: "/privacy/", component: PrivacyPolicyPage },
+  { path: "/about/", component: AboutPage },
 ];
 
 const f7params: Framework7Parameters = {

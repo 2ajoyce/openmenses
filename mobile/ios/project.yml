@@ -18,7 +18,7 @@ targets:
       - path: OpenMenses
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: org.openmenses.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.2ajoyce.openmenses
         # 1 = iPhone, 2 = iPad (both supported)
         TARGETED_DEVICE_FAMILY: "1,2"
         SWIFT_VERSION: "5.0"
@@ -28,6 +28,10 @@ targets:
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        DEVELOPMENT_TEAM: "79AKRQK9LV"
+        CODE_SIGN_STYLE: Automatic
+        ENABLE_HARDENED_RUNTIME: YES
+        INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.health-and-fitness"
     dependencies:
       # Engine.xcframework is a static archive (ar) produced by `gomobile bind`.
       # Static frameworks are merged into the main binary at link time — they
