@@ -21,6 +21,9 @@ make ui-test             # Vitest
 make lint                # All linters
 make test                # All tests
 make ci                  # Full CI: lint + generation check + tests
+make mobile-setup        # Install gomobile tooling (one-time)
+make mobile-ios          # Build Engine.xcframework via gomobile bind
+make ui-bundle           # Build UI production bundle into ui/dist/
 ```
 
 Run a single Go test:
@@ -44,6 +47,10 @@ cd ui && npm test
 | **Engine**    | `engine/`              | Go domain logic, storage, validation, service handlers |
 | **UI**        | `ui/`                  | TypeScript presentation layer — **no domain logic**    |
 | **Mobile**    | `mobile/`              | Thin native shells (iOS/Android) — no domain logic     |
+
+### iOS CI (Xcode Cloud)
+
+Xcode Cloud runs `mobile/ios/ci_scripts/ci_post_clone.sh` after cloning. This script installs Go and Node.js, builds `Engine.xcframework` via `make mobile-ios`, and runs `make ui-bundle`. The framework is gitignored (166 MB build artifact) — it must be built in CI, not committed.
 
 ### Engine internals (`engine/internal/`)
 
