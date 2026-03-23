@@ -10,7 +10,7 @@ OUT = "mobile/ios/OpenMenses/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
 
 def write_png(filename, width, height, pixels):
     def pack_row(row):
-        return b"\x00" + bytes([c for rgba in row for c in rgba])
+        return b"\x00" + bytes([c for rgb in row for c in rgb])
 
     raw = b"".join(pack_row(pixels[y]) for y in range(height))
     compressed = zlib.compress(raw, 9)
@@ -24,16 +24,16 @@ def write_png(filename, width, height, pixels):
         )
 
     sig = b"\x89PNG\r\n\x1a\n"
-    # 8-bit depth, color type 6 (RGBA)
-    ihdr = chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0))
+    # 8-bit depth, color type 2 (RGB, no alpha — required by Apple App Store)
+    ihdr = chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0))
     idat = chunk(b"IDAT", compressed)
     iend = chunk(b"IEND", b"")
     with open(filename, "wb") as f:
         f.write(sig + ihdr + idat + iend)
 
 
-# Allocate pixel buffer: list of rows, each row a list of (R,G,B,A) tuples
-pixels = [[(0, 0, 0, 255)] * W for _ in range(H)]
+# Allocate pixel buffer: list of rows, each row a list of (R,G,B) tuples
+pixels = [[(0, 0, 0)] * W for _ in range(H)]
 
 # Background gradient: #2a9d8f → #1a6b60 top-to-bottom
 bg1 = (42, 157, 143)
@@ -52,9 +52,13 @@ for y in range(H):
         dx = max(0, 220 - x, x - (W - 1 - 220))
         dy = max(0, 220 - y, y - (H - 1 - 220))
         if dx * dx + dy * dy <= 220 * 220:
-            pixels[y][x] = (r, g, b, 255)
+            pixels[y][x] = (r, g, b)
         else:
-            pixels[y][x] = (255, 255, 255, 0)  # Transparent background outside the icon
+            pixels[y][x] = (
+                255,
+                255,
+                255,
+            )  # White corners — iOS clips them; no alpha allowed by App Store
 
 
 def draw_circle(cx, cy, radius, color):
@@ -70,21 +74,22 @@ def draw_circle(cx, cy, radius, color):
             else:
                 continue
 
-            # Only draw if inside the rounded rect
-            bg = pixels[py][px]
-            if bg[3] == 0:
-                continue
-
             fa = alpha / 255.0
+            bg = pixels[py][px]
             nr = int(r * fa + bg[0] * (1 - fa))
             ng = int(g * fa + bg[1] * (1 - fa))
             nb = int(b * fa + bg[2] * (1 - fa))
-            pixels[py][px] = (nr, ng, nb, 255)
+            pixels[py][px] = (nr, ng, nb)
 
 
 # 5×5 dot grid matching SVG: centers at 180, 346, 512, 678, 844
 centers = [180, 346, 512, 678, 844]
-white = (255, 255, 255, int(0.65 * 255))  # semi-transparent white
+white = (
+    255,
+    255,
+    255,
+    int(0.65 * 255),
+)  # semi-transparent white; alpha composited in draw_circle
 red = (230, 57, 70, 255)  # #e63946 cycle start marker
 
 for row, cy in enumerate(centers):
