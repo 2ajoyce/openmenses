@@ -67,3 +67,7 @@ mobile/android/local.properties
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Xcode user-specific IDE state (binary, should never be committed)
+*.xcuserstate
+xcuserdata/
