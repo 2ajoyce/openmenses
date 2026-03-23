@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a9d8f"/>
+      <stop offset="100%" stop-color="#1a6b60"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background (iOS applies squircle mask; rx here is for SVG preview only) -->
+  <rect width="1024" height="1024" rx="220" ry="220" fill="url(#bg)"/>
+
+  <!--
+    5x5 dot grid
+    Dot centers spaced 166px apart starting at x=180, y=180
+    Centers: 180, 346, 512, 678, 844
+    Dot radius: 52  |  highlighted dot radius: 68
+    Highlighted dot: row=1, col=3  →  (678, 346)  — represents a marked day
+  -->
+
+  <!-- Row 0 (y=180) -->
+  <circle cx="180" cy="180" r="52" fill="white" opacity="0.65"/>
+  <circle cx="346" cy="180" r="52" fill="white" opacity="0.65"/>
+  <circle cx="512" cy="180" r="52" fill="white" opacity="0.65"/>
+  <circle cx="678" cy="180" r="52" fill="white" opacity="0.65"/>
+  <circle cx="844" cy="180" r="52" fill="white" opacity="0.65"/>
+
+  <!-- Row 1 (y=346) -->
+  <circle cx="180" cy="346" r="52" fill="white" opacity="0.65"/>
+  <circle cx="346" cy="346" r="52" fill="white" opacity="0.65"/>
+  <circle cx="512" cy="346" r="52" fill="white" opacity="0.65"/>
+  <!-- Highlighted: cycle start marker -->
+  <circle cx="678" cy="346" r="68" fill="#e63946"/>
+  <circle cx="844" cy="346" r="52" fill="white" opacity="0.65"/>
+
+  <!-- Row 2 (y=512) -->
+  <circle cx="180" cy="512" r="52" fill="white" opacity="0.65"/>
+  <circle cx="346" cy="512" r="52" fill="white" opacity="0.65"/>
+  <circle cx="512" cy="512" r="52" fill="white" opacity="0.65"/>
+  <circle cx="678" cy="512" r="52" fill="white" opacity="0.65"/>
+  <circle cx="844" cy="512" r="52" fill="white" opacity="0.65"/>
+
+  <!-- Row 3 (y=678) -->
+  <circle cx="180" cy="678" r="52" fill="white" opacity="0.65"/>
+  <circle cx="346" cy="678" r="52" fill="white" opacity="0.65"/>
+  <circle cx="512" cy="678" r="52" fill="white" opacity="0.65"/>
+  <circle cx="678" cy="678" r="52" fill="white" opacity="0.65"/>
+  <circle cx="844" cy="678" r="52" fill="white" opacity="0.65"/>
+
+  <!-- Row 4 (y=844) -->
+  <circle cx="180" cy="844" r="52" fill="white" opacity="0.65"/>
+  <circle cx="346" cy="844" r="52" fill="white" opacity="0.65"/>
+  <circle cx="512" cy="844" r="52" fill="white" opacity="0.65"/>
+  <circle cx="678" cy="844" r="52" fill="white" opacity="0.65"/>
+  <circle cx="844" cy="844" r="52" fill="white" opacity="0.65"/>
+</svg>

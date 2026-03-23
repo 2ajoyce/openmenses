@@ -292,8 +292,8 @@ const SettingsPage: React.FC = () => {
 
         <BlockTitle>About</BlockTitle>
         <List inset>
-          <ListItem title="Privacy Policy" link="#" />
-          <ListItem title="About OpenMenses" link="#" />
+          <ListItem title="Privacy Policy" link="/privacy/" />
+          <ListItem title="About OpenMenses" link="/about/" />
         </List>
       </div>
     </Page>
