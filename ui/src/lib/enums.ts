@@ -1,19 +1,21 @@
 import {
+  BiologicalCycleModel,
   BleedingFlow,
-  SymptomType,
-  SymptomSeverity,
-  MoodType,
-  MoodIntensity,
+  ConfidenceLevel,
+  ContraceptionType,
+  CyclePhase,
+  CycleRegularity,
+  CycleSource,
+  InsightType,
   MedicationCategory,
   MedicationEventStatus,
-  CyclePhase,
-  ConfidenceLevel,
-  CycleSource,
-  BiologicalCycleModel,
-  CycleRegularity,
-  TrackingFocus,
+  MoodIntensity,
+  MoodType,
   PredictionType,
-  InsightType,
+  ReproductiveGoal,
+  SymptomSeverity,
+  SymptomType,
+  TrackingFocus,
 } from "@gen/openmenses/v1/model_pb";
 
 export const bleedingFlowLabels: Record<number, string> = {
@@ -140,9 +142,7 @@ export const medicationCategoryOptions = [
   { value: MedicationCategory.OTHER, label: "Other" },
 ];
 
-export function medicationCategoryLabel(
-  category: MedicationCategory,
-): string {
+export function medicationCategoryLabel(category: MedicationCategory): string {
   return medicationCategoryLabels[category] ?? "Unknown";
 }
 
@@ -226,6 +226,60 @@ export function cycleSourceLabel(source: CycleSource): string {
   return cycleSourceLabels[source] ?? "Unknown";
 }
 
+export const contraceptionTypeLabels: Record<number, string> = {
+  [ContraceptionType.NONE]: "None",
+  [ContraceptionType.BARRIER]: "Barrier",
+  [ContraceptionType.HORMONAL_PILL]: "Hormonal Pill",
+  [ContraceptionType.HORMONAL_PATCH]: "Hormonal Patch",
+  [ContraceptionType.HORMONAL_RING]: "Hormonal Ring",
+  [ContraceptionType.HORMONAL_SHOT]: "Hormonal Shot",
+  [ContraceptionType.HORMONAL_IMPLANT]: "Hormonal Implant",
+  [ContraceptionType.HORMONAL_IUD]: "Hormonal IUD",
+  [ContraceptionType.COPPER_IUD]: "Copper IUD",
+  [ContraceptionType.OTHER]: "Other",
+};
+
+export const contraceptionTypeOptions = [
+  { value: ContraceptionType.NONE, label: "None" },
+  { value: ContraceptionType.BARRIER, label: "Barrier" },
+  { value: ContraceptionType.HORMONAL_PILL, label: "Hormonal Pill" },
+  { value: ContraceptionType.HORMONAL_PATCH, label: "Hormonal Patch" },
+  { value: ContraceptionType.HORMONAL_RING, label: "Hormonal Ring" },
+  { value: ContraceptionType.HORMONAL_SHOT, label: "Hormonal Shot" },
+  { value: ContraceptionType.HORMONAL_IMPLANT, label: "Hormonal Implant" },
+  { value: ContraceptionType.HORMONAL_IUD, label: "Hormonal IUD" },
+  { value: ContraceptionType.COPPER_IUD, label: "Copper IUD" },
+  { value: ContraceptionType.OTHER, label: "Other" },
+];
+
+export function contraceptionTypeLabel(type: ContraceptionType): string {
+  return contraceptionTypeLabels[type] ?? "Unknown";
+}
+
+export const reproductiveGoalLabels: Record<number, string> = {
+  [ReproductiveGoal.TRYING_TO_CONCEIVE]: "Trying to Conceive",
+  [ReproductiveGoal.AVOID_PREGNANCY]: "Avoid Pregnancy",
+  [ReproductiveGoal.PREGNANCY_IRRELEVANT]: "Pregnancy Irrelevant",
+  [ReproductiveGoal.NOT_TRACKING_FERTILITY]: "Not Tracking Fertility",
+};
+
+export const reproductiveGoalOptions = [
+  { value: ReproductiveGoal.TRYING_TO_CONCEIVE, label: "Trying to Conceive" },
+  { value: ReproductiveGoal.AVOID_PREGNANCY, label: "Avoid Pregnancy" },
+  {
+    value: ReproductiveGoal.PREGNANCY_IRRELEVANT,
+    label: "Pregnancy Irrelevant",
+  },
+  {
+    value: ReproductiveGoal.NOT_TRACKING_FERTILITY,
+    label: "Not Tracking Fertility",
+  },
+];
+
+export function reproductiveGoalLabel(goal: ReproductiveGoal): string {
+  return reproductiveGoalLabels[goal] ?? "Unknown";
+}
+
 export const biologicalCycleModelLabels: Record<number, string> = {
   [BiologicalCycleModel.OVULATORY]: "Ovulatory",
   [BiologicalCycleModel.HORMONALLY_SUPPRESSED]: "Hormonally Suppressed",
@@ -234,7 +288,10 @@ export const biologicalCycleModelLabels: Record<number, string> = {
 
 export const biologicalCycleModelOptions = [
   { value: BiologicalCycleModel.OVULATORY, label: "Ovulatory" },
-  { value: BiologicalCycleModel.HORMONALLY_SUPPRESSED, label: "Hormonally Suppressed" },
+  {
+    value: BiologicalCycleModel.HORMONALLY_SUPPRESSED,
+    label: "Hormonally Suppressed",
+  },
   { value: BiologicalCycleModel.IRREGULAR, label: "Irregular" },
 ];
 

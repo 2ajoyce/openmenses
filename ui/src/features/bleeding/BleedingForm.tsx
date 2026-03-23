@@ -19,7 +19,11 @@ interface BleedingFormProps {
   name?: string;
 }
 
-const BleedingForm: React.FC<BleedingFormProps> = ({ f7router, f7route, name: nameProp }) => {
+const BleedingForm: React.FC<BleedingFormProps> = ({
+  f7router,
+  f7route,
+  name: nameProp,
+}) => {
   const name = nameProp ?? f7route?.query?.name;
   const [timestamp, setTimestamp] = useState(new Date());
   const [flow, setFlow] = useState<number>(BleedingFlow.MEDIUM);
@@ -72,7 +76,11 @@ const BleedingForm: React.FC<BleedingFormProps> = ({ f7router, f7route, name: na
         });
       }
 
-      f7router.back();
+      if (f7router.view?.main) {
+        f7router.navigate("/", { clearPreviousHistory: true });
+      } else {
+        f7router.back();
+      }
     } catch (err) {
       console.error("Failed to save bleeding observation:", err);
       f7.dialog.alert(
@@ -87,31 +95,31 @@ const BleedingForm: React.FC<BleedingFormProps> = ({ f7router, f7route, name: na
   return (
     <Page pageContent={false}>
       <div className="page-content">
-      <Navbar
-        title={isEdit ? "Edit Bleeding" : "Log Bleeding"}
-        backLink="Back"
-      />
+        <Navbar
+          title={isEdit ? "Edit Bleeding" : "Log Bleeding"}
+          backLink="Back"
+        />
 
-      <div style={{ padding: "0 16px 8px" }}>
-        <DateTimePicker value={timestamp} onChange={setTimestamp} />
-      </div>
+        <div style={{ padding: "0 16px 8px" }}>
+          <DateTimePicker value={timestamp} onChange={setTimestamp} />
+        </div>
 
-      <BlockTitle>Flow</BlockTitle>
-      <EnumSelector
-        options={bleedingFlowOptions}
-        selected={flow}
-        onChange={setFlow}
-      />
+        <BlockTitle>Flow</BlockTitle>
+        <EnumSelector
+          options={bleedingFlowOptions}
+          selected={flow}
+          onChange={setFlow}
+        />
 
-      <List inset>
-        <NotesField value={note} onChange={setNote} />
-      </List>
+        <List inset>
+          <NotesField value={note} onChange={setNote} />
+        </List>
 
-      <div style={{ padding: "0 16px" }}>
-        <Button fill round large onClick={handleSubmit} disabled={submitting}>
-          {submitting ? "Saving..." : isEdit ? "Update" : "Save"}
-        </Button>
-      </div>
+        <div style={{ padding: "0 16px" }}>
+          <Button fill round large onClick={handleSubmit} disabled={submitting}>
+            {submitting ? "Saving..." : isEdit ? "Update" : "Save"}
+          </Button>
+        </div>
       </div>
     </Page>
   );

@@ -1,10 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import React from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import MedicationEventForm from "../MedicationEventForm";
 
 const mockBack = vi.fn();
-const mockRouter = { back: mockBack } as never;
+const mockRouter = { back: mockBack, view: { main: false } } as never;
 
 const mockCreateMedicationEvent = vi.fn();
 const mockUpdateMedicationEvent = vi.fn();
@@ -18,8 +17,7 @@ vi.mock("../../../lib/client", () => ({
     updateMedicationEvent: (...args: unknown[]) =>
       mockUpdateMedicationEvent(...args),
     listMedications: (...args: unknown[]) => mockListMedications(...args),
-    getMedicationEvent: (...args: unknown[]) =>
-      mockGetMedicationEvent(...args),
+    getMedicationEvent: (...args: unknown[]) => mockGetMedicationEvent(...args),
   },
   DEFAULT_PARENT: "users/default",
 }));

@@ -1,12 +1,21 @@
+import type {
+  BiologicalCycleModel,
+  PhaseEstimate,
+} from "@gen/openmenses/v1/model_pb";
 import type { TimelineRecord } from "@gen/openmenses/v1/service_pb";
-import type { BiologicalCycleModel, PhaseEstimate } from "@gen/openmenses/v1/model_pb";
 import { Block, Chip, f7, Navbar, Page } from "framework7-react";
 import type { Router } from "framework7/types";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { DateTimePicker } from "../../components/DateTimePicker";
 import { EmptyState } from "../../components/EmptyState";
 import { client, DEFAULT_PARENT } from "../../lib/client";
-import { daysAgo, toLocalDate } from "../../lib/dates";
+import { daysAgo, daysFromNow, toLocalDate } from "../../lib/dates";
 import { TimelineItem } from "./TimelineItem";
 
 type FilterType =
@@ -55,7 +64,7 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
     ProcessedTimelineRecord[]
   >([]);
   const [startDate, setStartDate] = useState(() => daysAgo(30));
-  const [endDate, setEndDate] = useState(() => new Date());
+  const [endDate, setEndDate] = useState(() => daysFromNow(1));
   const loadingMoreRef = useRef(false);
   const processedRecordsRef = useRef<ProcessedTimelineRecord[]>([]);
 
@@ -93,50 +102,45 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
     }
   }, []);
 
-  const processRecordsWithGrouping = useCallback(
-    (recs: TimelineRecord[]) => {
-      // Group consecutive phase estimate records
-      const processed: ProcessedTimelineRecord[] = [];
-      let i = 0;
+  const processRecordsWithGrouping = useCallback((recs: TimelineRecord[]) => {
+    // Group consecutive phase estimate records
+    const processed: ProcessedTimelineRecord[] = [];
+    let i = 0;
 
-      while (i < recs.length) {
-        const record = recs[i]!;
+    while (i < recs.length) {
+      const record = recs[i]!;
 
-        if (record.record.case === "phaseEstimate") {
-          // Collect consecutive phase estimates
-          const group: PhaseEstimate[] = [
-            record.record.value as PhaseEstimate,
-          ];
-          let j = i + 1;
+      if (record.record.case === "phaseEstimate") {
+        // Collect consecutive phase estimates
+        const group: PhaseEstimate[] = [record.record.value as PhaseEstimate];
+        let j = i + 1;
 
-          while (
-            j < recs.length &&
-            recs[j]!.record.case === "phaseEstimate" &&
-            (recs[j]!.record.value as PhaseEstimate).phase ===
-              (record.record.value as PhaseEstimate).phase
-          ) {
-            group.push(recs[j]!.record.value as PhaseEstimate);
-            j++;
-          }
-
-          // Create a record with the grouped estimates
-          const groupedRecord: ProcessedTimelineRecord = {
-            ...record,
-            _groupedPhaseEstimates: group,
-          };
-          processed.push(groupedRecord);
-          i = j;
-        } else {
-          processed.push(record);
-          i++;
+        while (
+          j < recs.length &&
+          recs[j]!.record.case === "phaseEstimate" &&
+          (recs[j]!.record.value as PhaseEstimate).phase ===
+            (record.record.value as PhaseEstimate).phase
+        ) {
+          group.push(recs[j]!.record.value as PhaseEstimate);
+          j++;
         }
-      }
 
-      processedRecordsRef.current = processed;
-      setProcessedRecords(processed);
-    },
-    [],
-  );
+        // Create a record with the grouped estimates
+        const groupedRecord: ProcessedTimelineRecord = {
+          ...record,
+          _groupedPhaseEstimates: group,
+        };
+        processed.push(groupedRecord);
+        i = j;
+      } else {
+        processed.push(record);
+        i++;
+      }
+    }
+
+    processedRecordsRef.current = processed;
+    setProcessedRecords(processed);
+  }, []);
 
   const fetchTimeline = useCallback(
     async (pageToken = "") => {
@@ -185,9 +189,11 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
   }, [fetchTimeline]);
 
   function handleRefresh(done: () => void) {
-    Promise.all([fetchTimeline(), fetchMedicationNames(), fetchUserProfile()]).then(
-      done,
-    );
+    Promise.all([
+      fetchTimeline(),
+      fetchMedicationNames(),
+      fetchUserProfile(),
+    ]).then(done);
   }
 
   const loadMore = useCallback(() => {
@@ -242,73 +248,78 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
       onPageBeforeIn={() => fetchTimeline()}
     >
       <div className="page-content ptr-content infinite-scroll-content">
-      <Navbar title="Timeline" />
+        <Navbar title="Timeline" />
 
-      <Block className="timeline-control-row">
-        <DateTimePicker
-          label="From"
-          value={startDate}
-          onChange={setStartDate}
-        />
-        <DateTimePicker label="To" value={endDate} onChange={setEndDate} />
-      </Block>
-
-      <div role="region" aria-label="Filter timeline by observation type">
         <Block className="timeline-control-row">
-          {FILTER_OPTIONS.map(({ key, label, chipClass }) => (
-            <div
-              key={key}
-              role="button"
-              tabIndex={0}
-              aria-pressed={activeFilters.has(key)}
-              aria-label={label}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  toggleFilter(key);
-                }
-              }}
-            >
-              <Chip
-                text={label}
-                className={`om-chip-${chipClass}${activeFilters.has(key) ? " om-chip-active" : ""}`}
-                onClick={() => toggleFilter(key)}
-              />
-            </div>
-          ))}
+          <DateTimePicker
+            label="From"
+            value={startDate}
+            onChange={setStartDate}
+          />
+          <DateTimePicker label="To" value={endDate} onChange={setEndDate} />
         </Block>
-      </div>
 
-      {loading && (
-        <div aria-live="polite" aria-label="Loading timeline">
-          <p>Loading timeline...</p>
+        <div role="region" aria-label="Filter timeline by observation type">
+          <Block className="timeline-control-row">
+            {FILTER_OPTIONS.map(({ key, label, chipClass }) => (
+              <div
+                key={key}
+                role="button"
+                tabIndex={0}
+                aria-pressed={activeFilters.has(key)}
+                aria-label={label}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    toggleFilter(key);
+                  }
+                }}
+              >
+                <Chip
+                  text={label}
+                  className={`om-chip-${chipClass}${activeFilters.has(key) ? " om-chip-active" : ""}`}
+                  onClick={() => toggleFilter(key)}
+                />
+              </div>
+            ))}
+          </Block>
         </div>
-      )}
 
-      {!loading && filteredRecords.length === 0 && (
-        <EmptyState
-          message="No observations logged yet"
-          actionLabel="Log your first observation"
-          onAction={() => f7router.navigate("/log/")}
-        />
-      )}
+        {loading && (
+          <div aria-live="polite" aria-label="Loading timeline">
+            <p>Loading timeline...</p>
+          </div>
+        )}
 
-      <div role="feed" aria-label="Timeline observations" aria-live="polite" aria-busy={loading}>
-        {filteredRecords.map((record) => (
-        <TimelineItem
-          key={`${record.record.case}-${record.record.value?.name}`}
-          record={record}
-          medicationNames={medicationNames}
-          recordLookup={recordLookup}
-          {...(biologicalCycleModel != null && { biologicalCycleModel })}
-          {...(record._groupedPhaseEstimates != null && {
-            groupedPhaseEstimates: record._groupedPhaseEstimates,
-          })}
-          onNavigateEdit={(path) => f7router.navigate(path)}
-          onDeleted={() => fetchTimeline()}
-        />
-        ))}
-      </div>
+        {!loading && filteredRecords.length === 0 && (
+          <EmptyState
+            message="No observations logged yet"
+            actionLabel="Log your first observation"
+            onAction={() => f7router.navigate("/log/")}
+          />
+        )}
+
+        <div
+          role="feed"
+          aria-label="Timeline observations"
+          aria-live="polite"
+          aria-busy={loading}
+        >
+          {filteredRecords.map((record) => (
+            <TimelineItem
+              key={`${record.record.case}-${record.record.value?.name}`}
+              record={record}
+              medicationNames={medicationNames}
+              recordLookup={recordLookup}
+              {...(biologicalCycleModel != null && { biologicalCycleModel })}
+              {...(record._groupedPhaseEstimates != null && {
+                groupedPhaseEstimates: record._groupedPhaseEstimates,
+              })}
+              onNavigateEdit={(path) => f7router.navigate(path)}
+              onDeleted={() => fetchTimeline()}
+            />
+          ))}
+        </div>
       </div>
     </Page>
   );

@@ -119,7 +119,11 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
         });
       }
 
-      f7router.back();
+      if (f7router.view?.main) {
+        f7router.navigate("/", { clearPreviousHistory: true });
+      } else {
+        f7router.back();
+      }
     } catch (err) {
       console.error("Failed to save medication event:", err);
       f7.dialog.alert(
@@ -134,67 +138,67 @@ const MedicationEventForm: React.FC<MedicationEventFormProps> = ({
   return (
     <Page pageContent={false}>
       <div className="page-content">
-      <Navbar
-        title={isEdit ? "Edit Medication Event" : "Log Medication"}
-        backLink="Back"
-      />
-
-      <List inset>
-        <ListInput
-          label="Medication"
-          type="select"
-          value={medicationId}
-          disabled={isEdit}
-          onInput={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            setMedicationId(e.target.value)
-          }
-        >
-          {medications.map((med) => (
-            <option key={med.name} value={med.name}>
-              {med.displayName}
-            </option>
-          ))}
-          {medications.length === 0 && (
-            <option value="">No active medications</option>
-          )}
-        </ListInput>
-      </List>
-
-      <div style={{ padding: "0 16px 8px" }}>
-        <DateTimePicker value={timestamp} onChange={setTimestamp} />
-      </div>
-
-      <BlockTitle>Status</BlockTitle>
-      <EnumSelector
-        options={medicationEventStatusOptions}
-        selected={status}
-        onChange={setStatus}
-      />
-
-      <List inset key={dataLoaded ? "ready" : "loading"}>
-        <ListInput
-          label="Dose"
-          type="text"
-          placeholder="e.g., 200mg"
-          value={dose}
-          onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setDose(e.target.value)
-          }
+        <Navbar
+          title={isEdit ? "Edit Medication Event" : "Log Medication"}
+          backLink="Back"
         />
-        <NotesField value={note} onChange={setNote} />
-      </List>
 
-      <div style={{ padding: "0 16px" }}>
-        <Button
-          fill
-          round
-          large
-          onClick={handleSubmit}
-          disabled={submitting || !medicationId}
-        >
-          {submitting ? "Saving..." : isEdit ? "Update" : "Save"}
-        </Button>
-      </div>
+        <List inset>
+          <ListInput
+            label="Medication"
+            type="select"
+            value={medicationId}
+            disabled={isEdit}
+            onInput={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              setMedicationId(e.target.value)
+            }
+          >
+            {medications.map((med) => (
+              <option key={med.name} value={med.name}>
+                {med.displayName}
+              </option>
+            ))}
+            {medications.length === 0 && (
+              <option value="">No active medications</option>
+            )}
+          </ListInput>
+        </List>
+
+        <div style={{ padding: "0 16px 8px" }}>
+          <DateTimePicker value={timestamp} onChange={setTimestamp} />
+        </div>
+
+        <BlockTitle>Status</BlockTitle>
+        <EnumSelector
+          options={medicationEventStatusOptions}
+          selected={status}
+          onChange={setStatus}
+        />
+
+        <List inset key={dataLoaded ? "ready" : "loading"}>
+          <ListInput
+            label="Dose"
+            type="text"
+            placeholder="e.g., 200mg"
+            value={dose}
+            onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setDose(e.target.value)
+            }
+          />
+          <NotesField value={note} onChange={setNote} />
+        </List>
+
+        <div style={{ padding: "0 16px" }}>
+          <Button
+            fill
+            round
+            large
+            onClick={handleSubmit}
+            disabled={submitting || !medicationId}
+          >
+            {submitting ? "Saving..." : isEdit ? "Update" : "Save"}
+          </Button>
+        </div>
       </div>
     </Page>
   );

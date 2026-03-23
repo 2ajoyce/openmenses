@@ -1,11 +1,13 @@
+import {
+  BiologicalCycleModel,
+  ContraceptionType,
+  CycleRegularity,
+  ReproductiveGoal,
+  TrackingFocus,
+} from "@gen/openmenses/v1/model_pb";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import SettingsPage from "../SettingsPage";
-import {
-  BiologicalCycleModel,
-  CycleRegularity,
-  TrackingFocus,
-} from "@gen/openmenses/v1/model_pb";
 
 const mockGetUserProfile = vi.fn();
 const mockCreateUserProfile = vi.fn();
@@ -21,16 +23,36 @@ vi.mock("../../lib/client", () => ({
 }));
 
 vi.mock("framework7-react", () => ({
-  Page: ({ children }: { children: React.ReactNode }) => <div data-testid="page">{children}</div>,
-  Navbar: ({ title }: { title: string }) => <div data-testid="navbar">{title}</div>,
-  Block: ({ children }: { children: React.ReactNode }) => <div data-testid="block">{children}</div>,
-  BlockTitle: ({ children }: { children: React.ReactNode }) => <h3>{children}</h3>,
+  Page: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="page">{children}</div>
+  ),
+  Navbar: ({ title }: { title: string }) => (
+    <div data-testid="navbar">{title}</div>
+  ),
+  Block: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="block">{children}</div>
+  ),
+  BlockTitle: ({ children }: { children: React.ReactNode }) => (
+    <h3>{children}</h3>
+  ),
   List: ({ children }: { children: React.ReactNode }) => <ul>{children}</ul>,
   ListItem: ({ title }: { title: string }) => <li>{title}</li>,
-  Button: ({ children, onClick, disabled }: { children: React.ReactNode; onClick?: () => void; disabled?: boolean }) => (
-    <button onClick={onClick} disabled={disabled} data-testid="button">{children}</button>
+  Button: ({
+    children,
+    onClick,
+    disabled,
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+    disabled?: boolean;
+  }) => (
+    <button onClick={onClick} disabled={disabled} data-testid="button">
+      {children}
+    </button>
   ),
-  Icon: ({ ios, md }: { ios: string; md: string }) => <span data-icon={ios || md} />,
+  Icon: ({ ios, md }: { ios: string; md: string }) => (
+    <span data-icon={ios || md} />
+  ),
 }));
 
 describe("SettingsPage", () => {
@@ -65,7 +87,9 @@ describe("SettingsPage", () => {
 
     expect(screen.getByLabelText("Cycle Regularity")).toBeInTheDocument();
     // Tracking Focus is rendered in the page
-    expect(screen.getByRole("checkbox", { name: /Bleeding/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole("checkbox", { name: /Bleeding/ }),
+    ).toBeInTheDocument();
   });
 
   it("populates form with existing profile data", async () => {
@@ -179,7 +203,9 @@ describe("SettingsPage", () => {
       profile: {
         name: "users/default",
         biologicalCycle: BiologicalCycleModel.OVULATORY,
+        contraception: ContraceptionType.NONE,
         cycleRegularity: CycleRegularity.REGULAR,
+        reproductiveGoal: ReproductiveGoal.NOT_TRACKING_FERTILITY,
         trackingFocus: [TrackingFocus.BLEEDING],
       },
     });
@@ -200,9 +226,19 @@ describe("SettingsPage", () => {
       target: { value: String(BiologicalCycleModel.OVULATORY) },
     });
 
+    const contraceptionSelect = screen.getByLabelText("Contraception");
+    fireEvent.change(contraceptionSelect, {
+      target: { value: String(ContraceptionType.NONE) },
+    });
+
     const cycleRegularitySelect = screen.getByLabelText("Cycle Regularity");
     fireEvent.change(cycleRegularitySelect, {
       target: { value: String(CycleRegularity.REGULAR) },
+    });
+
+    const reproductiveGoalSelect = screen.getByLabelText("Reproductive Goal");
+    fireEvent.change(reproductiveGoalSelect, {
+      target: { value: String(ReproductiveGoal.NOT_TRACKING_FERTILITY) },
     });
 
     const bleedingCheckbox = screen.getByRole("checkbox", {
@@ -219,7 +255,9 @@ describe("SettingsPage", () => {
         expect.objectContaining({
           profile: expect.objectContaining({
             biologicalCycle: BiologicalCycleModel.OVULATORY,
+            contraception: ContraceptionType.NONE,
             cycleRegularity: CycleRegularity.REGULAR,
+            reproductiveGoal: ReproductiveGoal.NOT_TRACKING_FERTILITY,
             trackingFocus: [TrackingFocus.BLEEDING],
           }),
         }),
@@ -232,7 +270,9 @@ describe("SettingsPage", () => {
       profile: {
         name: "users/default",
         biologicalCycle: BiologicalCycleModel.OVULATORY,
+        contraception: ContraceptionType.NONE,
         cycleRegularity: CycleRegularity.REGULAR,
+        reproductiveGoal: ReproductiveGoal.NOT_TRACKING_FERTILITY,
         trackingFocus: [TrackingFocus.BLEEDING],
       },
     });
@@ -240,7 +280,9 @@ describe("SettingsPage", () => {
       profile: {
         name: "users/default",
         biologicalCycle: BiologicalCycleModel.IRREGULAR,
+        contraception: ContraceptionType.NONE,
         cycleRegularity: CycleRegularity.VERY_IRREGULAR,
+        reproductiveGoal: ReproductiveGoal.NOT_TRACKING_FERTILITY,
         trackingFocus: [TrackingFocus.BLEEDING, TrackingFocus.SYMPTOMS],
       },
     });
@@ -296,11 +338,7 @@ describe("SettingsPage", () => {
     fireEvent.click(saveButton);
 
     await waitFor(() => {
-      expect(
-        screen.getByText(
-          /Please fill in all fields: biological cycle model, cycle regularity, and at least one tracking focus/,
-        ),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/Please fill in all fields/)).toBeInTheDocument();
     });
   });
 
@@ -323,9 +361,19 @@ describe("SettingsPage", () => {
       target: { value: String(BiologicalCycleModel.OVULATORY) },
     });
 
+    const contraceptionSelect = screen.getByLabelText("Contraception");
+    fireEvent.change(contraceptionSelect, {
+      target: { value: String(ContraceptionType.NONE) },
+    });
+
     const cycleRegularitySelect = screen.getByLabelText("Cycle Regularity");
     fireEvent.change(cycleRegularitySelect, {
       target: { value: String(CycleRegularity.REGULAR) },
+    });
+
+    const reproductiveGoalSelect = screen.getByLabelText("Reproductive Goal");
+    fireEvent.change(reproductiveGoalSelect, {
+      target: { value: String(ReproductiveGoal.NOT_TRACKING_FERTILITY) },
     });
 
     // Try to save
@@ -333,11 +381,7 @@ describe("SettingsPage", () => {
     fireEvent.click(saveButton);
 
     await waitFor(() => {
-      expect(
-        screen.getByText(
-          /Please fill in all fields: biological cycle model, cycle regularity, and at least one tracking focus/,
-        ),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/Please fill in all fields/)).toBeInTheDocument();
     });
   });
 
@@ -347,7 +391,9 @@ describe("SettingsPage", () => {
       profile: {
         name: "users/default",
         biologicalCycle: BiologicalCycleModel.OVULATORY,
+        contraception: ContraceptionType.NONE,
         cycleRegularity: CycleRegularity.REGULAR,
+        reproductiveGoal: ReproductiveGoal.NOT_TRACKING_FERTILITY,
         trackingFocus: [TrackingFocus.BLEEDING],
       },
     });
@@ -368,9 +414,19 @@ describe("SettingsPage", () => {
       target: { value: String(BiologicalCycleModel.OVULATORY) },
     });
 
+    const contraceptionSelect = screen.getByLabelText("Contraception");
+    fireEvent.change(contraceptionSelect, {
+      target: { value: String(ContraceptionType.NONE) },
+    });
+
     const cycleRegularitySelect = screen.getByLabelText("Cycle Regularity");
     fireEvent.change(cycleRegularitySelect, {
       target: { value: String(CycleRegularity.REGULAR) },
+    });
+
+    const reproductiveGoalSelect = screen.getByLabelText("Reproductive Goal");
+    fireEvent.change(reproductiveGoalSelect, {
+      target: { value: String(ReproductiveGoal.NOT_TRACKING_FERTILITY) },
     });
 
     const bleedingCheckbox = screen.getByRole("checkbox", {
@@ -414,9 +470,19 @@ describe("SettingsPage", () => {
       target: { value: String(BiologicalCycleModel.OVULATORY) },
     });
 
+    const contraceptionSelect = screen.getByLabelText("Contraception");
+    fireEvent.change(contraceptionSelect, {
+      target: { value: String(ContraceptionType.NONE) },
+    });
+
     const cycleRegularitySelect = screen.getByLabelText("Cycle Regularity");
     fireEvent.change(cycleRegularitySelect, {
       target: { value: String(CycleRegularity.REGULAR) },
+    });
+
+    const reproductiveGoalSelect = screen.getByLabelText("Reproductive Goal");
+    fireEvent.change(reproductiveGoalSelect, {
+      target: { value: String(ReproductiveGoal.NOT_TRACKING_FERTILITY) },
     });
 
     const bleedingCheckbox = screen.getByRole("checkbox", {
@@ -435,7 +501,9 @@ describe("SettingsPage", () => {
       profile: {
         name: "users/default",
         biologicalCycle: BiologicalCycleModel.OVULATORY,
+        contraception: ContraceptionType.NONE,
         cycleRegularity: CycleRegularity.REGULAR,
+        reproductiveGoal: ReproductiveGoal.NOT_TRACKING_FERTILITY,
         trackingFocus: [TrackingFocus.BLEEDING],
       },
     });

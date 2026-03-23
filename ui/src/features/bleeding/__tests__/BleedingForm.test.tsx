@@ -1,10 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import React from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import BleedingForm from "../BleedingForm";
 
 const mockBack = vi.fn();
-const mockRouter = { back: mockBack } as never;
+const mockRouter = { back: mockBack, view: { main: false } } as never;
 
 const mockCreateBleedingObservation = vi.fn();
 const mockGetBleedingObservation = vi.fn();
@@ -76,9 +75,7 @@ describe("BleedingForm", () => {
   it("shows error dialog on submit failure", async () => {
     const { f7 } = await import("framework7-react");
     const alertSpy = vi.spyOn(f7.dialog, "alert");
-    mockCreateBleedingObservation.mockRejectedValue(
-      new Error("Server error"),
-    );
+    mockCreateBleedingObservation.mockRejectedValue(new Error("Server error"));
 
     render(<BleedingForm f7router={mockRouter} />);
     fireEvent.click(screen.getByText("Save"));

@@ -1,0 +1,56 @@
+name: OpenMenses
+
+options:
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "16.0"
+  createIntermediateGroups: true
+
+targets:
+  OpenMenses:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    # Swift source files in OpenMenses/. xcodegen auto-routes each file type:
+    # .swift → Compile Sources, .storyboard/.xcassets → Copy Bundle Resources,
+    # Info.plist → referenced via INFOPLIST_FILE build setting (not compiled).
+    sources:
+      - path: OpenMenses
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.openmenses.app
+        # 1 = iPhone, 2 = iPad (both supported)
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SWIFT_VERSION: "5.0"
+        INFOPLIST_FILE: OpenMenses/Info.plist
+        # Disable Xcode 13+ auto-generated plist — we provide our own.
+        GENERATE_INFOPLIST_FILE: NO
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    dependencies:
+      # Engine.xcframework is a static archive (ar) produced by `gomobile bind`.
+      # Static frameworks are merged into the main binary at link time — they
+      # must NOT be embedded in the app bundle (embed: false).
+      - framework: Engine.xcframework
+        embed: false
+    postBuildScripts:
+      # Copy the Vite production build output into the app bundle so the Go
+      # engine can serve the UI from its local HTTP server.
+      # Prerequisites: run `make ui-bundle` from the repo root before building.
+      - script: |
+          REPO_ROOT="${SRCROOT}/../.."
+          UI_DIST="${REPO_ROOT}/ui/dist"
+          UI_DEST="${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ui"
+          if [ -d "${UI_DIST}" ]; then
+            rm -rf "${UI_DEST}"
+            mkdir -p "${UI_DEST}"
+            cp -R "${UI_DIST}/." "${UI_DEST}/"
+            echo "note: Copied UI assets from ${UI_DIST}"
+          else
+            echo "warning: UI assets not found at ${UI_DIST}. Run 'make ui-bundle' from the repo root, then rebuild."
+          fi
+        name: "Copy UI Assets"
+        # Always run this phase — the output directory is not tracked by Xcode's
+        # build system, so dependency analysis would skip it incorrectly.
+        basedOnDependencyAnalysis: false
