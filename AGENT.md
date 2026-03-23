@@ -95,6 +95,9 @@ Always use these `make` targets. Do not run the underlying tools directly unless
 | `make lint`           | Run all linters (proto + engine + ui)    |
 | `make test`           | Run all tests (engine + ui)              |
 | `make ci`             | Run all CI validation steps              |
+| `make mobile-setup`   | Install gomobile tooling (one-time)      |
+| `make mobile-ios`     | Build Engine.xcframework (gomobile bind) |
+| `make ui-bundle`      | Build UI production bundle into ui/dist/ |
 
 ---
 
