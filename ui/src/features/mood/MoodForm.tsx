@@ -20,7 +20,11 @@ interface MoodFormProps {
   name?: string;
 }
 
-const MoodForm: React.FC<MoodFormProps> = ({ f7router, f7route, name: nameProp }) => {
+const MoodForm: React.FC<MoodFormProps> = ({
+  f7router,
+  f7route,
+  name: nameProp,
+}) => {
   const name = nameProp ?? f7route?.query?.name;
   const [timestamp, setTimestamp] = useState(new Date());
   const [mood, setMood] = useState<number>(MoodType.CALM);
@@ -76,7 +80,11 @@ const MoodForm: React.FC<MoodFormProps> = ({ f7router, f7route, name: nameProp }
         });
       }
 
-      f7router.back();
+      if (f7router.view?.main) {
+        f7router.navigate("/", { clearPreviousHistory: true });
+      } else {
+        f7router.back();
+      }
     } catch (err) {
       console.error("Failed to save mood observation:", err);
       f7.dialog.alert(
@@ -91,35 +99,35 @@ const MoodForm: React.FC<MoodFormProps> = ({ f7router, f7route, name: nameProp }
   return (
     <Page pageContent={false}>
       <div className="page-content">
-      <Navbar title={isEdit ? "Edit Mood" : "Log Mood"} backLink="Back" />
+        <Navbar title={isEdit ? "Edit Mood" : "Log Mood"} backLink="Back" />
 
-      <div style={{ padding: "0 16px 8px" }}>
-        <DateTimePicker value={timestamp} onChange={setTimestamp} />
-      </div>
+        <div style={{ padding: "0 16px 8px" }}>
+          <DateTimePicker value={timestamp} onChange={setTimestamp} />
+        </div>
 
-      <BlockTitle>Mood</BlockTitle>
-      <EnumSelector
-        options={moodTypeOptions}
-        selected={mood}
-        onChange={setMood}
-      />
+        <BlockTitle>Mood</BlockTitle>
+        <EnumSelector
+          options={moodTypeOptions}
+          selected={mood}
+          onChange={setMood}
+        />
 
-      <BlockTitle>Intensity</BlockTitle>
-      <EnumSelector
-        options={moodIntensityOptions}
-        selected={intensity}
-        onChange={setIntensity}
-      />
+        <BlockTitle>Intensity</BlockTitle>
+        <EnumSelector
+          options={moodIntensityOptions}
+          selected={intensity}
+          onChange={setIntensity}
+        />
 
-      <List inset>
-        <NotesField value={note} onChange={setNote} />
-      </List>
+        <List inset>
+          <NotesField value={note} onChange={setNote} />
+        </List>
 
-      <div style={{ padding: "0 16px" }}>
-        <Button fill round large onClick={handleSubmit} disabled={submitting}>
-          {submitting ? "Saving..." : isEdit ? "Update" : "Save"}
-        </Button>
-      </div>
+        <div style={{ padding: "0 16px" }}>
+          <Button fill round large onClick={handleSubmit} disabled={submitting}>
+            {submitting ? "Saving..." : isEdit ? "Update" : "Save"}
+          </Button>
+        </div>
       </div>
     </Page>
   );

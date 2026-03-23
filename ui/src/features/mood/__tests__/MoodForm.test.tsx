@@ -1,10 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import React from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import MoodForm from "../MoodForm";
 
 const mockBack = vi.fn();
-const mockRouter = { back: mockBack } as never;
+const mockRouter = { back: mockBack, view: { main: false } } as never;
 
 const mockCreateMoodObservation = vi.fn();
 const mockGetMoodObservation = vi.fn();
@@ -14,8 +13,7 @@ vi.mock("../../../lib/client", () => ({
   client: {
     createMoodObservation: (...args: unknown[]) =>
       mockCreateMoodObservation(...args),
-    getMoodObservation: (...args: unknown[]) =>
-      mockGetMoodObservation(...args),
+    getMoodObservation: (...args: unknown[]) => mockGetMoodObservation(...args),
     updateMoodObservation: (...args: unknown[]) =>
       mockUpdateMoodObservation(...args),
   },

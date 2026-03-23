@@ -48,6 +48,10 @@ ui/.eslintcache
 bin/
 dist/
 
+# iOS mobile shell — generated artifacts (rebuild with `make mobile-ios` and `make ui-bundle`)
+mobile/ios/Engine.xcframework/
+mobile/ios/ui/
+
 # Logs
 *.log
 

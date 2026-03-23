@@ -1,0 +1,377 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		05C4E8C038C781B94B34F027 /* Engine.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1461C1208D592CF700F3EECF /* Engine.xcframework */; };
+		10465696C2FC3B076020CC66 /* EngineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804A4A4C8699B537177457FF /* EngineManager.swift */; };
+		4DEFF8B2C4F74AD73892F2A7 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE91AC08962277F49FC64BE3 /* WebViewController.swift */; };
+		4F1B5E33645404DBDBDA512F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8F8B0CDC420E7B83A2338 /* AppDelegate.swift */; };
+		7048C643C0D9076A1BF062D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB940A0631D874FE5C3817EB /* LaunchScreen.storyboard */; };
+		C676EE5D6EA524EDFC2C4416 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146D007408CED427A29F1D1F /* SceneDelegate.swift */; };
+		DEEDE3B023C128A2CF23C176 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C0B4F2E6B8419E8F6CEFBB0 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1461C1208D592CF700F3EECF /* Engine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Engine.xcframework; sourceTree = "<group>"; };
+		146D007408CED427A29F1D1F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		1FAA5476179E49EAE8605C50 /* OpenMenses.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = OpenMenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C0B4F2E6B8419E8F6CEFBB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5FD54A47AF2F189DA74A7A5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		804A4A4C8699B537177457FF /* EngineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineManager.swift; sourceTree = "<group>"; };
+		BE91AC08962277F49FC64BE3 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		BFF8F8B0CDC420E7B83A2338 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EB940A0631D874FE5C3817EB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BD0F217065329FCFC124B065 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				05C4E8C038C781B94B34F027 /* Engine.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4C690E523E2FC1DCE8ECC9B4 /* OpenMenses */ = {
+			isa = PBXGroup;
+			children = (
+				BFF8F8B0CDC420E7B83A2338 /* AppDelegate.swift */,
+				3C0B4F2E6B8419E8F6CEFBB0 /* Assets.xcassets */,
+				804A4A4C8699B537177457FF /* EngineManager.swift */,
+				5FD54A47AF2F189DA74A7A5F /* Info.plist */,
+				EB940A0631D874FE5C3817EB /* LaunchScreen.storyboard */,
+				146D007408CED427A29F1D1F /* SceneDelegate.swift */,
+				BE91AC08962277F49FC64BE3 /* WebViewController.swift */,
+			);
+			path = OpenMenses;
+			sourceTree = "<group>";
+		};
+		BD20F858EF4D370E6ADD9663 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1FAA5476179E49EAE8605C50 /* OpenMenses.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D70CB59833EB6D33410D45C1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1461C1208D592CF700F3EECF /* Engine.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E3EF413B4B2F6C75EB1ED011 = {
+			isa = PBXGroup;
+			children = (
+				4C690E523E2FC1DCE8ECC9B4 /* OpenMenses */,
+				D70CB59833EB6D33410D45C1 /* Frameworks */,
+				BD20F858EF4D370E6ADD9663 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8801ACF20703F6FDCE81D425 /* OpenMenses */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E29D22FAFC2CAB04F54EBDDF /* Build configuration list for PBXNativeTarget "OpenMenses" */;
+			buildPhases = (
+				3BE4276816AD25609D9AB868 /* Sources */,
+				19384A3EB2BC64703D92D64E /* Resources */,
+				BD0F217065329FCFC124B065 /* Frameworks */,
+				DED6968569FC8FDFF369D8B8 /* Copy UI Assets */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenMenses;
+			packageProductDependencies = (
+			);
+			productName = OpenMenses;
+			productReference = 1FAA5476179E49EAE8605C50 /* OpenMenses.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		07F8D99B5CAC3EF7BE6F8FED /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 6FEA8F8EEC29D0C9B4D2FD69 /* Build configuration list for PBXProject "OpenMenses" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = E3EF413B4B2F6C75EB1ED011;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = BD20F858EF4D370E6ADD9663 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8801ACF20703F6FDCE81D425 /* OpenMenses */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		19384A3EB2BC64703D92D64E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DEEDE3B023C128A2CF23C176 /* Assets.xcassets in Resources */,
+				7048C643C0D9076A1BF062D0 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DED6968569FC8FDFF369D8B8 /* Copy UI Assets */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy UI Assets";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "REPO_ROOT=\"${SRCROOT}/../..\"\nUI_DIST=\"${REPO_ROOT}/ui/dist\"\nUI_DEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ui\"\nif [ -d \"${UI_DIST}\" ]; then\n  rm -rf \"${UI_DEST}\"\n  mkdir -p \"${UI_DEST}\"\n  cp -R \"${UI_DIST}/.\" \"${UI_DEST}/\"\n  echo \"note: Copied UI assets from ${UI_DIST}\"\nelse\n  echo \"warning: UI assets not found at ${UI_DIST}. Run 'make ui-bundle' from the repo root, then rebuild.\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3BE4276816AD25609D9AB868 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F1B5E33645404DBDBDA512F /* AppDelegate.swift in Sources */,
+				10465696C2FC3B076020CC66 /* EngineManager.swift in Sources */,
+				C676EE5D6EA524EDFC2C4416 /* SceneDelegate.swift in Sources */,
+				4DEFF8B2C4F74AD73892F2A7 /* WebViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0BAD0F16213FA1D0EEF0BE71 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		8B95C1CBCFD36191390A437F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A3576DF51A6D68BDC9582ADD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = OpenMenses/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openmenses.app;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AC7D11BF11B5B44E95CFB851 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = OpenMenses/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openmenses.app;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6FEA8F8EEC29D0C9B4D2FD69 /* Build configuration list for PBXProject "OpenMenses" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0BAD0F16213FA1D0EEF0BE71 /* Debug */,
+				8B95C1CBCFD36191390A437F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E29D22FAFC2CAB04F54EBDDF /* Build configuration list for PBXNativeTarget "OpenMenses" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3576DF51A6D68BDC9582ADD /* Debug */,
+				AC7D11BF11B5B44E95CFB851 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 07F8D99B5CAC3EF7BE6F8FED /* Project object */;
+}

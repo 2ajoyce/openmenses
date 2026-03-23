@@ -20,7 +20,11 @@ interface SymptomFormProps {
   name?: string;
 }
 
-const SymptomForm: React.FC<SymptomFormProps> = ({ f7router, f7route, name: nameProp }) => {
+const SymptomForm: React.FC<SymptomFormProps> = ({
+  f7router,
+  f7route,
+  name: nameProp,
+}) => {
   const name = nameProp ?? f7route?.query?.name;
   const [timestamp, setTimestamp] = useState(new Date());
   const [symptom, setSymptom] = useState<number>(SymptomType.CRAMPS);
@@ -76,7 +80,11 @@ const SymptomForm: React.FC<SymptomFormProps> = ({ f7router, f7route, name: name
         });
       }
 
-      f7router.back();
+      if (f7router.view?.main) {
+        f7router.navigate("/", { clearPreviousHistory: true });
+      } else {
+        f7router.back();
+      }
     } catch (err) {
       console.error("Failed to save symptom observation:", err);
       f7.dialog.alert(
@@ -91,35 +99,38 @@ const SymptomForm: React.FC<SymptomFormProps> = ({ f7router, f7route, name: name
   return (
     <Page pageContent={false}>
       <div className="page-content">
-      <Navbar title={isEdit ? "Edit Symptom" : "Log Symptom"} backLink="Back" />
+        <Navbar
+          title={isEdit ? "Edit Symptom" : "Log Symptom"}
+          backLink="Back"
+        />
 
-      <div style={{ padding: "0 16px 8px" }}>
-        <DateTimePicker value={timestamp} onChange={setTimestamp} />
-      </div>
+        <div style={{ padding: "0 16px 8px" }}>
+          <DateTimePicker value={timestamp} onChange={setTimestamp} />
+        </div>
 
-      <BlockTitle>Symptom</BlockTitle>
-      <EnumSelector
-        options={symptomTypeOptions}
-        selected={symptom}
-        onChange={setSymptom}
-      />
+        <BlockTitle>Symptom</BlockTitle>
+        <EnumSelector
+          options={symptomTypeOptions}
+          selected={symptom}
+          onChange={setSymptom}
+        />
 
-      <BlockTitle>Severity</BlockTitle>
-      <EnumSelector
-        options={symptomSeverityOptions}
-        selected={severity}
-        onChange={setSeverity}
-      />
+        <BlockTitle>Severity</BlockTitle>
+        <EnumSelector
+          options={symptomSeverityOptions}
+          selected={severity}
+          onChange={setSeverity}
+        />
 
-      <List inset>
-        <NotesField value={note} onChange={setNote} />
-      </List>
+        <List inset>
+          <NotesField value={note} onChange={setNote} />
+        </List>
 
-      <div style={{ padding: "0 16px" }}>
-        <Button fill round large onClick={handleSubmit} disabled={submitting}>
-          {submitting ? "Saving..." : isEdit ? "Update" : "Save"}
-        </Button>
-      </div>
+        <div style={{ padding: "0 16px" }}>
+          <Button fill round large onClick={handleSubmit} disabled={submitting}>
+            {submitting ? "Saving..." : isEdit ? "Update" : "Save"}
+          </Button>
+        </div>
       </div>
     </Page>
   );
