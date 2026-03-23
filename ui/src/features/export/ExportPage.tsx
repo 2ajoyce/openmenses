@@ -10,6 +10,27 @@ import React, { useState } from "react";
 import { client, DEFAULT_PARENT } from "../../lib/client";
 import { exportPayloadToCSV } from "./csvConverter";
 
+/** Returns true when running inside the native iOS WKWebView shell. */
+function isNativeShell(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    "webkit" in window &&
+    "messageHandlers" in
+      (window as unknown as { webkit: { messageHandlers: unknown } }).webkit
+  );
+}
+
+/** Share a file via the native iOS share sheet. */
+function shareFileNative(data: string, filename: string): void {
+  (
+    window as unknown as {
+      webkit: {
+        messageHandlers: { export: { postMessage: (msg: unknown) => void } };
+      };
+    }
+  ).webkit.messageHandlers.export.postMessage({ data, filename });
+}
+
 const ExportPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,11 +46,16 @@ const ExportPage: React.FC = () => {
         parent: DEFAULT_PARENT,
       });
 
-      const jsonData = new Uint8Array(response.data);
-      const blob = new Blob([jsonData], {
-        type: "application/json;charset=utf-8",
-      });
-      downloadFile(blob, "openmenses-export.json");
+      const text = new TextDecoder().decode(new Uint8Array(response.data));
+
+      if (isNativeShell()) {
+        shareFileNative(text, "openmenses-export.json");
+      } else {
+        const blob = new Blob([new Uint8Array(response.data)], {
+          type: "application/json;charset=utf-8",
+        });
+        downloadFile(blob, "openmenses-export.json");
+      }
 
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
@@ -76,10 +102,14 @@ const ExportPage: React.FC = () => {
         csvOutput.cycles,
       ].join("\n");
 
-      const blob = new Blob([combinedCSV], {
-        type: "text/csv;charset=utf-8",
-      });
-      downloadFile(blob, "openmenses-export.csv");
+      if (isNativeShell()) {
+        shareFileNative(combinedCSV, "openmenses-export.csv");
+      } else {
+        const blob = new Blob([combinedCSV], {
+          type: "text/csv;charset=utf-8",
+        });
+        downloadFile(blob, "openmenses-export.csv");
+      }
 
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);

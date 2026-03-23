@@ -174,6 +174,32 @@ describe("TimelinePage", () => {
     expect(screen.queryByText(/Calm/)).not.toBeInTheDocument();
   });
 
+  it("shows filtered empty state when records exist but none match active filter", async () => {
+    mockListTimeline.mockResolvedValue({
+      records: [bleedingRecord],
+      pagination: { nextPageToken: "" },
+    });
+
+    render(<TimelinePage f7router={mockRouter} />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Light/)).toBeInTheDocument();
+    });
+
+    // Activate Symptoms filter — bleeding record should be hidden
+    fireEvent.click(screen.getByText("Symptoms"));
+
+    expect(
+      screen.getByText("No observations match the current filters"),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("No observations logged yet"),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Log your first observation"),
+    ).not.toBeInTheDocument();
+  });
+
   it("navigates to log page from empty state action", async () => {
     mockListTimeline.mockResolvedValue({
       records: [],
@@ -256,8 +282,12 @@ describe("TimelinePage", () => {
     // verify the in-flight guard blocks any concurrent loadMore triggers.
     let resolvePage1!: (value: unknown) => void;
     let resolvePage2!: (value: unknown) => void;
-    const page1Promise = new Promise((r) => { resolvePage1 = r; });
-    const page2Promise = new Promise((r) => { resolvePage2 = r; });
+    const page1Promise = new Promise((r) => {
+      resolvePage1 = r;
+    });
+    const page2Promise = new Promise((r) => {
+      resolvePage2 = r;
+    });
 
     mockListTimeline
       .mockReturnValueOnce(

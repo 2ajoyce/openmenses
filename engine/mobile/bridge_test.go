@@ -43,7 +43,7 @@ func TestStartStop(t *testing.T) {
 	if err != nil {
 		t.Fatalf("request failed: %v", err)
 	}
-	resp.Body.Close()
+	_ = resp.Body.Close()
 	// We expect a 404 since no UI assets are mounted, but the request should go through.
 
 	// Stop the engine.
@@ -113,7 +113,7 @@ func TestAuthMiddleware(t *testing.T) {
 	if err != nil {
 		t.Fatalf("request failed: %v", err)
 	}
-	resp.Body.Close()
+	_ = resp.Body.Close()
 	if resp.StatusCode != http.StatusUnauthorized {
 		t.Errorf("no auth header: expected 401, got %d", resp.StatusCode)
 	}
@@ -126,7 +126,7 @@ func TestAuthMiddleware(t *testing.T) {
 	if err != nil {
 		t.Fatalf("request failed: %v", err)
 	}
-	resp.Body.Close()
+	_ = resp.Body.Close()
 	if resp.StatusCode != http.StatusUnauthorized {
 		t.Errorf("wrong token: expected 401, got %d", resp.StatusCode)
 	}
@@ -139,7 +139,7 @@ func TestAuthMiddleware(t *testing.T) {
 	if err != nil {
 		t.Fatalf("request failed: %v", err)
 	}
-	resp.Body.Close()
+	_ = resp.Body.Close()
 	if resp.StatusCode == http.StatusUnauthorized {
 		t.Errorf("valid token: expected non-401, got %d", resp.StatusCode)
 	}
@@ -150,7 +150,7 @@ func TestAuthMiddleware(t *testing.T) {
 	if err != nil {
 		t.Fatalf("request failed: %v", err)
 	}
-	resp.Body.Close()
+	_ = resp.Body.Close()
 	if resp.StatusCode == http.StatusUnauthorized {
 		t.Errorf("static route: should not require auth, got 401")
 	}
@@ -190,7 +190,7 @@ func TestStaticFileServing(t *testing.T) {
 		if err != nil {
 			t.Fatalf("request failed: %v", err)
 		}
-		defer resp.Body.Close()
+		defer func() { _ = resp.Body.Close() }()
 		body, _ := io.ReadAll(resp.Body)
 		return resp.StatusCode, string(body)
 	}

@@ -1411,14 +1411,54 @@
 
 /* Print Styles */
 @media print {
+  /* Hide all Framework7 chrome — tabbar, navbar, toolbar */
   .print-button,
-  .f7-navbar,
-  .f7-toolbar {
+  .navbar,
+  .toolbar,
+  .tabbar,
+  .toolbar-inner,
+  .tabbar-inner {
     display: none !important;
   }
 
-  .clinician-summary {
+  /*
+   * Hide ALL Framework7 pages except the clinician summary.
+   * Framework7 keeps every page in the DOM; without this rule the print
+   * formatter renders all of them stacked on top of each other once the
+   * container constraints (overflow/position/height) are lifted below.
+   */
+  .page:not(.clinician-summary) {
+    display: none !important;
+  }
+
+  /*
+   * Reset Framework7 container constraints so the clinician summary's
+   * full scrollable content is laid out for print instead of being
+   * clipped to the viewport.
+   *
+   * Framework7 uses:
+   *   .view         { overflow: hidden; height: 100%; position: relative }
+   *   .page         { position: absolute; height: 100% }
+   *   .page-content { overflow: auto;    height: 100% }
+   */
+  .views,
+  .view {
+    overflow: visible !important;
+    height: auto !important;
+    position: static !important;
+  }
+
+  .page.clinician-summary {
+    position: static !important;
+    height: auto !important;
     background-color: #ffffff !important;
+  }
+
+  .page.clinician-summary > .page-content {
+    overflow: visible !important;
+    height: auto !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
   }
 
   .summary-content {

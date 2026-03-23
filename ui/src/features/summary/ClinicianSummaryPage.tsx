@@ -21,6 +21,16 @@ import {
   predictionTypeLabel,
 } from "../../lib/enums";
 
+/** Returns true when running inside the native iOS WKWebView shell. */
+function isNativeShell(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    "webkit" in window &&
+    "messageHandlers" in
+      (window as unknown as { webkit: { messageHandlers: unknown } }).webkit
+  );
+}
+
 interface ClinicianSummaryPageProps {
   f7router: Router.Router;
 }
@@ -98,7 +108,17 @@ const ClinicianSummaryPage: React.FC<ClinicianSummaryPageProps> = () => {
   }, []);
 
   const handlePrint = () => {
-    window.print();
+    if (isNativeShell()) {
+      (
+        window as unknown as {
+          webkit: {
+            messageHandlers: { print: { postMessage: (msg: unknown) => void } };
+          };
+        }
+      ).webkit.messageHandlers.print.postMessage({});
+    } else {
+      window.print();
+    }
   };
 
   if (loading) {

@@ -1,6 +1,8 @@
 # .golangci.yml — golangci-lint configuration for the openmenses engine
 # See: https://golangci-lint.run/usage/configuration/
 
+version: "2"
+
 run:
   timeout: 5m
   # Run from the engine/ directory
@@ -9,16 +11,18 @@ run:
 linters:
   enable:
     - errcheck # Check for unchecked errors
-    - gosimple # Simplification suggestions
     - govet # Go vet checks
     - ineffassign # Detect ineffectual assignments
-    - staticcheck # Static analysis
+    - staticcheck # Static analysis (includes gosimple rules)
     - unused # Detect unused code
-    - gofmt # Enforce gofmt formatting
-    - goimports # Enforce import ordering
     - misspell # Catch common misspellings
     - godot # Require comments to end with a period
     - nilerr # Find incorrect nil error returns
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
 
 linters-settings:
   gofmt:

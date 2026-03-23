@@ -5,7 +5,12 @@ import WebKit
 /// local HTTP server. The engine config (port and auth token) is injected
 /// into the page as `window.__OPENMENSES_ENGINE__` before any page scripts
 /// run, so the Connect-RPC client can find the server at runtime.
-final class WebViewController: UIViewController {
+///
+/// Native message handlers:
+///   "export" — receives { format: "json"|"csv", data: string, filename: string }
+///              and presents a UIActivityViewController share sheet.
+///   "print"  — triggers native printing of the current web view.
+final class WebViewController: UIViewController, WKScriptMessageHandler {
 
     private var webView: WKWebView!
 
@@ -14,6 +19,10 @@ final class WebViewController: UIViewController {
 
         let webConfig = WKWebViewConfiguration()
         webConfig.allowsInlineMediaPlayback = true
+
+        // Register native message handlers so the UI can trigger iOS actions.
+        webConfig.userContentController.add(self, name: "export")
+        webConfig.userContentController.add(self, name: "print")
 
         // Inject engine config before any page script runs.
         // The auth token is embedded inline — this is safe because the script
@@ -57,4 +66,72 @@ final class WebViewController: UIViewController {
             webView.load(URLRequest(url: url))
         }
     }
+
+    // MARK: - WKScriptMessageHandler
+
+    func userContentController(
+        _ userContentController: WKUserContentController,
+        didReceive message: WKScriptMessage
+    ) {
+        switch message.name {
+        case "export":
+            handleExportMessage(message)
+        case "print":
+            handlePrintMessage()
+        default:
+            break
+        }
+    }
+
+    // MARK: - Export
+
+    /// Receives file data from the UI layer and presents a share sheet.
+    /// Expected message body: { format: "json"|"csv", data: String, filename: String }
+    private func handleExportMessage(_ message: WKScriptMessage) {
+        guard let body = message.body as? [String: Any],
+              let data = body["data"] as? String,
+              let filename = body["filename"] as? String else {
+            NSLog("WebViewController: invalid export message body")
+            return
+        }
+
+        guard let fileData = data.data(using: .utf8) else {
+            NSLog("WebViewController: could not encode export data as UTF-8")
+            return
+        }
+
+        // Write to a temporary file so UIActivityViewController can access it.
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
+        do {
+            try fileData.write(to: tempURL, options: .atomic)
+        } catch {
+            NSLog("WebViewController: failed to write temp export file: %@", error.localizedDescription)
+            return
+        }
+
+        let activityVC = UIActivityViewController(activityItems: [tempURL], applicationActivities: nil)
+
+        // On iPad, UIActivityViewController must be presented in a popover.
+        if let popover = activityVC.popoverPresentationController {
+            popover.sourceView = view
+            popover.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+            popover.permittedArrowDirections = []
+        }
+
+        present(activityVC, animated: true)
+    }
+
+    // MARK: - Print
+
+    /// Triggers native printing of the current WKWebView contents.
+    private func handlePrintMessage() {
+        let printController = UIPrintInteractionController.shared
+        let printInfo = UIPrintInfo(dictionary: nil)
+        printInfo.outputType = .general
+        printInfo.jobName = "OpenMenses Clinician Summary"
+        printController.printInfo = printInfo
+        printController.printFormatter = webView.viewPrintFormatter()
+        printController.present(animated: true, completionHandler: nil)
+    }
 }
+

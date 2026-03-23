@@ -291,12 +291,18 @@ const TimelinePage: React.FC<TimelinePageProps> = ({ f7router }) => {
           </div>
         )}
 
-        {!loading && filteredRecords.length === 0 && (
-          <EmptyState
-            message="No observations logged yet"
-            actionLabel="Log your first observation"
-            onAction={() => f7router.navigate("/log/")}
-          />
+        {!loading &&
+          filteredRecords.length === 0 &&
+          activeFilters.size === 0 && (
+            <EmptyState
+              message="No observations logged yet"
+              actionLabel="Log your first observation"
+              onAction={() => f7router.navigate("/log/")}
+            />
+          )}
+
+        {!loading && filteredRecords.length === 0 && activeFilters.size > 0 && (
+          <EmptyState message="No observations match the current filters" />
         )}
 
         <div
