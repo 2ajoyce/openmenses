@@ -206,7 +206,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "error: failed to create listener: %v\n", err)
 		os.Exit(1)
 	}
-	defer listener.Close()
+	defer func() { _ = listener.Close() }()
 
 	addr := listener.Addr().String()
 	baseURL := "http://" + addr
@@ -223,7 +223,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "warning: server error: %v\n", err)
 		}
 	}()
-	defer server.Close()
+	defer func() { _ = server.Close() }()
 
 	// Create a Connect-RPC client pointing to the local listener
 	client := openmensesv1connect.NewCycleTrackerServiceClient(http.DefaultClient, baseURL)

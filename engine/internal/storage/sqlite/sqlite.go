@@ -46,7 +46,7 @@ func Open(ctx context.Context, path string) (*Store, error) {
 	db.SetMaxOpenConns(1)
 
 	if err := migrations.Run(ctx, db); err != nil {
-		db.Close()
+		_ = db.Close()
 		return nil, fmt.Errorf("sqlite: migrate: %w", err)
 	}
 
@@ -243,7 +243,7 @@ func (r *bleedingRepo) ListByUserAndDateRange(ctx context.Context, userID, start
 	if err != nil {
 		return storage.ListPage[*v1.BleedingObservation]{}, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 	return scanBleedings(rows, limit, offset)
 }
 
@@ -321,7 +321,7 @@ func (r *symptomRepo) ListByUser(ctx context.Context, userID string, page storag
 	if err != nil {
 		return storage.ListPage[*v1.SymptomObservation]{}, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 	return scanSymptoms(rows, limit, offset)
 }
 
@@ -341,7 +341,7 @@ func (r *symptomRepo) ListByUserAndDateRange(ctx context.Context, userID, start,
 	if err != nil {
 		return storage.ListPage[*v1.SymptomObservation]{}, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 	return scanSymptoms(rows, limit, offset)
 }
 
@@ -424,7 +424,7 @@ func (r *moodRepo) ListByUserAndDateRange(ctx context.Context, userID, start, en
 	if err != nil {
 		return storage.ListPage[*v1.MoodObservation]{}, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 	return scanMoods(rows, limit, offset)
 }
 
@@ -502,7 +502,7 @@ func (r *medicationRepo) ListByUser(ctx context.Context, userID string, page sto
 	if err != nil {
 		return storage.ListPage[*v1.Medication]{}, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 	var items []*v1.Medication
 	for rows.Next() {
 		var d []byte
@@ -598,7 +598,7 @@ func (r *medicationEventRepo) ListByUserAndDateRange(ctx context.Context, userID
 	if err != nil {
 		return storage.ListPage[*v1.MedicationEvent]{}, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 	return scanMedEvents(rows, limit, offset)
 }
 
@@ -613,7 +613,7 @@ func (r *medicationEventRepo) ListByMedicationID(ctx context.Context, medication
 	if err != nil {
 		return storage.ListPage[*v1.MedicationEvent]{}, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 	return scanMedEvents(rows, limit, offset)
 }
 
@@ -696,7 +696,7 @@ func (r *cycleRepo) ListByUser(ctx context.Context, userID string, page storage.
 	if err != nil {
 		return storage.ListPage[*v1.Cycle]{}, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 	return scanCycles(rows, limit, offset)
 }
 
@@ -717,7 +717,7 @@ func (r *cycleRepo) ListByUserAndDateRange(ctx context.Context, userID, start, e
 	if err != nil {
 		return storage.ListPage[*v1.Cycle]{}, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 	return scanCycles(rows, limit, offset)
 }
 
@@ -812,7 +812,7 @@ func (r *phaseEstimateRepo) ListByUserAndDateRange(ctx context.Context, userID, 
 	if err != nil {
 		return storage.ListPage[*v1.PhaseEstimate]{}, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 	var items []*v1.PhaseEstimate
 	for rows.Next() {
 		var d []byte
@@ -845,7 +845,7 @@ func (r *phaseEstimateRepo) DeleteByCycleID(ctx context.Context, cycleID string)
 	if err != nil {
 		return err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var toDelete []string
 	for rows.Next() {
@@ -909,7 +909,7 @@ func (r *predictionRepo) ListByUser(ctx context.Context, userID string, page sto
 	if err != nil {
 		return storage.ListPage[*v1.Prediction]{}, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 	var items []*v1.Prediction
 	for rows.Next() {
 		var d []byte
@@ -970,7 +970,7 @@ func (r *insightRepo) ListByUser(ctx context.Context, userID string, page storag
 	if err != nil {
 		return storage.ListPage[*v1.Insight]{}, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 	var items []*v1.Insight
 	for rows.Next() {
 		var d []byte

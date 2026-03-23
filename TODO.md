@@ -52,25 +52,25 @@ Read these before implementing:
 
 Steps 8–11 (Xcode project, EngineManager, WebViewController, AppDelegate/SceneDelegate) are complete. The iOS shell is built with xcodegen (`project.yml`), links `Engine.xcframework` as a static framework, copies UI assets via a post-build script, and injects engine config (`port`, `authToken`) into the WKWebView at document start. The bridge API uses separate `Port()`/`AuthToken()` getters (in `engine/mobile/bridge.go`) to avoid gomobile multi-return complexity. `.gitignore` covers `Engine.xcframework/` and `ui/`. All engine tests pass; `go vet` and `gofmt` are clean. `NSAppTransportSecurity` uses `NSAllowsLocalNetworking` (not `NSAllowsArbitraryLoads`).
 
-- [X] Build and run on iOS Simulator — expect: app launches, WebView loads UI, can create/view observations
+- [x] Build and run on iOS Simulator — expect: app launches, WebView loads UI, can create/view observations
 
 ### Step 12: End-to-end verification
 
 Manual verification checklist (no automated iOS tests for MVP):
 
-- [X] `make ui-bundle` produces `ui/dist/` with production build
-- [X] `make mobile-ios` produces `mobile/ios/Engine.xcframework/`
+- [x] `make ui-bundle` produces `ui/dist/` with production build
+- [x] `make mobile-ios` produces `mobile/ios/Engine.xcframework/`
 - [x] Xcode build succeeds with both artifacts linked
 - [x] iOS Simulator: app launches → blank LaunchScreen → WebView loads Framework7 UI
 - [x] Can create a user profile
 - [x] Can log a bleeding observation
-- [ ] Can view the timeline
+- [x] Can view the timeline
 - [x] Can navigate all tabs (Timeline, Cycles, Log, Medications, Settings)
-- [ ] Can export data (JSON/CSV)
-- [ ] Can view clinician summary
-- [ ] App survives backgrounding and foregrounding
-- [ ] App data persists across launches (SQLite in Documents)
-- [ ] `make ci` still passes (no regressions from UI changes)
+- [x] Can export data (JSON/CSV)
+- [x] Can view clinician summary
+- [x] App survives backgrounding and foregrounding
+- [x] App data persists across launches (SQLite in Documents)
+- [x] `make ci` still passes (no regressions from UI changes)
 
 ---
 
