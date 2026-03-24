@@ -75,6 +75,7 @@ Before making changes, consult these documents in order of relevance:
 | `UI_Design_Guidelines.md` | UI styling conventions. Covers design tokens, CSS custom properties, utility classes, dark mode, card design, and what not to do (no CSS-in-JS, no inline styles, no Tailwind). |
 | `PROJECT_PLAN.md`         | High-level roadmap, data model philosophy (user-entered vs system-derived vs predictions vs insights), validation strategy, and development phases.                             |
 | `docs/domain-rules.md`    | Authoritative spec for domain algorithms: cycle detection thresholds, phase estimation, prediction eligibility, insight generation.                                             |
+| `docs/algorithms.md`      | User-facing summary of analytic and predictive algorithms: how input data is used to generate insights and predictions.                                                         |
 
 ## Key Design Constraints
 

@@ -14,6 +14,8 @@ Read this file carefully before making any changes.
 - There is **no telemetry, analytics, remote logging, or mandatory cloud service**.
 - Privacy is non-negotiable; do not add anything that transmits user data.
 
+All analytic and predictive algorithms are documented for users and contributors in [docs/algorithms.md](docs/algorithms.md). This file explains, in plain language, how user input is processed to generate insights and predictions.
+
 ---
 
 ## 2. Architecture Rules
