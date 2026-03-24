@@ -283,3 +283,5 @@ Users maintain full control of their information.
 3. The data model must remain stable and versionable.
 4. Algorithms must be transparent and explainable.
 5. The application must operate without centralized infrastructure.
+
+All analytic and predictive algorithms are documented in [docs/algorithms.md](docs/algorithms.md) for user and contributor transparency.

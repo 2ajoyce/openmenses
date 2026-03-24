@@ -6,20 +6,30 @@ All data stays on your device. There is no central server, no telemetry, and no 
 
 ---
 
+## Algorithm Transparency
+
+All analytic and predictive algorithms are documented in plain language for users and contributors. See [docs/algorithms.md](docs/algorithms.md) for a detailed explanation of how your input data is used to generate insights and predictions.
+
+---
+
 ## Architecture
 
 openmenses is structured as a monorepo with the following major layers:
 
 ### Proto contract (`proto/`)
+
 Protobuf definitions are the **canonical contract** and single source of truth for all data models and service interfaces. Generated code lives in `gen/` and must never be edited by hand.
 
 ### Go domain engine (`engine/`)
+
 All business logic, domain rules, cycle predictions, and data persistence are implemented here. This is a local domain engine—not a backend service. It runs on-device via a mobile wrapper or local process.
 
 ### TypeScript UI (`ui/`)
+
 The user interface layer. It must **not** implement domain or business logic; it delegates everything to the Go engine via generated bindings. UI code should be purely presentational.
 
 ### Native mobile wrappers (`mobile/`)
+
 Thin wrappers for iOS and Android that host the Go engine and surface the TypeScript UI via a WebView. No domain logic lives here.
 
 ---
