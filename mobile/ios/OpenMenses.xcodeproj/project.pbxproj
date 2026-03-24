@@ -160,7 +160,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "REPO_ROOT=\"${SRCROOT}/../..\"\nUI_DIST=\"${REPO_ROOT}/ui/dist\"\nUI_DEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ui\"\nif [ -d \"${UI_DIST}\" ]; then\n  rm -rf \"${UI_DEST}\"\n  mkdir -p \"${UI_DEST}\"\n  cp -R \"${UI_DIST}/.\" \"${UI_DEST}/\"\n  echo \"note: Copied UI assets from ${UI_DIST}\"\nelse\n  echo \"warning: UI assets not found at ${UI_DIST}. Run 'make ui-bundle' from the repo root, then rebuild.\"\nfi\n";
+			shellScript = "REPO_ROOT=\"${SRCROOT}/../..\"\nUI_DIST=\"${REPO_ROOT}/ui/dist\"\nUI_DEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ui\"\n\nexport PATH=\"/opt/homebrew/bin:/usr/local/bin:${PATH}\"\n\nif [ ! -d \"${UI_DIST}\" ]; then\n  echo \"note: ui/dist not found -- running make ui-bundle...\"\n  make -C \"${REPO_ROOT}\" ui-bundle\nfi\n\nif [ -d \"${UI_DIST}\" ]; then\n  rm -rf \"${UI_DEST}\"\n  mkdir -p \"${UI_DEST}\"\n  cp -R \"${UI_DIST}/.\" \"${UI_DEST}/\"\n  echo \"note: Copied UI assets from ${UI_DIST}\"\nelse\n  echo \"error: UI assets not found at ${UI_DIST}. Run 'make ui-bundle' from the repo root and rebuild.\"\n  exit 1\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -218,7 +218,7 @@
 				DEVELOPMENT_TEAM = 79AKRQK9LV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -285,7 +285,7 @@
 				DEVELOPMENT_TEAM = 79AKRQK9LV;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
