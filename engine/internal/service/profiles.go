@@ -108,3 +108,57 @@ func (s *CycleTrackerService) UpdateUserProfile(
 
 	return connect.NewResponse(&v1.UpdateUserProfileResponse{Profile: profile}), nil
 }
+
+// DeleteUserProfile removes a user profile and all associated data (observations,
+// cycles, phase estimates, predictions, insights, medications, medication events).
+// Returns CodeNotFound if the profile does not exist.
+func (s *CycleTrackerService) DeleteUserProfile(
+	ctx context.Context,
+	req *connect.Request[v1.DeleteUserProfileRequest],
+) (*connect.Response[v1.DeleteUserProfileResponse], error) {
+	if err := s.validator.ValidateRequest(req.Msg); err != nil {
+		return nil, toConnectErr(err)
+	}
+	userID := req.Msg.GetName()
+
+	// Verify the profile exists before cascade-deleting everything.
+	if _, err := s.store.UserProfiles().GetByID(ctx, userID); err != nil {
+		return nil, toConnectErr(err)
+	}
+
+	// Delete derived data first (predictions, insights, phase estimates),
+	// then child data (observations, medications, events, cycles),
+	// then the profile itself.
+	if err := s.store.Predictions().DeleteByUser(ctx, userID); err != nil {
+		return nil, toConnectErr(err)
+	}
+	if err := s.store.Insights().DeleteByUser(ctx, userID); err != nil {
+		return nil, toConnectErr(err)
+	}
+	if err := s.store.PhaseEstimates().DeleteByUser(ctx, userID); err != nil {
+		return nil, toConnectErr(err)
+	}
+	if err := s.store.Cycles().DeleteByUser(ctx, userID); err != nil {
+		return nil, toConnectErr(err)
+	}
+	if err := s.store.MedicationEvents().DeleteByUser(ctx, userID); err != nil {
+		return nil, toConnectErr(err)
+	}
+	if err := s.store.Medications().DeleteByUser(ctx, userID); err != nil {
+		return nil, toConnectErr(err)
+	}
+	if err := s.store.MoodObservations().DeleteByUser(ctx, userID); err != nil {
+		return nil, toConnectErr(err)
+	}
+	if err := s.store.SymptomObservations().DeleteByUser(ctx, userID); err != nil {
+		return nil, toConnectErr(err)
+	}
+	if err := s.store.BleedingObservations().DeleteByUser(ctx, userID); err != nil {
+		return nil, toConnectErr(err)
+	}
+	if err := s.store.UserProfiles().DeleteByID(ctx, userID); err != nil {
+		return nil, toConnectErr(err)
+	}
+
+	return connect.NewResponse(&v1.DeleteUserProfileResponse{}), nil
+}
