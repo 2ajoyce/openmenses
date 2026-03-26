@@ -196,6 +196,18 @@ func (r *userProfileRepo) Upsert(ctx context.Context, profile *v1.UserProfile) e
 	return err
 }
 
+func (r *userProfileRepo) DeleteByID(ctx context.Context, id string) error {
+	res, err := r.db.ExecContext(ctx, `DELETE FROM user_profiles WHERE id = ?`, id)
+	if err != nil {
+		return err
+	}
+	n, _ := res.RowsAffected()
+	if n == 0 {
+		return fmt.Errorf("%w: profile %s", storage.ErrNotFound, id)
+	}
+	return nil
+}
+
 // ---- BleedingObservation ----------------------------------------------------
 
 type bleedingRepo struct{ db *sql.DB }
@@ -253,6 +265,11 @@ func (r *bleedingRepo) DeleteByID(ctx context.Context, id string) error {
 		return err
 	}
 	return requireAffected(res)
+}
+
+func (r *bleedingRepo) DeleteByUser(ctx context.Context, userID string) error {
+	_, err := r.db.ExecContext(ctx, `DELETE FROM bleeding_observations WHERE user_id = ?`, userID)
+	return err
 }
 
 func scanBleedings(rows *sql.Rows, limit, offset int) (storage.ListPage[*v1.BleedingObservation], error) {
@@ -353,6 +370,11 @@ func (r *symptomRepo) DeleteByID(ctx context.Context, id string) error {
 	return requireAffected(res)
 }
 
+func (r *symptomRepo) DeleteByUser(ctx context.Context, userID string) error {
+	_, err := r.db.ExecContext(ctx, `DELETE FROM symptom_observations WHERE user_id = ?`, userID)
+	return err
+}
+
 func scanSymptoms(rows *sql.Rows, limit, offset int) (storage.ListPage[*v1.SymptomObservation], error) {
 	var items []*v1.SymptomObservation
 	for rows.Next() {
@@ -434,6 +456,11 @@ func (r *moodRepo) DeleteByID(ctx context.Context, id string) error {
 		return err
 	}
 	return requireAffected(res)
+}
+
+func (r *moodRepo) DeleteByUser(ctx context.Context, userID string) error {
+	_, err := r.db.ExecContext(ctx, `DELETE FROM mood_observations WHERE user_id = ?`, userID)
+	return err
 }
 
 func scanMoods(rows *sql.Rows, limit, offset int) (storage.ListPage[*v1.MoodObservation], error) {
@@ -551,6 +578,11 @@ func (r *medicationRepo) DeleteByID(ctx context.Context, id string) error {
 	return requireAffected(res)
 }
 
+func (r *medicationRepo) DeleteByUser(ctx context.Context, userID string) error {
+	_, err := r.db.ExecContext(ctx, `DELETE FROM medications WHERE user_id = ?`, userID)
+	return err
+}
+
 // ---- MedicationEvent --------------------------------------------------------
 
 type medicationEventRepo struct{ db *sql.DB }
@@ -623,6 +655,11 @@ func (r *medicationEventRepo) DeleteByID(ctx context.Context, id string) error {
 		return err
 	}
 	return requireAffected(res)
+}
+
+func (r *medicationEventRepo) DeleteByUser(ctx context.Context, userID string) error {
+	_, err := r.db.ExecContext(ctx, `DELETE FROM medication_events WHERE user_id = ?`, userID)
+	return err
 }
 
 func scanMedEvents(rows *sql.Rows, limit, offset int) (storage.ListPage[*v1.MedicationEvent], error) {
@@ -751,6 +788,11 @@ func (r *cycleRepo) DeleteByID(ctx context.Context, id string) error {
 	return requireAffected(res)
 }
 
+func (r *cycleRepo) DeleteByUser(ctx context.Context, userID string) error {
+	_, err := r.db.ExecContext(ctx, `DELETE FROM cycles WHERE user_id = ?`, userID)
+	return err
+}
+
 func scanCycles(rows *sql.Rows, limit, offset int) (storage.ListPage[*v1.Cycle], error) {
 	var items []*v1.Cycle
 	for rows.Next() {
@@ -875,6 +917,11 @@ func (r *phaseEstimateRepo) DeleteByCycleID(ctx context.Context, cycleID string)
 		}
 	}
 	return nil
+}
+
+func (r *phaseEstimateRepo) DeleteByUser(ctx context.Context, userID string) error {
+	_, err := r.db.ExecContext(ctx, `DELETE FROM phase_estimates WHERE user_id = ?`, userID)
+	return err
 }
 
 // ---- Prediction -------------------------------------------------------------
