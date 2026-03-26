@@ -60,6 +60,7 @@ type UserProfileRepository interface {
 	Create(ctx context.Context, profile *v1.UserProfile) error
 	Update(ctx context.Context, profile *v1.UserProfile) error
 	Upsert(ctx context.Context, profile *v1.UserProfile) error
+	DeleteByID(ctx context.Context, id string) error
 }
 
 // BleedingObservationRepository manages BleedingObservation records.
@@ -68,6 +69,7 @@ type BleedingObservationRepository interface {
 	GetByID(ctx context.Context, id string) (*v1.BleedingObservation, error)
 	ListByUserAndDateRange(ctx context.Context, userID string, start, end string, page PageRequest) (ListPage[*v1.BleedingObservation], error)
 	DeleteByID(ctx context.Context, id string) error
+	DeleteByUser(ctx context.Context, userID string) error
 }
 
 // SymptomObservationRepository manages SymptomObservation records.
@@ -77,6 +79,7 @@ type SymptomObservationRepository interface {
 	ListByUser(ctx context.Context, userID string, page PageRequest) (ListPage[*v1.SymptomObservation], error)
 	ListByUserAndDateRange(ctx context.Context, userID string, start, end string, page PageRequest) (ListPage[*v1.SymptomObservation], error)
 	DeleteByID(ctx context.Context, id string) error
+	DeleteByUser(ctx context.Context, userID string) error
 }
 
 // MoodObservationRepository manages MoodObservation records.
@@ -85,6 +88,7 @@ type MoodObservationRepository interface {
 	GetByID(ctx context.Context, id string) (*v1.MoodObservation, error)
 	ListByUserAndDateRange(ctx context.Context, userID string, start, end string, page PageRequest) (ListPage[*v1.MoodObservation], error)
 	DeleteByID(ctx context.Context, id string) error
+	DeleteByUser(ctx context.Context, userID string) error
 }
 
 // MedicationRepository manages Medication records.
@@ -94,6 +98,7 @@ type MedicationRepository interface {
 	ListByUser(ctx context.Context, userID string, page PageRequest) (ListPage[*v1.Medication], error)
 	Update(ctx context.Context, med *v1.Medication) error
 	DeleteByID(ctx context.Context, id string) error
+	DeleteByUser(ctx context.Context, userID string) error
 }
 
 // MedicationEventRepository manages MedicationEvent records.
@@ -103,6 +108,7 @@ type MedicationEventRepository interface {
 	ListByUserAndDateRange(ctx context.Context, userID string, start, end string, page PageRequest) (ListPage[*v1.MedicationEvent], error)
 	ListByMedicationID(ctx context.Context, medicationID string, page PageRequest) (ListPage[*v1.MedicationEvent], error)
 	DeleteByID(ctx context.Context, id string) error
+	DeleteByUser(ctx context.Context, userID string) error
 }
 
 // CycleRepository manages Cycle records.
@@ -113,6 +119,7 @@ type CycleRepository interface {
 	ListByUserAndDateRange(ctx context.Context, userID string, start, end string, page PageRequest) (ListPage[*v1.Cycle], error)
 	Update(ctx context.Context, cycle *v1.Cycle) error
 	DeleteByID(ctx context.Context, id string) error
+	DeleteByUser(ctx context.Context, userID string) error
 }
 
 // PhaseEstimateRepository manages PhaseEstimate records.
@@ -120,6 +127,7 @@ type PhaseEstimateRepository interface {
 	Create(ctx context.Context, est *v1.PhaseEstimate) error
 	ListByUserAndDateRange(ctx context.Context, userID string, start, end string, page PageRequest) (ListPage[*v1.PhaseEstimate], error)
 	DeleteByCycleID(ctx context.Context, cycleID string) error
+	DeleteByUser(ctx context.Context, userID string) error
 }
 
 // PredictionRepository manages Prediction records.
