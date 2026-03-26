@@ -26,6 +26,9 @@ service CycleTrackerService {
       body: "profile"
     };
   }
+  rpc DeleteUserProfile(DeleteUserProfileRequest) returns (DeleteUserProfileResponse) {
+    option (google.api.http) = {delete: "/v1/{name=users/*}"};
+  }
 
   rpc GetBleedingObservation(GetBleedingObservationRequest) returns (GetBleedingObservationResponse) {
     option (google.api.http) = {get: "/v1/{name}"};
@@ -192,6 +195,11 @@ message UpdateUserProfileRequest {
 message UpdateUserProfileResponse {
   UserProfile profile = 1;
 }
+
+message DeleteUserProfileRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+message DeleteUserProfileResponse {}
 
 message GetBleedingObservationRequest {
   string name = 1 [(buf.validate.field).string.min_len = 1];

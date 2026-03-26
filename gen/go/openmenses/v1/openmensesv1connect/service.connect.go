@@ -42,6 +42,9 @@ const (
 	// CycleTrackerServiceUpdateUserProfileProcedure is the fully-qualified name of the
 	// CycleTrackerService's UpdateUserProfile RPC.
 	CycleTrackerServiceUpdateUserProfileProcedure = "/openmenses.v1.CycleTrackerService/UpdateUserProfile"
+	// CycleTrackerServiceDeleteUserProfileProcedure is the fully-qualified name of the
+	// CycleTrackerService's DeleteUserProfile RPC.
+	CycleTrackerServiceDeleteUserProfileProcedure = "/openmenses.v1.CycleTrackerService/DeleteUserProfile"
 	// CycleTrackerServiceGetBleedingObservationProcedure is the fully-qualified name of the
 	// CycleTrackerService's GetBleedingObservation RPC.
 	CycleTrackerServiceGetBleedingObservationProcedure = "/openmenses.v1.CycleTrackerService/GetBleedingObservation"
@@ -148,6 +151,7 @@ type CycleTrackerServiceClient interface {
 	GetUserProfile(context.Context, *connect.Request[v1.GetUserProfileRequest]) (*connect.Response[v1.GetUserProfileResponse], error)
 	CreateUserProfile(context.Context, *connect.Request[v1.CreateUserProfileRequest]) (*connect.Response[v1.CreateUserProfileResponse], error)
 	UpdateUserProfile(context.Context, *connect.Request[v1.UpdateUserProfileRequest]) (*connect.Response[v1.UpdateUserProfileResponse], error)
+	DeleteUserProfile(context.Context, *connect.Request[v1.DeleteUserProfileRequest]) (*connect.Response[v1.DeleteUserProfileResponse], error)
 	GetBleedingObservation(context.Context, *connect.Request[v1.GetBleedingObservationRequest]) (*connect.Response[v1.GetBleedingObservationResponse], error)
 	CreateBleedingObservation(context.Context, *connect.Request[v1.CreateBleedingObservationRequest]) (*connect.Response[v1.CreateBleedingObservationResponse], error)
 	UpdateBleedingObservation(context.Context, *connect.Request[v1.UpdateBleedingObservationRequest]) (*connect.Response[v1.UpdateBleedingObservationResponse], error)
@@ -210,6 +214,12 @@ func NewCycleTrackerServiceClient(httpClient connect.HTTPClient, baseURL string,
 			httpClient,
 			baseURL+CycleTrackerServiceUpdateUserProfileProcedure,
 			connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateUserProfile")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteUserProfile: connect.NewClient[v1.DeleteUserProfileRequest, v1.DeleteUserProfileResponse](
+			httpClient,
+			baseURL+CycleTrackerServiceDeleteUserProfileProcedure,
+			connect.WithSchema(cycleTrackerServiceMethods.ByName("DeleteUserProfile")),
 			connect.WithClientOptions(opts...),
 		),
 		getBleedingObservation: connect.NewClient[v1.GetBleedingObservationRequest, v1.GetBleedingObservationResponse](
@@ -418,6 +428,7 @@ type cycleTrackerServiceClient struct {
 	getUserProfile            *connect.Client[v1.GetUserProfileRequest, v1.GetUserProfileResponse]
 	createUserProfile         *connect.Client[v1.CreateUserProfileRequest, v1.CreateUserProfileResponse]
 	updateUserProfile         *connect.Client[v1.UpdateUserProfileRequest, v1.UpdateUserProfileResponse]
+	deleteUserProfile         *connect.Client[v1.DeleteUserProfileRequest, v1.DeleteUserProfileResponse]
 	getBleedingObservation    *connect.Client[v1.GetBleedingObservationRequest, v1.GetBleedingObservationResponse]
 	createBleedingObservation *connect.Client[v1.CreateBleedingObservationRequest, v1.CreateBleedingObservationResponse]
 	updateBleedingObservation *connect.Client[v1.UpdateBleedingObservationRequest, v1.UpdateBleedingObservationResponse]
@@ -466,6 +477,11 @@ func (c *cycleTrackerServiceClient) CreateUserProfile(ctx context.Context, req *
 // UpdateUserProfile calls openmenses.v1.CycleTrackerService.UpdateUserProfile.
 func (c *cycleTrackerServiceClient) UpdateUserProfile(ctx context.Context, req *connect.Request[v1.UpdateUserProfileRequest]) (*connect.Response[v1.UpdateUserProfileResponse], error) {
 	return c.updateUserProfile.CallUnary(ctx, req)
+}
+
+// DeleteUserProfile calls openmenses.v1.CycleTrackerService.DeleteUserProfile.
+func (c *cycleTrackerServiceClient) DeleteUserProfile(ctx context.Context, req *connect.Request[v1.DeleteUserProfileRequest]) (*connect.Response[v1.DeleteUserProfileResponse], error) {
+	return c.deleteUserProfile.CallUnary(ctx, req)
 }
 
 // GetBleedingObservation calls openmenses.v1.CycleTrackerService.GetBleedingObservation.
@@ -638,6 +654,7 @@ type CycleTrackerServiceHandler interface {
 	GetUserProfile(context.Context, *connect.Request[v1.GetUserProfileRequest]) (*connect.Response[v1.GetUserProfileResponse], error)
 	CreateUserProfile(context.Context, *connect.Request[v1.CreateUserProfileRequest]) (*connect.Response[v1.CreateUserProfileResponse], error)
 	UpdateUserProfile(context.Context, *connect.Request[v1.UpdateUserProfileRequest]) (*connect.Response[v1.UpdateUserProfileResponse], error)
+	DeleteUserProfile(context.Context, *connect.Request[v1.DeleteUserProfileRequest]) (*connect.Response[v1.DeleteUserProfileResponse], error)
 	GetBleedingObservation(context.Context, *connect.Request[v1.GetBleedingObservationRequest]) (*connect.Response[v1.GetBleedingObservationResponse], error)
 	CreateBleedingObservation(context.Context, *connect.Request[v1.CreateBleedingObservationRequest]) (*connect.Response[v1.CreateBleedingObservationResponse], error)
 	UpdateBleedingObservation(context.Context, *connect.Request[v1.UpdateBleedingObservationRequest]) (*connect.Response[v1.UpdateBleedingObservationResponse], error)
@@ -696,6 +713,12 @@ func NewCycleTrackerServiceHandler(svc CycleTrackerServiceHandler, opts ...conne
 		CycleTrackerServiceUpdateUserProfileProcedure,
 		svc.UpdateUserProfile,
 		connect.WithSchema(cycleTrackerServiceMethods.ByName("UpdateUserProfile")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cycleTrackerServiceDeleteUserProfileHandler := connect.NewUnaryHandler(
+		CycleTrackerServiceDeleteUserProfileProcedure,
+		svc.DeleteUserProfile,
+		connect.WithSchema(cycleTrackerServiceMethods.ByName("DeleteUserProfile")),
 		connect.WithHandlerOptions(opts...),
 	)
 	cycleTrackerServiceGetBleedingObservationHandler := connect.NewUnaryHandler(
@@ -904,6 +927,8 @@ func NewCycleTrackerServiceHandler(svc CycleTrackerServiceHandler, opts ...conne
 			cycleTrackerServiceCreateUserProfileHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceUpdateUserProfileProcedure:
 			cycleTrackerServiceUpdateUserProfileHandler.ServeHTTP(w, r)
+		case CycleTrackerServiceDeleteUserProfileProcedure:
+			cycleTrackerServiceDeleteUserProfileHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceGetBleedingObservationProcedure:
 			cycleTrackerServiceGetBleedingObservationHandler.ServeHTTP(w, r)
 		case CycleTrackerServiceCreateBleedingObservationProcedure:
@@ -989,6 +1014,10 @@ func (UnimplementedCycleTrackerServiceHandler) CreateUserProfile(context.Context
 
 func (UnimplementedCycleTrackerServiceHandler) UpdateUserProfile(context.Context, *connect.Request[v1.UpdateUserProfileRequest]) (*connect.Response[v1.UpdateUserProfileResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.UpdateUserProfile is not implemented"))
+}
+
+func (UnimplementedCycleTrackerServiceHandler) DeleteUserProfile(context.Context, *connect.Request[v1.DeleteUserProfileRequest]) (*connect.Response[v1.DeleteUserProfileResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("openmenses.v1.CycleTrackerService.DeleteUserProfile is not implemented"))
 }
 
 func (UnimplementedCycleTrackerServiceHandler) GetBleedingObservation(context.Context, *connect.Request[v1.GetBleedingObservationRequest]) (*connect.Response[v1.GetBleedingObservationResponse], error) {
