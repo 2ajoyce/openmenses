@@ -2196,3 +2196,256 @@ func TestCreateDataImport(t *testing.T) {
 		}
 	})
 }
+
+// ─── DeleteUserProfile ───────────────────────────────────────────────────────
+
+func TestDeleteUserProfile_CascadeDelete(t *testing.T) {
+	svc := newSvc(t)
+	userID := "u1"
+
+	// Create profile
+	profile := validProfile(userID)
+	if _, err := svc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: profile})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Create various observations and medications to verify cascade behavior
+	// Bleeding observation
+	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+		Parent:      userID,
+		Observation: validBleeding("b1", userID, "2026-01-15"),
+	})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Symptom observation
+	if _, err := svc.CreateSymptomObservation(ctx, connect.NewRequest(&v1.CreateSymptomObservationRequest{
+		Parent:      userID,
+		Observation: validSymptom("s1", userID, "2026-01-15"),
+	})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Mood observation
+	if _, err := svc.CreateMoodObservation(ctx, connect.NewRequest(&v1.CreateMoodObservationRequest{
+		Parent:      userID,
+		Observation: validMood("m1", userID, "2026-01-15"),
+	})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Medication
+	if _, err := svc.CreateMedication(ctx, connect.NewRequest(&v1.CreateMedicationRequest{
+		Parent:     userID,
+		Medication: validMedication("med1", userID),
+	})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Medication event
+	if _, err := svc.CreateMedicationEvent(ctx, connect.NewRequest(&v1.CreateMedicationEventRequest{
+		Parent: userID,
+		Event:  validMedEvent("ev1", userID, "med1", "2026-01-15"),
+	})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Verify data exists before deletion
+	getProfileResp, err := svc.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if getProfileResp.Msg.GetProfile().GetName() != userID {
+		t.Fatalf("profile not found before deletion")
+	}
+
+	// Verify observations exist
+	bleedList, err := svc.ListBleedingObservations(ctx, connect.NewRequest(&v1.ListBleedingObservationsRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(bleedList.Msg.GetObservations()) == 0 {
+		t.Fatal("expected bleeding observations before deletion")
+	}
+
+	symList, err := svc.ListSymptomObservations(ctx, connect.NewRequest(&v1.ListSymptomObservationsRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(symList.Msg.GetObservations()) == 0 {
+		t.Fatal("expected symptom observations before deletion")
+	}
+
+	moodList, err := svc.ListMoodObservations(ctx, connect.NewRequest(&v1.ListMoodObservationsRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(moodList.Msg.GetObservations()) == 0 {
+		t.Fatal("expected mood observations before deletion")
+	}
+
+	medList, err := svc.ListMedications(ctx, connect.NewRequest(&v1.ListMedicationsRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(medList.Msg.GetMedications()) == 0 {
+		t.Fatal("expected medications before deletion")
+	}
+
+	// Delete the profile
+	if _, err := svc.DeleteUserProfile(ctx, connect.NewRequest(&v1.DeleteUserProfileRequest{Name: userID})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Verify profile is gone
+	_, err = svc.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: userID}))
+	if codeOf(err) != connect.CodeNotFound {
+		t.Fatalf("expected CodeNotFound for deleted profile, got %v", codeOf(err))
+	}
+
+	// Verify all observations are gone
+	bleedListAfter, err := svc.ListBleedingObservations(ctx, connect.NewRequest(&v1.ListBleedingObservationsRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(bleedListAfter.Msg.GetObservations()) != 0 {
+		t.Errorf("expected 0 bleeding observations after cascade delete, got %d", len(bleedListAfter.Msg.GetObservations()))
+	}
+
+	symListAfter, err := svc.ListSymptomObservations(ctx, connect.NewRequest(&v1.ListSymptomObservationsRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(symListAfter.Msg.GetObservations()) != 0 {
+		t.Errorf("expected 0 symptom observations after cascade delete, got %d", len(symListAfter.Msg.GetObservations()))
+	}
+
+	moodListAfter, err := svc.ListMoodObservations(ctx, connect.NewRequest(&v1.ListMoodObservationsRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(moodListAfter.Msg.GetObservations()) != 0 {
+		t.Errorf("expected 0 mood observations after cascade delete, got %d", len(moodListAfter.Msg.GetObservations()))
+	}
+
+	// Verify medications are gone
+	medListAfter, err := svc.ListMedications(ctx, connect.NewRequest(&v1.ListMedicationsRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(medListAfter.Msg.GetMedications()) != 0 {
+		t.Errorf("expected 0 medications after cascade delete, got %d", len(medListAfter.Msg.GetMedications()))
+	}
+
+	// Verify medication events are gone
+	evtListAfter, err := svc.ListMedicationEvents(ctx, connect.NewRequest(&v1.ListMedicationEventsRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(evtListAfter.Msg.GetEvents()) != 0 {
+		t.Errorf("expected 0 medication events after cascade delete, got %d", len(evtListAfter.Msg.GetEvents()))
+	}
+
+	// Verify cycles are gone
+	cycleList, err := svc.ListCycles(ctx, connect.NewRequest(&v1.ListCyclesRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(cycleList.Msg.GetCycles()) != 0 {
+		t.Errorf("expected 0 cycles after cascade delete, got %d", len(cycleList.Msg.GetCycles()))
+	}
+
+	// Verify predictions are gone
+	predList, err := svc.ListPredictions(ctx, connect.NewRequest(&v1.ListPredictionsRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(predList.Msg.GetPredictions()) != 0 {
+		t.Errorf("expected 0 predictions after cascade delete, got %d", len(predList.Msg.GetPredictions()))
+	}
+
+	// Verify insights are gone
+	insightList, err := svc.ListInsights(ctx, connect.NewRequest(&v1.ListInsightsRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(insightList.Msg.GetInsights()) != 0 {
+		t.Errorf("expected 0 insights after cascade delete, got %d", len(insightList.Msg.GetInsights()))
+	}
+}
+
+func TestDeleteUserProfile_NotFound(t *testing.T) {
+	svc := newSvc(t)
+
+	// Attempt to delete a non-existent profile
+	_, err := svc.DeleteUserProfile(ctx, connect.NewRequest(&v1.DeleteUserProfileRequest{Name: "nonexistent"}))
+	if codeOf(err) != connect.CodeNotFound {
+		t.Fatalf("expected CodeNotFound, got %v", codeOf(err))
+	}
+}
+
+func TestDeleteUserProfile_ThenRecreate(t *testing.T) {
+	svc := newSvc(t)
+	userID := "u1"
+
+	// Create initial profile with some data
+	profile := validProfile(userID)
+	if _, err := svc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: profile})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Add a bleeding observation
+	if _, err := svc.CreateBleedingObservation(ctx, connect.NewRequest(&v1.CreateBleedingObservationRequest{
+		Parent:      userID,
+		Observation: validBleeding("b1", userID, "2026-01-15"),
+	})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Delete the profile
+	if _, err := svc.DeleteUserProfile(ctx, connect.NewRequest(&v1.DeleteUserProfileRequest{Name: userID})); err != nil {
+		t.Fatal(err)
+	}
+
+	// Verify profile is deleted
+	_, err := svc.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: userID}))
+	if codeOf(err) != connect.CodeNotFound {
+		t.Fatalf("expected CodeNotFound after deletion, got %v", codeOf(err))
+	}
+
+	// Recreate the profile
+	newProfile := validProfile(userID)
+	newProfile.CycleRegularity = v1.CycleRegularity_CYCLE_REGULARITY_SOMEWHAT_IRREGULAR // Different from original
+	createResp, err := svc.CreateUserProfile(ctx, connect.NewRequest(&v1.CreateUserProfileRequest{Profile: newProfile}))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Verify the new profile exists and has the new value
+	getResp, err := svc.GetUserProfile(ctx, connect.NewRequest(&v1.GetUserProfileRequest{Name: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if getResp.Msg.GetProfile().GetName() != userID {
+		t.Errorf("profile name mismatch: want %q, got %q", userID, getResp.Msg.GetProfile().GetName())
+	}
+
+	if getResp.Msg.GetProfile().GetCycleRegularity() != v1.CycleRegularity_CYCLE_REGULARITY_SOMEWHAT_IRREGULAR {
+		t.Errorf("cycle regularity mismatch after recreate: want SOMEWHAT_IRREGULAR, got %v", getResp.Msg.GetProfile().GetCycleRegularity())
+	}
+
+	// Verify the response from CreateUserProfile also shows correct values
+	if createResp.Msg.GetProfile().GetCycleRegularity() != v1.CycleRegularity_CYCLE_REGULARITY_SOMEWHAT_IRREGULAR {
+		t.Errorf("create response cycle regularity mismatch: want SOMEWHAT_IRREGULAR, got %v", createResp.Msg.GetProfile().GetCycleRegularity())
+	}
+
+	// Verify old data (observations from before deletion) is not present
+	obsList, err := svc.ListBleedingObservations(ctx, connect.NewRequest(&v1.ListBleedingObservationsRequest{Parent: userID}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(obsList.Msg.GetObservations()) != 0 {
+		t.Errorf("expected 0 observations after recreate, got %d", len(obsList.Msg.GetObservations()))
+	}
+}
