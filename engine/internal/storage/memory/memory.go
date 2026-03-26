@@ -173,6 +173,16 @@ func (s *userProfileStore) Upsert(_ context.Context, profile *v1.UserProfile) er
 	return nil
 }
 
+func (s *userProfileStore) DeleteByID(_ context.Context, id string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if _, exists := s.data[id]; !exists {
+		return fmt.Errorf("%w: profile %s", storage.ErrNotFound, id)
+	}
+	delete(s.data, id)
+	return nil
+}
+
 // ---- BleedingObservation ----------------------------------------------------
 
 type bleedingStore struct {
@@ -228,6 +238,17 @@ func (s *bleedingStore) DeleteByID(_ context.Context, id string) error {
 		return storage.ErrNotFound
 	}
 	delete(s.data, id)
+	return nil
+}
+
+func (s *bleedingStore) DeleteByUser(_ context.Context, userID string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for id, obs := range s.data {
+		if obs.GetUserId() == userID {
+			delete(s.data, id)
+		}
+	}
 	return nil
 }
 
@@ -301,6 +322,17 @@ func (s *symptomStore) DeleteByID(_ context.Context, id string) error {
 	return nil
 }
 
+func (s *symptomStore) DeleteByUser(_ context.Context, userID string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for id, obs := range s.data {
+		if obs.GetUserId() == userID {
+			delete(s.data, id)
+		}
+	}
+	return nil
+}
+
 // ---- MoodObservation --------------------------------------------------------
 
 type moodStore struct {
@@ -355,6 +387,17 @@ func (s *moodStore) DeleteByID(_ context.Context, id string) error {
 		return storage.ErrNotFound
 	}
 	delete(s.data, id)
+	return nil
+}
+
+func (s *moodStore) DeleteByUser(_ context.Context, userID string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for id, obs := range s.data {
+		if obs.GetUserId() == userID {
+			delete(s.data, id)
+		}
+	}
 	return nil
 }
 
@@ -421,6 +464,17 @@ func (s *medicationStore) DeleteByID(_ context.Context, id string) error {
 		return storage.ErrNotFound
 	}
 	delete(s.data, id)
+	return nil
+}
+
+func (s *medicationStore) DeleteByUser(_ context.Context, userID string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for id, med := range s.data {
+		if med.GetUserId() == userID {
+			delete(s.data, id)
+		}
+	}
 	return nil
 }
 
@@ -491,6 +545,17 @@ func (s *medicationEventStore) DeleteByID(_ context.Context, id string) error {
 		return storage.ErrNotFound
 	}
 	delete(s.data, id)
+	return nil
+}
+
+func (s *medicationEventStore) DeleteByUser(_ context.Context, userID string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for id, ev := range s.data {
+		if ev.GetUserId() == userID {
+			delete(s.data, id)
+		}
+	}
 	return nil
 }
 
@@ -583,6 +648,17 @@ func (s *cycleStore) DeleteByID(_ context.Context, id string) error {
 	return nil
 }
 
+func (s *cycleStore) DeleteByUser(_ context.Context, userID string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for id, cycle := range s.data {
+		if cycle.GetUserId() == userID {
+			delete(s.data, id)
+		}
+	}
+	return nil
+}
+
 // ---- PhaseEstimate ----------------------------------------------------------
 
 type phaseEstimateStore struct {
@@ -629,6 +705,17 @@ func (s *phaseEstimateStore) DeleteByCycleID(_ context.Context, cycleID string) 
 				delete(s.data, id)
 				break
 			}
+		}
+	}
+	return nil
+}
+
+func (s *phaseEstimateStore) DeleteByUser(_ context.Context, userID string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for id, est := range s.data {
+		if est.GetUserId() == userID {
+			delete(s.data, id)
 		}
 	}
 	return nil
