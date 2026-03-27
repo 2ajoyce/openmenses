@@ -1136,3 +1136,189 @@ func TestInsight_CreateListDeleteByUser(t *testing.T) {
 		t.Fatal("expected empty after delete")
 	}
 }
+
+// ---- DeleteByUser tests for remaining repositories --------------------------
+
+func TestBleeding_CreateListDeleteByUser(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.BleedingObservations().Create(ctx, bleeding("b1", "u1", "2026-01-01T00:00:00Z")))
+	mustNoErr(t, s.BleedingObservations().Create(ctx, bleeding("b2", "u1", "2026-01-08T00:00:00Z")))
+	mustNoErr(t, s.BleedingObservations().Create(ctx, bleeding("b3", "u2", "2026-01-01T00:00:00Z")))
+
+	page, _ := s.BleedingObservations().ListByUserAndDateRange(ctx, "u1", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if len(page.Items) != 2 {
+		t.Fatalf("want 2, got %d", len(page.Items))
+	}
+
+	mustNoErr(t, s.BleedingObservations().DeleteByUser(ctx, "u1"))
+	page2, _ := s.BleedingObservations().ListByUserAndDateRange(ctx, "u1", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if len(page2.Items) != 0 {
+		t.Fatal("expected empty after DeleteByUser")
+	}
+	// u2 unaffected
+	page3, _ := s.BleedingObservations().ListByUserAndDateRange(ctx, "u2", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if len(page3.Items) != 1 {
+		t.Fatal("u2 bleeding observations should be intact")
+	}
+}
+
+func TestSymptom_CreateListDeleteByUser(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.SymptomObservations().Create(ctx, symptom("s1", "u1", "2026-01-01T00:00:00Z")))
+	mustNoErr(t, s.SymptomObservations().Create(ctx, symptom("s2", "u1", "2026-01-08T00:00:00Z")))
+	mustNoErr(t, s.SymptomObservations().Create(ctx, symptom("s3", "u2", "2026-01-01T00:00:00Z")))
+
+	page, _ := s.SymptomObservations().ListByUser(ctx, "u1", storage.PageRequest{})
+	if len(page.Items) != 2 {
+		t.Fatalf("want 2, got %d", len(page.Items))
+	}
+
+	mustNoErr(t, s.SymptomObservations().DeleteByUser(ctx, "u1"))
+	page2, _ := s.SymptomObservations().ListByUser(ctx, "u1", storage.PageRequest{})
+	if len(page2.Items) != 0 {
+		t.Fatal("expected empty after DeleteByUser")
+	}
+	// u2 unaffected
+	page3, _ := s.SymptomObservations().ListByUser(ctx, "u2", storage.PageRequest{})
+	if len(page3.Items) != 1 {
+		t.Fatal("u2 symptom observations should be intact")
+	}
+}
+
+func TestMood_CreateListDeleteByUser(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.MoodObservations().Create(ctx, mood("m1", "u1", "2026-01-01T00:00:00Z")))
+	mustNoErr(t, s.MoodObservations().Create(ctx, mood("m2", "u1", "2026-01-08T00:00:00Z")))
+	mustNoErr(t, s.MoodObservations().Create(ctx, mood("m3", "u2", "2026-01-01T00:00:00Z")))
+
+	page, _ := s.MoodObservations().ListByUserAndDateRange(ctx, "u1", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if len(page.Items) != 2 {
+		t.Fatalf("want 2, got %d", len(page.Items))
+	}
+
+	mustNoErr(t, s.MoodObservations().DeleteByUser(ctx, "u1"))
+	page2, _ := s.MoodObservations().ListByUserAndDateRange(ctx, "u1", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if len(page2.Items) != 0 {
+		t.Fatal("expected empty after DeleteByUser")
+	}
+	// u2 unaffected
+	page3, _ := s.MoodObservations().ListByUserAndDateRange(ctx, "u2", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if len(page3.Items) != 1 {
+		t.Fatal("u2 mood observations should be intact")
+	}
+}
+
+func TestMedication_CreateListDeleteByUser(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.Medications().Create(ctx, med("med1", "u1")))
+	mustNoErr(t, s.Medications().Create(ctx, med("med2", "u1")))
+	mustNoErr(t, s.Medications().Create(ctx, med("med3", "u2")))
+
+	page, _ := s.Medications().ListByUser(ctx, "u1", storage.PageRequest{})
+	if len(page.Items) != 2 {
+		t.Fatalf("want 2, got %d", len(page.Items))
+	}
+
+	mustNoErr(t, s.Medications().DeleteByUser(ctx, "u1"))
+	page2, _ := s.Medications().ListByUser(ctx, "u1", storage.PageRequest{})
+	if len(page2.Items) != 0 {
+		t.Fatal("expected empty after DeleteByUser")
+	}
+	// u2 unaffected
+	page3, _ := s.Medications().ListByUser(ctx, "u2", storage.PageRequest{})
+	if len(page3.Items) != 1 {
+		t.Fatal("u2 medications should be intact")
+	}
+}
+
+func TestMedicationEvent_CreateListDeleteByUser(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.Medications().Create(ctx, med("med1", "u1")))
+	mustNoErr(t, s.MedicationEvents().Create(ctx, medEvent("ev1", "u1", "med1", "2026-01-01T08:00:00Z")))
+	mustNoErr(t, s.MedicationEvents().Create(ctx, medEvent("ev2", "u1", "med1", "2026-01-02T08:00:00Z")))
+	mustNoErr(t, s.Medications().Create(ctx, med("med2", "u2")))
+	mustNoErr(t, s.MedicationEvents().Create(ctx, medEvent("ev3", "u2", "med2", "2026-01-01T08:00:00Z")))
+
+	page, _ := s.MedicationEvents().ListByUserAndDateRange(ctx, "u1", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if len(page.Items) != 2 {
+		t.Fatalf("want 2, got %d", len(page.Items))
+	}
+
+	mustNoErr(t, s.MedicationEvents().DeleteByUser(ctx, "u1"))
+	page2, _ := s.MedicationEvents().ListByUserAndDateRange(ctx, "u1", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if len(page2.Items) != 0 {
+		t.Fatal("expected empty after DeleteByUser")
+	}
+	// u2 unaffected
+	page3, _ := s.MedicationEvents().ListByUserAndDateRange(ctx, "u2", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if len(page3.Items) != 1 {
+		t.Fatal("u2 medication events should be intact")
+	}
+}
+
+func TestCycle_CreateListDeleteByUser(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.Cycles().Create(ctx, cycle("c1", "u1", "2026-01-01", "2026-01-28")))
+	mustNoErr(t, s.Cycles().Create(ctx, cycle("c2", "u1", "2026-01-29", "2026-02-25")))
+	mustNoErr(t, s.Cycles().Create(ctx, cycle("c3", "u2", "2026-01-01", "2026-01-28")))
+
+	page, _ := s.Cycles().ListByUser(ctx, "u1", storage.PageRequest{})
+	if len(page.Items) != 2 {
+		t.Fatalf("want 2, got %d", len(page.Items))
+	}
+
+	mustNoErr(t, s.Cycles().DeleteByUser(ctx, "u1"))
+	page2, _ := s.Cycles().ListByUser(ctx, "u1", storage.PageRequest{})
+	if len(page2.Items) != 0 {
+		t.Fatal("expected empty after DeleteByUser")
+	}
+	// u2 unaffected
+	page3, _ := s.Cycles().ListByUser(ctx, "u2", storage.PageRequest{})
+	if len(page3.Items) != 1 {
+		t.Fatal("u2 cycles should be intact")
+	}
+}
+
+func TestPhaseEstimate_DeleteByUser(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.PhaseEstimates().Create(ctx, phaseEstimate("pe1", "u1", "2026-01-05", "c1")))
+	mustNoErr(t, s.PhaseEstimates().Create(ctx, phaseEstimate("pe2", "u1", "2026-01-06", "c1")))
+	mustNoErr(t, s.PhaseEstimates().Create(ctx, phaseEstimate("pe3", "u2", "2026-01-05", "c2")))
+
+	page, _ := s.PhaseEstimates().ListByUserAndDateRange(ctx, "u1", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if len(page.Items) != 2 {
+		t.Fatalf("want 2, got %d", len(page.Items))
+	}
+
+	mustNoErr(t, s.PhaseEstimates().DeleteByUser(ctx, "u1"))
+	page2, _ := s.PhaseEstimates().ListByUserAndDateRange(ctx, "u1", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if len(page2.Items) != 0 {
+		t.Fatal("expected empty after DeleteByUser")
+	}
+	// u2 unaffected
+	page3, _ := s.PhaseEstimates().ListByUserAndDateRange(ctx, "u2", "0001-01-01", "9999-12-31", storage.PageRequest{})
+	if len(page3.Items) != 1 {
+		t.Fatal("u2 phase estimates should be intact")
+	}
+}
+
+func TestProfile_DeleteByID(t *testing.T) {
+	s := newStore()
+	mustNoErr(t, s.UserProfiles().Upsert(ctx, &v1.UserProfile{Name: "u1"}))
+	mustNoErr(t, s.UserProfiles().Upsert(ctx, &v1.UserProfile{Name: "u2"}))
+
+	// Profile exists before delete
+	_, err := s.UserProfiles().GetByID(ctx, "u1")
+	mustNoErr(t, err)
+
+	mustNoErr(t, s.UserProfiles().DeleteByID(ctx, "u1"))
+
+	// Profile is gone
+	_, err = s.UserProfiles().GetByID(ctx, "u1")
+	if err == nil {
+		t.Fatal("expected error after DeleteByID, got nil")
+	}
+	// u2 unaffected
+	_, err = s.UserProfiles().GetByID(ctx, "u2")
+	mustNoErr(t, err)
+}
