@@ -7,10 +7,10 @@ import (
 // regularScenario returns a scenario with 12 stable cycles, consistent symptom patterns,
 // and high medication adherence. Produces stable CYCLE_LENGTH_PATTERN, SYMPTOM_PATTERN,
 // and MEDICATION_ADHERENCE_PATTERN insights.
-// Persona: Amara (Ovulatory, Regular).
+// Persona: Emily (Ovulatory, Regular).
 func regularScenario() *Scenario {
 	return &Scenario{
-		HumanName:           "Amara",
+		HumanName:           "Emily",
 		Name:                "regular-12",
 		Description:         "12 stable cycles (28 days mean), consistent headache on day 12, high medication adherence",
 		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
@@ -30,10 +30,10 @@ func regularScenario() *Scenario {
 
 // irregularScenario returns a scenario with 8 cycles of highly variable lengths,
 // producing an IRREGULAR classification in CYCLE_LENGTH_PATTERN.
-// Persona: Hana (Irregular cycle model, Regular regularity).
+// Persona: Hannah (Irregular cycle model, Regular regularity).
 func irregularScenario() *Scenario {
 	return &Scenario{
-		HumanName:           "Hana",
+		HumanName:           "Hannah",
 		Name:                "irregular",
 		Description:         "8 cycles with variable lengths (32 days mean, 7 day stddev) and variable bleed durations",
 		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_IRREGULAR,
@@ -51,12 +51,12 @@ func irregularScenario() *Scenario {
 	}
 }
 
-// beatrizScenario returns a scenario with 10 cycles of somewhat irregular length.
+// jessicaScenario returns a scenario with 10 cycles of somewhat irregular length.
 // Produces medium confidence phase estimation.
-// Persona: Beatriz (Ovulatory, Somewhat Irregular).
+// Persona: Jessica (Ovulatory, Somewhat Irregular).
 func beatrizScenario() *Scenario {
 	return &Scenario{
-		HumanName:           "Beatriz",
+		HumanName:           "Jessica",
 		Name:                "ovulatory-somewhat-irregular",
 		Description:         "10 cycles (30 days mean, 3 day stddev), somewhat irregular ovulatory",
 		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
@@ -74,12 +74,12 @@ func beatrizScenario() *Scenario {
 	}
 }
 
-// chiomaScenario returns a scenario with 8 cycles of highly variable length.
+// ashleyScenario returns a scenario with 8 cycles of highly variable length.
 // Produces low confidence phase estimation and no ovulation predictions.
-// Persona: Chioma (Ovulatory, Very Irregular).
+// Persona: Ashley (Ovulatory, Very Irregular).
 func chiomaScenario() *Scenario {
 	return &Scenario{
-		HumanName:           "Chioma",
+		HumanName:           "Ashley",
 		Name:                "ovulatory-very-irregular",
 		Description:         "8 cycles (29 days mean, 6 day stddev), very irregular ovulatory",
 		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
@@ -97,13 +97,13 @@ func chiomaScenario() *Scenario {
 	}
 }
 
-// diyaScenario returns a scenario with 6 cycles of stable length but unknown regularity
+// sophieScenario returns a scenario with 6 cycles of stable length but unknown regularity
 // (typical of a new user without enough history to detect patterns).
 // Produces high confidence phase estimation but no ovulation predictions.
-// Persona: Diya (Ovulatory, Unknown regularity).
+// Persona: Sophie (Ovulatory, Unknown regularity).
 func diyaScenario() *Scenario {
 	return &Scenario{
-		HumanName:           "Diya",
+		HumanName:           "Sophie",
 		Name:                "ovulatory-unknown",
 		Description:         "6 cycles (28 days mean), ovulatory with unknown regularity (new user)",
 		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
@@ -121,12 +121,12 @@ func diyaScenario() *Scenario {
 	}
 }
 
-// elenaScenario returns a scenario with 10 cycles of stable length on hormonal suppression.
+// lauraScenario returns a scenario with 10 cycles of stable length on hormonal suppression.
 // Produces high confidence phase estimation but no ovulation predictions.
-// Persona: Elena (Hormonally Suppressed, Regular).
+// Persona: Laura (Hormonally Suppressed, Regular).
 func elenaScenario() *Scenario {
 	return &Scenario{
-		HumanName:           "Elena",
+		HumanName:           "Laura",
 		Name:                "hormonal-regular",
 		Description:         "10 cycles (28 days mean), hormonally suppressed (pill), regular withdrawal bleeds",
 		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED,
@@ -144,12 +144,12 @@ func elenaScenario() *Scenario {
 	}
 }
 
-// fatouScenario returns a scenario with 8 cycles on hormonal suppression with occasional gaps.
+// emmaScenario returns a scenario with 8 cycles on hormonal suppression with occasional gaps.
 // Produces medium confidence phase estimation and no ovulation predictions.
-// Persona: Fatou (Hormonally Suppressed, Somewhat Irregular).
+// Persona: Emma (Hormonally Suppressed, Somewhat Irregular).
 func fatouScenario() *Scenario {
 	return &Scenario{
-		HumanName:           "Fatou",
+		HumanName:           "Emma",
 		Name:                "hormonal-somewhat-irregular",
 		Description:         "8 cycles (28 days mean, 2 day stddev), hormonal with occasional missed pills",
 		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED,
@@ -167,12 +167,12 @@ func fatouScenario() *Scenario {
 	}
 }
 
-// gretaScenario returns a scenario with 6 cycles on hormonal suppression with breakthrough bleeding.
+// camilleScenario returns a scenario with 6 cycles on hormonal suppression with breakthrough bleeding.
 // Produces low confidence phase estimation and no ovulation predictions.
-// Persona: Greta (Hormonally Suppressed, Very Irregular).
+// Persona: Camille (Hormonally Suppressed, Very Irregular).
 func gretaScenario() *Scenario {
 	return &Scenario{
-		HumanName:           "Greta",
+		HumanName:           "Camille",
 		Name:                "hormonal-very-irregular",
 		Description:         "6 cycles (35 days mean, 8 day stddev), hormonal implant with breakthrough bleeding",
 		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED,
@@ -190,12 +190,12 @@ func gretaScenario() *Scenario {
 	}
 }
 
-// ingridScenario returns a scenario with 6 cycles of highly variable length on the irregular model.
+// priyaScenario returns a scenario with 6 cycles of highly variable length on the irregular model.
 // Produces low confidence phase estimation and no ovulation predictions.
-// Persona: Ingrid (Irregular, Very Irregular).
+// Persona: Priya (Irregular, Very Irregular).
 func ingridScenario() *Scenario {
 	return &Scenario{
-		HumanName:           "Ingrid",
+		HumanName:           "Priya",
 		Name:                "irregular-very-irregular",
 		Description:         "6 cycles (34 days mean, 9 day stddev), irregular cycle model with very irregular regularity",
 		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_IRREGULAR,
