@@ -35,6 +35,7 @@ import (
 	"time"
 
 	"github.com/2ajoyce/openmenses/engine/pkg/openmenses"
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
 	"github.com/2ajoyce/openmenses/gen/go/openmenses/v1/openmensesv1connect"
 )
 
@@ -49,11 +50,22 @@ const (
 
 // Scenario defines the parameters for generating a test dataset.
 type Scenario struct {
+	// HumanName is an optional unique female name for this persona, used in UI display.
+	HumanName string
+
 	// Name is the human-readable scenario name.
 	Name string
 
 	// Description explains what patterns this scenario produces.
 	Description string
+
+	// BiologicalCycle is the biological cycle model for the generated profile.
+	// Default (zero value = UNSPECIFIED) means OVULATORY.
+	BiologicalCycle v1.BiologicalCycleModel
+
+	// CycleRegularity is the cycle regularity for the generated profile.
+	// Default (zero value = UNSPECIFIED) means REGULAR.
+	CycleRegularity v1.CycleRegularity
 
 	// CycleCount is the number of complete cycles to generate.
 	CycleCount int
