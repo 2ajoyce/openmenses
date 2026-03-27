@@ -5,7 +5,7 @@
 //
 // Usage:
 //
-//	seed [--scenario regular-12] [--cycles 12] [--seed 42] [--user-id test-user] [--db openmenses.db] [--list-scenarios]
+//	seed [--scenario regular-12] [--cycles 12] [--seed 42] [--user-id test-user] [--db openmenses.db] [--export out.json] [--list-scenarios]
 //
 // Scenarios include:
 //   - regular-12: 12 cycles, mean length 28 days, consistent symptom patterns
@@ -20,7 +20,8 @@
 //	--cycles:          Override cycle count for the scenario
 //	--seed:            Integer seed for PRNG (default: 42); same seed produces identical data
 //	--user-id:         User ID to populate (default: test-user)
-//	--db:              SQLite database path (default: openmenses.db)
+//	--db:              SQLite database path (default: openmenses.db); use :memory: for a temporary in-process database
+//	--export:          Export seeded data to a JSON file after generation (empty = no export)
 //	--list-scenarios:  Print available scenarios and exit
 package main
 
@@ -33,6 +34,8 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"connectrpc.com/connect"
 
 	"github.com/2ajoyce/openmenses/engine/pkg/openmenses"
 	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
@@ -159,6 +162,7 @@ func main() {
 	seed := flag.Int64("seed", 42, "Integer seed for PRNG (same seed produces identical data)")
 	userID := flag.String("user-id", "test-user", "User ID to populate")
 	dbPath := flag.String("db", "openmenses.db", "SQLite database path")
+	exportPath := flag.String("export", "", "Export seeded data to JSON file (empty = no export)")
 	listScenarios := flag.Bool("list-scenarios", false, "Print available scenarios and exit")
 
 	flag.Parse()
@@ -272,6 +276,22 @@ func main() {
 	fmt.Printf("  Cycles detected: %d\n", generator.stats.cyclesDetected)
 	fmt.Printf("  Insights generated: %d\n", generator.stats.insights)
 	fmt.Printf("  Predictions generated: %d\n", generator.stats.predictions)
+
+	// Export data if requested
+	if *exportPath != "" {
+		resp, err := generator.client.CreateDataExport(ctx, connect.NewRequest(&v1.CreateDataExportRequest{
+			Parent: "users/default",
+		}))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: export failed: %v\n", err)
+			os.Exit(1)
+		}
+		if err := os.WriteFile(*exportPath, resp.Msg.GetData(), 0644); err != nil {
+			fmt.Fprintf(os.Stderr, "error: write export file: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Printf("Exported to %s\n", *exportPath)
+	}
 }
 
 // generateAll runs the full generation pipeline: create profile, then generate cycles
