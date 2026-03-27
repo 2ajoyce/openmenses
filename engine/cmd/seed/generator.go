@@ -40,11 +40,20 @@ func NewGeneratorWithClient(g *Generator, baseURL string) (*Generator, error) { 
 // The profile name is set to "users/default" so that the UI (which always
 // queries under that parent) can see the seeded data.
 func (g *Generator) createProfile(ctx context.Context) (*v1.UserProfile, error) { //nolint:unused
+	bioCycle := g.scenario.BiologicalCycle
+	if bioCycle == v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_UNSPECIFIED {
+		bioCycle = v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY
+	}
+	regularity := g.scenario.CycleRegularity
+	if regularity == v1.CycleRegularity_CYCLE_REGULARITY_UNSPECIFIED {
+		regularity = v1.CycleRegularity_CYCLE_REGULARITY_REGULAR
+	}
+
 	profile := &v1.UserProfile{
 		Name:             "users/default",
-		BiologicalCycle:  v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
+		BiologicalCycle:  bioCycle,
 		Contraception:    v1.ContraceptionType_CONTRACEPTION_TYPE_NONE,
-		CycleRegularity:  v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
+		CycleRegularity:  regularity,
 		ReproductiveGoal: v1.ReproductiveGoal_REPRODUCTIVE_GOAL_PREGNANCY_IRRELEVANT,
 		TrackingFocus: []v1.TrackingFocus{
 			v1.TrackingFocus_TRACKING_FOCUS_BLEEDING,
