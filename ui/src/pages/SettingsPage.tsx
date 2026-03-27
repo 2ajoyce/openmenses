@@ -11,6 +11,7 @@ import {
   Page,
 } from "framework7-react";
 import React, { useEffect, useState } from "react";
+import DevToolsSection from "../features/devtools/DevToolsSection";
 import { client, DEFAULT_PARENT } from "../lib/client";
 import {
   biologicalCycleModelOptions,
@@ -295,6 +296,8 @@ const SettingsPage: React.FC = () => {
           <ListItem title="Privacy Policy" link="/privacy/" />
           <ListItem title="About OpenMenses" link="/about/" />
         </List>
+
+        <DevToolsSection />
       </div>
     </Page>
   );
