@@ -13,7 +13,7 @@ endif
 .PHONY: proto-lint proto-generate proto-breaking proto-check \
         engine-lint engine-test \
         engine-dev ui-dev ui-build ui-lint ui-test \
-        seed seed-all \
+        seed seed-all fixtures-generate \
         mobile-setup ui-bundle mobile-ios \
         lint test ci
 
@@ -94,10 +94,32 @@ seed:
 #   make seed-all                     # Runs all scenarios with defaults
 seed-all:
 	go run ./engine/cmd/seed/ --scenario=regular-12 --db=openmenses-regular-12.db
+	go run ./engine/cmd/seed/ --scenario=ovulatory-somewhat-irregular --db=openmenses-ovulatory-somewhat-irregular.db
+	go run ./engine/cmd/seed/ --scenario=ovulatory-very-irregular --db=openmenses-ovulatory-very-irregular.db
+	go run ./engine/cmd/seed/ --scenario=ovulatory-unknown --db=openmenses-ovulatory-unknown.db
+	go run ./engine/cmd/seed/ --scenario=hormonal-regular --db=openmenses-hormonal-regular.db
+	go run ./engine/cmd/seed/ --scenario=hormonal-somewhat-irregular --db=openmenses-hormonal-somewhat-irregular.db
+	go run ./engine/cmd/seed/ --scenario=hormonal-very-irregular --db=openmenses-hormonal-very-irregular.db
 	go run ./engine/cmd/seed/ --scenario=irregular --db=openmenses-irregular.db
+	go run ./engine/cmd/seed/ --scenario=irregular-very-irregular --db=openmenses-irregular-very-irregular.db
 	go run ./engine/cmd/seed/ --scenario=shortening --db=openmenses-shortening.db
 	go run ./engine/cmd/seed/ --scenario=medication-gaps --db=openmenses-medication-gaps.db
 	go run ./engine/cmd/seed/ --scenario=minimal --db=openmenses-minimal.db
+
+# Generate persona fixture JSON files for the UI Dev Tools.
+# Output: ui/public/fixtures/<scenario-name>.json
+# These are pre-generated export files that the UI imports client-side.
+fixtures-generate:
+	mkdir -p ui/public/fixtures
+	go run ./engine/cmd/seed/ --scenario=regular-12 --db=:memory: --export=ui/public/fixtures/regular-12.json
+	go run ./engine/cmd/seed/ --scenario=ovulatory-somewhat-irregular --db=:memory: --export=ui/public/fixtures/ovulatory-somewhat-irregular.json
+	go run ./engine/cmd/seed/ --scenario=ovulatory-very-irregular --db=:memory: --export=ui/public/fixtures/ovulatory-very-irregular.json
+	go run ./engine/cmd/seed/ --scenario=ovulatory-unknown --db=:memory: --export=ui/public/fixtures/ovulatory-unknown.json
+	go run ./engine/cmd/seed/ --scenario=hormonal-regular --db=:memory: --export=ui/public/fixtures/hormonal-regular.json
+	go run ./engine/cmd/seed/ --scenario=hormonal-somewhat-irregular --db=:memory: --export=ui/public/fixtures/hormonal-somewhat-irregular.json
+	go run ./engine/cmd/seed/ --scenario=hormonal-very-irregular --db=:memory: --export=ui/public/fixtures/hormonal-very-irregular.json
+	go run ./engine/cmd/seed/ --scenario=irregular --db=:memory: --export=ui/public/fixtures/irregular.json
+	go run ./engine/cmd/seed/ --scenario=irregular-very-irregular --db=:memory: --export=ui/public/fixtures/irregular-very-irregular.json
 
 # ---------------------------------------------------------------------------
 # Mobile targets (iOS/Android native shells)
