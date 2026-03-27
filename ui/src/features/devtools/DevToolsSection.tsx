@@ -1,11 +1,20 @@
 import { Code, ConnectError } from "@connectrpc/connect";
-import { Block, BlockTitle, Button, List, ListItem } from "framework7-react";
+import {
+  Block,
+  BlockTitle,
+  Button,
+  Icon,
+  List,
+  ListItem,
+} from "framework7-react";
 import React, { useState } from "react";
 import { ConfirmDialog } from "../../components/ConfirmDialog";
 import { client, DEFAULT_PARENT } from "../../lib/client";
 import { personas, type Persona } from "./personas";
 
 const DevToolsSection: React.FC = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [confirmExpand, setConfirmExpand] = useState(false);
   const [confirmClear, setConfirmClear] = useState(false);
   const [selectedPersona, setSelectedPersona] = useState<Persona | null>(null);
   const [loading, setLoading] = useState(false);
@@ -79,32 +88,66 @@ const DevToolsSection: React.FC = () => {
 
   return (
     <>
-      <BlockTitle>Dev Tools</BlockTitle>
-      <Block inset>
-        {error && <p className="form-error">{error}</p>}
-        <Button
-          onClick={() => setConfirmClear(true)}
-          disabled={loading}
-          color="red"
-          outline
-        >
-          Clear All Data
-        </Button>
-      </Block>
+      <button
+        className="dev-tools-toggle"
+        onClick={() => {
+          if (!isExpanded) {
+            setConfirmExpand(true);
+          } else {
+            setIsExpanded(false);
+          }
+        }}
+        aria-expanded={isExpanded}
+      >
+        <span className="dev-tools-toggle-label">Dev Tools</span>
+        <Icon
+          ios={isExpanded ? "f7:chevron_up" : "f7:chevron_down"}
+          md={isExpanded ? "material:expand_less" : "material:expand_more"}
+          className="dev-tools-toggle-icon"
+        />
+      </button>
 
-      <BlockTitle>Simulate Persona</BlockTitle>
-      <List inset>
-        {personas.map((p) => (
-          <ListItem
-            key={p.id}
-            title={p.name}
-            after={p.subtitle}
-            onClick={() => setSelectedPersona(p)}
-            disabled={loading}
-            link="#"
-          />
-        ))}
-      </List>
+      {isExpanded && (
+        <>
+          <Block inset>
+            {error && <p className="form-error">{error}</p>}
+            <Button
+              onClick={() => setConfirmClear(true)}
+              disabled={loading}
+              color="red"
+              outline
+            >
+              Clear All Data
+            </Button>
+          </Block>
+
+          <BlockTitle>Simulate Persona</BlockTitle>
+          <List inset>
+            {personas.map((p) => (
+              <ListItem
+                key={p.id}
+                title={p.name}
+                subtitle={p.subtitle}
+                onClick={() => setSelectedPersona(p)}
+                disabled={loading}
+                link="#"
+                mediaItem
+              />
+            ))}
+          </List>
+        </>
+      )}
+
+      <ConfirmDialog
+        open={confirmExpand}
+        title="Open Dev Tools?"
+        message="Dev Tools can permanently destroy your existing data and cannot be undone. Are you sure you want to continue?"
+        onConfirm={() => {
+          setConfirmExpand(false);
+          setIsExpanded(true);
+        }}
+        onCancel={() => setConfirmExpand(false)}
+      />
 
       <ConfirmDialog
         open={confirmClear}

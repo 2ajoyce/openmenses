@@ -1633,3 +1633,41 @@
   border-radius: var(--om-radius-sm);
   background-color: rgba(var(--om-cell-rgb), var(--om-cell-opacity, 0));
 }
+
+/* ============================================================
+   Dev Tools Toggle
+   ============================================================ */
+
+.dev-tools-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0 var(--om-space-md);
+  margin: var(--om-space-sm) 0 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dev-tools-toggle[aria-expanded="false"] {
+  margin-bottom: var(--om-space-xl);
+}
+
+.dev-tools-toggle-label {
+  font-size: var(--om-font-size-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--om-color-text-secondary, #888888);
+}
+
+:root.dark .dev-tools-toggle-label {
+  color: #888888;
+}
+
+.dev-tools-toggle-icon {
+  color: var(--om-color-text-secondary, #888888);
+  font-size: 14px;
+}
