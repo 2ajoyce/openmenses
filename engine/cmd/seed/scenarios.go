@@ -1,12 +1,20 @@
 package main
 
+import (
+	v1 "github.com/2ajoyce/openmenses/gen/go/openmenses/v1"
+)
+
 // regularScenario returns a scenario with 12 stable cycles, consistent symptom patterns,
 // and high medication adherence. Produces stable CYCLE_LENGTH_PATTERN, SYMPTOM_PATTERN,
 // and MEDICATION_ADHERENCE_PATTERN insights.
+// Persona: Amara (Ovulatory, Regular).
 func regularScenario() *Scenario {
 	return &Scenario{
+		HumanName:           "Amara",
 		Name:                "regular-12",
 		Description:         "12 stable cycles (28 days mean), consistent headache on day 12, high medication adherence",
+		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
+		CycleRegularity:     v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
 		CycleCount:          12,
 		CycleLengthMean:     28.0,
 		CycleLengthStdDev:   1.0,
@@ -22,16 +30,182 @@ func regularScenario() *Scenario {
 
 // irregularScenario returns a scenario with 8 cycles of highly variable lengths,
 // producing an IRREGULAR classification in CYCLE_LENGTH_PATTERN.
+// Persona: Hana (Irregular cycle model, Regular regularity).
 func irregularScenario() *Scenario {
 	return &Scenario{
+		HumanName:           "Hana",
 		Name:                "irregular",
 		Description:         "8 cycles with variable lengths (32 days mean, 7 day stddev) and variable bleed durations",
+		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_IRREGULAR,
+		CycleRegularity:     v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
 		CycleCount:          8,
 		CycleLengthMean:     32.0,
 		CycleLengthStdDev:   7.0,
 		BleedDurationMean:   5.0,
 		BleedDurationStdDev: 2.0,
 		FlowPattern:         []FlowIntensity{FlowLight, FlowModerate, FlowHeavy, FlowModerate, FlowLight},
+		SymptomPatterns:     map[string][]int{},
+		MedicationNames:     []string{},
+		MedicationAdherence: map[string]float64{},
+		IncludeMood:         false,
+	}
+}
+
+// beatrizScenario returns a scenario with 10 cycles of somewhat irregular length.
+// Produces medium confidence phase estimation.
+// Persona: Beatriz (Ovulatory, Somewhat Irregular).
+func beatrizScenario() *Scenario {
+	return &Scenario{
+		HumanName:           "Beatriz",
+		Name:                "ovulatory-somewhat-irregular",
+		Description:         "10 cycles (30 days mean, 3 day stddev), somewhat irregular ovulatory",
+		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
+		CycleRegularity:     v1.CycleRegularity_CYCLE_REGULARITY_SOMEWHAT_IRREGULAR,
+		CycleCount:          10,
+		CycleLengthMean:     30.0,
+		CycleLengthStdDev:   3.0,
+		BleedDurationMean:   5.0,
+		BleedDurationStdDev: 1.0,
+		FlowPattern:         []FlowIntensity{FlowLight, FlowHeavy, FlowHeavy, FlowModerate, FlowLight},
+		SymptomPatterns:     map[string][]int{"Cramps": {1, 2}},
+		MedicationNames:     []string{},
+		MedicationAdherence: map[string]float64{},
+		IncludeMood:         true,
+	}
+}
+
+// chiomaScenario returns a scenario with 8 cycles of highly variable length.
+// Produces low confidence phase estimation and no ovulation predictions.
+// Persona: Chioma (Ovulatory, Very Irregular).
+func chiomaScenario() *Scenario {
+	return &Scenario{
+		HumanName:           "Chioma",
+		Name:                "ovulatory-very-irregular",
+		Description:         "8 cycles (29 days mean, 6 day stddev), very irregular ovulatory",
+		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
+		CycleRegularity:     v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR,
+		CycleCount:          8,
+		CycleLengthMean:     29.0,
+		CycleLengthStdDev:   6.0,
+		BleedDurationMean:   5.0,
+		BleedDurationStdDev: 1.5,
+		FlowPattern:         []FlowIntensity{FlowLight, FlowModerate, FlowHeavy, FlowModerate, FlowLight},
+		SymptomPatterns:     map[string][]int{},
+		MedicationNames:     []string{},
+		MedicationAdherence: map[string]float64{},
+		IncludeMood:         false,
+	}
+}
+
+// diyaScenario returns a scenario with 6 cycles of stable length but unknown regularity
+// (typical of a new user without enough history to detect patterns).
+// Produces high confidence phase estimation but no ovulation predictions.
+// Persona: Diya (Ovulatory, Unknown regularity).
+func diyaScenario() *Scenario {
+	return &Scenario{
+		HumanName:           "Diya",
+		Name:                "ovulatory-unknown",
+		Description:         "6 cycles (28 days mean), ovulatory with unknown regularity (new user)",
+		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_OVULATORY,
+		CycleRegularity:     v1.CycleRegularity_CYCLE_REGULARITY_UNKNOWN,
+		CycleCount:          6,
+		CycleLengthMean:     28.0,
+		CycleLengthStdDev:   1.5,
+		BleedDurationMean:   4.0,
+		BleedDurationStdDev: 0.5,
+		FlowPattern:         []FlowIntensity{FlowLight, FlowModerate, FlowHeavy, FlowLight},
+		SymptomPatterns:     map[string][]int{},
+		MedicationNames:     []string{},
+		MedicationAdherence: map[string]float64{},
+		IncludeMood:         false,
+	}
+}
+
+// elenaScenario returns a scenario with 10 cycles of stable length on hormonal suppression.
+// Produces high confidence phase estimation but no ovulation predictions.
+// Persona: Elena (Hormonally Suppressed, Regular).
+func elenaScenario() *Scenario {
+	return &Scenario{
+		HumanName:           "Elena",
+		Name:                "hormonal-regular",
+		Description:         "10 cycles (28 days mean), hormonally suppressed (pill), regular withdrawal bleeds",
+		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED,
+		CycleRegularity:     v1.CycleRegularity_CYCLE_REGULARITY_REGULAR,
+		CycleCount:          10,
+		CycleLengthMean:     28.0,
+		CycleLengthStdDev:   0.5,
+		BleedDurationMean:   4.0,
+		BleedDurationStdDev: 0.5,
+		FlowPattern:         []FlowIntensity{FlowLight, FlowModerate, FlowModerate, FlowLight},
+		SymptomPatterns:     map[string][]int{},
+		MedicationNames:     []string{"Oral Contraceptive"},
+		MedicationAdherence: map[string]float64{"Oral Contraceptive": 0.98},
+		IncludeMood:         true,
+	}
+}
+
+// fatouScenario returns a scenario with 8 cycles on hormonal suppression with occasional gaps.
+// Produces medium confidence phase estimation and no ovulation predictions.
+// Persona: Fatou (Hormonally Suppressed, Somewhat Irregular).
+func fatouScenario() *Scenario {
+	return &Scenario{
+		HumanName:           "Fatou",
+		Name:                "hormonal-somewhat-irregular",
+		Description:         "8 cycles (28 days mean, 2 day stddev), hormonal with occasional missed pills",
+		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED,
+		CycleRegularity:     v1.CycleRegularity_CYCLE_REGULARITY_SOMEWHAT_IRREGULAR,
+		CycleCount:          8,
+		CycleLengthMean:     28.0,
+		CycleLengthStdDev:   2.0,
+		BleedDurationMean:   4.0,
+		BleedDurationStdDev: 1.0,
+		FlowPattern:         []FlowIntensity{FlowLight, FlowModerate, FlowLight},
+		SymptomPatterns:     map[string][]int{"Headache": {22}},
+		MedicationNames:     []string{"Oral Contraceptive"},
+		MedicationAdherence: map[string]float64{"Oral Contraceptive": 0.85},
+		IncludeMood:         false,
+	}
+}
+
+// gretaScenario returns a scenario with 6 cycles on hormonal suppression with breakthrough bleeding.
+// Produces low confidence phase estimation and no ovulation predictions.
+// Persona: Greta (Hormonally Suppressed, Very Irregular).
+func gretaScenario() *Scenario {
+	return &Scenario{
+		HumanName:           "Greta",
+		Name:                "hormonal-very-irregular",
+		Description:         "6 cycles (35 days mean, 8 day stddev), hormonal implant with breakthrough bleeding",
+		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_HORMONALLY_SUPPRESSED,
+		CycleRegularity:     v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR,
+		CycleCount:          6,
+		CycleLengthMean:     35.0,
+		CycleLengthStdDev:   8.0,
+		BleedDurationMean:   3.0,
+		BleedDurationStdDev: 1.5,
+		FlowPattern:         []FlowIntensity{FlowLight, FlowLight, FlowModerate},
+		SymptomPatterns:     map[string][]int{},
+		MedicationNames:     []string{},
+		MedicationAdherence: map[string]float64{},
+		IncludeMood:         false,
+	}
+}
+
+// ingridScenario returns a scenario with 6 cycles of highly variable length on the irregular model.
+// Produces low confidence phase estimation and no ovulation predictions.
+// Persona: Ingrid (Irregular, Very Irregular).
+func ingridScenario() *Scenario {
+	return &Scenario{
+		HumanName:           "Ingrid",
+		Name:                "irregular-very-irregular",
+		Description:         "6 cycles (34 days mean, 9 day stddev), irregular cycle model with very irregular regularity",
+		BiologicalCycle:     v1.BiologicalCycleModel_BIOLOGICAL_CYCLE_MODEL_IRREGULAR,
+		CycleRegularity:     v1.CycleRegularity_CYCLE_REGULARITY_VERY_IRREGULAR,
+		CycleCount:          6,
+		CycleLengthMean:     34.0,
+		CycleLengthStdDev:   9.0,
+		BleedDurationMean:   5.0,
+		BleedDurationStdDev: 2.0,
+		FlowPattern:         []FlowIntensity{FlowLight, FlowModerate, FlowHeavy, FlowHeavy, FlowModerate, FlowLight},
 		SymptomPatterns:     map[string][]int{},
 		MedicationNames:     []string{},
 		MedicationAdherence: map[string]float64{},
