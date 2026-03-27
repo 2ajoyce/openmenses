@@ -137,8 +137,17 @@ type Generator struct {
 
 // scenarioRegistry maps scenario names to their configurations.
 var scenarioRegistry = map[string]*Scenario{
-	"regular-12":      regularScenario(),
-	"irregular":       irregularScenario(),
+	// Persona scenarios (9 algorithmically-distinct user types)
+	"regular-12":                   regularScenario(),
+	"ovulatory-somewhat-irregular": beatrizScenario(),
+	"ovulatory-very-irregular":     chiomaScenario(),
+	"ovulatory-unknown":            diyaScenario(),
+	"hormonal-regular":             elenaScenario(),
+	"hormonal-somewhat-irregular":  fatouScenario(),
+	"hormonal-very-irregular":      gretaScenario(),
+	"irregular":                    irregularScenario(),
+	"irregular-very-irregular":     ingridScenario(),
+	// Pattern-specific scenarios (for insight testing, not personas)
 	"shortening":      shorteningScenario(),
 	"medication-gaps": medicationGapsScenario(),
 	"minimal":         minimalScenario(),
