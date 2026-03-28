@@ -12,6 +12,7 @@ import { NotesField } from "../../components/NotesField";
 import { client, DEFAULT_PARENT } from "../../lib/client";
 import { toDateTime } from "../../lib/dates";
 import { bleedingFlowOptions } from "../../lib/enums";
+import { exportObservation, isHealthKitAvailable } from "../../lib/healthkit";
 
 interface BleedingFormProps {
   f7router: Router.Router;
@@ -74,6 +75,10 @@ const BleedingForm: React.FC<BleedingFormProps> = ({
           parent: DEFAULT_PARENT,
           observation,
         });
+      }
+
+      if (isHealthKitAvailable()) {
+        exportObservation(timestamp, flow);
       }
 
       if (f7router.view?.main) {

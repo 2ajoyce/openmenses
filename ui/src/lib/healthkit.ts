@@ -32,3 +32,25 @@ export function importFromHealthKit(): void {
     action: "import",
   });
 }
+
+/**
+ * Export a bleeding observation to Apple Health.
+ *
+ * The native handler guards on `syncEnabled`, so this is safe to call
+ * unconditionally whenever HealthKit is available — the Swift layer will
+ * silently drop the message if sync is currently disabled.
+ *
+ * @param date - The observation date.
+ * @param flow - Proto `BleedingFlow` enum integer value (1–4).
+ */
+export function exportObservation(date: Date, flow: number): void {
+  // Strip milliseconds — the native ISO8601DateFormatter uses withInternetDateTime
+  // which does not accept fractional seconds.
+  const isoDate = date.toISOString().replace(/\.\d{3}Z$/, "Z");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (window as any).webkit.messageHandlers.healthkit.postMessage({
+    action: "exportObservation",
+    date: isoDate,
+    flow,
+  });
+}

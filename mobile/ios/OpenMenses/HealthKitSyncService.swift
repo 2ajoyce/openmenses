@@ -23,7 +23,17 @@ final class HealthKitSyncService {
     /// Whether the user has enabled HealthKit sync. Persisted in `UserDefaults`.
     var syncEnabled: Bool {
         get { userDefaults.bool(forKey: Self.syncEnabledKey) }
-        set { userDefaults.set(newValue, forKey: Self.syncEnabledKey) }
+        set {
+            let wasEnabled = userDefaults.bool(forKey: Self.syncEnabledKey)
+            userDefaults.set(newValue, forKey: Self.syncEnabledKey)
+            // Reset the import cursor when sync is disabled so that re-enabling
+            // always performs a full re-import. This ensures entries added to
+            // HealthKit while sync was off (including backdated entries) are not
+            // silently skipped by the lastSyncDate predicate.
+            if wasEnabled && !newValue {
+                lastSyncDate = .distantPast
+            }
+        }
     }
 
     /// The last time a successful import sync completed.
@@ -112,7 +122,15 @@ final class HealthKitSyncService {
         guard HKHealthStore.isHealthDataAvailable() else { return }
 
         let formatter = ISO8601DateFormatter()
-        guard let date = formatter.date(from: isoDate) else {
+        // Try parsing with fractional seconds first (JavaScript toISOString() includes
+        // milliseconds), then fall back to the standard internet date-time format.
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        var date = formatter.date(from: isoDate)
+        if date == nil {
+            formatter.formatOptions = [.withInternetDateTime]
+            date = formatter.date(from: isoDate)
+        }
+        guard let date else {
             NSLog("HealthKitSyncService: invalid ISO date string for export: %@", isoDate)
             return
         }
