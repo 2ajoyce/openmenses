@@ -20,6 +20,7 @@ import {
   reproductiveGoalOptions,
   trackingFocusOptions,
 } from "../lib/enums";
+import { importFromHealthKit, isHealthKitAvailable } from "../lib/healthkit";
 
 const SettingsPage: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -326,6 +327,14 @@ const SettingsPage: React.FC = () => {
                   Health app.
                 </p>
               </div>
+              {isHealthKitAvailable() && (
+                <Button
+                  onClick={importFromHealthKit}
+                  className="import-health-button"
+                >
+                  Import from Health
+                </Button>
+              )}
             </Block>
           </>
         )}

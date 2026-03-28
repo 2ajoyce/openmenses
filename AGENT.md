@@ -85,21 +85,22 @@ All code generation and architectural proposals must follow the rules in:
 
 Always use these `make` targets. Do not run the underlying tools directly unless debugging.
 
-| Target                | Purpose                                  |
-| --------------------- | ---------------------------------------- |
-| `make proto-lint`     | Lint proto files with buf                |
-| `make proto-generate` | Regenerate code from proto with buf      |
-| `make proto-breaking` | Check for breaking proto changes vs main |
-| `make engine-lint`    | Lint Go engine code                      |
-| `make engine-test`    | Run Go engine tests                      |
-| `make ui-lint`        | Lint TypeScript UI code                  |
-| `make ui-test`        | Run TypeScript UI tests                  |
-| `make lint`           | Run all linters (proto + engine + ui)    |
-| `make test`           | Run all tests (engine + ui)              |
-| `make ci`             | Run all CI validation steps              |
-| `make mobile-setup`   | Install gomobile tooling (one-time)      |
-| `make mobile-ios`     | Build Engine.xcframework (gomobile bind) |
-| `make ui-bundle`      | Build UI production bundle into ui/dist/ |
+| Target                | Purpose                                                                           |
+| --------------------- | --------------------------------------------------------------------------------- |
+| `make proto-lint`     | Lint proto files with buf                                                         |
+| `make proto-generate` | Regenerate code from proto with buf                                               |
+| `make proto-breaking` | Check for breaking proto changes vs main                                          |
+| `make engine-lint`    | Lint Go engine code                                                               |
+| `make engine-test`    | Run Go engine tests                                                               |
+| `make ui-lint`        | Lint TypeScript UI code                                                           |
+| `make ui-test`        | Run TypeScript UI tests                                                           |
+| `make lint`           | Run all linters (proto + engine + ui)                                             |
+| `make test`           | Run all tests (engine + ui)                                                       |
+| `make ci`             | Run all CI validation steps                                                       |
+| `make mobile-setup`   | Install gomobile tooling (one-time)                                               |
+| `make mobile-ios`     | Build Engine.xcframework (gomobile bind)                                          |
+| `make mobile-project` | Regenerate Xcode project from project.yml (run after adding/removing Swift files) |
+| `make ui-bundle`      | Build UI production bundle into ui/dist/                                          |
 
 ---
 

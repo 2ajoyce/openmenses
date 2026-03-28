@@ -156,6 +156,22 @@ final class WebViewController: UIViewController, WKScriptMessageHandler {
                 return
             }
             Task { await HealthKitSyncService.shared.exportToHealthKit(isoDate: date, flow: flow) }
+        case "requestAuth":
+            Task {
+                do {
+                    try await HealthKitManager.shared.requestAuthorization()
+                } catch {
+                    NSLog("WebViewController: HealthKit auth request failed: %@", error.localizedDescription)
+                }
+            }
+        case "import":
+            Task {
+                do {
+                    try await HealthKitSyncService.shared.importFromHealthKit()
+                } catch {
+                    NSLog("WebViewController: HealthKit import failed: %@", error.localizedDescription)
+                }
+            }
         default:
             break
         }

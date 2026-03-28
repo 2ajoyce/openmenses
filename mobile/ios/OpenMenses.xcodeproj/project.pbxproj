@@ -11,6 +11,7 @@
 		10465696C2FC3B076020CC66 /* EngineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804A4A4C8699B537177457FF /* EngineManager.swift */; };
 		25D0A5AFB129F386867A6D38 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3CC0EA103F96B46B1D258535 /* PrivacyInfo.xcprivacy */; };
 		429D691D67CCA801A4A096D2 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CF4E552BE0F7DF38FA951A /* HealthKitManager.swift */; };
+		4D9D5A9BE3C2E7559FFE85D7 /* HealthKitSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BEC9FE3D67CDEBBB4AF566 /* HealthKitSyncService.swift */; };
 		4DEFF8B2C4F74AD73892F2A7 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE91AC08962277F49FC64BE3 /* WebViewController.swift */; };
 		4F1B5E33645404DBDBDA512F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8F8B0CDC420E7B83A2338 /* AppDelegate.swift */; };
 		7048C643C0D9076A1BF062D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB940A0631D874FE5C3817EB /* LaunchScreen.storyboard */; };
@@ -29,6 +30,7 @@
 		3CC0EA103F96B46B1D258535 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5FD54A47AF2F189DA74A7A5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		804A4A4C8699B537177457FF /* EngineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineManager.swift; sourceTree = "<group>"; };
+		91BEC9FE3D67CDEBBB4AF566 /* HealthKitSyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitSyncService.swift; sourceTree = "<group>"; };
 		B6CF4E552BE0F7DF38FA951A /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		BE91AC08962277F49FC64BE3 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		BFF8F8B0CDC420E7B83A2338 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 				3C0B4F2E6B8419E8F6CEFBB0 /* Assets.xcassets */,
 				804A4A4C8699B537177457FF /* EngineManager.swift */,
 				B6CF4E552BE0F7DF38FA951A /* HealthKitManager.swift */,
+				91BEC9FE3D67CDEBBB4AF566 /* HealthKitSyncService.swift */,
 				5FD54A47AF2F189DA74A7A5F /* Info.plist */,
 				EB940A0631D874FE5C3817EB /* LaunchScreen.storyboard */,
 				1FB8831DA805091766FB4E07 /* OpenMenses.entitlements */,
@@ -211,6 +214,7 @@
 				4F1B5E33645404DBDBDA512F /* AppDelegate.swift in Sources */,
 				10465696C2FC3B076020CC66 /* EngineManager.swift in Sources */,
 				429D691D67CCA801A4A096D2 /* HealthKitManager.swift in Sources */,
+				4D9D5A9BE3C2E7559FFE85D7 /* HealthKitSyncService.swift in Sources */,
 				C676EE5D6EA524EDFC2C4416 /* SceneDelegate.swift in Sources */,
 				4DEFF8B2C4F74AD73892F2A7 /* WebViewController.swift in Sources */,
 			);
