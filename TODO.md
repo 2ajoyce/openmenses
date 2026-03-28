@@ -58,34 +58,6 @@ Steps 8–11 (Xcode project, EngineManager, WebViewController, AppDelegate/Scene
 
 Add bi-directional sync of menstrual flow data between the app and Apple HealthKit. All HealthKit code lives in the native Swift shell — **no domain logic in Swift**. The shell reads/writes HealthKit and translates to/from Connect-RPC calls to the engine.
 
-### Step 15: Sync orchestration
-
-Wire up the HealthKit sync triggers.
-
-**On app launch** (in `AppDelegate.didFinishLaunchingWithOptions`, after engine starts):
-
-1. Request HealthKit authorization (if not already granted)
-2. Fetch menstrual flow samples since last sync
-3. Import each into the engine via Connect-RPC
-
-**On new bleeding observation** (requires native↔WebView communication):
-
-1. WebView notifies native layer when a bleeding observation is created
-2. Native layer reads the observation from the engine (or receives it via message)
-3. Native layer writes it to HealthKit
-
-**User settings toggle**:
-
-1. Add a toggle in the Settings page: "Sync with Apple Health"
-2. Store preference in `UserDefaults`
-3. Only run sync when enabled
-
-- [ ] Add post-launch sync logic to `AppDelegate` or `SceneDelegate`
-- [ ] Store/read last sync date in `UserDefaults`
-- [ ] Add HealthKit sync toggle to settings (requires WebView↔native message)
-- [ ] Test import: add menstrual flow in Health app → launch OpenMenses → verify observation appears
-- [ ] Test export: log bleeding in OpenMenses → verify it appears in Health app
-
 ### Step 16: WebView ↔ Native messaging for HealthKit
 
 Add a message channel so the UI can trigger HealthKit operations and receive results.

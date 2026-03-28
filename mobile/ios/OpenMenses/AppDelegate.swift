@@ -14,6 +14,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // descriptive message rather than silently presenting a broken UI.
             fatalError("Failed to start engine: \(error.localizedDescription)")
         }
+
+        // Import HealthKit menstrual flow samples added since the last sync.
+        // Runs asynchronously so it never delays app launch. Returns immediately
+        // if sync is disabled or HealthKit is unavailable.
+        Task {
+            await HealthKitSyncService.shared.performStartupSync()
+        }
+
         return true
     }
 
