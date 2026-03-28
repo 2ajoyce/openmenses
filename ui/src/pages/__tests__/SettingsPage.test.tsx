@@ -6,7 +6,7 @@ import {
   TrackingFocus,
 } from "@gen/openmenses/v1/model_pb";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import SettingsPage from "../SettingsPage";
 
 const mockGetUserProfile = vi.fn();
@@ -441,6 +441,145 @@ describe("SettingsPage", () => {
       expect(
         screen.getByText("Profile saved successfully"),
       ).toBeInTheDocument();
+    });
+  });
+
+  describe("HealthKit sync toggle", () => {
+    // Type-safe window extension for properties injected by the native shell.
+    type NativeWindow = Window & {
+      __OPENMENSES_ENGINE__?: {
+        port: number;
+        authToken: string;
+        healthKitSyncEnabled: boolean;
+      };
+      webkit?: {
+        messageHandlers?: {
+          healthkit?: { postMessage: (msg: unknown) => void };
+        };
+      };
+    };
+    const nativeWindow = window as NativeWindow;
+
+    afterEach(() => {
+      delete nativeWindow.__OPENMENSES_ENGINE__;
+      delete nativeWindow.webkit;
+    });
+
+    it("does not render HealthKit section outside native shell", async () => {
+      // No __OPENMENSES_ENGINE__ — simulates browser / web-only environment.
+      mockGetUserProfile.mockResolvedValue({ profile: null });
+
+      render(<SettingsPage />);
+
+      await waitFor(() => {
+        expect(screen.getByText("Loading profile...")).not.toBeInTheDocument();
+      }).catch(() => {
+        /* already resolved */
+      });
+
+      expect(
+        screen.queryByLabelText("Sync with Apple Health"),
+      ).not.toBeInTheDocument();
+    });
+
+    it("renders HealthKit sync toggle in native shell (default off)", async () => {
+      nativeWindow.__OPENMENSES_ENGINE__ = {
+        port: 12345,
+        authToken: "abc",
+        healthKitSyncEnabled: false,
+      };
+      mockGetUserProfile.mockResolvedValue({ profile: null });
+
+      render(<SettingsPage />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByLabelText("Sync with Apple Health"),
+        ).toBeInTheDocument();
+      });
+
+      const toggle = screen.getByLabelText(
+        "Sync with Apple Health",
+      ) as HTMLInputElement;
+      expect(toggle.checked).toBe(false);
+    });
+
+    it("initialises toggle from injected healthKitSyncEnabled value", async () => {
+      nativeWindow.__OPENMENSES_ENGINE__ = {
+        port: 12345,
+        authToken: "abc",
+        healthKitSyncEnabled: true,
+      };
+      mockGetUserProfile.mockResolvedValue({ profile: null });
+
+      render(<SettingsPage />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByLabelText("Sync with Apple Health"),
+        ).toBeInTheDocument();
+      });
+
+      const toggle = screen.getByLabelText(
+        "Sync with Apple Health",
+      ) as HTMLInputElement;
+      expect(toggle.checked).toBe(true);
+    });
+
+    it("sends setSyncEnabled message to native when toggled on", async () => {
+      nativeWindow.__OPENMENSES_ENGINE__ = {
+        port: 12345,
+        authToken: "abc",
+        healthKitSyncEnabled: false,
+      };
+      const mockPostMessage = vi.fn();
+      nativeWindow.webkit = {
+        messageHandlers: { healthkit: { postMessage: mockPostMessage } },
+      };
+      mockGetUserProfile.mockResolvedValue({ profile: null });
+
+      render(<SettingsPage />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByLabelText("Sync with Apple Health"),
+        ).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByLabelText("Sync with Apple Health"));
+
+      expect(mockPostMessage).toHaveBeenCalledWith({
+        action: "setSyncEnabled",
+        enabled: true,
+      });
+    });
+
+    it("sends setSyncEnabled false when toggled off", async () => {
+      nativeWindow.__OPENMENSES_ENGINE__ = {
+        port: 12345,
+        authToken: "abc",
+        healthKitSyncEnabled: true,
+      };
+      const mockPostMessage = vi.fn();
+      nativeWindow.webkit = {
+        messageHandlers: { healthkit: { postMessage: mockPostMessage } },
+      };
+      mockGetUserProfile.mockResolvedValue({ profile: null });
+
+      render(<SettingsPage />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByLabelText("Sync with Apple Health"),
+        ).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByLabelText("Sync with Apple Health"));
+
+      expect(mockPostMessage).toHaveBeenCalledWith({
+        action: "setSyncEnabled",
+        enabled: false,
+      });
     });
   });
 

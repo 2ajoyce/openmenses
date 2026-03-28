@@ -11,6 +11,8 @@ declare global {
       port: number;
       /** Bearer token required for Connect-RPC requests. */
       authToken: string;
+      /** Whether HealthKit sync is currently enabled (injected by native shell). */
+      healthKitSyncEnabled: boolean;
     };
   }
 }

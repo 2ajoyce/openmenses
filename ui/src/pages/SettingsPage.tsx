@@ -34,6 +34,12 @@ const SettingsPage: React.FC = () => {
   const [reproductiveGoal, setReproductiveGoal] = useState(0);
   const [trackingFocuses, setTrackingFocuses] = useState<TrackingFocus[]>([]);
 
+  // HealthKit sync — only active when running inside the iOS native shell.
+  const isNativeShell = window.__OPENMENSES_ENGINE__ !== undefined;
+  const [healthKitSyncEnabled, setHealthKitSyncEnabled] = useState<boolean>(
+    () => window.__OPENMENSES_ENGINE__?.healthKitSyncEnabled ?? false,
+  );
+
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -70,6 +76,16 @@ const SettingsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleHealthKitToggle = (enabled: boolean) => {
+    setHealthKitSyncEnabled(enabled);
+    // Notify the native layer so UserDefaults stays in sync with the toggle.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).webkit?.messageHandlers?.healthkit?.postMessage({
+      action: "setSyncEnabled",
+      enabled,
+    });
   };
 
   const handleTrackingFocusChange = (
@@ -290,6 +306,29 @@ const SettingsPage: React.FC = () => {
           <ListItem title="Export Data" link="/export/" />
           <ListItem title="Clinician Summary" link="/summary/" />
         </List>
+
+        {isNativeShell && (
+          <>
+            <BlockTitle>Integrations</BlockTitle>
+            <Block inset>
+              <div className="form-group">
+                <label htmlFor="healthkit-sync" className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    id="healthkit-sync"
+                    checked={healthKitSyncEnabled}
+                    onChange={(e) => handleHealthKitToggle(e.target.checked)}
+                  />
+                  <span>Sync with Apple Health</span>
+                </label>
+                <p className="om-muted">
+                  Import menstrual flow data from and export observations to the
+                  Health app.
+                </p>
+              </div>
+            </Block>
+          </>
+        )}
 
         <BlockTitle>About</BlockTitle>
         <List inset>

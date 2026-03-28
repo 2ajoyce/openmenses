@@ -23,6 +23,7 @@ final class WebViewController: UIViewController, WKScriptMessageHandler {
         // Register native message handlers so the UI can trigger iOS actions.
         webConfig.userContentController.add(self, name: "export")
         webConfig.userContentController.add(self, name: "print")
+        webConfig.userContentController.add(self, name: "healthkit")
 
         // Inject engine config before any page script runs.
         // The auth token is embedded inline — this is safe because the script
@@ -35,10 +36,12 @@ final class WebViewController: UIViewController, WKScriptMessageHandler {
         let safeToken = engine.authToken
             .replacingOccurrences(of: "\\", with: "\\\\")
             .replacingOccurrences(of: "\"", with: "\\\"")
+        let syncEnabled = HealthKitSyncService.shared.syncEnabled ? "true" : "false"
         let injectionSource = """
         window.__OPENMENSES_ENGINE__ = {
             port: \(engine.port),
-            authToken: "\(safeToken)"
+            authToken: "\(safeToken)",
+            healthKitSyncEnabled: \(syncEnabled)
         };
         """
         let userScript = WKUserScript(
@@ -78,6 +81,8 @@ final class WebViewController: UIViewController, WKScriptMessageHandler {
             handleExportMessage(message)
         case "print":
             handlePrintMessage()
+        case "healthkit":
+            handleHealthKitMessage(message)
         default:
             break
         }
@@ -119,6 +124,41 @@ final class WebViewController: UIViewController, WKScriptMessageHandler {
         }
 
         present(activityVC, animated: true)
+    }
+
+    // MARK: - HealthKit
+
+    /// Handles HealthKit-related messages from the UI layer.
+    ///
+    /// Supported actions:
+    /// - `setSyncEnabled` — toggles HealthKit sync on/off. Body: `{ action, enabled: Bool }`.
+    ///   If enabling, immediately kicks off an import sync in the background.
+    /// - `exportObservation` — writes a bleeding entry to HealthKit.
+    ///   Body: `{ action, date: String (ISO-8601), flow: Int }`.
+    private func handleHealthKitMessage(_ message: WKScriptMessage) {
+        guard let body = message.body as? [String: Any],
+              let action = body["action"] as? String else {
+            NSLog("WebViewController: invalid healthkit message body")
+            return
+        }
+
+        switch action {
+        case "setSyncEnabled":
+            let enabled = body["enabled"] as? Bool ?? false
+            HealthKitSyncService.shared.syncEnabled = enabled
+            if enabled {
+                Task { await HealthKitSyncService.shared.performStartupSync() }
+            }
+        case "exportObservation":
+            guard let date = body["date"] as? String,
+                  let flow = body["flow"] as? Int else {
+                NSLog("WebViewController: exportObservation missing date or flow")
+                return
+            }
+            Task { await HealthKitSyncService.shared.exportToHealthKit(isoDate: date, flow: flow) }
+        default:
+            break
+        }
     }
 
     // MARK: - Print
