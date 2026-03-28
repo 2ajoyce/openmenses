@@ -23,6 +23,7 @@ make test                # All tests
 make ci                  # Full CI: lint + generation check + tests
 make mobile-setup        # Install gomobile tooling (one-time)
 make mobile-ios          # Build Engine.xcframework via gomobile bind
+make mobile-project      # Regenerate Xcode project from project.yml (run after adding/removing Swift files)
 make ui-bundle           # Build UI production bundle into ui/dist/
 ```
 

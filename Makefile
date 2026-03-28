@@ -14,7 +14,7 @@ endif
         engine-lint engine-test \
         engine-dev ui-dev ui-build ui-lint ui-test \
         seed seed-all fixtures-generate \
-        mobile-setup ui-bundle mobile-ios \
+        mobile-setup ui-bundle mobile-ios mobile-project \
         lint test ci
 
 # ---------------------------------------------------------------------------
@@ -140,6 +140,14 @@ ui-bundle: ui-build
 # Note: This target only works on macOS with Xcode installed.
 mobile-ios:
 	PATH="$(shell go env GOPATH)/bin:$$PATH" $(shell go env GOPATH)/bin/gomobile bind -target=ios -o mobile/ios/Engine.xcframework ./engine/mobile/
+
+# Regenerate the Xcode project from project.yml via xcodegen.
+# Run this whenever a Swift source file is added or removed, or project.yml
+# changes. Xcode cannot self-heal — the .pbxproj must be updated before
+# building, because script phases run too late to affect the Compile Sources list.
+# Requires: xcodegen (brew install xcodegen).
+mobile-project:
+	cd mobile/ios && xcodegen generate
 
 # ---------------------------------------------------------------------------
 # Aggregate targets

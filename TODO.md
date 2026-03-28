@@ -54,70 +54,9 @@ Steps 8–11 (Xcode project, EngineManager, WebViewController, AppDelegate/Scene
 
 ---
 
-## Sub-Phase 7D: HealthKit Integration
+## Sub-Phase 7D: HealthKit Integration ✓
 
-Add bi-directional sync of menstrual flow data between the app and Apple HealthKit. All HealthKit code lives in the native Swift shell — **no domain logic in Swift**. The shell reads/writes HealthKit and translates to/from Connect-RPC calls to the engine.
-
-### Step 16: WebView ↔ Native messaging for HealthKit
-
-Add a message channel so the UI can trigger HealthKit operations and receive results.
-
-**Native side** (in `WebViewController.swift`):
-
-```swift
-// Add WKScriptMessageHandler for "healthkit" messages
-config.userContentController.add(self, name: "healthkit")
-
-// Handle messages
-func userContentController(_ controller: WKUserContentController,
-                          didReceive message: WKScriptMessage) {
-    guard let body = message.body as? [String: Any],
-          let action = body["action"] as? String else { return }
-
-    switch action {
-    case "import":
-        Task { await importFromHealthKit() }
-    case "requestAuth":
-        Task { await requestHealthKitAuth() }
-    default:
-        break
-    }
-}
-```
-
-**UI side** (new utility in `ui/src/lib/`):
-
-```typescript
-// Check if running in native iOS shell with HealthKit support
-export function isHealthKitAvailable(): boolean {
-  return (
-    "webkit" in window &&
-    "messageHandlers" in (window as any).webkit &&
-    "healthkit" in (window as any).webkit.messageHandlers
-  );
-}
-
-// Request HealthKit authorization
-export function requestHealthKitAuth(): void {
-  (window as any).webkit.messageHandlers.healthkit.postMessage({
-    action: "requestAuth",
-  });
-}
-
-// Trigger HealthKit import
-export function importFromHealthKit(): void {
-  (window as any).webkit.messageHandlers.healthkit.postMessage({
-    action: "import",
-  });
-}
-```
-
-- [ ] Add `WKScriptMessageHandler` to `WebViewController` for "healthkit" messages
-- [ ] Create `ui/src/lib/healthkit.ts` with native messaging helpers
-- [ ] Add "Import from Health" button to Settings page (visible only when `isHealthKitAvailable()`)
-- [ ] Run `make ui-lint` — must pass
-- [ ] Run `make ui-test` — must pass
-- [ ] Test on physical device: tap "Import from Health" → HealthKit permission prompt → data imported
+HealthKit bi-directional sync is complete. `HealthKitManager`, `HealthKitSyncService`, and native WebView messaging are implemented. `WKScriptMessageHandler` in `WebViewController.swift` handles `requestAuth`, `import`, `setSyncEnabled`, and `exportObservation` actions. The UI exposes an "Import from Health" button (visible only in the iOS native shell) via `ui/src/lib/healthkit.ts`. All lints and tests pass.
 
 ---
 
@@ -127,7 +66,7 @@ export function importFromHealthKit(): void {
 7A: Step 1 (bridge.go) → Step 2 (auth middleware) → Step 3 (SPA file server) → Step 4 (tests) → Step 5 (Makefile)
 7B: Step 6 (global.d.ts) → Step 7 (client.ts changes) — can run PARALLEL with 7A
 7C: Step 8 (Xcode project) → Step 9 (EngineManager) → Step 10 (WebViewController) → Step 11 (AppDelegate) → Step 12 (e2e verification) — depends on 7A + 7B
-7D: Step 13 (entitlement) → Step 14 (HealthKitManager) → Step 15 (sync) → Step 16 (WebView messaging) — depends on 7C
+7D: Step 13 (entitlement) → Step 14 (HealthKitManager) → Step 15 (sync) → Step 16 (WebView messaging) — complete ✓
 ```
 
 Sub-phases 7A and 7B are fully independent and can be worked on in parallel.
