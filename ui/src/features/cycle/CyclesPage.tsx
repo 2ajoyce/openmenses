@@ -214,15 +214,16 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
   const currentCycle = cycles.find((c) => !c.endDate);
   const completedCycles = cycles.filter((c) => c.endDate);
 
-  // Compute day count for current cycle
-  const getCurrentCycleDayCount = (cycle: Cycle): number | null => {
-    if (!cycle.startDate) return null;
+  const MAX_CYCLE_LENGTH_DAYS = 90;
+
+  const isCurrentCycleStale = (cycle: Cycle): boolean => {
+    if (!cycle.startDate || cycle.endDate) return false;
     const start = fromLocalDate(cycle.startDate);
     const today = new Date();
-    return (
-      Math.floor((today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) +
-      1
+    const days = Math.floor(
+      (today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24),
     );
+    return days > MAX_CYCLE_LENGTH_DAYS;
   };
 
   const hasStatistics = statistics && statistics.count > 0;
@@ -281,7 +282,9 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
                 <Card>
                   <CardHeader>
                     <span className="om-card-title" id="current-cycle-heading">
-                      Current Cycle
+                      {isCurrentCycleStale(currentCycle)
+                        ? "Latest Cycle"
+                        : "Current Cycle"}
                     </span>
                   </CardHeader>
                   <CardContent>
@@ -290,13 +293,18 @@ const CyclesPage: React.FC<CyclesPageProps> = ({ f7router }) => {
                         <p className="om-card-timestamp">
                           Started: {formatDate(currentCycle.startDate)}
                         </p>
-                        {(() => {
-                          const dayCount =
-                            getCurrentCycleDayCount(currentCycle);
-                          return dayCount ? (
-                            <p className="om-card-notes">Day {dayCount}</p>
-                          ) : null;
-                        })()}
+                        <p className="om-card-timestamp">
+                          Ended:{" "}
+                          {currentCycle.endDate
+                            ? formatDate(currentCycle.endDate)
+                            : "—"}
+                        </p>
+                        {!currentCycle.endDate && (
+                          <p className="om-card-notes om-muted">
+                            ℹ Cycle end is estimated when new bleeding entries
+                            are logged.
+                          </p>
+                        )}
                       </>
                     )}
                     {profileComplete && todayPhaseEstimate && (
