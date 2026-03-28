@@ -31,6 +31,7 @@ targets:
         DEVELOPMENT_TEAM: "79AKRQK9LV"
         CODE_SIGN_STYLE: Automatic
         ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_ENTITLEMENTS: OpenMenses/OpenMenses.entitlements
         # The "Copy UI Assets" build phase reads ui/dist from the repo root,
         # which is outside the Xcode build sandbox. Sandboxing must be off.
         ENABLE_USER_SCRIPT_SANDBOXING: NO
@@ -41,6 +42,8 @@ targets:
       # must NOT be embedded in the app bundle (embed: false).
       - framework: Engine.xcframework
         embed: false
+      # HealthKit system framework for menstrual flow read/write (Phase 7D).
+      - sdk: HealthKit.framework
     postBuildScripts:
       # Build (if needed) and copy the Vite production bundle into the app bundle
       # so the Go engine can serve the UI from its local HTTP server.

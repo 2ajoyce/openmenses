@@ -9,18 +9,23 @@
 /* Begin PBXBuildFile section */
 		05C4E8C038C781B94B34F027 /* Engine.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1461C1208D592CF700F3EECF /* Engine.xcframework */; };
 		10465696C2FC3B076020CC66 /* EngineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804A4A4C8699B537177457FF /* EngineManager.swift */; };
+		25D0A5AFB129F386867A6D38 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3CC0EA103F96B46B1D258535 /* PrivacyInfo.xcprivacy */; };
 		4DEFF8B2C4F74AD73892F2A7 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE91AC08962277F49FC64BE3 /* WebViewController.swift */; };
 		4F1B5E33645404DBDBDA512F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8F8B0CDC420E7B83A2338 /* AppDelegate.swift */; };
 		7048C643C0D9076A1BF062D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB940A0631D874FE5C3817EB /* LaunchScreen.storyboard */; };
 		C676EE5D6EA524EDFC2C4416 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146D007408CED427A29F1D1F /* SceneDelegate.swift */; };
 		DEEDE3B023C128A2CF23C176 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C0B4F2E6B8419E8F6CEFBB0 /* Assets.xcassets */; };
+		FFB9955265584D502D43D683 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 263DD11ACC6221B7DD8B4F7B /* HealthKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1461C1208D592CF700F3EECF /* Engine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Engine.xcframework; sourceTree = "<group>"; };
 		146D007408CED427A29F1D1F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		1FAA5476179E49EAE8605C50 /* OpenMenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FAA5476179E49EAE8605C50 /* OpenMenses.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = OpenMenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FB8831DA805091766FB4E07 /* OpenMenses.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenMenses.entitlements; sourceTree = "<group>"; };
+		263DD11ACC6221B7DD8B4F7B /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		3C0B4F2E6B8419E8F6CEFBB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3CC0EA103F96B46B1D258535 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5FD54A47AF2F189DA74A7A5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		804A4A4C8699B537177457FF /* EngineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineManager.swift; sourceTree = "<group>"; };
 		BE91AC08962277F49FC64BE3 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -34,6 +39,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				05C4E8C038C781B94B34F027 /* Engine.xcframework in Frameworks */,
+				FFB9955265584D502D43D683 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,6 +54,8 @@
 				804A4A4C8699B537177457FF /* EngineManager.swift */,
 				5FD54A47AF2F189DA74A7A5F /* Info.plist */,
 				EB940A0631D874FE5C3817EB /* LaunchScreen.storyboard */,
+				1FB8831DA805091766FB4E07 /* OpenMenses.entitlements */,
+				3CC0EA103F96B46B1D258535 /* PrivacyInfo.xcprivacy */,
 				146D007408CED427A29F1D1F /* SceneDelegate.swift */,
 				BE91AC08962277F49FC64BE3 /* WebViewController.swift */,
 			);
@@ -66,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				1461C1208D592CF700F3EECF /* Engine.xcframework */,
+				263DD11ACC6221B7DD8B4F7B /* HealthKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -109,7 +118,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2630;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					8801ACF20703F6FDCE81D425 = {
+						DevelopmentTeam = 79AKRQK9LV;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 6FEA8F8EEC29D0C9B4D2FD69 /* Build configuration list for PBXProject "OpenMenses" */;
 			developmentRegion = en;
@@ -137,6 +152,7 @@
 			files = (
 				DEEDE3B023C128A2CF23C176 /* Assets.xcassets in Resources */,
 				7048C643C0D9076A1BF062D0 /* LaunchScreen.storyboard in Resources */,
+				25D0A5AFB129F386867A6D38 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,7 +176,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "REPO_ROOT=\"${SRCROOT}/../..\"\nUI_DIST=\"${REPO_ROOT}/ui/dist\"\nUI_DEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ui\"\n\nexport PATH=\"/opt/homebrew/bin:/usr/local/bin:${PATH}\"\n\nif [ ! -d \"${UI_DIST}\" ]; then\n  echo \"note: ui/dist not found -- running make ui-bundle...\"\n  make -C \"${REPO_ROOT}\" ui-bundle\nfi\n\nif [ -d \"${UI_DIST}\" ]; then\n  rm -rf \"${UI_DEST}\"\n  mkdir -p \"${UI_DEST}\"\n  cp -R \"${UI_DIST}/.\" \"${UI_DEST}/\"\n  echo \"note: Copied UI assets from ${UI_DIST}\"\nelse\n  echo \"error: UI assets not found at ${UI_DIST}. Run 'make ui-bundle' from the repo root and rebuild.\"\n  exit 1\nfi\n";
+			shellScript = "REPO_ROOT=\"${SRCROOT}/../..\"\nUI_DIST=\"${REPO_ROOT}/ui/dist\"\nUI_DEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ui\"\n\n# Extend PATH so npm/node installed via Homebrew (Apple Silicon and Intel) are found.\nexport PATH=\"/opt/homebrew/bin:/usr/local/bin:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Library/Apple/usr/bin:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/Users/aaron/Library/Application Support/JetBrains/Toolbox/scripts:/Users/aaron/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts:/Users/aaron/Library/Application Support/JetBrains/Toolbox/scripts\"\n\n# Build the UI bundle if it hasn't been built yet (local developer builds).\nif [ ! -d \"${UI_DIST}\" ]; then\n  echo \"note: ui/dist not found -- running make ui-bundle...\"\n  make -C \"${REPO_ROOT}\" ui-bundle\nfi\n\nif [ -d \"${UI_DIST}\" ]; then\n  rm -rf \"${UI_DEST}\"\n  mkdir -p \"${UI_DEST}\"\n  cp -R \"${UI_DIST}/.\" \"${UI_DEST}/\"\n  echo \"note: Copied UI assets from ${UI_DIST}\"\nelse\n  echo \"error: UI assets not found at ${UI_DIST}. Run 'make ui-bundle' from the repo root and rebuild.\"\n  exit 1\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -183,7 +199,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -215,10 +230,8 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 79AKRQK9LV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -239,7 +252,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -250,7 +262,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -282,10 +293,8 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 79AKRQK9LV;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -299,7 +308,6 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -310,24 +318,26 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_ENTITLEMENTS = OpenMenses/OpenMenses.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 79AKRQK9LV;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\".\"",
 				);
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OpenMenses/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = OpenMenses;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.health-and-fitness";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.2ajoyce.openmenses;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -339,24 +349,26 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_ENTITLEMENTS = OpenMenses/OpenMenses.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 79AKRQK9LV;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\".\"",
 				);
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OpenMenses/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = OpenMenses;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.health-and-fitness";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.2ajoyce.openmenses;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;

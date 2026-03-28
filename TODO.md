@@ -52,41 +52,11 @@ Read these before implementing:
 
 Steps 8–11 (Xcode project, EngineManager, WebViewController, AppDelegate/SceneDelegate) are complete. The iOS shell is built with xcodegen (`project.yml`), links `Engine.xcframework` as a static framework, copies UI assets via a post-build script, and injects engine config (`port`, `authToken`) into the WKWebView at document start. The bridge API uses separate `Port()`/`AuthToken()` getters (in `engine/mobile/bridge.go`) to avoid gomobile multi-return complexity. `.gitignore` covers `Engine.xcframework/` and `ui/`. All engine tests pass; `go vet` and `gofmt` are clean. `NSAppTransportSecurity` uses `NSAllowsLocalNetworking` (not `NSAllowsArbitraryLoads`).
 
-- [x] Build and run on iOS Simulator — expect: app launches, WebView loads UI, can create/view observations
-
-### Step 12: End-to-end verification
-
-Manual verification checklist (no automated iOS tests for MVP):
-
-- [x] `make ui-bundle` produces `ui/dist/` with production build
-- [x] `make mobile-ios` produces `mobile/ios/Engine.xcframework/`
-- [x] Xcode build succeeds with both artifacts linked
-- [x] iOS Simulator: app launches → blank LaunchScreen → WebView loads Framework7 UI
-- [x] Can create a user profile
-- [x] Can log a bleeding observation
-- [x] Can view the timeline
-- [x] Can navigate all tabs (Timeline, Cycles, Log, Medications, Settings)
-- [x] Can export data (JSON/CSV)
-- [x] Can view clinician summary
-- [x] App survives backgrounding and foregrounding
-- [x] App data persists across launches (SQLite in Documents)
-- [x] `make ci` still passes (no regressions from UI changes)
-
 ---
 
 ## Sub-Phase 7D: HealthKit Integration
 
 Add bi-directional sync of menstrual flow data between the app and Apple HealthKit. All HealthKit code lives in the native Swift shell — **no domain logic in Swift**. The shell reads/writes HealthKit and translates to/from Connect-RPC calls to the engine.
-
-### Step 13: HealthKit entitlement and permissions
-
-Configure the Xcode project for HealthKit access.
-
-- [ ] Add HealthKit capability to the Xcode project (Signing & Capabilities → + HealthKit)
-- [ ] Add to `Info.plist`:
-  - `NSHealthShareUsageDescription`: "OpenMenses reads menstrual flow data from Health to avoid duplicate logging."
-  - `NSHealthUpdateUsageDescription`: "OpenMenses writes menstrual flow observations to Health so your cycle data is available across apps."
-- [ ] Verify project still builds with HealthKit entitlement
 
 ### Step 14: HealthKitManager.swift
 
