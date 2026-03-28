@@ -63,6 +63,11 @@
         <string>UIInterfaceOrientationLandscapeLeft</string>
         <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
+    <!-- HealthKit usage descriptions required by App Store review. -->
+    <key>NSHealthShareUsageDescription</key>
+    <string>OpenMenses reads menstrual flow data from Health to avoid duplicate logging.</string>
+    <key>NSHealthUpdateUsageDescription</key>
+    <string>OpenMenses writes menstrual flow observations to Health so your cycle data is available across apps.</string>
     <!-- App is offline-first; no custom or exempt encryption is used. -->
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
