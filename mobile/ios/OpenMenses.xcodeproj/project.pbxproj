@@ -10,6 +10,7 @@
 		05C4E8C038C781B94B34F027 /* Engine.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1461C1208D592CF700F3EECF /* Engine.xcframework */; };
 		10465696C2FC3B076020CC66 /* EngineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804A4A4C8699B537177457FF /* EngineManager.swift */; };
 		25D0A5AFB129F386867A6D38 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3CC0EA103F96B46B1D258535 /* PrivacyInfo.xcprivacy */; };
+		429D691D67CCA801A4A096D2 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CF4E552BE0F7DF38FA951A /* HealthKitManager.swift */; };
 		4DEFF8B2C4F74AD73892F2A7 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE91AC08962277F49FC64BE3 /* WebViewController.swift */; };
 		4F1B5E33645404DBDBDA512F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8F8B0CDC420E7B83A2338 /* AppDelegate.swift */; };
 		7048C643C0D9076A1BF062D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB940A0631D874FE5C3817EB /* LaunchScreen.storyboard */; };
@@ -28,6 +29,7 @@
 		3CC0EA103F96B46B1D258535 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5FD54A47AF2F189DA74A7A5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		804A4A4C8699B537177457FF /* EngineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineManager.swift; sourceTree = "<group>"; };
+		B6CF4E552BE0F7DF38FA951A /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		BE91AC08962277F49FC64BE3 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		BFF8F8B0CDC420E7B83A2338 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB940A0631D874FE5C3817EB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -52,6 +54,7 @@
 				BFF8F8B0CDC420E7B83A2338 /* AppDelegate.swift */,
 				3C0B4F2E6B8419E8F6CEFBB0 /* Assets.xcassets */,
 				804A4A4C8699B537177457FF /* EngineManager.swift */,
+				B6CF4E552BE0F7DF38FA951A /* HealthKitManager.swift */,
 				5FD54A47AF2F189DA74A7A5F /* Info.plist */,
 				EB940A0631D874FE5C3817EB /* LaunchScreen.storyboard */,
 				1FB8831DA805091766FB4E07 /* OpenMenses.entitlements */,
@@ -95,6 +98,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E29D22FAFC2CAB04F54EBDDF /* Build configuration list for PBXNativeTarget "OpenMenses" */;
 			buildPhases = (
+				73B584731A4B890F18D8F086 /* Build Engine Framework */,
 				3BE4276816AD25609D9AB868 /* Sources */,
 				19384A3EB2BC64703D92D64E /* Resources */,
 				BD0F217065329FCFC124B065 /* Frameworks */,
@@ -159,6 +163,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		73B584731A4B890F18D8F086 /* Build Engine Framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build Engine Framework";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "REPO_ROOT=\"${SRCROOT}/../..\"\nFRAMEWORK=\"${SRCROOT}/Engine.xcframework\"\n\n# Xcode's shell has a minimal PATH — add Homebrew paths first so `go`\n# is available, then resolve GOPATH to find gomobile.\nexport PATH=\"/opt/homebrew/bin:/usr/local/bin:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Library/Apple/usr/bin:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/Users/aaron/Library/Application Support/JetBrains/Toolbox/scripts:/Users/aaron/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts:/Users/aaron/Library/Application Support/JetBrains/Toolbox/scripts\"\nif command -v go &>/dev/null; then\n  export PATH=\"$(go env GOPATH)/bin:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Library/Apple/usr/bin:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/Users/aaron/Library/Application Support/JetBrains/Toolbox/scripts:/Users/aaron/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts:/Users/aaron/Library/Application Support/JetBrains/Toolbox/scripts\"\nfi\n\n# Verify gomobile is available.\nif ! command -v gomobile &>/dev/null; then\n  echo \"error: gomobile not found. Run 'make mobile-setup' from the repo root first.\"\n  exit 1\nfi\n\n# If the framework doesn't exist at all, build it unconditionally.\nif [ ! -d \"${FRAMEWORK}\" ]; then\n  echo \"note: Engine.xcframework not found — building...\"\n  make -C \"${REPO_ROOT}\" mobile-ios\n  exit $?\nfi\n\n# Staleness check: rebuild only if any Go source file under engine/\n# is newer than the framework's Info.plist (build marker).\nMARKER=\"${FRAMEWORK}/Info.plist\"\nSTALE=$(find \"${REPO_ROOT}/engine\" -name '*.go' -newer \"${MARKER}\" -print -quit)\nif [ -n \"${STALE}\" ]; then\n  echo \"note: Engine source changed — rebuilding Engine.xcframework...\"\n  make -C \"${REPO_ROOT}\" mobile-ios\nelse\n  echo \"note: Engine.xcframework is up to date.\"\nfi\n";
+		};
 		DED6968569FC8FDFF369D8B8 /* Copy UI Assets */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -176,7 +199,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "REPO_ROOT=\"${SRCROOT}/../..\"\nUI_DIST=\"${REPO_ROOT}/ui/dist\"\nUI_DEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ui\"\n\n# Extend PATH so npm/node installed via Homebrew (Apple Silicon and Intel) are found.\nexport PATH=\"/opt/homebrew/bin:/usr/local/bin:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Library/Apple/usr/bin:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/Users/aaron/Library/Application Support/JetBrains/Toolbox/scripts:/Users/aaron/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts:/Users/aaron/Library/Application Support/JetBrains/Toolbox/scripts\"\n\n# Build the UI bundle if it hasn't been built yet (local developer builds).\nif [ ! -d \"${UI_DIST}\" ]; then\n  echo \"note: ui/dist not found -- running make ui-bundle...\"\n  make -C \"${REPO_ROOT}\" ui-bundle\nfi\n\nif [ -d \"${UI_DIST}\" ]; then\n  rm -rf \"${UI_DEST}\"\n  mkdir -p \"${UI_DEST}\"\n  cp -R \"${UI_DIST}/.\" \"${UI_DEST}/\"\n  echo \"note: Copied UI assets from ${UI_DIST}\"\nelse\n  echo \"error: UI assets not found at ${UI_DIST}. Run 'make ui-bundle' from the repo root and rebuild.\"\n  exit 1\nfi\n";
+			shellScript = "REPO_ROOT=\"${SRCROOT}/../..\"\nUI_DIST=\"${REPO_ROOT}/ui/dist\"\nUI_DEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ui\"\n\n# Extend PATH so npm/node installed via Homebrew (Apple Silicon and Intel) are found.\nexport PATH=\"/opt/homebrew/bin:/usr/local/bin:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Library/Apple/usr/bin:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/aaron/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/Users/aaron/Library/Application Support/JetBrains/Toolbox/scripts:/Users/aaron/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts:/Users/aaron/Library/Application Support/JetBrains/Toolbox/scripts\"\n\n# Always rebuild the UI bundle so local Xcode builds pick up the latest\n# source changes. (In Xcode Cloud, ci_post_clone.sh pre-builds ui/dist\n# on a fresh clone, so this is fast there too.)\necho \"note: running make ui-bundle...\"\nmake -C \"${REPO_ROOT}\" ui-bundle\n\nif [ -d \"${UI_DIST}\" ]; then\n  rm -rf \"${UI_DEST}\"\n  mkdir -p \"${UI_DEST}\"\n  cp -R \"${UI_DIST}/.\" \"${UI_DEST}/\"\n  echo \"note: Copied UI assets from ${UI_DIST}\"\nelse\n  echo \"error: UI assets not found at ${UI_DIST}. Run 'make ui-bundle' from the repo root and rebuild.\"\n  exit 1\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -187,6 +210,7 @@
 			files = (
 				4F1B5E33645404DBDBDA512F /* AppDelegate.swift in Sources */,
 				10465696C2FC3B076020CC66 /* EngineManager.swift in Sources */,
+				429D691D67CCA801A4A096D2 /* HealthKitManager.swift in Sources */,
 				C676EE5D6EA524EDFC2C4416 /* SceneDelegate.swift in Sources */,
 				4DEFF8B2C4F74AD73892F2A7 /* WebViewController.swift in Sources */,
 			);

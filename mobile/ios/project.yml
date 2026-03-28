@@ -44,11 +44,53 @@ targets:
         embed: false
       # HealthKit system framework for menstrual flow read/write (Phase 7D).
       - sdk: HealthKit.framework
+    preBuildScripts:
+      # Build Engine.xcframework via gomobile bind before the compile/link phase.
+      # The framework is a linked dependency so it must exist before Xcode
+      # compiles Swift sources. A staleness check avoids rebuilding on every
+      # build — only rebuilds when Go source files are newer than the framework.
+      # Requires: gomobile installed (run `make mobile-setup` once).
+      - script: |
+          REPO_ROOT="${SRCROOT}/../.."
+          FRAMEWORK="${SRCROOT}/Engine.xcframework"
+
+          # Xcode's shell has a minimal PATH — add Homebrew paths first so `go`
+          # is available, then resolve GOPATH to find gomobile.
+          export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
+          if command -v go &>/dev/null; then
+            export PATH="$(go env GOPATH)/bin:${PATH}"
+          fi
+
+          # Verify gomobile is available.
+          if ! command -v gomobile &>/dev/null; then
+            echo "error: gomobile not found. Run 'make mobile-setup' from the repo root first."
+            exit 1
+          fi
+
+          # If the framework doesn't exist at all, build it unconditionally.
+          if [ ! -d "${FRAMEWORK}" ]; then
+            echo "note: Engine.xcframework not found — building..."
+            make -C "${REPO_ROOT}" mobile-ios
+            exit $?
+          fi
+
+          # Staleness check: rebuild only if any Go source file under engine/
+          # is newer than the framework's Info.plist (build marker).
+          MARKER="${FRAMEWORK}/Info.plist"
+          STALE=$(find "${REPO_ROOT}/engine" -name '*.go' -newer "${MARKER}" -print -quit)
+          if [ -n "${STALE}" ]; then
+            echo "note: Engine source changed — rebuilding Engine.xcframework..."
+            make -C "${REPO_ROOT}" mobile-ios
+          else
+            echo "note: Engine.xcframework is up to date."
+          fi
+        name: "Build Engine Framework"
+        basedOnDependencyAnalysis: false
     postBuildScripts:
-      # Build (if needed) and copy the Vite production bundle into the app bundle
+      # Always build the Vite production bundle and copy it into the app bundle
       # so the Go engine can serve the UI from its local HTTP server.
-      # In Xcode Cloud, ci_post_clone.sh pre-builds ui/dist so this phase just
-      # copies. For local builds, it auto-runs `make ui-bundle` when missing.
+      # In both Xcode Cloud and local builds, ui-bundle is always re-run so
+      # UI source changes are always reflected without a manual `make ui-bundle`.
       - script: |
           REPO_ROOT="${SRCROOT}/../.."
           UI_DIST="${REPO_ROOT}/ui/dist"
@@ -57,11 +99,11 @@ targets:
           # Extend PATH so npm/node installed via Homebrew (Apple Silicon and Intel) are found.
           export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
 
-          # Build the UI bundle if it hasn't been built yet (local developer builds).
-          if [ ! -d "${UI_DIST}" ]; then
-            echo "note: ui/dist not found -- running make ui-bundle..."
-            make -C "${REPO_ROOT}" ui-bundle
-          fi
+          # Always rebuild the UI bundle so local Xcode builds pick up the latest
+          # source changes. (In Xcode Cloud, ci_post_clone.sh pre-builds ui/dist
+          # on a fresh clone, so this is fast there too.)
+          echo "note: running make ui-bundle..."
+          make -C "${REPO_ROOT}" ui-bundle
 
           if [ -d "${UI_DIST}" ]; then
             rm -rf "${UI_DEST}"
